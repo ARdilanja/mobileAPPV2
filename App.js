@@ -1,18 +1,11 @@
 // import { StyleSheet, Text, View } from 'react-native'
 // import React from 'react'
-// import InterviewScreen from './src/screens/InterviewScreen.jsx'
+// import AppNavigation from '../Recroot_Mobile/src/navigations/AppNavigation'
 
 // const App = () => {
 //   return (
-  
-//       <InterviewScreen />
-    
+//     <AppNavigation />
 //   )
-// }
-
-// export default App
-
-// const styles = StyleSheet.create({})
 
 
 import React from "react";
