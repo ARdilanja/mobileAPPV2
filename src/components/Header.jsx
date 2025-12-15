@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
     },
     title: {
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: "600",
         color: "#000",
     },
