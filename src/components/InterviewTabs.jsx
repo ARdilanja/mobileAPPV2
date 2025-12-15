@@ -170,6 +170,7 @@ import {
     StyleSheet,
     Dimensions,
 } from "react-native";
+import { Fonts } from "../constants/fonts";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const TAB_WIDTH = Math.min(SCREEN_WIDTH - 32, 325);
@@ -261,13 +262,13 @@ const styles = StyleSheet.create({
     },
 
     activeLeftTab: {
-        backgroundColor: "#2563EB",
+        backgroundColor: "#0069FF",
         borderTopLeftRadius: 14,
         borderBottomLeftRadius: 14,
     },
 
     activeRightTab: {
-        backgroundColor: "#2563EB",
+        backgroundColor: "#0069FF",
         borderTopRightRadius: 14,
         borderBottomRightRadius: 14,
     },
@@ -286,6 +287,7 @@ const styles = StyleSheet.create({
 
     text: {
         fontSize: 10,
+        fontFamily: Fonts.Regular,
         lineHeight: 12,
         color: "#000",
     },
