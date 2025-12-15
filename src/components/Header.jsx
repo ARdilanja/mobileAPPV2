@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { Fonts } from "../constants/fonts";
 
-export default function Header() {
+export default function Header({title}) {
     return (
         <View style={styles.container}>
             {/* Left: Burger */}
@@ -14,7 +14,7 @@ export default function Header() {
             </TouchableOpacity>
 
             {/* Center: Title */}
-            <Text style={styles.title}>Digital Marketing Interview</Text>
+            <Text style={styles.title}>{title}</Text>
 
             {/* Right: Profile */}
             <View style={styles.profileWrapper}>

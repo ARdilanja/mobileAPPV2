@@ -9,11 +9,16 @@ import {
     TouchableOpacity
 } from "react-native";
 import { LineChart } from "react-native-chart-kit";
+import { Fonts } from "../constants/fonts";
+import Header from "../components/Header";
+import ProgressLineChart from "../components/ProgressLineChart";
+
 const screenWidth = Dimensions.get("window").width;
 
 export default function Dashboard() {
     return (
         <ScrollView style={{ backgroundColor: 'white' }} showsVerticalScrollIndicator={false}>
+            <Header title="Dashboard" />
             <View style={styles.container}>
                 {/* INTERVIEWS CARDS */}
                 <Text style={styles.sectionTitle}>Interviews</Text>
@@ -27,7 +32,7 @@ export default function Dashboard() {
                 {/* PROGRESSION */}
                 <Text style={styles.sectionTitle}>Your Progression</Text>
 
-                <View style={styles.chartWrapper}>
+                {/* <View style={styles.chartWrapper}>
                     <LineChart
                         data={{
                             labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
@@ -79,7 +84,32 @@ export default function Dashboard() {
                         <LegendItem color="#1A6CFF" label="Subject Matter Expertise" />
                         <LegendItem color="#00BDAC" label="Communication Skills" />
                     </View>
-                </View>
+                </View> */}
+                <ProgressLineChart
+                    labels={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
+                    datasets={[
+                        {
+                            data: [70, 68, 50, 55, 62, 70, 78, 58, 48, 60],
+                            color: () => "#9D00EA",
+                            strokeWidth: 2
+                        },
+                        {
+                            data: [20, 35, 30, 60, 15, 25, 55, 45, 40, 85],
+                            color: () => "#1A6CFF",
+                            strokeWidth: 2
+                        },
+                        {
+                            data: [55, 50, 25, 45, 75, 60, 65, 30, 25, 35],
+                            color: () => "#00BDAC",
+                            strokeWidth: 2
+                        }
+                    ]}
+                    legend={[
+                        { label: "Overall", color: "#9D00EA" },
+                        { label: "Subject Matter Expertise", color: "#1A6CFF" },
+                        { label: "Communication Skills", color: "#00BDAC" }
+                    ]}
+                />
 
 
                 {/* LATEST COMPLETED INTERVIEWS */}
@@ -187,13 +217,17 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#F9FAFB",
-        padding: 24
+        paddingHorizontal: 24,
+        paddingTop: 20,
+        paddingBottom: 0,
+
     },
 
     sectionTitle: {
         fontSize: 14,
-        fontWeight: "600",
+        // fontWeight: "600",
         color: "#111827",
+        fontFamily: Fonts.SemiBold,
         marginBottom: 12
     },
 
@@ -236,14 +270,15 @@ const styles = StyleSheet.create({
 
     cardTitle: {
         fontSize: 12,
-        fontWeight: "400",
+        // fontWeight: "400",
+        fontFamily: Fonts.Regular,
         lineHeight: '100%'
     },
 
     cardValue: {
         lineHeight: '32px',
         fontSize: 24,
-        fontWeight: "700",
+        fontFamily: Fonts.Bold,
         color: "#111827"
     },
 
@@ -284,7 +319,8 @@ const styles = StyleSheet.create({
 
     legendText: {
         fontSize: 11,
-        fontWeight: "500"
+        // fontWeight: "500",
+        fontFamily: Fonts.Medium
     },
 
 
@@ -329,9 +365,11 @@ const styles = StyleSheet.create({
     },
 
     role: {
-        fontSize: 12,
-        color: "#6B7280",
-        marginTop: 2
+        fontSize: 13,
+        color: "#5C6363",
+        lineHeight: '22px',
+        marginTop: 2,
+        fontFamily: Fonts.Light,
     },
 
     button: {
@@ -345,6 +383,8 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "#0069FF",
         fontSize: 14,
-        fontWeight: "500"
+        // fontWeight: "500"
+
+        fontFamily: Fonts.Medium
     }
 });

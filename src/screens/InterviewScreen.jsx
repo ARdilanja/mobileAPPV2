@@ -59,7 +59,7 @@ export default function InterviewScreen() {
 
     return (
         <View style={styles.container}>
-            <Header />
+            <Header title="Digital Marketing Interview"/>
 
             <InterviewTabs
                 activeTab={activeTab}
