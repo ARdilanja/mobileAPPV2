@@ -27,6 +27,7 @@ import { View, StyleSheet } from "react-native";
 import Header from "../components/Header";
 import InterviewTabs from "../components/InterviewTabs";
 import SubjectExpertise from "../components/SubjectExpertise";
+import Communication from "../components/Communication";
 
 export default function InterviewScreen() {
     const [activeTab, setActiveTab] = useState("expertise");
@@ -45,7 +46,7 @@ export default function InterviewScreen() {
 
             {activeTab === "communication" && (
                 <View style={{ padding: 16 }}>
-                    {/* Communication Skills content later */}
+                    <Communication />
                 </View>
             )}
         </View>
