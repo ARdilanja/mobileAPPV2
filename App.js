@@ -1,13 +1,29 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import AppNavigation from '../Recroot_Mobile/src/navigations/AppNavigation'
+// import { StyleSheet, Text, View } from 'react-native'
+// import React from 'react'
+// import InterviewScreen from './src/screens/InterviewScreen.jsx'
 
-const App = () => {
-  return (
-    <AppNavigation />
-  )
+// const App = () => {
+//   return (
+  
+//       <InterviewScreen />
+    
+//   )
+// }
+
+// export default App
+
+// const styles = StyleSheet.create({})
+
+
+import React from "react";
+import { SafeAreaView, StatusBar } from "react-native";
+import InterviewScreen from "./src/screens/InterviewScreen";
+
+export default function App() {
+    return (
+        <SafeAreaView style={{ flex: 1 }}>
+            <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+            <InterviewScreen />
+        </SafeAreaView>
+    );
 }
-
-export default App
-
-const styles = StyleSheet.create({})
