@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { Fonts } from "../constants/fonts";
 
 export default function Header() {
     return (
@@ -16,10 +17,13 @@ export default function Header() {
             <Text style={styles.title}>Digital Marketing Interview</Text>
 
             {/* Right: Profile */}
-            <Image
-                source={require("../assets/images/profile.png")}
-                style={styles.profile}
-            />
+            <View style={styles.profileWrapper}>
+                <Image
+                    source={require("../assets/images/profile.png")}
+                    style={styles.profile}
+                />
+            </View>
+
         </View>
     );
 }
@@ -40,12 +44,24 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 14,
-        fontWeight: "600",
+        fontFamily: Fonts.SemiBold,
         color: "#000",
     },
-    profile: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
+    profileWrapper: {
+        width: 36,
+        height: 36,
+        borderRadius: 18,
+        backgroundColor: "#E6F0FF", 
+        borderWidth: 2,
+        borderColor: "#0087FF",      
+        alignItems: "center",
+        justifyContent: "center",
     },
+
+    profile: {
+        width: 30,
+        height: 30,
+        borderRadius: 15,
+    },
+
 });
