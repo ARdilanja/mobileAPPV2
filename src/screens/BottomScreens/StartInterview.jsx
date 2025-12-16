@@ -1,11 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import DeleteAccountScreen from '../DeleteAccountScreen'
 
 const StartInterview = () => {
   return (
-    <View>
-      <Text>StartInterview</Text>
-    </View>
+    <DeleteAccountScreen />
   )
 }
 
