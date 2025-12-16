@@ -14,8 +14,7 @@ export default function InterviewScreen() {
 
     return (
         <View style={styles.container}>
-            {/* 1. Header stays fixed at the top */}
-            <Header />
+            <Header title="Digital Marketing Interview"/>
 
             {/* 2. ONE ScrollView for ALL content */}
             <ScrollView
