@@ -4,14 +4,12 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 export default function EmployerInterviewHeader({ onBackPress }) {
   return (
     <View style={styles.container}>
-      {/* Custom Back Arrow - No Image Needed */}
       <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
         <View style={styles.arrow} />
       </TouchableOpacity>
 
       <Text style={styles.title}>Interviews</Text>
 
-      {/* Spacer to center title */}
       <View style={{ width: 40 }} />
     </View>
   );
@@ -34,6 +32,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   arrow: {
+    marginLeft:0,
     width: 12,
     height: 12,
     borderLeftWidth: 3,

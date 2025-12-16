@@ -1,5 +1,6 @@
-import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import React from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Fonts } from '../constants/fonts';
 
 const InterviewCard = ({ companyLogo, companyName, role, onPress }) => {
   return (
@@ -25,23 +26,23 @@ const styles = StyleSheet.create({
   card: {
     width: 375,
     height: 76,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     marginBottom: 12,
-    alignSelf: "center",
+    alignSelf: 'center',
     borderRadius: 8,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 2,
   },
   left: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   logo: {
     width: 48,
@@ -49,30 +50,35 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   textContainer: {
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   company: {
-    fontFamily: "Inter",
-    fontWeight: "700",
-    fontSize: 16,
-    color: "#000000",
+    fontFamily: Fonts.Bold,
+    fontSize: 14,
+    color: '#171F38',
     lineHeight: 24,
   },
   role: {
-    fontFamily: "Inter",
-    fontSize: 14,
-    color: "#666666",
-    lineHeight: 20,
+    fontFamily:Fonts.Medium,
+    fontSize: 13,
+    color: '#5C6363',
+    lineHeight: 22,
   },
   startButton: {
-    backgroundColor: "#2563EB",
-    paddingHorizontal: 24,
-    paddingVertical: 10,
-    borderRadius: 8,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: '#2563EB',
+    borderRadius: 6,
+    width:70,
+    height:32,
+    paddingHorizontal: 18,
+    paddingVertical: 7.5,
   },
   startText: {
-    color: "#FFFFFF",
-    fontWeight: "600",
+    color: '#115CC7',
+    fontWeight: '500',
     fontSize: 14,
+    lineHeight: 17,
+    fontFamily: Fonts.Medium,
   },
 });

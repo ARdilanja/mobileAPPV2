@@ -1,78 +1,78 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Fonts } from "../constants/fonts";
 
-const InterviewCard = ({ companyLogo, companyName, role, onPress }) => {
+export default function EmployerInterviewTabSwitcher({ activeTab, setActiveTab }) {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.8}>
-      <View style={styles.left}>
-        <Image source={companyLogo} style={styles.logo} resizeMode="contain" />
-        <View style={styles.textContainer}>
-          <Text style={styles.company}>{companyName}</Text>
-          <Text style={styles.role}>{role}</Text>
-        </View>
-      </View>
-
-      <TouchableOpacity style={styles.startButton} onPress={onPress}>
-        <Text style={styles.startText}>Start</Text>
+    <View style={styles.container}>
+      {/* Employer Tab */}
+      <TouchableOpacity
+        style={styles.tab}
+        onPress={() => setActiveTab("employer")}
+      >
+        <Text style={[
+          styles.tabText,
+          activeTab === "employer" && styles.activeText
+        ]}>
+          10 Employer Interview
+        </Text>
+        {activeTab === "employer" && <View style={styles.underline} />}
       </TouchableOpacity>
-    </TouchableOpacity>
-  );
-};
 
-export default InterviewCard;
+      {/* Mock Tab */}
+      <TouchableOpacity
+        style={styles.tab}
+        onPress={() => setActiveTab("mock")}
+      >
+        <Text style={[
+          styles.tabText,
+          activeTab === "mock" && styles.activeText
+        ]}>
+          5 Mock Interview
+        </Text>
+        {activeTab === "mock" && <View style={styles.underline} />}
+      </TouchableOpacity>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
-  card: {
-    width: 375,
-    height: 76,
+  container: {
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    backgroundColor: "#FFFFFF",
-    marginBottom: 12,
-    alignSelf: "center",
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    elevation: 2,
-  },
-  left: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  logo: {
-    width: 48,
-    height: 48,
-    marginRight: 16,
-  },
-  textContainer: {
     justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20, 
+    paddingHorizontal: 16,
   },
-  company: {
-    fontFamily: "Inter",
-    fontWeight: "700",
-    fontSize: 16,
-    color: "#000000",
-    lineHeight: 24,
+
+  tab: {
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 12,
+    position: "relative",
   },
-  role: {
-    fontFamily: "Inter",
+
+  tabText: {
+    fontFamily: Fonts.Bold,
     fontSize: 14,
     color: "#666666",
-    lineHeight: 20,
+    textAlign: "center",
+    fontWeight: "700",
+
   },
-  startButton: {
-    backgroundColor: "#2563EB",
-    paddingHorizontal: 24,
-    paddingVertical: 10,
-    borderRadius: 8,
+
+  activeText: {
+    color: "#115CC7",
+    fontWeight: "700",
   },
-  startText: {
-    color: "#FFFFFF",
-    fontWeight: "600",
-    fontSize: 14,
+
+  underline: {
+    position: "absolute",
+    bottom: 0,
+    left: 20,
+    right: 20,
+    height: 2,
+    backgroundColor: "#115CC7",
+    borderRadius: 1,
   },
 });
