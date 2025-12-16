@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: 80,
-    height: 115,
+    // height: 115,
     paddingVertical: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

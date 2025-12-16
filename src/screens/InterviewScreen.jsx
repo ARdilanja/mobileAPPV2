@@ -1,13 +1,21 @@
 
 // import React, { useState } from "react";
-// import { View, StyleSheet } from "react-native";
+// import {
+//     View,
+//     StyleSheet,
+//     ScrollView,
+// } from "react-native";
 
 // import Header from "../components/Header";
 // import InterviewTabs from "../components/InterviewTabs";
 // import SubjectExpertise from "../components/SubjectExpertise";
+// import Communication from "../components/Communication";
+// import Pagination from "../components/SubjectExpertise/Pagination";
+// import { SECTION_ORDER } from "../components/SubjectExpertise/contentData";
 
 // export default function InterviewScreen() {
 //     const [activeTab, setActiveTab] = useState("expertise");
+//     const [activePage, setActivePage] = useState(2); // Ideal Answer
 
 //     return (
 //         <View style={styles.container}>
@@ -18,34 +26,73 @@
 //                 setActiveTab={setActiveTab}
 //             />
 
-//             {/* TAB CONTENT */}
-//             {activeTab === "expertise" && <SubjectExpertise />}
+//             {/* SCROLLABLE CONTENT */}
+//             <ScrollView
+//                 contentContainerStyle={styles.scrollContent}
+//                 showsVerticalScrollIndicator={false}
+//             >
+//                 {activeTab === "expertise" && (
+//                     <SubjectExpertise
+//                         activePage={activePage}
+//                         setActivePage={setActivePage}
+//                     />
+//                 )}
+//             </ScrollView>
 
 //             {activeTab === "communication" && (
 //                 <View style={{ padding: 16 }}>
-//                     {/* Communication Skills content later */}
+//                     <Communication />
 //                 </View>
 //             )}
+
+//             {/* FLOATING PAGINATION */}
+//             {activeTab === "expertise" && (
+//                 <View style={styles.paginationWrapper}>
+//                     <Pagination
+//                         activePage={activePage}
+//                         totalPages={SECTION_ORDER.length}
+//                         onPageChange={setActivePage}
+//                     />
+//                 </View>
+//             )}
+
 //         </View>
-//     );
+
+//     )
 // }
+
+
 
 // const styles = StyleSheet.create({
 //     container: {
 //         flex: 1,
 //         backgroundColor: "#fff",
 //     },
+
+//     scrollContent: {
+//         paddingBottom: 140,
+//         // enough space for pagination + future bottom nav
+//     },
+
+//     paginationWrapper: {
+//         position: "absolute",
+//         left: 0,
+//         right: 0,
+//         bottom: 60,
+//         alignItems: "center",
+//         backgroundColor: "transparent",
+//     },
+
 // });
 
 
 
 
+
+
+
 import React, { useState } from "react";
-import {
-    View,
-    StyleSheet,
-    ScrollView,
-} from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 
 import Header from "../components/Header";
 import InterviewTabs from "../components/InterviewTabs";
@@ -60,33 +107,36 @@ export default function InterviewScreen() {
 
     return (
         <View style={styles.container}>
+            {/* 1. Header stays fixed at the top */}
             <Header />
 
-            <InterviewTabs
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-            />
-
-            {/* SCROLLABLE CONTENT */}
+            {/* 2. ONE ScrollView for ALL content */}
             <ScrollView
+                style={styles.scrollView}
                 contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
-                {activeTab === "expertise" && (
-                    <SubjectExpertise
-                        activePage={activePage}
-                        setActivePage={setActivePage}
-                    />
-                )}
+                {/* Tabs are now inside the ScrollView to prevent layout gaps */}
+                <InterviewTabs
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                />
+
+                {/* 3. Conditional Rendering */}
+                <View style={styles.contentContainer}>
+                    {activeTab === "expertise" ? (
+                        <SubjectExpertise
+                            activePage={activePage}
+                            setActivePage={setActivePage}
+                        />
+                    ) : (
+                        // Communication is now inside the ScrollView too!
+                        <Communication />
+                    )}
+                </View>
             </ScrollView>
 
-            {activeTab === "communication" && (
-                <View style={{ padding: 16 }}>
-                    <Communication />
-                </View>
-            )}
-
-            {/* FLOATING PAGINATION */}
+            {/* 4. Floating Pagination (Only for Expertise) */}
             {activeTab === "expertise" && (
                 <View style={styles.paginationWrapper}>
                     <Pagination
@@ -96,25 +146,25 @@ export default function InterviewScreen() {
                     />
                 </View>
             )}
-
         </View>
-
-    )
+    );
 }
-
-
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#fff",
     },
-
-    scrollContent: {
-        paddingBottom: 140,
-        // enough space for pagination + future bottom nav
+    scrollView: {
+        flex: 1, // Takes up all remaining space below Header
     },
-
+    scrollContent: {
+        flexGrow: 1, // Ensures background fills screen even if content is short
+        paddingBottom: 140, // Space for pagination/bottom nav
+    },
+    contentContainer: {
+        marginTop: 10, // Optional: Adds a small consistent gap between Tabs and Content
+    },
     paginationWrapper: {
         position: "absolute",
         left: 0,
@@ -122,6 +172,7 @@ const styles = StyleSheet.create({
         bottom: 60,
         alignItems: "center",
         backgroundColor: "transparent",
+        // Ensure it sits on top of content
+        zIndex: 10, 
     },
-
 });

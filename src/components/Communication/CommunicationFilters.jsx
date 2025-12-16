@@ -12,7 +12,7 @@ const FILTER_WIDTH = Math.min(SCREEN_WIDTH - 32, 360);
 
 const FILTERS = [
   "All",
-  "Ideal Answer",
+//   "Ideal Answer",
   "Strengths",
   "Areas of Improvement",
   "Recommendations",
