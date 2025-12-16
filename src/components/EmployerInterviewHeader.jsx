@@ -1,14 +1,14 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
-export default function EmployerInterviewHeader({ onBackPress }) {
+export default function EmployerInterviewHeader({ onBackPress, title = "Interviews" }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
         <View style={styles.arrow} />
       </TouchableOpacity>
 
-      <Text style={styles.title}>Interviews</Text>
+      <Text style={styles.title}>{title}</Text>
 
       <View style={{ width: 40 }} />
     </View>
@@ -17,12 +17,12 @@ export default function EmployerInterviewHeader({ onBackPress }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: 187.5,
-    height: 36,
+    width: "100%",                    // Better full-width layout
+    height: 56,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    alignSelf: "center",
+    paddingHorizontal: 16,
     marginTop: 18,
   },
   backButton: {
@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   arrow: {
-    marginLeft:0,
     width: 12,
     height: 12,
     borderLeftWidth: 3,
@@ -46,5 +45,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 24,
     color: "#000",
+    flex: 1,
+    textAlign: "center",
+    marginRight: 40, 
   },
 });
