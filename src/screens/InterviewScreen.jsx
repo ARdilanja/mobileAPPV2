@@ -9,6 +9,7 @@
 // import Header from "../components/Header";
 // import InterviewTabs from "../components/InterviewTabs";
 // import SubjectExpertise from "../components/SubjectExpertise";
+// import Communication from "../components/Communication";
 // import Pagination from "../components/SubjectExpertise/Pagination";
 // import { SECTION_ORDER } from "../components/SubjectExpertise/contentData";
 
@@ -38,6 +39,12 @@
 //                 )}
 //             </ScrollView>
 
+//             {activeTab === "communication" && (
+//                 <View style={{ padding: 16 }}>
+//                     <Communication />
+//                 </View>
+//             )}
+
 //             {/* FLOATING PAGINATION */}
 //             {activeTab === "expertise" && (
 //                 <View style={styles.paginationWrapper}>
@@ -48,9 +55,12 @@
 //                     />
 //                 </View>
 //             )}
+
 //         </View>
-//     );
+
+//     )
 // }
+
 
 
 // const styles = StyleSheet.create({
@@ -60,7 +70,7 @@
 //     },
 
 //     scrollContent: {
-//         paddingBottom: 140, 
+//         paddingBottom: 140,
 //         // enough space for pagination + future bottom nav
 //     },
 
@@ -68,11 +78,16 @@
 //         position: "absolute",
 //         left: 0,
 //         right: 0,
-//         bottom: 70, 
+//         bottom: 60,
 //         alignItems: "center",
 //         backgroundColor: "transparent",
 //     },
+
 // });
+
+
+
+
 
 
 
@@ -92,19 +107,22 @@ export default function InterviewScreen() {
 
     return (
         <View style={styles.container}>
-
+            {/* 1. Header stays fixed at the top */}
             <Header />
 
+            {/* 2. ONE ScrollView for ALL content */}
             <ScrollView
                 style={styles.scrollView}
                 contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
+                {/* Tabs are now inside the ScrollView to prevent layout gaps */}
                 <InterviewTabs
                     activeTab={activeTab}
                     setActiveTab={setActiveTab}
                 />
 
+                {/* 3. Conditional Rendering */}
                 <View style={styles.contentContainer}>
                     {activeTab === "expertise" ? (
                         <SubjectExpertise
@@ -112,6 +130,7 @@ export default function InterviewScreen() {
                             setActivePage={setActivePage}
                         />
                     ) : (
+                        // Communication is now inside the ScrollView too!
                         <Communication />
                     )}
                 </View>
@@ -137,14 +156,14 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
     },
     scrollView: {
-        flex: 1, 
+        flex: 1, // Takes up all remaining space below Header
     },
     scrollContent: {
-        flexGrow: 1, 
-        paddingBottom: 140, 
+        flexGrow: 1, // Ensures background fills screen even if content is short
+        paddingBottom: 140, // Space for pagination/bottom nav
     },
     contentContainer: {
-        marginTop: 10, 
+        marginTop: 10, // Optional: Adds a small consistent gap between Tabs and Content
     },
     paginationWrapper: {
         position: "absolute",
@@ -153,6 +172,7 @@ const styles = StyleSheet.create({
         bottom: 60,
         alignItems: "center",
         backgroundColor: "transparent",
+        // Ensure it sits on top of content
         zIndex: 10, 
     },
 });
