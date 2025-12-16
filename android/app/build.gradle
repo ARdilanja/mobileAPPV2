@@ -79,7 +79,7 @@ android {
 
     namespace "com.recroot_app"
     defaultConfig {
-        applicationId "com.recrootapp"
+        applicationId "com.recroot_app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
