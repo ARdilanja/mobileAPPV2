@@ -4,7 +4,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomNavigation from '../bottomNavigation/BottomNavigation';
 import DeleteAccountScreen from '../../screens/DeleteAccountScreen';
 import EditProfileScreen from '../../screens/EditProfileScreen';
-import EmployerInterviewScreen from '../../screens/EmployerInterviewScreen';
+import EmployerInterviewScreen from '../../screens/EmployerInterviewScreen';       
+import CompletedInterviewsScreen from '../../screens/CompletedInterviewsScreen'; 
+import DrawerHeader from '../../components/DrawerHeader';  
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 
 const Stack = createNativeStackNavigator();
@@ -15,7 +18,18 @@ const StackNavigation = () => {
       <Stack.Screen
         name="BottomDash"
         component={BottomNavigation}
-        options={{ headerShown: false }}
+          options={({ route }) => {
+          const routeName =
+            getFocusedRouteNameFromRoute(route) ?? 'Bottom';
+
+          const isHome = routeName === 'Bottom';
+
+          return {
+            headerShown: isHome,
+            headerTitle: '',
+            headerLeft: isHome ? () => <DrawerHeader /> : undefined,
+          };
+        }}
       />
       <Stack.Screen
         name="DeleteAccountScreen"
@@ -30,6 +44,11 @@ const StackNavigation = () => {
       <Stack.Screen
         name="EmployerInterviewScreen"
         component={EmployerInterviewScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CompletedInterviewsScreen"
+        component={CompletedInterviewsScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
