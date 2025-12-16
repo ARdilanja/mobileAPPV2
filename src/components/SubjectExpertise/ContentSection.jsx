@@ -84,42 +84,6 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontFamily: Fonts.Regular,
         lineHeight: 20,
-        color: "#111827",
-    },
-
-    pagination: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 24,
-        gap: 8,
-    },
-
-    arrow: {
-        fontSize: 18,
-        color: "#6B7280",
-        paddingHorizontal: 6,
-    },
-
-    page: {
-        width: 28,
-        height: 28,
-        borderRadius: 14,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-
-    activePage: {
-        backgroundColor: "#115CC7",
-    },
-
-    pageText: {
-        fontSize: 12,
         color: "#000000",
-    },
-
-    activePageText: {
-        color: "#fff",
-        fontWeight: "600",
     },
 });
