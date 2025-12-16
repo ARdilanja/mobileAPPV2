@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     View,
     Text,
@@ -16,6 +16,7 @@ import ProgressLineChart from "../components/ProgressLineChart";
 const screenWidth = Dimensions.get("window").width;
 
 export default function Dashboard() {
+    const [selectedCard, setSelectedCard] = useState(null);
     return (
         <ScrollView style={{ backgroundColor: 'white' }} showsVerticalScrollIndicator={false}>
             <Header title="Dashboard" />
@@ -120,12 +121,16 @@ export default function Dashboard() {
                 name="Infosys"
                 role="React Native Developer"
                 logo={require("../assets/icons/infosys-logo.png")}
+             isSelected={selectedCard === 0}
+    onPress={() => setSelectedCard(0)}
             />
 
             <InterviewCard
                 name="Accenture"
                 role="UX Designer"
                 logo={require("../assets/icons/Accenture-logo.png")}
+            isSelected={selectedCard === 1}
+    onPress={() => setSelectedCard(1)}
             />
 
             <InterviewCard
@@ -133,6 +138,29 @@ export default function Dashboard() {
                 role="UI Designer"
                 success
                 logo={require("../assets/icons/Recroot-logo.png")}
+                isSelected={selectedCard === 2}
+    onPress={() => setSelectedCard(2)}
+    />
+    <InterviewCard
+                name="Infosys"
+                role="React Native Developer"
+                logo={require("../assets/icons/infosys-logo.png")}
+             isSelected={selectedCard === 3}
+    onPress={() => setSelectedCard(3)}
+            />
+            <InterviewCard
+                name="Infosys"
+                role="React Native Developer"
+                logo={require("../assets/icons/infosys-logo.png")}
+             isSelected={selectedCard === 4}
+    onPress={() => setSelectedCard(4)}
+            />
+            <InterviewCard
+                name="Infosys"
+                role="React Native Developer"
+                logo={require("../assets/icons/infosys-logo.png")}
+             isSelected={selectedCard === 5}
+    onPress={() => setSelectedCard(5)}
             />
 
 
@@ -164,17 +192,19 @@ const InfoCard = ({ title, value, color, icon }) => (
     </View>
 );
 
-const InterviewCard = ({ name, role, success, logo }) => (
-    <View style={styles.interviewCard}>
-
-        {/* LEFT: LOGO + TEXT */}
+const InterviewCard = ({ name, role, logo, isSelected, onPress }) => (
+    <TouchableOpacity
+        activeOpacity={0.85}
+        onPress={onPress}
+        style={[
+            styles.interviewCard,
+            isSelected && styles.selectedCard
+        ]}
+    >
+        {/* LEFT */}
         <View style={styles.interviewLeft}>
             <View style={styles.logoWrapper}>
-                <Image
-                    source={logo}
-                    style={styles.companyLogo}
-                    resizeMode="contain"
-                />
+                <Image source={logo} style={styles.companyLogo} resizeMode="contain" />
             </View>
 
             <View>
@@ -183,36 +213,27 @@ const InterviewCard = ({ name, role, success, logo }) => (
             </View>
         </View>
 
-        {/* RIGHT: BUTTON */}
-        <TouchableOpacity
+        {/* RIGHT BUTTON */}
+        <View
             style={[
                 styles.button,
-                success && { borderColor: "#10B981" }
+                isSelected && styles.selectedButton
             ]}
         >
             <Text
                 style={[
                     styles.buttonText,
-                    success && { color: "#10B981" }
+                    isSelected && styles.selectedButtonText
                 ]}
             >
                 View Report
             </Text>
-        </TouchableOpacity>
-
-    </View>
+        </View>
+    </TouchableOpacity>
 );
 
-
-const LegendItem = ({ color, label }) => (
-    <View style={styles.legendItem}>
-        <View style={[styles.legendDot, { backgroundColor: color }]} />
-        <Text style={[styles.legendText, { color }]}>{label}</Text>
-    </View>
-);
 
 /* ---------------- STYLES ---------------- */
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -282,49 +303,6 @@ const styles = StyleSheet.create({
         color: "#111827"
     },
 
-    chartWrapper: {
-        backgroundColor: "#FFFFFF",
-        borderRadius: 12,
-        marginBottom: 24,
-        elevation: 2,
-        paddingBottom: 36, // 🔥 space for legend
-        position: "relative"
-    },
-
-    chart: {
-        borderRadius: 12
-    },
-
-    chartLegend: {
-        position: "absolute",
-        bottom: 20,
-        left: 0,
-        right: 0,
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-        alignItems: "center"
-    },
-
-    legendItem: {
-        flexDirection: "row",
-        alignItems: "center"
-    },
-
-    legendDot: {
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        marginRight: 6
-    },
-
-    legendText: {
-        fontSize: 11,
-        // fontWeight: "500",
-        fontFamily: Fonts.Medium
-    },
-
-
-
     interviewCard: {
         backgroundColor: "#FFFFFF",
         borderRadius: 14,
@@ -337,7 +315,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        elevation: 1
+        elevation: 2
     },
     interviewLeft: {
         flexDirection: "row",
@@ -379,7 +357,17 @@ const styles = StyleSheet.create({
         paddingVertical: 7.5,
         paddingHorizontal: 18
     },
+selectedCard: {
+    backgroundColor: "#FFFFFF"
+},
 
+selectedButton: {
+    borderColor: "#10B981"
+},
+
+selectedButtonText: {
+    color: "#10B981"
+},
     buttonText: {
         color: "#0069FF",
         fontSize: 14,
