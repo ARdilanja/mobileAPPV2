@@ -308,6 +308,7 @@ const styles = StyleSheet.create({
     paddingTop: 15.5,
     paddingBottom: 15.5,
     paddingHorizontal: 28,
+    position:'relative',
   },
   saveButtonText: {
     fontFamily: Fonts.Bold,

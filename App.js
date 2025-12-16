@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import AppNavigation from '../Recroot_Mobile/src/navigations/AppNavigation'
+import AppNavigation from './src/navigations/AppNavigation'
 
 const App = () => {
   return (

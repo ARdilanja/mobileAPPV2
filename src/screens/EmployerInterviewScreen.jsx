@@ -11,15 +11,15 @@ import MockInterviewList from "../components/MockInterviewList";
 export default function EmployerInterviewScreen({ navigation }) {
   const [activeTab, setActiveTab] = useState("employer");
 
-  const handleBack = () => {
-    if (navigation) {
-      navigation.goBack();
-    }
-  };
+  // const handleBack = () => {
+  //   if (navigation) {
+  //     navigation.goBack();
+  //   }
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
-      <EmployerInterviewHeader onBackPress={handleBack} />
+      <EmployerInterviewHeader />
       <EmployerInterviewTabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {activeTab === "employer" ? (

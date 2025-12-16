@@ -4,9 +4,9 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 export default function EmployerInterviewHeader({ onBackPress, title = "Interviews" }) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
+      {/* <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
         <View style={styles.arrow} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <Text style={styles.title}>{title}</Text>
 
