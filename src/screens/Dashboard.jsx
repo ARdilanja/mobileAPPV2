@@ -6,8 +6,7 @@ import {
     ScrollView,
     Dimensions,
     Image,
-    TouchableOpacity,
-    Pressable
+    TouchableOpacity
 } from "react-native";
 import { Fonts } from "../constants/fonts";
 import Header from "../components/Header";
@@ -194,7 +193,7 @@ const InfoCard = ({ title, value, color, icon }) => (
 );
 
 const InterviewCard = ({ name, role, logo, isSelected, onPress }) => {
-    const navigation =useNavigation();
+    const navigation = useNavigation();
     return (
         <TouchableOpacity
             activeOpacity={0.85}
@@ -217,8 +216,7 @@ const InterviewCard = ({ name, role, logo, isSelected, onPress }) => {
             </View>
 
             {/* RIGHT BUTTON */}
-            <Pressable onPress={() => navigation.navigate('InterviewScreen')}
-                hitSlop={10}>
+            <TouchableOpacity onPress={() =>navigation.navigate('InterviewScreen')}>
                 <View
                     style={[
                         styles.button,
@@ -234,10 +232,10 @@ const InterviewCard = ({ name, role, logo, isSelected, onPress }) => {
                         View Report
                     </Text>
                 </View>
-            </Pressable>
+            </TouchableOpacity>
         </TouchableOpacity>
-    )
-};
+    );
+}
 
 
 /* ---------------- STYLES ---------------- */

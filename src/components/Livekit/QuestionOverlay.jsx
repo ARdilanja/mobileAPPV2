@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable, Dimensions, Image } from "react-native";
+import { Fonts } from "../../constants/fonts";
 
 const { width } = Dimensions.get("window");
 
@@ -58,14 +59,16 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        fontSize: 14,
+        fontSize: 16,
+        fontFamily:Fonts.SemiBold,
         fontWeight: "600",
         marginBottom: 6,
         color: "#000",
     },
 
     question: {
-        fontSize: 14,
+        fontSize: 16,
+        fontFamily:Fonts.Regular,
         lineHeight: 20,
         color: "#333",
     },

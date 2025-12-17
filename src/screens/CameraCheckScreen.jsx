@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    Pressable,
+    Image,
+    SafeAreaView,
+    StatusBar,
+} from "react-native";
 
 import {
     LiveKitRoom,
@@ -11,22 +19,36 @@ import {
 import { Track } from "livekit-client";
 import { LIVEKIT_URL } from "../config/api";
 import { fetchLiveKitToken } from "../services/livekit";
+import { Fonts } from "../constants/fonts";
 
+/* =========================
+   CAMERA CHECK SCREEN
+========================= */
 export default function CameraCheckScreen({ navigation }) {
     const [token, setToken] = useState(null);
     const [ready, setReady] = useState(false);
 
+    /* 🔑 FETCH TOKEN */
     useEffect(() => {
         fetchLiveKitToken({
             roomName: "demo-room",
             identity: `mobile-${Date.now()}`,
-        }).then(setToken);
+        }).then((t) => {
+            console.log("🎫 CameraCheck token received:", t);
+            setToken(t);
+        });
     }, []);
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Camera Check</Text>
+        <SafeAreaView style={styles.container}>
+            <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
 
+            {/* HEADER */}
+            <View style={styles.header}>
+                <Text style={styles.headerText}>Camera Check</Text>
+            </View>
+
+            {/* 🎥 CAMERA PREVIEW */}
             {token && (
                 <LiveKitRoom
                     serverUrl={LIVEKIT_URL}
@@ -40,41 +62,61 @@ export default function CameraCheckScreen({ navigation }) {
                 </LiveKitRoom>
             )}
 
-            {/* ✅ Success Overlay */}
+            {/* ✅ SUCCESS MODAL */}
             {ready && (
-                <View style={styles.successBox}>
-                    <Text style={styles.check}>✓</Text>
-                    <Text>Camera Check Successful</Text>
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalCard}>
+                        <Image
+                            source={require("../assets/images/success_modal.png")}
+                            style={styles.successImage}
+                            resizeMode="contain"
+                        />
+                        <Text style={styles.successText}>
+                            Camera check successfully
+                        </Text>
+                    </View>
                 </View>
             )}
 
-            {/* 🔵 CAMERA BUTTON */}
-            {!ready && (
-                <View style={styles.circleBtn}>
-                    <Text style={styles.icon}>📷</Text>
-                </View>
-            )}
-
-            {/* ➡ NEXT */}
-            {ready && (
-                <Pressable
-                    style={styles.circleBtn}
-                    onPress={() =>
-                        navigation.replace("LiveRoomScreen", { token })
-                    }
-                >
-                    <Text style={styles.icon}>›</Text>
-                </Pressable>
-            )}
-        </View>
+            {/* 🔵 BOTTOM BUTTON */}
+            <View style={styles.bottom}>
+                {!ready ? (
+                    <Pressable style={styles.circleBtn}>
+                        <Image
+                            source={require("../assets/images/Video_check.png")}
+                            style={styles.icon48}
+                            resizeMode="contain"
+                        />
+                    </Pressable>
+                ) : token ? (
+                    <Pressable
+                        style={styles.circleBtn}
+                        onPress={() => {
+                            console.log("➡ Navigating to LiveRoomScreen");
+                            navigation.replace("LiveRoomScreen", { token });
+                        }}
+                    >
+                        <Image
+                            source={require("../assets/images/Next_arrow.png")}
+                            style={styles.icon48}
+                            resizeMode="contain"
+                        />
+                    </Pressable>
+                ) : null}
+            </View>
+        </SafeAreaView>
     );
 }
 
+/* =========================
+   CAMERA PREVIEW
+========================= */
 function CameraPreview({ onReady }) {
     const tracks = useTracks([Track.Source.Camera]);
 
     useEffect(() => {
         if (tracks.length > 0) {
+            console.log("📷 Camera ready");
             onReady();
         }
     }, [tracks]);
@@ -96,33 +138,40 @@ function CameraPreview({ onReady }) {
     );
 }
 
+/* =========================
+   STYLES
+========================= */
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#FFF",
-        alignItems: "center",
-    },
-    title: {
-        marginTop: 16,
-        fontWeight: "600",
-    },
-    successBox: {
-        position: "absolute",
-        top: "40%",
-        padding: 24,
-        backgroundColor: "#F4FFF8",
-        borderRadius: 12,
-        alignItems: "center",
-    },
-    check: {
-        fontSize: 28,
-        color: "#1BB55C",
+        backgroundColor: "#FFFFFF",
     },
 
-    /* 🔵 80x80 BUTTON */
-    circleBtn: {
+    /* HEADER */
+    header: {
+        height: 56,
+        alignItems: "center",
+        justifyContent: "center",
+        borderBottomWidth: 1,
+        borderBottomColor: "#EEE",
+        zIndex: 10,
+    },
+    headerText: {
+        fontSize: 16,
+        fontWeight: "600",
+        color: "#000",
+    },
+
+    /* BOTTOM */
+    bottom: {
         position: "absolute",
-        bottom: 40,
+        bottom: 32,
+        width: "100%",
+        alignItems: "center",
+        zIndex: 10,
+    },
+
+    circleBtn: {
         width: 80,
         height: 80,
         borderRadius: 40,
@@ -130,8 +179,47 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    icon: {
-        fontSize: 48,
-        color: "#FFF",
+
+    icon48: {
+        width: 48,
+        height: 48,
+    },
+
+    /* SUCCESS MODAL */
+    modalOverlay: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "transparent",
+        zIndex: 20,
+        pointerEvents: "box-none",
+    },
+    modalCard: {
+        width: 300,
+        paddingVertical: 24,
+        borderRadius: 12,
+        backgroundColor: "#FFFFFF",
+        alignItems: "center",
+        pointerEvents: "auto",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 6,
+    },
+    successImage: {
+        width: 160,
+        height: 160,
+        marginBottom: 12,
+    },
+    successText: {
+        fontSize: 16,
+        fontFamily:Fonts.Medium,
+        color: "#333",
+        textAlign: "center",
     },
 });
