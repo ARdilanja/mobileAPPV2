@@ -123,19 +123,20 @@ const EditProfileScreen = ({ navigation }) => {
 
           <View style={styles.profileHeader}>
             <View style={styles.avatarRow}>
-              <TouchableOpacity
-                onPress={handleEditPhotoPress}
-                style={styles.avatarContainer}
-              >
+              <View style={styles.avatarContainer}>
                 <Image
                   source={profileImage ? { uri: profileImage } : defaultAvatar}
                   style={styles.avatar}
-                  resizeMode="cover"
                 />
-                <View style={styles.editIconOverlay}>
+
+                <TouchableOpacity
+                  style={styles.editIconOverlay}
+                  onPress={handleEditPhotoPress}
+                  activeOpacity={0.7}
+                >
                   <Image source={editPencilIcon} style={styles.editPencil} />
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
 
               <View style={styles.nameJobContainer}>
                 <Text style={styles.name}>Jacob Jones</Text>
