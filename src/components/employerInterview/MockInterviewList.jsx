@@ -4,8 +4,8 @@ import InterviewCard from "./InterviewCard";
 
 const MockInterviewList = () => {
   const data = [
-    { id: "1", logo: require("../assets/images/recroot_img.png"), company: "Recroot", role: "React Native Developer" },
-    { id: "2", logo: require("../assets/images/recroot_img.png"), company: "Recroot", role: "UX Designer" },
+    { id: "1", logo: require("../../assets/images/recroot_img.png"), company: "Recroot", role: "React Native Developer" },
+    { id: "2", logo: require("../../assets/images/recroot_img.png"), company: "Recroot", role: "UX Designer" },
   ];
 
   return (

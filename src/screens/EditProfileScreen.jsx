@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { Fonts } from '../constants/fonts';
-
+import RemovePhotoModal from '../components/RemovePhotoModal';
 // Icons & Assets
 const cameraIcon = require('../assets/images/camera.png');
 const galleryIcon = require('../assets/images/gallery.png');
@@ -34,7 +34,7 @@ const EditProfileScreen = ({ navigation }) => {
 
   const [profileImage, setProfileImage] = useState(null);
   const [showPhotoOptions, setShowPhotoOptions] = useState(false);
-
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
   const handleBack = () => navigation?.goBack();
 
   const handleEditPhotoPress = () => {
@@ -85,35 +85,42 @@ const EditProfileScreen = ({ navigation }) => {
   };
 
   const deletePhoto = () => {
-    setProfileImage(null);
     closePhotoOptions();
+    setShowRemoveModal(true);
+  };
+
+  const confirmRemove = () => {
+    setProfileImage(null);
+    setShowRemoveModal(false);
     Alert.alert('Success', 'Profile photo removed.');
+  };
+
+  const cancelRemove = () => {
+    setShowRemoveModal(false);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
-      {/* Keyboard Avoiding + Scrollable Content */}
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
       >
         <ScrollView
-          contentContainerStyle={{ paddingBottom: 100 }} // Space for fixed button
+          contentContainerStyle={{ paddingBottom: 100 }}
           showsVerticalScrollIndicator={false}
         >
-          {/* Header */}
           <View style={styles.header}>
-            <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-              {/* Add your back arrow icon here if needed */}
-            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleBack}
+              style={styles.backButton}
+            ></TouchableOpacity>
             <Text style={styles.headerTitle}>Edit Profile</Text>
             <View style={{ width: 40 }} />
           </View>
 
-          {/* Profile Header */}
           <View style={styles.profileHeader}>
             <View style={styles.avatarRow}>
               <TouchableOpacity
@@ -137,7 +144,6 @@ const EditProfileScreen = ({ navigation }) => {
             </View>
           </View>
 
-          {/* Personal Information Form */}
           <View style={styles.formContainer}>
             <Text style={styles.sectionTitle}>Personal Information</Text>
 
@@ -172,7 +178,6 @@ const EditProfileScreen = ({ navigation }) => {
           </View>
         </ScrollView>
 
-        {/* Fixed Save Button at Bottom */}
         <View style={styles.saveButtonContainer}>
           <TouchableOpacity
             style={styles.saveButton}
@@ -183,7 +188,6 @@ const EditProfileScreen = ({ navigation }) => {
         </View>
       </KeyboardAvoidingView>
 
-      {/* Bottom Photo Options Modal */}
       {showPhotoOptions && (
         <TouchableOpacity
           style={styles.overlay}
@@ -230,6 +234,11 @@ const EditProfileScreen = ({ navigation }) => {
           </View>
         </TouchableOpacity>
       )}
+      <RemovePhotoModal
+        visible={showRemoveModal}
+        onCancel={cancelRemove}
+        onRemove={confirmRemove}
+      />
     </SafeAreaView>
   );
 };
