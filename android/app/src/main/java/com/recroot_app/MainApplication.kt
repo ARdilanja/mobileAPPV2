@@ -7,6 +7,8 @@ import com.facebook.react.ReactHost
 import com.facebook.react.ReactNativeApplicationEntryPoint.loadReactNative
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 
+//  LiveKit imports
+
 import com.livekit.reactnative.LiveKitReactNative
 import com.livekit.reactnative.audio.AudioType
 
@@ -24,7 +26,7 @@ class MainApplication : Application(), ReactApplication {
   }
 
   override fun onCreate() {
-    // REQUIRED for LiveKit (MUST be first)
+     // REQUIRED for LiveKit (MUST be first)
      
     LiveKitReactNative.setup(
       this,
