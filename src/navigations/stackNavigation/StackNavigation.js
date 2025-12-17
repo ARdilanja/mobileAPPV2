@@ -13,6 +13,7 @@ import Dashboard from '../../screens/Dashboard';
 import LiveRoomScreen from '../../screens/LiveRoomScreen'
 import MicCheckScreen from '../../screens/MicCheckScreen'
 import CameraCheckScreen from '../../screens/CameraCheckScreen'
+import InterviewScreen from '../../screens/InterviewScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -74,6 +75,12 @@ const StackNavigation = () => {
         name="LiveRoomScreen"
         component={LiveRoomScreen}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="InterviewScreen"
+        component={InterviewScreen}
+        options={{ headerShown: true,
+        headerTitleAlign:'center' }}
       />
     </Stack.Navigator>
   )

@@ -11,6 +11,7 @@ import {
 import { Fonts } from "../constants/fonts";
 import Header from "../components/Header";
 import ProgressLineChart from "../components/ProgressLineChart";
+import { useNavigation } from "@react-navigation/native";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -120,16 +121,16 @@ export default function Dashboard() {
                 name="Infosys"
                 role="React Native Developer"
                 logo={require("../assets/icons/infosys-logo.png")}
-             isSelected={selectedCard === 0}
-    onPress={() => setSelectedCard(0)}
+                isSelected={selectedCard === 0}
+                onPress={() => setSelectedCard(0)}
             />
 
             <InterviewCard
                 name="Accenture"
                 role="UX Designer"
                 logo={require("../assets/icons/Accenture-logo.png")}
-            isSelected={selectedCard === 1}
-    onPress={() => setSelectedCard(1)}
+                isSelected={selectedCard === 1}
+                onPress={() => setSelectedCard(1)}
             />
 
             <InterviewCard
@@ -138,28 +139,28 @@ export default function Dashboard() {
                 success
                 logo={require("../assets/icons/Recroot-logo.png")}
                 isSelected={selectedCard === 2}
-    onPress={() => setSelectedCard(2)}
-    />
-    <InterviewCard
-                name="Infosys"
-                role="React Native Developer"
-                logo={require("../assets/icons/infosys-logo.png")}
-             isSelected={selectedCard === 3}
-    onPress={() => setSelectedCard(3)}
+                onPress={() => setSelectedCard(2)}
             />
             <InterviewCard
                 name="Infosys"
                 role="React Native Developer"
                 logo={require("../assets/icons/infosys-logo.png")}
-             isSelected={selectedCard === 4}
-    onPress={() => setSelectedCard(4)}
+                isSelected={selectedCard === 3}
+                onPress={() => setSelectedCard(3)}
             />
             <InterviewCard
                 name="Infosys"
                 role="React Native Developer"
                 logo={require("../assets/icons/infosys-logo.png")}
-             isSelected={selectedCard === 5}
-    onPress={() => setSelectedCard(5)}
+                isSelected={selectedCard === 4}
+                onPress={() => setSelectedCard(4)}
+            />
+            <InterviewCard
+                name="Infosys"
+                role="React Native Developer"
+                logo={require("../assets/icons/infosys-logo.png")}
+                isSelected={selectedCard === 5}
+                onPress={() => setSelectedCard(5)}
             />
 
 
@@ -191,45 +192,50 @@ const InfoCard = ({ title, value, color, icon }) => (
     </View>
 );
 
-const InterviewCard = ({ name, role, logo, isSelected, onPress }) => (
-    <TouchableOpacity
-        activeOpacity={0.85}
-        onPress={onPress}
-        style={[
-            styles.interviewCard,
-            isSelected && styles.selectedCard
-        ]}
-    >
-        {/* LEFT */}
-        <View style={styles.interviewLeft}>
-            <View style={styles.logoWrapper}>
-                <Image source={logo} style={styles.companyLogo} resizeMode="contain" />
-            </View>
-
-            <View>
-                <Text style={styles.company}>{name}</Text>
-                <Text style={styles.role}>{role}</Text>
-            </View>
-        </View>
-
-        {/* RIGHT BUTTON */}
-        <View
+const InterviewCard = ({ name, role, logo, isSelected, onPress }) => {
+    const navigation = useNavigation();
+    return (
+        <TouchableOpacity
+            activeOpacity={0.85}
+            onPress={onPress}
             style={[
-                styles.button,
-                isSelected && styles.selectedButton
+                styles.interviewCard,
+                isSelected && styles.selectedCard
             ]}
         >
-            <Text
-                style={[
-                    styles.buttonText,
-                    isSelected && styles.selectedButtonText
-                ]}
-            >
-                View Report
-            </Text>
-        </View>
-    </TouchableOpacity>
-);
+            {/* LEFT */}
+            <View style={styles.interviewLeft}>
+                <View style={styles.logoWrapper}>
+                    <Image source={logo} style={styles.companyLogo} resizeMode="contain" />
+                </View>
+
+                <View>
+                    <Text style={styles.company}>{name}</Text>
+                    <Text style={styles.role}>{role}</Text>
+                </View>
+            </View>
+
+            {/* RIGHT BUTTON */}
+            <TouchableOpacity onPress={() =>navigation.navigate('InterviewScreen')}>
+                <View
+                    style={[
+                        styles.button,
+                        isSelected && styles.selectedButton
+                    ]}
+                >
+                    <Text
+                        style={[
+                            styles.buttonText,
+                            isSelected && styles.selectedButtonText
+                        ]}
+                    >
+                        View Report
+                    </Text>
+                </View>
+            </TouchableOpacity>
+        </TouchableOpacity>
+    );
+}
 
 
 /* ---------------- STYLES ---------------- */
@@ -356,17 +362,17 @@ const styles = StyleSheet.create({
         paddingVertical: 7.5,
         paddingHorizontal: 18
     },
-selectedCard: {
-    backgroundColor: "#FFFFFF"
-},
+    selectedCard: {
+        backgroundColor: "#FFFFFF"
+    },
 
-selectedButton: {
-    borderColor: "#10B981"
-},
+    selectedButton: {
+        borderColor: "#10B981"
+    },
 
-selectedButtonText: {
-    color: "#10B981"
-},
+    selectedButtonText: {
+        color: "#10B981"
+    },
     buttonText: {
         color: "#0069FF",
         fontSize: 14,
