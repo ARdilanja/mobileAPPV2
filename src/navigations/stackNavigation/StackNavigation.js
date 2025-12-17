@@ -10,6 +10,9 @@ import DrawerHeader from '../../components/DrawerHeader';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import MyProfile from '../../screens/BottomScreens/MyProfile';
 import Dashboard from '../../screens/Dashboard';
+import LiveRoomScreen from '../../screens/LiveRoomScreen'
+import MicCheckScreen from '../../screens/MicCheckScreen'
+import CameraCheckScreen from '../../screens/CameraCheckScreen'
 
 
 const Stack = createNativeStackNavigator();
@@ -55,6 +58,21 @@ const StackNavigation = () => {
       <Stack.Screen
         name="Dashboard"
         component={Dashboard}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="MicCheckScreen"
+        component={MicCheckScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CameraCheckScreen"
+        component={CameraCheckScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="LiveRoomScreen"
+        component={LiveRoomScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
