@@ -5,6 +5,7 @@ import Home from '../../screens/BottomScreens/Home'
 import StartInterview from '../../screens/BottomScreens/StartInterview'
 import CompletedInterview from '../../screens/BottomScreens/CompletedInterview'
 import MyProfile from '../../screens/BottomScreens/MyProfile'
+import Dashboard from '../../screens/Dashboard';
 
 const Tab = createBottomTabNavigator();
 
@@ -13,7 +14,7 @@ const BottomNavigation = () => {
     <Tab.Navigator tabBar={props => <CustomTabBar {...props} />}>
       <Tab.Screen
         name="Bottom"
-        component={Home}
+        component={Dashboard}
         options={{
             headerShown: false, 
             title: 'Home'

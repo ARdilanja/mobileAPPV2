@@ -3,6 +3,8 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomNavigation from '../bottomNavigation/BottomNavigation';
 import DeleteAccountScreen from '../../screens/DeleteAccountScreen';
+import MyProfile from '../../screens/BottomScreens/MyProfile';
+import Dashboard from '../../screens/Dashboard';
 
 
 const Stack = createNativeStackNavigator();
@@ -18,6 +20,11 @@ const StackNavigation = () => {
       <Stack.Screen
         name="DeleteAccountScreen"
         component={DeleteAccountScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Dashboard"
+        component={Dashboard}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

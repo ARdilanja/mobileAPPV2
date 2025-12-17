@@ -8,7 +8,6 @@ import {
     Image,
     TouchableOpacity
 } from "react-native";
-import { LineChart } from "react-native-chart-kit";
 import { Fonts } from "../constants/fonts";
 import Header from "../components/Header";
 import ProgressLineChart from "../components/ProgressLineChart";
