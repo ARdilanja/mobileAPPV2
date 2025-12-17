@@ -169,6 +169,147 @@
 
 
 
+// import React, { useEffect, useState } from "react";
+// import { View, ActivityIndicator, StyleSheet } from "react-native";
+// import "react-native-get-random-values";
+
+// import {
+//     LiveKitRoom,
+//     useTracks,
+//     VideoTrack,
+//     isTrackReference,
+//     AudioSession,
+// } from "@livekit/react-native";
+
+// import { Track } from "livekit-client";
+
+// import QuestionOverlay from "../components/Livekit/QuestionOverlay";
+// import { LIVEKIT_URL } from "../config/api";
+// import { fetchLiveKitToken } from "../services/livekit";
+
+// const QUESTIONS = [
+//     { title: "Question 1", text: "How would you approach generating new sales leads?" },
+//     { title: "Question 2", text: "Explain your design process from start to finish." },
+//     { title: "Question 3", text: "How do you manage tight deadlines?" },
+//     { title: "Question 4", text: "Describe a challenging project you handled." },
+//     { title: "Question 5", text: "Can you walk us through your design process from start to finish?" },
+// ];
+
+// export default function LiveRoomScreen() {
+//     const [token, setToken] = useState(null);
+//     const [index, setIndex] = useState(0);
+//     const [videoReady, setVideoReady] = useState(false); // 🔑 KEY STATE
+
+//     useEffect(() => {
+//         AudioSession.startAudioSession();
+//         return () => AudioSession.stopAudioSession();
+//     }, []);
+
+//     useEffect(() => {
+//         fetchLiveKitToken({
+//             roomName: "demo-room",
+//             identity: `mobile-${Date.now()}`,
+//         }).then(setToken);
+//     }, []);
+
+//     const handleNext = () => {
+//         if (index < QUESTIONS.length - 1) {
+//             setIndex((i) => i + 1);
+//         } else {
+//             console.log("📤 Interview submitted");
+//             // 👉 API submit later
+//         }
+//     };
+
+//     if (!token) {
+//         return (
+//             <View style={styles.center}>
+//                 <ActivityIndicator size="large" color="#fff" />
+//             </View>
+//         );
+//     }
+
+//     return (
+//         <View style={styles.root}>
+//             {/* 🎥 LiveKit Video */}
+//             <LiveKitRoom
+//                 serverUrl={LIVEKIT_URL}
+//                 token={token}
+//                 connect
+//                 audio
+//                 video
+//                 style={StyleSheet.absoluteFill}
+//                 onConnected={() => {
+//                     console.log("✅ LiveKit connected");
+//                 }}
+//             >
+//                 <CameraView onVideoReady={() => setVideoReady(true)} />
+//             </LiveKitRoom>
+
+//             {/* 🧠 SHOW QUESTIONS ONLY AFTER VIDEO */}
+//             {videoReady && (
+//                 <QuestionOverlay
+//                     title={QUESTIONS[index].title}
+//                     question={QUESTIONS[index].text}
+//                     isLast={index === QUESTIONS.length - 1}
+//                     onNext={handleNext}
+//                 />
+//             )}
+//         </View>
+//     );
+// }
+
+// // =========================
+// // CAMERA VIEW
+// // =========================
+// function CameraView({ onVideoReady }) {
+//     const tracks = useTracks([Track.Source.Camera]);
+
+//     useEffect(() => {
+//         if (tracks.length > 0) {
+//             console.log("📷 Camera track ready");
+//             onVideoReady();
+//         }
+//     }, [tracks]);
+
+//     return (
+//         <View style={StyleSheet.absoluteFill}>
+//             {tracks.map(
+//                 (t) =>
+//                     isTrackReference(t) && (
+//                         <VideoTrack
+//                             key={t.publication.trackSid}
+//                             trackRef={t}
+//                             style={StyleSheet.absoluteFill}
+//                             resizeMode="cover"
+//                         />
+//                     )
+//             )}
+//         </View>
+//     );
+// }
+
+// const styles = StyleSheet.create({
+//     root: {
+//         flex: 1,
+//         backgroundColor: "black",
+//     },
+//     center: {
+//         flex: 1,
+//         backgroundColor: "black",
+//         alignItems: "center",
+//         justifyContent: "center",
+//     },
+// });
+
+
+
+
+
+
+
+
+
 import React, { useEffect, useState } from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import "react-native-get-random-values";
@@ -185,8 +326,10 @@ import { Track } from "livekit-client";
 
 import QuestionOverlay from "../components/Livekit/QuestionOverlay";
 import { LIVEKIT_URL } from "../config/api";
-import { fetchLiveKitToken } from "../services/livekit";
 
+/* =========================
+   STATIC QUESTIONS
+========================= */
 const QUESTIONS = [
     { title: "Question 1", text: "How would you approach generating new sales leads?" },
     { title: "Question 2", text: "Explain your design process from start to finish." },
@@ -195,32 +338,35 @@ const QUESTIONS = [
     { title: "Question 5", text: "Can you walk us through your design process from start to finish?" },
 ];
 
-export default function LiveRoomScreen() {
-    const [token, setToken] = useState(null);
-    const [index, setIndex] = useState(0);
-    const [videoReady, setVideoReady] = useState(false); // 🔑 KEY STATE
+export default function LiveRoomScreen({ route }) {
+    const token = route?.params?.token;
 
+    const [index, setIndex] = useState(0);
+    const [videoReady, setVideoReady] = useState(false);
+
+    /* =========================
+       AUDIO SESSION (REQUIRED)
+    ========================= */
     useEffect(() => {
         AudioSession.startAudioSession();
         return () => AudioSession.stopAudioSession();
     }, []);
 
-    useEffect(() => {
-        fetchLiveKitToken({
-            roomName: "demo-room",
-            identity: `mobile-${Date.now()}`,
-        }).then(setToken);
-    }, []);
-
+    /* =========================
+       NEXT / SUBMIT HANDLER
+    ========================= */
     const handleNext = () => {
         if (index < QUESTIONS.length - 1) {
-            setIndex((i) => i + 1);
+            setIndex((prev) => prev + 1);
         } else {
             console.log("📤 Interview submitted");
-            // 👉 API submit later
+            // 👉 submit interview API later
         }
     };
 
+    /* =========================
+       SAFETY CHECK
+    ========================= */
     if (!token) {
         return (
             <View style={styles.center}>
@@ -231,7 +377,7 @@ export default function LiveRoomScreen() {
 
     return (
         <View style={styles.root}>
-            {/* 🎥 LiveKit Video */}
+            {/* 🎥 LIVEKIT INTERVIEW ROOM */}
             <LiveKitRoom
                 serverUrl={LIVEKIT_URL}
                 token={token}
@@ -239,14 +385,13 @@ export default function LiveRoomScreen() {
                 audio
                 video
                 style={StyleSheet.absoluteFill}
-                onConnected={() => {
-                    console.log("✅ LiveKit connected");
-                }}
+                onConnected={() => console.log("✅ LiveKit connected (Interview)")}
+                onDisconnected={() => console.log("❌ LiveKit disconnected")}
             >
                 <CameraView onVideoReady={() => setVideoReady(true)} />
             </LiveKitRoom>
 
-            {/* 🧠 SHOW QUESTIONS ONLY AFTER VIDEO */}
+            {/* 🧠 QUESTIONS — ONLY AFTER CAMERA IS VISIBLE */}
             {videoReady && (
                 <QuestionOverlay
                     title={QUESTIONS[index].title}
@@ -259,15 +404,15 @@ export default function LiveRoomScreen() {
     );
 }
 
-// =========================
-// CAMERA VIEW
-// =========================
+/* =========================
+   CAMERA VIEW
+========================= */
 function CameraView({ onVideoReady }) {
     const tracks = useTracks([Track.Source.Camera]);
 
     useEffect(() => {
         if (tracks.length > 0) {
-            console.log("📷 Camera track ready");
+            console.log("📷 Camera video ready");
             onVideoReady();
         }
     }, [tracks]);
@@ -275,11 +420,11 @@ function CameraView({ onVideoReady }) {
     return (
         <View style={StyleSheet.absoluteFill}>
             {tracks.map(
-                (t) =>
-                    isTrackReference(t) && (
+                (track) =>
+                    isTrackReference(track) && (
                         <VideoTrack
-                            key={t.publication.trackSid}
-                            trackRef={t}
+                            key={track.publication.trackSid}
+                            trackRef={track}
                             style={StyleSheet.absoluteFill}
                             resizeMode="cover"
                         />
@@ -289,6 +434,9 @@ function CameraView({ onVideoReady }) {
     );
 }
 
+/* =========================
+   STYLES
+========================= */
 const styles = StyleSheet.create({
     root: {
         flex: 1,
@@ -301,4 +449,3 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
 });
-
