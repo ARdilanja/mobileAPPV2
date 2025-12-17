@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const TabScreen = () => {
+const Home = () => {
   return (
     <View>
-      <Text>TabScreen</Text>
+      <Text>Home</Text>
     </View>
   )
 }
 
-export default TabScreen
+export default Home
 
 const styles = StyleSheet.create({})
