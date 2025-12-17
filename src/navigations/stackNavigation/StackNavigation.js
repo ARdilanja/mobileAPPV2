@@ -10,6 +10,10 @@ import DrawerHeader from '../../components/DrawerHeader';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import MyProfile from '../../screens/BottomScreens/MyProfile';
 import Dashboard from '../../screens/Dashboard';
+import InterviewScreen from '../../screens/InterviewScreen';
+import ProfileHeader from '../../components/ProfileHeader';
+import MicCheckScreen from '../../components/Livekit/MicCheckScreen'
+import CameraCheckScreen from '../../components/Livekit/CameraCheckScreen'
 
 
 const Stack = createNativeStackNavigator();
@@ -22,21 +26,25 @@ const StackNavigation = () => {
         component={BottomNavigation}
         options={({ route }) => {
           const routeName =
-            getFocusedRouteNameFromRoute(route) ?? 'Bottom';
+            getFocusedRouteNameFromRoute(route) ?? "Bottom";
 
-          const isHome = routeName === 'Bottom';
+          const isHome = routeName === "Bottom";
 
           return {
             headerShown: isHome,
-            headerTitle: '',
+            headerTitle: "Dashboard",          // ✅ CENTER TITLE
+            headerTitleAlign: "center",         // ✅ FORCE CENTER
             headerLeft: isHome ? () => <DrawerHeader /> : undefined,
+            headerRight: isHome ? () => <ProfileHeader /> : undefined,
           };
         }}
       />
       <Stack.Screen
         name="DeleteAccountScreen"
         component={DeleteAccountScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: true, 
+        headerTitle:'Delete My Account',
+        headerTitleAlign: "center"}}
       />
       <Stack.Screen
         name="EditProfileScreen"
@@ -53,9 +61,29 @@ const StackNavigation = () => {
         component={CompletedInterviewsScreen}
       />
       <Stack.Screen
+        name="MicCheckScreen"
+        component={MicCheckScreen}
+      />
+      <Stack.Screen
+        name="CameraCheckScreen"
+        component={CameraCheckScreen}
+      />
+      <Stack.Screen
         name="Dashboard"
         component={Dashboard}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          headerTitle: "Dashboard"
+        }}
+      />
+      <Stack.Screen
+        name="InterviewScreen"
+        component={InterviewScreen}
+        options={{
+          headerShown: true,
+          headerTitle: "Report",
+          headerTitleAlign: "center"
+        }}
       />
     </Stack.Navigator>
   )

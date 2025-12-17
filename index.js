@@ -1,6 +1,10 @@
 /**
  * @format
  */
+import 'react-native-get-random-values';
+import { registerGlobals } from '@livekit/react-native';
+
+registerGlobals();
 
 import 'react-native-gesture-handler';
 import 'react-native-reanimated';

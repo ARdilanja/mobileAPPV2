@@ -168,13 +168,17 @@ const CustomDrawerContent = ({ navigation }) => {
                 <DrawerItem
                     icon={require('../assets/icons/interview.png')}
                     label="Interviews"
-                    onPress={() => navigation.navigate('StartInterview')}
+                    onPress={() => navigation.navigate('MainApp', {
+  screen: 'MicCheckScreen',
+})}
                 />
 
                 <DrawerItem
                     icon={require('../assets/icons/chat.png')}
                     label="Chat"
-                    onPress={() => navigation.navigate('Chat')}
+                    onPress={() => navigation.navigate('MainApp', {
+  screen: 'CameraCheckScreen',
+})}
                 />
             </View>
 
