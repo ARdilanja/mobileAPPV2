@@ -1,6 +1,6 @@
 // src/screens/EmployerInterviewScreen.jsx
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, SafeAreaView } from 'react-native';
 
 import EmployerInterviewHeader from '../components/employerInterview/EmployerInterviewHeader';
@@ -12,12 +12,40 @@ import MobileUnsupportedModal from '../components/employerInterview/MobileUnsupp
 export default function EmployerInterviewScreen({ navigation }) {
   const [activeTab, setActiveTab] = useState('employer');
   const [showModal, setShowModal] = useState(false);
+    const [interviews, setInterviews] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  console.log('interviews', interviews)
   // const handleBack = () => {
   //   if (navigation) {
   //     navigation.goBack();
   //   }
   // };
 
+  const CANDIDATE_ID = '6672592aa821dc12db9fc26e';
+  useEffect(() => {
+    fetchInterviewData();
+  }, []);
+
+  const fetchInterviewData = async () => {
+    try {
+      setLoading(true);
+      console.log('first', process.env.API_BASE_URL)
+      
+      const response = await fetch(
+        `${process.env.API_BASE_URL}/getAllScheduleInterCand/${CANDIDATE_ID}?completed=true`
+      );
+      const result = await response.json();
+console.log('result', result)
+      if (result?.data) {
+        setInterviews(result.data);
+      }
+    } catch (error) {
+      console.error('API Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <EmployerInterviewHeader />
@@ -27,7 +55,7 @@ export default function EmployerInterviewScreen({ navigation }) {
       />
       <View style={{ flex: 1 }}>
         {activeTab === 'employer' ? (
-          <EmployerInterviewList onShowUnsupported={() => setShowModal(true)} />
+          <EmployerInterviewList onShowUnsupported={() => setShowModal(true)} interviews={interviews} />
         ) : (
           <MockInterviewList />
         )}

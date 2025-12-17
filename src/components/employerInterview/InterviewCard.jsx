@@ -7,7 +7,7 @@ const InterviewCard = ({
   companyLogo,
   companyName,
   role,
-  isExpired = false,
+  isExpired,
   hasCoding = false,
   onStartPress,
 }) => {
@@ -31,7 +31,7 @@ const InterviewCard = ({
         </View>
       </View>
 
-      {isExpired ? (
+      {isExpired==="expired"? (
         <View style={styles.expiredButton}>
           <Text style={styles.expiredText}>Expired</Text>
         </View>

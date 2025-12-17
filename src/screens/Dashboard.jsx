@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     View,
     Text,
@@ -11,11 +11,53 @@ import {
 import { Fonts } from "../constants/fonts";
 import Header from "../components/Header";
 import ProgressLineChart from "../components/ProgressLineChart";
+import axios from 'axios';
 
 const screenWidth = Dimensions.get("window").width;
 
 export default function Dashboard() {
     const [selectedCard, setSelectedCard] = useState(null);
+    const [details, setDetails] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const API_BASE_URL = 'https://api.arinnovate.io/api';
+    const CANDIDATE_ID = '6672592aa821dc12db9fc26e';
+    // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3MjU5MmFhODIxZGMxMmRiOWZjMjZlIiwiZW1haWwiOiJ1ZGVzaGluaWV0aGFyYW5nYUBnbWFpbC5jb20iLCJpYXQiOjE3NjU5NTc1MzMsImV4cCI6MTc2NjA0MzkzM30.e4_Nr55U0WIumEt6K56GTa7VqLFqQdTKP321UuieBQY'
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY2NzI1OTJhYTgyMWRjMTJkYjlmYzI2ZSIsImVtYWlsIjoidWRlc2hpbmlldGhhcmFuZ2FAZ21haWwuY29tIiwicm9sZSI6IkNhbmRpZGF0ZSJ9LCJpYXQiOjE3NjU5NTc1MjgsImV4cCI6MTc2NjA0MzkyOH0.RXpBkvMp1n5GcZXd05dW3sSnP_FFZP2ESpAtO-2HF1M"
+    useEffect(() => {
+        fetchStudDetailsInterview();
+    }, []);
+
+    const fetchStudDetailsInterview = async () => {
+        try {
+            setLoading(true);
+            console.log('process.env.API_BASE_URL:',API_BASE_URL)
+            const response = await axios.post(
+                `${API_BASE_URL}/getStudentDetailsInterview`,
+                {
+                    id: CANDIDATE_ID,
+                },
+                {
+                    headers: {
+                        token: token, 'Content-Type': 'application/json'
+                    },
+                }
+            );
+
+            console.log('result', response.data);
+
+            if (response.data?.data) {
+                setDetails(response.data.data);
+            }
+        } catch (error) {
+            console.error(
+                'API Error:',
+                error.response?.data || error.message
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <ScrollView style={{ backgroundColor: 'white' }} showsVerticalScrollIndicator={false}>
             {/* <Header title="Dashboard" /> */}
@@ -120,16 +162,16 @@ export default function Dashboard() {
                 name="Infosys"
                 role="React Native Developer"
                 logo={require("../assets/icons/infosys-logo.png")}
-             isSelected={selectedCard === 0}
-    onPress={() => setSelectedCard(0)}
+                isSelected={selectedCard === 0}
+                onPress={() => setSelectedCard(0)}
             />
 
             <InterviewCard
                 name="Accenture"
                 role="UX Designer"
                 logo={require("../assets/icons/Accenture-logo.png")}
-            isSelected={selectedCard === 1}
-    onPress={() => setSelectedCard(1)}
+                isSelected={selectedCard === 1}
+                onPress={() => setSelectedCard(1)}
             />
 
             <InterviewCard
@@ -138,28 +180,28 @@ export default function Dashboard() {
                 success
                 logo={require("../assets/icons/Recroot-logo.png")}
                 isSelected={selectedCard === 2}
-    onPress={() => setSelectedCard(2)}
-    />
-    <InterviewCard
-                name="Infosys"
-                role="React Native Developer"
-                logo={require("../assets/icons/infosys-logo.png")}
-             isSelected={selectedCard === 3}
-    onPress={() => setSelectedCard(3)}
+                onPress={() => setSelectedCard(2)}
             />
             <InterviewCard
                 name="Infosys"
                 role="React Native Developer"
                 logo={require("../assets/icons/infosys-logo.png")}
-             isSelected={selectedCard === 4}
-    onPress={() => setSelectedCard(4)}
+                isSelected={selectedCard === 3}
+                onPress={() => setSelectedCard(3)}
             />
             <InterviewCard
                 name="Infosys"
                 role="React Native Developer"
                 logo={require("../assets/icons/infosys-logo.png")}
-             isSelected={selectedCard === 5}
-    onPress={() => setSelectedCard(5)}
+                isSelected={selectedCard === 4}
+                onPress={() => setSelectedCard(4)}
+            />
+            <InterviewCard
+                name="Infosys"
+                role="React Native Developer"
+                logo={require("../assets/icons/infosys-logo.png")}
+                isSelected={selectedCard === 5}
+                onPress={() => setSelectedCard(5)}
             />
 
 
@@ -356,17 +398,17 @@ const styles = StyleSheet.create({
         paddingVertical: 7.5,
         paddingHorizontal: 18
     },
-selectedCard: {
-    backgroundColor: "#FFFFFF"
-},
+    selectedCard: {
+        backgroundColor: "#FFFFFF"
+    },
 
-selectedButton: {
-    borderColor: "#10B981"
-},
+    selectedButton: {
+        borderColor: "#10B981"
+    },
 
-selectedButtonText: {
-    color: "#10B981"
-},
+    selectedButtonText: {
+        color: "#10B981"
+    },
     buttonText: {
         color: "#0069FF",
         fontSize: 14,

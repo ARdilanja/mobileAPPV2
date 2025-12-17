@@ -10,7 +10,6 @@ export default function EmployerInterviewHeader({ onBackPress, title = "Intervie
 
       <Text style={styles.title}>{title}</Text>
 
-      <View style={{ width: 40 }} />
     </View>
   );
 }
