@@ -18,7 +18,7 @@ export default function Dashboard() {
     const [selectedCard, setSelectedCard] = useState(null);
     return (
         <ScrollView style={{ backgroundColor: 'white' }} showsVerticalScrollIndicator={false}>
-            <Header title="Dashboard" />
+            {/* <Header title="Dashboard" /> */}
             <View style={styles.container}>
                 {/* INTERVIEWS CARDS */}
                 <Text style={styles.sectionTitle}>Interviews</Text>

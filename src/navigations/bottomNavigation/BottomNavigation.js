@@ -25,7 +25,7 @@ const BottomNavigation = () => {
       />
       <Tab.Screen
         name="StartInterview"
-        component={CompletedInterviewsScreen}
+        component={EmployerInterviewScreen}
         options={{
           headerShown:false,
           title: 'Start Interview',
@@ -33,7 +33,7 @@ const BottomNavigation = () => {
       />
       <Tab.Screen
         name="CompletedInterview"
-        component={CompletedInterview}
+        component={CompletedInterviewsScreen}
         options={{
           headerShown:false,
           title: 'Completed Interview',
