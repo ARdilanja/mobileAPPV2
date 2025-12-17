@@ -1,5 +1,4 @@
-// LoginScreen.js
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -11,24 +10,36 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import { Fonts } from '../../constants/fonts';
 
-const { width, height } = Dimensions.get('window');
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const LoginScreen = () => {
+const LoginScreen = ({ onNext }) => {
+  const [email, setEmail] = useState('');
+
+  const handleNext = () => {
+    if (email.trim() === '') {
+      alert('Please enter your email');
+      return;
+    }
+          console.log('useremail :>> ', email);
+
+    onNext();
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.content}>
-        {/* Illustration */}
         <Image
           source={require('../../assets/images/login_img.png')}
           style={styles.illustration}
           resizeMode="contain"
         />
 
-        <Text style={styles.welcomeText}>Welcome!</Text>
+        <Text style={styles.pageTitle}>Welcome!</Text>
 
         <Text style={styles.title}>Sign In</Text>
 
@@ -39,14 +50,17 @@ const LoginScreen = () => {
           placeholderTextColor="#aaa"
           keyboardType="email-address"
           autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
         />
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleNext}>
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
 
         <Text style={styles.signupText}>
-          Don't have an Account? <Text style={styles.signupLink}>Sign up here</Text>
+          Don't have an Account?{' '}
+          <Text style={styles.signupLink}>Sign up here</Text>
         </Text>
       </View>
     </KeyboardAvoidingView>
@@ -60,30 +74,36 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: width * 0.08,
-    justifyContent: 'center',
+    paddingHorizontal: SCREEN_WIDTH * 0.08,
   },
   illustration: {
-    width: width * 0.8,
-    height: height * 0.35,
-    alignSelf: 'center',
-    marginBottom: 30,
+    position: 'absolute',
+    width: 276,
+    height: 262,
+    top: 124,
+    left: 57,
   },
-  welcomeText: {
-    fontSize: width * 0.08,
-    fontWeight: 'bold',
+  pageTitle: {
+    position: 'absolute',
+    top: 60,
+    left: 0,
+    right: 0,
     textAlign: 'center',
-    marginBottom: 20,
+    fontFamily: Fonts.Medium,  
+    fontSize: 20,
+    lineHeight: 20,      
     color: '#000',
   },
   title: {
-    fontSize: width * 0.07,
+    fontSize: SCREEN_WIDTH * 0.07,
     fontWeight: '600',
     color: '#000',
     marginBottom: 30,
+    textAlign: 'left',
+    marginTop: 420, 
   },
   label: {
-    fontSize: width * 0.045,
+    fontSize: SCREEN_WIDTH * 0.045,
     color: '#555',
     marginBottom: 8,
   },
@@ -93,9 +113,10 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 12,
     paddingHorizontal: 16,
-    fontSize: width * 0.045,
+    fontSize: SCREEN_WIDTH * 0.045,
     backgroundColor: '#fff',
     marginBottom: 30,
+    color: '#000',
   },
   button: {
     backgroundColor: '#007AFF',
@@ -107,12 +128,12 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontSize: width * 0.05,
+    fontSize: SCREEN_WIDTH * 0.05,
     fontWeight: '600',
   },
   signupText: {
     textAlign: 'center',
-    fontSize: width * 0.04,
+    fontSize: SCREEN_WIDTH * 0.04,
     color: '#666',
   },
   signupLink: {

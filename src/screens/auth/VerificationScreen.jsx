@@ -1,5 +1,5 @@
-// VerificationScreen.js
-import React, { useState } from 'react';
+// src/screens/auth/VerificationScreen.js
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -9,19 +9,35 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Platform,
+  TextInput,
 } from 'react-native';
+import { Fonts } from '../../constants/fonts';
 
-const { width, height } = Dimensions.get('window');
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const VerificationScreen = () => {
+const VerificationScreen = ({ onVerifySuccess }) => {
   const [code, setCode] = useState(['', '', '', '']);
+  const inputs = useRef([]);
 
   const handleCodeChange = (text, index) => {
     if (/^\d?$/.test(text)) {
       const newCode = [...code];
       newCode[index] = text;
       setCode(newCode);
+      if (text && index < 3) {
+        inputs.current[index + 1]?.focus();
+      }
     }
+  };
+
+  const handleSignIn = () => {
+    const enteredCode = code.join('');
+    if (enteredCode.length !== 4) {
+      alert('Please enter the full 4-digit code');
+      return;
+    }
+    console.log('otp :>> ', enteredCode);
+    onVerifySuccess();
   };
 
   return (
@@ -30,14 +46,15 @@ const VerificationScreen = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.content}>
-        {/* Illustration */}
+        {/* Illustration - Absolute positioned */}
         <Image
           source={require('../../assets/images/otp_img.png')}
           style={styles.illustration}
           resizeMode="contain"
         />
 
-        <Text style={styles.title}>Verification Email</Text>
+        {/* Title at top center */}
+        <Text style={styles.pageTitle}>Verification Email</Text>
 
         <Text style={styles.subtitle}>Verification Code</Text>
 
@@ -45,17 +62,19 @@ const VerificationScreen = () => {
           {code.map((digit, index) => (
             <TextInput
               key={index}
+              ref={ref => (inputs.current[index] = ref)}
               style={styles.codeInput}
               value={digit}
               onChangeText={text => handleCodeChange(text, index)}
               keyboardType="number-pad"
               maxLength={1}
               textAlign="center"
+              autoFocus={index === 0}
             />
           ))}
         </View>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
           <Text style={styles.buttonText}>Sign in</Text>
         </TouchableOpacity>
       </View>
@@ -70,26 +89,31 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: width * 0.08,
-    justifyContent: 'center',
+    paddingHorizontal: SCREEN_WIDTH * 0.08,
   },
   illustration: {
-    width: width * 0.85,
-    height: height * 0.4,
-    alignSelf: 'center',
-    marginBottom: 40,
+    position: 'absolute',
+    width: 276,
+    height: 262,
+    top: 124,
+    left: 57,
   },
-  title: {
-    fontSize: width * 0.07,
-    fontWeight: 'bold',
+  pageTitle: {
+    position: 'absolute',
+    top: 60,
+    left: 0,
+    right: 0,
     textAlign: 'center',
-    marginBottom: 40,
+    fontFamily: Fonts.Medium,
+    fontSize: 20,
+    lineHeight: 20,
     color: '#000',
   },
   subtitle: {
-    fontSize: width * 0.045,
+    fontSize: SCREEN_WIDTH * 0.045,
     color: '#555',
     marginBottom: 20,
+    marginTop: 420, // Below illustration
   },
   codeContainer: {
     flexDirection: 'row',
@@ -97,12 +121,12 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   codeInput: {
-    width: width * 0.18,
+    width: SCREEN_WIDTH * 0.18,
     height: 60,
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 12,
-    fontSize: width * 0.07,
+    fontSize: SCREEN_WIDTH * 0.07,
     fontWeight: 'bold',
     backgroundColor: '#f9f9f9',
     textAlign: 'center',
@@ -116,7 +140,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontSize: width * 0.05,
+    fontSize: SCREEN_WIDTH * 0.05,
     fontWeight: '600',
   },
 });

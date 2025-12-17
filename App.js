@@ -1,13 +1,46 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import AppNavigation from './src/navigations/AppNavigation'
+// App.js (or your main App file)
+import React, { useState } from "react";
+import { SafeAreaView, StatusBar } from "react-native";
+import LoginLoaderPage from "./src/screens/LoginLoaderPage";
+import LoginScreen from "./src/screens/auth/LoginScreen";
+import VerificationScreen from "./src/screens/auth/VerificationScreen";
+import AppNavigation from "./src/navigations/AppNavigation";
 
-const App = () => {
+export default function App() {
+  const [loaderFinished, setLoaderFinished] = useState(false);
+  const [currentScreen, setCurrentScreen] = useState("login");
+  
+  // If loader not finished
+  if (!loaderFinished) {
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar barStyle="dark-content" backgroundColor="#EAF4FF" />
+        <LoginLoaderPage onFinish={() => setLoaderFinished(true)} />
+      </SafeAreaView>
+    );
+  }
+
+  // After loader
   return (
-    <AppNavigation />
-  )
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+
+      {currentScreen === "login" && (
+        <LoginScreen
+          onNext={() => setCurrentScreen("verification")}
+        />
+      )}
+
+      {currentScreen === "verification" && (
+        <VerificationScreen
+          onVerifySuccess={() => setCurrentScreen("main")}
+        />
+      )}
+
+      {currentScreen === "main" && <AppNavigation />}
+    </SafeAreaView>
+  );
 }
-export default App;
 
 
 // import React from "react";
