@@ -8,6 +8,7 @@ import MyProfile from '../../screens/BottomScreens/MyProfile'
 import EditProfileScreen from '../../screens/EditProfileScreen';
 import EmployerInterviewScreen from '../../screens/EmployerInterviewScreen';
 import CompletedInterviewsScreen from '../../screens/CompletedInterviewsScreen';
+import Dashboard from '../../screens/Dashboard';
 
 const Tab = createBottomTabNavigator();
 
@@ -16,7 +17,7 @@ const BottomNavigation = () => {
     <Tab.Navigator tabBar={props => <CustomTabBar {...props} />}>
       <Tab.Screen
         name="Bottom"
-        component={EmployerInterviewScreen}
+        component={Dashboard}
         options={{
             headerShown: false, 
             title: 'Home'
@@ -24,7 +25,7 @@ const BottomNavigation = () => {
       />
       <Tab.Screen
         name="StartInterview"
-        component={CompletedInterviewsScreen}
+        component={EmployerInterviewScreen}
         options={{
           headerShown:false,
           title: 'Start Interview',
@@ -32,7 +33,7 @@ const BottomNavigation = () => {
       />
       <Tab.Screen
         name="CompletedInterview"
-        component={CompletedInterview}
+        component={CompletedInterviewsScreen}
         options={{
           headerShown:false,
           title: 'Completed Interview',

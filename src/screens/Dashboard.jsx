@@ -8,7 +8,6 @@ import {
     Image,
     TouchableOpacity
 } from "react-native";
-import { LineChart } from "react-native-chart-kit";
 import { Fonts } from "../constants/fonts";
 import Header from "../components/Header";
 import ProgressLineChart from "../components/ProgressLineChart";
@@ -19,7 +18,7 @@ export default function Dashboard() {
     const [selectedCard, setSelectedCard] = useState(null);
     return (
         <ScrollView style={{ backgroundColor: 'white' }} showsVerticalScrollIndicator={false}>
-            <Header title="Dashboard" />
+            {/* <Header title="Dashboard" /> */}
             <View style={styles.container}>
                 {/* INTERVIEWS CARDS */}
                 <Text style={styles.sectionTitle}>Interviews</Text>

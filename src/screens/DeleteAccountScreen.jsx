@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { Fonts } from "../constants/fonts";
 import Header from "../components/Header";
+import GoBack from "../components/GoBack";
 // import CheckBox from "@react-native-community/checkbox";
 import binIcon from "../assets/images/bin.png";
 import closeIcon from "../assets/images/Vector-cross.png";
@@ -30,22 +31,30 @@ const reasonsList = [
 ];
 
 const DeleteAccountScreen = () => {
-    const [selectedReason, setSelectedReason] = useState(null);
+    const [selectedReason, setSelectedReason] = useState([]);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const [showModal, setShowModal] = useState(false);
     const [otherText, setOtherText] = useState("");
 
     const onDeletePress = () => {
-        if (!selectedReason) return;
+        if (selectedReason.length === 0) return;
         setShowModal(true);
     };
-
+    const toggleReason = (reason) => {
+        setSelectedReason((prev) => {
+            if (prev.includes(reason)) {
+                return prev.filter((item) => item !== reason); // uncheck
+            } else {
+                return [...prev, reason]; // check
+            }
+        });
+    };
 
     return (
 
         <View style={styles.container}>
-            <Text style={styles.title}>Delete Account</Text>
+            {/* <GoBack title="Delete Account" /> */}
             <Text style={styles.subtitle}>
                 Please let us know why you're deleting your Recroot Lea account
             </Text>
@@ -54,7 +63,7 @@ const DeleteAccountScreen = () => {
             <View style={styles.checkboxCard}>
                 {reasonsList.map((reason, index) => {
                     const isLast = index === reasonsList.length - 1;
-                    const isSelected = selectedReason === reason;
+                    const isSelected = selectedReason.includes(reason);
 
                     return (
                         <TouchableOpacity
@@ -64,7 +73,7 @@ const DeleteAccountScreen = () => {
                                 !isLast && styles.optionDivider, // 👈 NO border for last
                                 isSelected && styles.selectedOption,
                             ]}
-                            onPress={() => setSelectedReason(reason)}
+                            onPress={() => toggleReason(reason)}
                             activeOpacity={0.8}
                         >
                             <CustomCheckbox checked={isSelected} />
@@ -82,7 +91,7 @@ const DeleteAccountScreen = () => {
 
 
                 {/* OTHERS INPUT */}
-                {selectedReason === "Others" && (
+                {selectedReason.includes("Others") && (
                     <TextInput
                         style={styles.input}
                         placeholder="Specify here"
@@ -209,22 +218,22 @@ const styles = StyleSheet.create({
         marginBottom: 6,
     },
     subtitle: {
-        fontSize: 14,
-        color: "#6B7280",
+        fontSize: 16,
+        color: "#505050",
         fontFamily: Fonts.Regular,
         marginBottom: 16,
     },
     checkboxCard: {
         backgroundColor: '#fff',
         borderRadius: 16,
-        elevation: 2,
+        elevation: 1,
         overflow: "hidden",
         // gap: 1
     },
     option: {
         flexDirection: "row",
         alignItems: "center",
-        paddingVertical: 14,
+        paddingVertical: 12,
         paddingHorizontal: 12,
         // borderRadius: 10,
         // marginBottom: 1,
@@ -239,7 +248,7 @@ const styles = StyleSheet.create({
         borderLeftColor: "#2563EB",
     },
     optionText: {
-        fontSize: 12,
+        fontSize: 14,
         // marginLeft: 8,
         color: "#111827",
         fontFamily: Fonts.Regular,
@@ -349,8 +358,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     checkbox: {
-        width: 16,
-        height: 16,
+        width: 20,
+        height: 20,
         borderRadius: 2,
         borderWidth: 2,
         borderColor: "#9CA3AF", // darker border
@@ -360,14 +369,14 @@ const styles = StyleSheet.create({
     },
 
     checkboxChecked: {
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "transparent",
         borderColor: "#0069FF",
         borderWidth: 0.5
     },
 
     checkboxInner: {
-        width: 8,
-        height: 8,
+        width: 10,
+        height: 10,
         backgroundColor: "#0069FF",
         borderRadius: 2,
     },
