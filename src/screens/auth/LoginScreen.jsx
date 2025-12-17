@@ -9,12 +9,13 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { Fonts } from '../../constants/fonts';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const LoginScreen = ({ onNext }) => {
+const LoginScreen = ({ onLoginSuccess, onSignupPress }) => {
   const [email, setEmail] = useState('');
 
   const handleNext = () => {
@@ -22,47 +23,56 @@ const LoginScreen = ({ onNext }) => {
       alert('Please enter your email');
       return;
     }
-          console.log('useremail :>> ', email);
+    console.log('useremail :>> ', email);
 
-    onNext();
+    onLoginSuccess();
   };
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
     >
-      <View style={styles.content}>
-        <Image
-          source={require('../../assets/images/login_img.png')}
-          style={styles.illustration}
-          resizeMode="contain"
-        />
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.content}>
+          <Image
+            source={require('../../assets/images/login_img.png')}
+            style={styles.illustration}
+            resizeMode="contain"
+          />
 
-        <Text style={styles.pageTitle}>Welcome!</Text>
+          <Text style={styles.pageTitle}>Welcome!</Text>
 
-        <Text style={styles.title}>Sign In</Text>
+          <Text style={styles.title}>Sign In</Text>
 
-        <Text style={styles.label}>Email address</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Email address"
-          placeholderTextColor="#aaa"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
-        />
+          <Text style={styles.label}>Email address</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Email address"
+            placeholderTextColor="#aaa"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
+          />
 
-        <TouchableOpacity style={styles.button} onPress={handleNext}>
-          <Text style={styles.buttonText}>Next</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleNext}>
+            <Text style={styles.buttonText}>Next</Text>
+          </TouchableOpacity>
 
-        <Text style={styles.signupText}>
-          Don't have an Account?{' '}
-          <Text style={styles.signupLink}>Sign up here</Text>
-        </Text>
-      </View>
+          <Text style={styles.signupText}>
+            Don't have an Account?{' '}
+            <Text style={styles.signupLink} onPress={onSignupPress}>
+              Sign up here
+            </Text>
+          </Text>
+        </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
@@ -89,9 +99,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     textAlign: 'center',
-    fontFamily: Fonts.Medium,  
+    fontFamily: Fonts.Medium,
     fontSize: 20,
-    lineHeight: 20,      
+    lineHeight: 20,
     color: '#000',
   },
   title: {
@@ -100,7 +110,7 @@ const styles = StyleSheet.create({
     color: '#000',
     marginBottom: 30,
     textAlign: 'left',
-    marginTop: 420, 
+    marginTop: 420,
   },
   label: {
     fontSize: SCREEN_WIDTH * 0.045,

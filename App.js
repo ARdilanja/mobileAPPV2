@@ -1,16 +1,16 @@
 // App.js (or your main App file)
-import React, { useState } from "react";
-import { SafeAreaView, StatusBar } from "react-native";
-import LoginLoaderPage from "./src/screens/LoginLoaderPage";
-import LoginScreen from "./src/screens/auth/LoginScreen";
-import VerificationScreen from "./src/screens/auth/VerificationScreen";
-import AppNavigation from "./src/navigations/AppNavigation";
+import React, { useState } from 'react';
+import { SafeAreaView, StatusBar } from 'react-native';
+import LoginLoaderPage from './src/screens/LoginLoaderPage';
+import LoginScreen from './src/screens/auth/LoginScreen';
+import VerificationScreen from './src/screens/auth/VerificationScreen';
+import SignupFlowScreen from './src/screens/auth/SignupFlowScreen';
+import AppNavigation from './src/navigations/AppNavigation';
 
 export default function App() {
   const [loaderFinished, setLoaderFinished] = useState(false);
-  const [currentScreen, setCurrentScreen] = useState("login");
-  
-  // If loader not finished
+  const [currentScreen, setCurrentScreen] = useState('login');
+
   if (!loaderFinished) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -20,28 +20,28 @@ export default function App() {
     );
   }
 
-  // After loader
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
-      {currentScreen === "login" && (
+      {currentScreen === 'login' && (
         <LoginScreen
-          onNext={() => setCurrentScreen("verification")}
+          onLoginSuccess={() => setCurrentScreen('main')}
+          onSignupPress={() => setCurrentScreen('signup')} 
         />
       )}
 
-      {currentScreen === "verification" && (
-        <VerificationScreen
-          onVerifySuccess={() => setCurrentScreen("main")}
+      {currentScreen === 'signup' && (
+        <SignupFlowScreen
+          onComplete={() => setCurrentScreen('main')}
+          onBackToLogin={() => setCurrentScreen('login')} // Optional: add back button if needed
         />
       )}
 
-      {currentScreen === "main" && <AppNavigation />}
+      {currentScreen === 'main' && <AppNavigation />}
     </SafeAreaView>
   );
 }
-
 
 // import React from "react";
 // import { SafeAreaView, StatusBar } from "react-native";
