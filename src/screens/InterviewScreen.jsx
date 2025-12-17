@@ -1,4 +1,3 @@
-
 // import React, { useState } from "react";
 // import {
 //     View,
@@ -9,7 +8,6 @@
 // import Header from "../components/Header";
 // import InterviewTabs from "../components/InterviewTabs";
 // import SubjectExpertise from "../components/SubjectExpertise";
-// import Communication from "../components/Communication";
 // import Pagination from "../components/SubjectExpertise/Pagination";
 // import { SECTION_ORDER } from "../components/SubjectExpertise/contentData";
 
@@ -39,12 +37,6 @@
 //                 )}
 //             </ScrollView>
 
-//             {activeTab === "communication" && (
-//                 <View style={{ padding: 16 }}>
-//                     <Communication />
-//                 </View>
-//             )}
-
 //             {/* FLOATING PAGINATION */}
 //             {activeTab === "expertise" && (
 //                 <View style={styles.paginationWrapper}>
@@ -55,12 +47,9 @@
 //                     />
 //                 </View>
 //             )}
-
 //         </View>
-
-//     )
+//     );
 // }
-
 
 
 // const styles = StyleSheet.create({
@@ -70,7 +59,7 @@
 //     },
 
 //     scrollContent: {
-//         paddingBottom: 140,
+//         paddingBottom: 140, 
 //         // enough space for pagination + future bottom nav
 //     },
 
@@ -78,11 +67,10 @@
 //         position: "absolute",
 //         left: 0,
 //         right: 0,
-//         bottom: 60,
+//         bottom: 70, 
 //         alignItems: "center",
 //         backgroundColor: "transparent",
 //     },
-
 // });
 
 
