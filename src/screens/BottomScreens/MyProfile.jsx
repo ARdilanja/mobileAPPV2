@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
-const MyProfile = () => {
+const MyProfile = ({navigation}) => {
   return (
     <View>
-      <Text>MyProfile</Text>
+      <TouchableOpacity onPress={() =>{navigation.navigate('Dashboard')}}>
+        <Text>Saamyy</Text> 
+      </TouchableOpacity>
     </View>
   )
 }
