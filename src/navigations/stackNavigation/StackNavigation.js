@@ -14,7 +14,7 @@ import InterviewScreen from '../../screens/InterviewScreen';
 import ProfileHeader from '../../components/ProfileHeader';
 import MicCheckScreen from '../../components/Livekit/MicCheckScreen'
 import CameraCheckScreen from '../../components/Livekit/CameraCheckScreen'
-
+import LiveRoomScreen from '../../screens/LiveRoomScreen'
 
 const Stack = createNativeStackNavigator();
 
@@ -67,6 +67,10 @@ const StackNavigation = () => {
       <Stack.Screen
         name="CameraCheckScreen"
         component={CameraCheckScreen}
+      />
+      <Stack.Screen
+        name="LiveRoomScreen"
+        component={LiveRoomScreen}
       />
       <Stack.Screen
         name="Dashboard"
