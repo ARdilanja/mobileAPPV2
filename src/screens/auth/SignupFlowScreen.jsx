@@ -22,7 +22,8 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const BOY_IMAGE = require('../../assets/images/boy_img_signup.png');
 const RECROOT_LOGO = require('../../assets/images/recroot_logo.png');
 const PROFILE_IMAGE = require('../../assets/images/signup_icon.png');
-
+const visibilitySvg = require('../../assets/images/eye_look.png');
+const visibilityOffSvg = require('../../assets/images/eye_close.png');
 const SignupFlowScreen = ({ onComplete }) => {
   const [step, setStep] = useState(1);
   const [firstName, setFirstName] = useState('');
@@ -38,17 +39,6 @@ const SignupFlowScreen = ({ onComplete }) => {
 
   const [showCurrentPass, setShowCurrentPass] = useState(false);
   const [showNewPass, setShowNewPass] = useState(false);
-  const visibilitySvg = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000000">
-  <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-</svg>
-`;
-
-  const visibilityOffSvg = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000000">
-  <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.29 2.77-2.94 3.57-4.75C21.37 7.61 17.1 4.5 12 4.5c-1.58 0-3.11.25-4.55.73l2.17 2.17C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.59-2.2.59-2.76 0-5-2.24-5-5 0-.79.2-1.53.59-2.2z"/>
-</svg>
-`;
   const otpRefs = Array(4)
     .fill()
     .map(() => React.createRef());
@@ -95,11 +85,17 @@ const SignupFlowScreen = ({ onComplete }) => {
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
     >
-      <StatusBar hidden />
-      <ScrollView contentContainerStyle={styles.scrollContent} bounces={false}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="interactive"
+        showsVerticalScrollIndicator={false}
+      >
+        <StatusBar hidden />
         {step === 1 && (
           <View style={styles.onboardingContainer}>
             <LinearGradient
@@ -133,7 +129,10 @@ const SignupFlowScreen = ({ onComplete }) => {
               Build confidence.{'\n'} Speak up. {'\n'}
               Grow your career.
             </Text>
-            <TouchableOpacity style={styles.blueButton} onPress={nextStep}>
+            <TouchableOpacity
+              style={styles.blueButtonAbsolute}
+              onPress={nextStep}
+            >
               <Text style={styles.blueButtonText}>Get Started</Text>
             </TouchableOpacity>
           </View>
@@ -141,11 +140,7 @@ const SignupFlowScreen = ({ onComplete }) => {
 
         {/* Step 2: Enter Details */}
         {step === 2 && (
-          <ScrollView
-            contentContainerStyle={styles.formContainer}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-          >
+          <View style={styles.formContainer}>
             <TouchableOpacity onPress={prevStep} style={styles.backArrow}>
               <Text style={styles.backText}>←</Text>
             </TouchableOpacity>
@@ -230,16 +225,12 @@ const SignupFlowScreen = ({ onComplete }) => {
             <TouchableOpacity style={styles.blueButton} onPress={nextStep}>
               <Text style={styles.blueButtonText}>Continue</Text>
             </TouchableOpacity>
-          </ScrollView>
+          </View>
         )}
 
         {/* Step 3: OTP */}
         {step === 3 && (
-          <ScrollView
-            contentContainerStyle={styles.formContainer}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-          >
+          <View style={styles.formContainer}>
             <TouchableOpacity onPress={prevStep} style={styles.backArrow}>
               <Text style={styles.backText}>←</Text>
             </TouchableOpacity>
@@ -265,7 +256,6 @@ const SignupFlowScreen = ({ onComplete }) => {
             <TouchableOpacity
               style={[styles.blueButton, loading && styles.buttonDisabled]}
               onPress={handleVerifyOtp}
-              disabled={loading}
             >
               {loading ? (
                 <ActivityIndicator color="#fff" />
@@ -273,16 +263,12 @@ const SignupFlowScreen = ({ onComplete }) => {
                 <Text style={styles.blueButtonText}>Verify</Text>
               )}
             </TouchableOpacity>
-          </ScrollView>
+          </View>
         )}
 
         {/* Step 4: Create Password */}
         {step === 4 && (
-          <ScrollView
-            contentContainerStyle={styles.formContainer}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-          >
+          <View style={styles.formContainer}>
             <TouchableOpacity onPress={prevStep} style={styles.backArrow}>
               <Text style={styles.backText}>←</Text>
             </TouchableOpacity>
@@ -312,10 +298,10 @@ const SignupFlowScreen = ({ onComplete }) => {
                 style={styles.eyeIcon}
                 onPress={() => setShowCurrentPass(!showCurrentPass)}
               >
-                <SvgXml
-                  xml={showCurrentPass ? visibilitySvg : visibilityOffSvg}
-                  width={24}
-                  height={24}
+                <Image
+                  source={showCurrentPass ? visibilitySvg : visibilityOffSvg}
+                  style={{ width: 24, height: 24 }}
+                  resizeMode="contain"
                 />
               </TouchableOpacity>
             </View>
@@ -342,26 +328,28 @@ const SignupFlowScreen = ({ onComplete }) => {
                 style={styles.eyeIcon}
                 onPress={() => setShowNewPass(!showNewPass)}
               >
-                <SvgXml
-                  xml={showNewPass ? visibilitySvg : visibilityOffSvg}
-                  width={24}
-                  height={24}
+                <Image
+                  source={showNewPass ? visibilitySvg : visibilityOffSvg}
+                  style={{ width: 24, height: 24 }}
+                  resizeMode="contain"
                 />
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity
-              style={[styles.blueButton, loading && styles.buttonDisabled]}
-              onPress={handleFinish}
-              disabled={loading}
-            >
-              {loading ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Text style={styles.blueButtonText}>Sign up</Text>
-              )}
-            </TouchableOpacity>
-          </ScrollView>
+            <View style={styles.bottomButtonWrapper}>
+              <TouchableOpacity
+                style={styles.blueButton}
+                onPress={handleFinish}
+                disabled={loading}
+              >
+                {loading ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text style={styles.blueButtonText}>Sign up</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
         )}
       </ScrollView>
     </KeyboardAvoidingView>
@@ -443,6 +431,15 @@ const styles = StyleSheet.create({
     lineHeight: 48,
   },
   blueButton: {
+    backgroundColor: '#007AFF',
+    height: 56,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+
+  blueButtonAbsolute: {
     position: 'absolute',
     bottom: 40,
     left: 30,
@@ -453,6 +450,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   blueButtonText: {
     color: '#fff',
     fontSize: 18,
