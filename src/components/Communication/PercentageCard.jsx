@@ -196,62 +196,89 @@ const PercentageItem = ({
   );
 };
 
-const PercentageCard = () => {
-  const [selectedCard, setSelectedCard] = useState('1');
+// const PercentageCard = () => {
+//   const [selectedCard, setSelectedCard] = useState('1');
 
-  const percentageData = [
-    {
-      id: '1',
-      title: 'Fluency and\nCoherence',
-      percentage: 80,
-      icon: require('../../assets/images/card1.png'),
-      color: '#AC0D6C',
-    },
-    {
-      id: '2',
-      title: 'Lexical\nResource',
-      percentage: 80,
-      icon: require('../../assets/images/card2.png'),
-      color: '#8329E3',
-    },
-    {
-      id: '3',
-      title: 'Grammatical\nRange & Accuracy',
-      percentage: 80,
-      icon: require('../../assets/images/card3.png'),
-      color: '#1151EB',
-    },
-    {
-      id: '4',
-      title: 'Pronunciation',
-      percentage: 80,
-      icon: require('../../assets/images/card4.png'),
-      color: '#FF4B4A',
-    },
-  ];
+//   const percentageData = [
+//     {
+//       id: '1',
+//       title: 'Fluency and\nCoherence',
+//       percentage: 80,
+//       icon: require('../../assets/images/card1.png'),
+//       color: '#AC0D6C',
+//     },
+//     {
+//       id: '2',
+//       title: 'Lexical\nResource',
+//       percentage: 80,
+//       icon: require('../../assets/images/card2.png'),
+//       color: '#8329E3',
+//     },
+//     {
+//       id: '3',
+//       title: 'Grammatical\nRange & Accuracy',
+//       percentage: 80,
+//       icon: require('../../assets/images/card3.png'),
+//       color: '#1151EB',
+//     },
+//     {
+//       id: '4',
+//       title: 'Pronunciation',
+//       percentage: 80,
+//       icon: require('../../assets/images/card4.png'),
+//       color: '#FF4B4A',
+//     },
+//   ];
+
+//   return (
+//     <View style={styles.container}>
+//       <FlatList
+//         data={percentageData}
+//         keyExtractor={(item) => item.id}
+//         horizontal
+//         showsHorizontalScrollIndicator={false}
+//         contentContainerStyle={styles.listContent}
+//         renderItem={({ item }) => (
+//           <PercentageItem
+//             percentage={item.percentage}
+//             title={item.title}
+//             icon={item.icon}
+//             cardColor={item.color}
+//             isActive={selectedCard === item.id}
+//             onPress={() => setSelectedCard(item.id)}
+//           />
+//         )}
+//       />
+//     </View>
+//   );
+// };
+
+const PercentageCard = ({ data = [] }) => {
+  const [selectedCard, setSelectedCard] = useState(0);
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={percentageData}
-        keyExtractor={(item) => item.id}
+        data={data}
+        keyExtractor={(item) => item.key}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <PercentageItem
+            title={item.key}
             percentage={item.percentage}
-            title={item.title}
             icon={item.icon}
             cardColor={item.color}
-            isActive={selectedCard === item.id}
-            onPress={() => setSelectedCard(item.id)}
+            isActive={selectedCard === index}
+            onPress={() => setSelectedCard(index)}
           />
         )}
       />
     </View>
   );
 };
+
 
 export default PercentageCard;
 

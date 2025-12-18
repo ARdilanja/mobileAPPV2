@@ -1,11 +1,17 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
-import { CONTENT_DATA, SECTION_ORDER } from "./ContentData";
+// import { CONTENT_DATA, SECTION_ORDER } from "./ContentData";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const CONTENT_WIDTH = Math.min(SCREEN_WIDTH - 32, 360);
 
-export default function ContentSection({ activeFilter }) {
+const SECTION_ORDER = [
+  "Strengths",
+  "Areas of Improvement",
+  "Recommendations",
+];
+
+export default function ContentSection({ activeFilter, feedback = {} }) {
   const sections =
     activeFilter === "All"
       ? SECTION_ORDER
@@ -14,24 +20,26 @@ export default function ContentSection({ activeFilter }) {
   return (
     <View style={styles.wrapper}>
       {sections.map((key) => {
-        const section = CONTENT_DATA[key];
-        if (!section) return null;
+        const text = feedback[key];
+        if (!text) return null;
 
         return (
           <View key={key} style={styles.section}>
             <View style={styles.headingRow}>
               <View style={styles.line} />
-              <Text style={styles.heading}>{section.title}</Text>
+              <Text style={styles.heading}>{key.toUpperCase()}</Text>
               <View style={styles.line} />
             </View>
 
-            <Text style={styles.contentText}>{section.text}</Text>
+            <Text style={styles.contentText}>{text}</Text>
           </View>
         );
       })}
     </View>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   wrapper: {

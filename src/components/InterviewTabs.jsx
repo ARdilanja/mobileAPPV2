@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
         width: 12,
         height: 12,
         resizeMode: "contain",
-        marginRight: 4,
+        marginRight: 10,
         tintColor: "#000",
     },
 
