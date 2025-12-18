@@ -24,8 +24,8 @@ const RECROOT_LOGO = require('../../assets/images/recroot_logo.png');
 const PROFILE_IMAGE = require('../../assets/images/signup_icon.png');
 const visibilitySvg = require('../../assets/images/eye_look.png');
 const visibilityOffSvg = require('../../assets/images/eye_close.png');
-const SignupFlowScreen = ({ onComplete }) => {
-  const [step, setStep] = useState(1);
+const SignupFlowScreen = ({ onComplete,navigation }) => {
+    const [step, setStep] = useState(1);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -68,16 +68,8 @@ const SignupFlowScreen = ({ onComplete }) => {
   };
 
   const handleFinish = () => {
-    if (!currentPass || !newPass) {
-      Alert.alert('Error', 'Please fill both password fields');
-      return;
-    }
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      if (onComplete) onComplete();
-    }, 1000);
-  };
+  navigation.replace('BottomDash');
+};
 
   const getInputBorderColor = fieldName => {
     return focusedInput === fieldName ? '#006CD9' : '#ddd';
@@ -274,7 +266,6 @@ const SignupFlowScreen = ({ onComplete }) => {
             </TouchableOpacity>
 
             <Text style={styles.screenTitle}>Create New Password</Text>
-            <Text style={styles.subtitle}>Hi Diana,</Text>
 
             {/* Current Password with Eye Icon */}
             <View style={styles.passwordContainer}>
