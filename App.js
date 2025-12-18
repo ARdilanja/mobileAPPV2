@@ -10,6 +10,7 @@ import AppNavigation from './src/navigations/AppNavigation';
 export default function App() {
   const [loaderFinished, setLoaderFinished] = useState(false);
   const [currentScreen, setCurrentScreen] = useState('login');
+const [verificationData, setVerificationData] = useState({});
 
   if (!loaderFinished) {
     return (
@@ -26,7 +27,10 @@ export default function App() {
 
       {currentScreen === 'login' && (
         <LoginScreen
-          onLoginSuccess={() => setCurrentScreen('main')}
+           onLoginSuccess={(data) => {
+    setVerificationData(data); // { email, otpCode }
+    setCurrentScreen('verification');
+  }}
           onSignupPress={() => setCurrentScreen('signup')} 
         />
       )}
@@ -35,6 +39,14 @@ export default function App() {
         <SignupFlowScreen
           onComplete={() => setCurrentScreen('main')}
           onBackToLogin={() => setCurrentScreen('login')} // Optional: add back button if needed
+        />
+      )}
+      {currentScreen === 'verification' && (
+        <VerificationScreen
+          email={verificationData.email}
+    correctOtp={verificationData.otpCode}
+    onVerifySuccess={() => setCurrentScreen('main')}
+          // onBackToLogin={() => setCurrentScreen('login')} // Optional: add back button if needed
         />
       )}
 
