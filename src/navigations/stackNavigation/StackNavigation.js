@@ -80,6 +80,7 @@ const StackNavigation = () => {
         name="InterviewScreen"
         component={InterviewScreen}
         options={{ headerShown: true,
+        headerTitle:"Interview Report",
         headerTitleAlign:'center' }}
       />
     </Stack.Navigator>

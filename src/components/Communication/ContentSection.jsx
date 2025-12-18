@@ -6,26 +6,21 @@ const SCREEN_WIDTH = Dimensions.get("window").width;
 const CONTENT_WIDTH = Math.min(SCREEN_WIDTH - 32, 360);
 
 const SECTION_ORDER = [
-  "All",
   "Strengths",
   "Areas of Improvement",
   "Recommendations",
 ];
 
 export default function ContentSection({ activeFilter, feedback = {} }) {
-  if (!feedback || typeof feedback !== "object") {
-    return null;
-  }
-
   const sections =
     activeFilter === "All"
-      ? SECTION_ORDER.filter((s) => s !== "All")
+      ? SECTION_ORDER
       : [activeFilter];
 
   return (
     <View style={styles.wrapper}>
       {sections.map((key) => {
-        const text = feedback?.[key];
+        const text = feedback[key];
         if (!text) return null;
 
         return (
@@ -43,6 +38,7 @@ export default function ContentSection({ activeFilter, feedback = {} }) {
     </View>
   );
 }
+
 
 
 const styles = StyleSheet.create({
