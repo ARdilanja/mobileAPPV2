@@ -15,17 +15,11 @@ import { Fonts } from '../../constants/fonts';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const LoginScreen = ({ onLoginSuccess, onSignupPress }) => {
+const LoginScreen = ({ onLoginSuccess, onSignupPress,navigation }) => {
   const [email, setEmail] = useState('');
 
   const handleNext = () => {
-    if (email.trim() === '') {
-      alert('Please enter your email');
-      return;
-    }
-    console.log('useremail :>> ', email);
-
-    onLoginSuccess();
+    navigation.replace('BottomDash');
   };
 
   return (
@@ -67,9 +61,10 @@ const LoginScreen = ({ onLoginSuccess, onSignupPress }) => {
 
           <Text style={styles.signupText}>
             Don't have an Account?{' '}
-            <Text style={styles.signupLink} onPress={onSignupPress}>
+            <Text onPress={() => navigation.navigate('Signup')}>
               Sign up here
             </Text>
+
           </Text>
         </View>
       </ScrollView>
