@@ -12,68 +12,15 @@ import {
   ScrollView,
 } from 'react-native';
 import { Fonts } from '../../constants/fonts';
-import Api from '../../services/authApi'
-import axios from 'axios';
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const Base_Url="http://192.168.0.18:8000/api";
 
-const LoginScreen = ({ onLoginSuccess, onSignupPress }) => {
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+const LoginScreen = ({ onLoginSuccess, onSignupPress,navigation }) => {
   const [email, setEmail] = useState('');
 
-  // const handleNext = () => {
-  //   if (email.trim() === '') {
-  //     alert('Please enter your email');
-  //     return;
-  //   }
-  //   console.log('useremail :>> ', email);
-
-  //   onLoginSuccess();
-  // };
-
-  const handleNext = async () => {
-  if (email.trim() === '') {
-    alert('Please enter your email');
-    return;
-  }
-
-  try {
-    console.log('Api/auth/check-user', Base_Url)
-    const response = await axios.post(`${Base_Url}/auth/check-user`, {
-      email,
-    });
-
-    console.log('check-user response:', response.data);
- const user = response.data.updatedUser || response.data.existingUser;
-    if (!user) {
-      alert('User not found. Please sign up.');
-      onSignupPress();
-      return;
-    }
-
-    // 2. Generate OTP code (here just a random 4-digit for demo)
-    const otpCode = Math.floor(1000 + Math.random() * 9000);
-
-    // 3. Send OTP email
-    await axios.post(`${Base_Url}/auth/send-otp`, {
-      firstName: user.firstName || 'User',
-      email: email,
-      referral_code: otpCode
-    });
-
-    console.log('OTP sent:', otpCode);
-
-    // 4. Navigate to verification screen and pass email + OTP
-    onLoginSuccess({ email: user.email, otpCode });
-  } catch (error) {
-    console.error('Check user error:', error);
-
-    alert(
-      error?.response?.data?.message ||
-      'Something went wrong. Please try again.'
-    );
-  }
-};
-
+  const handleNext = () => {
+    navigation.replace('BottomDash');
+  };
 
   return (
     <KeyboardAvoidingView
@@ -114,9 +61,10 @@ const LoginScreen = ({ onLoginSuccess, onSignupPress }) => {
 
           <Text style={styles.signupText}>
             Don't have an Account?{' '}
-            <Text style={styles.signupLink} onPress={onSignupPress}>
+            <Text onPress={() => navigation.navigate('Signup')}>
               Sign up here
             </Text>
+
           </Text>
         </View>
       </ScrollView>

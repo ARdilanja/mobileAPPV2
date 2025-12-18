@@ -5,18 +5,34 @@ import CustomDrawerContent from '../../components/CustomDrawerContent'
 
 const Drawer = createDrawerNavigator();
 
+// const DrawerNavigation = () => {
+//     return (
+//         <Drawer.Navigator
+//             screenOptions={{ headerShown: false }}
+//             drawerContent={(props) => <CustomDrawerContent {...props} />}
+//         >
+//             <Drawer.Screen
+//                 name="MainApp"
+//                 component={StackNavigation}
+//             />
+//         </Drawer.Navigator>
+//     );
+// };
+
+
+
 const DrawerNavigation = () => {
-    return (
-        <Drawer.Navigator
-            screenOptions={{ headerShown: false }}
-            drawerContent={(props) => <CustomDrawerContent {...props} />}
-        >
-            <Drawer.Screen
-                name="MainApp"
-                component={StackNavigation}
-            />
-        </Drawer.Navigator>
-    );
+  return (
+    <Drawer.Navigator
+      screenOptions={{ headerShown: false }}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
+      <Drawer.Screen
+        name="MainApp"
+        component={StackNavigation}
+      />
+    </Drawer.Navigator>
+  );
 };
 
 export default DrawerNavigation;

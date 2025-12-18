@@ -1,17 +1,34 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import StackNavigation from './stackNavigation/StackNavigation'
-import DrawerNavigation from '../navigations/drawerNavigation/DrawerNavigation'
+// import { StyleSheet, Text, View } from 'react-native'
+// import React from 'react'
+// import { NavigationContainer } from '@react-navigation/native'
+// import StackNavigation from './stackNavigation/StackNavigation'
+// import DrawerNavigation from '../navigations/drawerNavigation/DrawerNavigation'
+
+// const AppNavigation = () => {
+//     return (
+//         <NavigationContainer>
+//            <DrawerNavigation />
+//         </NavigationContainer>
+//     )
+// }
+
+// export default AppNavigation
+
+// const styles = StyleSheet.create({})
+
+
+
+// src/navigations/AppNavigation.js
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import DrawerNavigation from './drawerNavigation/DrawerNavigation';
 
 const AppNavigation = () => {
-    return (
-        <NavigationContainer>
-           <DrawerNavigation />
-        </NavigationContainer>
-    )
-}
+  return (
+    <NavigationContainer>
+      <DrawerNavigation />
+    </NavigationContainer>
+  );
+};
 
-export default AppNavigation
-
-const styles = StyleSheet.create({})
+export default AppNavigation;

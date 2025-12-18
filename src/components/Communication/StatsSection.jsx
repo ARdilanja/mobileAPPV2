@@ -91,33 +91,59 @@ import LinearGradient from 'react-native-linear-gradient'
 
 const { width } = Dimensions.get('window')
 
-const StatsSection = () => {
+// const StatsSection = () => {
+//   return (
+//     <View style={styles.container}>
+//       <LinearGradient
+//         colors={['#E9F5FF', '#0087FF']}
+//         start={{ x: 0, y: 4 }}
+//         end={{ x: 1, y: 5 }}
+//         style={styles.card}
+//       >
+//         {/* Left content */}
+//         <View>
+//           <Text style={styles.title}>Communication Skills</Text>
+//           <Text style={styles.percentage}>80%</Text>
+//         </View>
+
+//         {/* Right image */}
+//         <View style={styles.iconWrapper}>
+//           <Image
+//             source={require('../../assets/images/Statsicon.png')} // update path
+//             style={styles.icon}
+//             resizeMode="contain"
+//           />
+//         </View>
+//       </LinearGradient>
+//     </View>
+//   )
+// }
+
+const StatsSection = ({ Overall_score }) => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#E9F5FF', '#0087FF']}
+        colors={["#E9F5FF", "#0087FF"]}
         start={{ x: 0, y: 4 }}
         end={{ x: 1, y: 5 }}
         style={styles.card}
       >
-        {/* Left content */}
         <View>
           <Text style={styles.title}>Communication Skills</Text>
-          <Text style={styles.percentage}>80%</Text>
+          <Text style={styles.percentage}>
+            {Math.round(Number(Overall_score || 0))}%
+          </Text>
         </View>
 
-        {/* Right image */}
-        <View style={styles.iconWrapper}>
-          <Image
-            source={require('../../assets/images/Statsicon.png')} // update path
-            style={styles.icon}
-            resizeMode="contain"
-          />
-        </View>
+        <Image
+          source={require("../../assets/images/Statsicon.png")}
+          style={styles.icon}
+        />
       </LinearGradient>
     </View>
-  )
-}
+  );
+};
+
 
 export default StatsSection
 const styles = StyleSheet.create({

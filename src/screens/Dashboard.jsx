@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
     View,
     Text,
@@ -11,63 +11,12 @@ import {
 import { Fonts } from "../constants/fonts";
 import Header from "../components/Header";
 import ProgressLineChart from "../components/ProgressLineChart";
-import axios from 'axios';
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+
 const screenWidth = Dimensions.get("window").width;
 
 export default function Dashboard() {
     const [selectedCard, setSelectedCard] = useState(null);
-    const [details, setDetails] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const API_BASE_URL = 'https://api.arinnovate.io/api';
-    const CANDIDATE_ID = '6672592aa821dc12db9fc26e';
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3MjU5MmFhODIxZGMxMmRiOWZjMjZlIiwiZW1haWwiOiJ1ZGVzaGluaWV0aGFyYW5nYUBnbWFpbC5jb20iLCJpYXQiOjE3NjU5NTc1MzMsImV4cCI6MTc2NjA0MzkzM30.e4_Nr55U0WIumEt6K56GTa7VqLFqQdTKP321UuieBQY'
-    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY2NzI1OTJhYTgyMWRjMTJkYjlmYzI2ZSIsImVtYWlsIjoidWRlc2hpbmlldGhhcmFuZ2FAZ21haWwuY29tIiwicm9sZSI6IkNhbmRpZGF0ZSJ9LCJpYXQiOjE3NjU5NTc1MjgsImV4cCI6MTc2NjA0MzkyOH0.RXpBkvMp1n5GcZXd05dW3sSnP_FFZP2ESpAtO-2HF1M"
-    useEffect(() => {
-        fetchStudDetailsInterview();
-    }, []);
-
-    const fetchStudDetailsInterview = async () => {
-        try {
-            setLoading(true);
-            console.log('process.env.API_BASE_URL:', API_BASE_URL)
-            // const token = await AsyncStorage.getItem("token");
-            // const user = await AsyncStorage.getItem("user");
-
-            if (!token || !user) {
-                console.log("No auth data found");
-                return;
-            }
-
-            const parsedUser = JSON.parse(user);
-            const response = await axios.post(
-                `${API_BASE_URL}/getStudentDetailsInterview`,
-                {
-                    id: CANDIDATE_ID, // ✅ dynamic candidate id
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`, // ✅ CORRECT WAY
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-
-            console.log('result', response.data);
-
-            if (response.data?.data) {
-                setDetails(response.data.data);
-            }
-        } catch (error) {
-            console.error(
-                'API Error:',
-                error.response?.data || error.message
-            );
-        } finally {
-            setLoading(false);
-        }
-    };
-
     return (
         <ScrollView style={{ backgroundColor: 'white' }} showsVerticalScrollIndicator={false}>
             {/* <Header title="Dashboard" /> */}
@@ -243,45 +192,50 @@ const InfoCard = ({ title, value, color, icon }) => (
     </View>
 );
 
-const InterviewCard = ({ name, role, logo, isSelected, onPress }) => (
-    <TouchableOpacity
-        activeOpacity={0.85}
-        onPress={onPress}
-        style={[
-            styles.interviewCard,
-            isSelected && styles.selectedCard
-        ]}
-    >
-        {/* LEFT */}
-        <View style={styles.interviewLeft}>
-            <View style={styles.logoWrapper}>
-                <Image source={logo} style={styles.companyLogo} resizeMode="contain" />
-            </View>
-
-            <View>
-                <Text style={styles.company}>{name}</Text>
-                <Text style={styles.role}>{role}</Text>
-            </View>
-        </View>
-
-        {/* RIGHT BUTTON */}
-        <View
+const InterviewCard = ({ name, role, logo, isSelected, onPress }) => {
+    const navigation = useNavigation();
+    return (
+        <TouchableOpacity
+            activeOpacity={0.85}
+            onPress={onPress}
             style={[
-                styles.button,
-                isSelected && styles.selectedButton
+                styles.interviewCard,
+                isSelected && styles.selectedCard
             ]}
         >
-            <Text
-                style={[
-                    styles.buttonText,
-                    isSelected && styles.selectedButtonText
-                ]}
-            >
-                View Report
-            </Text>
-        </View>
-    </TouchableOpacity>
-);
+            {/* LEFT */}
+            <View style={styles.interviewLeft}>
+                <View style={styles.logoWrapper}>
+                    <Image source={logo} style={styles.companyLogo} resizeMode="contain" />
+                </View>
+
+                <View>
+                    <Text style={styles.company}>{name}</Text>
+                    <Text style={styles.role}>{role}</Text>
+                </View>
+            </View>
+
+            {/* RIGHT BUTTON */}
+            <TouchableOpacity onPress={() =>navigation.navigate('InterviewScreen')}>
+                <View
+                    style={[
+                        styles.button,
+                        isSelected && styles.selectedButton
+                    ]}
+                >
+                    <Text
+                        style={[
+                            styles.buttonText,
+                            isSelected && styles.selectedButtonText
+                        ]}
+                    >
+                        View Report
+                    </Text>
+                </View>
+            </TouchableOpacity>
+        </TouchableOpacity>
+    );
+}
 
 
 /* ---------------- STYLES ---------------- */

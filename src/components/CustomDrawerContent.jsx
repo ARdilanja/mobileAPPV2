@@ -168,7 +168,9 @@ const CustomDrawerContent = ({ navigation }) => {
                 <DrawerItem
                     icon={require('../assets/icons/interview.png')}
                     label="Interviews"
-                    onPress={() => navigation.navigate('StartInterview')}
+                    onPress={() => navigation.navigate('MainApp', {
+                        screen: 'MicCheckScreen',
+                    })}
                 />
 
                 <DrawerItem
@@ -192,8 +194,8 @@ const CustomDrawerContent = ({ navigation }) => {
                     label="Delete My Account"
                     // danger
                     onPress={() => navigation.navigate('MainApp', {
-  screen: 'DeleteAccountScreen',
-})}
+                        screen: 'DeleteAccountScreen',
+                    })}
                 />
             </View>
 
@@ -252,16 +254,16 @@ const styles = StyleSheet.create({
 
     name: {
         fontSize: 16,
-        lineHeight:26,
-        fontFamily:Fonts.SemiBold,
+        lineHeight: 26,
+        fontFamily: Fonts.SemiBold,
         // fontWeight: '600',
         color: '#111827',
     },
 
     role: {
-         fontSize: 14,
-        lineHeight:26,
-        fontFamily:Fonts.Bold,
+        fontSize: 14,
+        lineHeight: 26,
+        fontFamily: Fonts.Bold,
         color: '#5C6363',
         marginTop: 2,
     },
@@ -291,21 +293,21 @@ const styles = StyleSheet.create({
     statNumber: {
         color: '#fff',
         fontSize: 16,
-        fontFamily:Fonts.Bold,
-        lineHeight:22,
+        fontFamily: Fonts.Bold,
+        lineHeight: 22,
     },
 
     statLabel: {
         fontSize: 13,
-        fontFamily:Fonts.Regular,
-        lineHeight:22,
+        fontFamily: Fonts.Regular,
+        lineHeight: 22,
         textAlign: 'center',
         color: '#374151',
     },
 
     menuSection: {
         paddingBottom: 24,
-         borderBottomWidth: 1,
+        borderBottomWidth: 1,
         borderColor: '#EDEFEF',
     },
 
@@ -325,8 +327,8 @@ const styles = StyleSheet.create({
 
     menuText: {
         fontSize: 16,
-         fontFamily:Fonts.Regular,
-        lineHeight:26,
+        fontFamily: Fonts.Regular,
+        lineHeight: 26,
         color: '#111827',
     },
 
@@ -349,7 +351,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
         marginTop: 'auto',
-         borderTopWidth: 1,
+        borderTopWidth: 1,
         borderColor: '#EDEFEF',
     },
 
