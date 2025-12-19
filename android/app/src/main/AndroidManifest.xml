@@ -6,6 +6,7 @@ package="com.recroot_app">
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_DOCUMENTS" />
     
     <!-- OPTIONAL BUT RECOMMENDED FOR BLUETOOTH HEADSETS -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
