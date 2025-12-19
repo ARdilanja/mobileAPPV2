@@ -6,7 +6,6 @@ import {
     Pressable,
     Image,
     SafeAreaView,
-    StatusBar,
 } from "react-native";
 
 import {
@@ -41,7 +40,6 @@ export default function CameraCheckScreen({ navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
 
             {/* HEADER */}
             <View style={styles.header}>

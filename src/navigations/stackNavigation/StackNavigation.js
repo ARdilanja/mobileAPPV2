@@ -113,6 +113,7 @@ import LiveRoomScreen from '../../screens/LiveRoomScreen';
 import MicCheckScreen from '../../screens/MicCheckScreen';
 import CameraCheckScreen from '../../screens/CameraCheckScreen';
 import InterviewScreen from '../../screens/InterviewScreen';
+import VerificationScreen from '../../screens/auth/VerificationScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -130,6 +131,10 @@ const StackNavigation = () => {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
+      />
+      <Stack.Screen
+        name="VerificationScreen"
+        component={VerificationScreen}
       />
 
       {/* 3️⃣ Signup */}

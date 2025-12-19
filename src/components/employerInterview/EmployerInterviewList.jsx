@@ -3,6 +3,7 @@ import { View, FlatList , Text, TouchableOpacity } from 'react-native';
 import InterviewCard from './InterviewCard';
 import MobileUnsupportedModal from './MobileUnsupportedModal';
 import infosys from '../../assets/images/infosys.jpg'
+import { API_BASE_URL } from '../../config/api';
 const EmployerInterviewList = ({ onShowUnsupported , interviews=[]}) => {
   console.log('interviews', interviews)
   // const data = [
@@ -108,7 +109,7 @@ const EmployerInterviewList = ({ onShowUnsupported , interviews=[]}) => {
           const logoPath = item?.companyId?.companyLogo?.logo;
 
           const logoUrl = logoPath
-            ? `${process.env.API_BASE_URL}/openProfpic?photo=${logoPath}`
+            ? `${API_BASE_URL}/openProfpic?photo=${logoPath}`
             : null;
           
            return (

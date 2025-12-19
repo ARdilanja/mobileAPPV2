@@ -20,6 +20,7 @@ const LoginScreen = ({ onLoginSuccess, onSignupPress,navigation }) => {
 
   const handleNext = () => {
     navigation.replace('BottomDash');
+    // navigation.replace('VerificationScreen');
   };
 
   return (
