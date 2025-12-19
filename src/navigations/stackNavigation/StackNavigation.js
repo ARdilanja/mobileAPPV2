@@ -114,7 +114,6 @@ import MicCheckScreen from '../../screens/MicCheckScreen';
 import CameraCheckScreen from '../../screens/CameraCheckScreen';
 import InterviewScreen from '../../screens/InterviewScreen';
 import CreateRoomScreen from '../../screens/CreateRoomScreen';
-
 import VerificationScreen from '../../screens/auth/VerificationScreen';
 
 const Stack = createNativeStackNavigator();
@@ -206,16 +205,6 @@ const StackNavigation = () => {
         component={LiveRoomScreen}
         options={{ headerShown: false }}
       />
-
-      {/* 5️⃣ Other Screens */}
-      <Stack.Screen name="DeleteAccountScreen" component={DeleteAccountScreen} />
-      <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
-      <Stack.Screen name="EmployerInterviewScreen" component={EmployerInterviewScreen} />
-      <Stack.Screen name="CompletedInterviewsScreen" component={CompletedInterviewsScreen} />
-      <Stack.Screen name="Dashboard" component={Dashboard} />
-      <Stack.Screen name="MicCheckScreen" component={MicCheckScreen} />
-      <Stack.Screen name="CameraCheckScreen" component={CameraCheckScreen} />
-      <Stack.Screen name="LiveRoomScreen" component={LiveRoomScreen} />
       <Stack.Screen
         name="InterviewScreen"
         component={InterviewScreen}
