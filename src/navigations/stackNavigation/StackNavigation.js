@@ -14,6 +14,7 @@ import LiveRoomScreen from '../../screens/LiveRoomScreen'
 import MicCheckScreen from '../../screens/MicCheckScreen'
 import CameraCheckScreen from '../../screens/CameraCheckScreen'
 import InterviewScreen from '../../screens/InterviewScreen';
+import CreateRoomScreen from '../../screens/CreateRoomScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -59,6 +60,11 @@ const StackNavigation = () => {
       <Stack.Screen
         name="Dashboard"
         component={Dashboard}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CreateRoomScreen"
+        component={CreateRoomScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
