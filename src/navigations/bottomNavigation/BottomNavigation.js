@@ -27,24 +27,27 @@ const BottomNavigation = () => {
         name="StartInterview"
         component={EmployerInterviewScreen}
         options={{
-          headerShown:false,
-          title: 'Start Interview',
+          headerShown:true,
+          title: 'Interviews',
+          headerTitleAlign:'center',
         }}
       />
       <Tab.Screen
         name="CompletedInterview"
         component={CompletedInterviewsScreen}
         options={{
-          headerShown:false,
+          headerShown:true,
           title: 'Completed Interview',
+          headerTitleAlign:'center',
         }}
       />
       <Tab.Screen
         name="MyProfile"
         component={EditProfileScreen}
        options={{
-          headerShown:false,
+          headerShown:true,
           title: 'MyProfile',
+          headerTitleAlign:'center'
         }}
       />
     </Tab.Navigator>

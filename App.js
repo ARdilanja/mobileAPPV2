@@ -1,13 +1,61 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import AppNavigation from './src/navigations/AppNavigation'
+// // App.js (or your main App file)
+// import React, { useState } from 'react';
+// import { SafeAreaView, StatusBar } from 'react-native';
+// import LoginLoaderPage from './src/screens/LoginLoaderPage';
+// import LoginScreen from './src/screens/auth/LoginScreen';
+// import VerificationScreen from './src/screens/auth/VerificationScreen';
+// import SignupFlowScreen from './src/screens/auth/SignupFlowScreen';
+// import AppNavigation from './src/navigations/AppNavigation';
 
-const App = () => {
+// export default function App() {
+//   const [loaderFinished, setLoaderFinished] = useState(false);
+//   const [currentScreen, setCurrentScreen] = useState('login');
+
+//   if (!loaderFinished) {
+//     return (
+//       <SafeAreaView style={{ flex: 1 }}>
+//         <StatusBar barStyle="dark-content" backgroundColor="#EAF4FF" />
+//         <LoginLoaderPage onFinish={() => setLoaderFinished(true)} />
+//       </SafeAreaView>
+//     );
+//   }
+
+//   return (
+//     <SafeAreaView style={{ flex: 1 }}>
+//       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+
+//       {currentScreen === 'login' && (
+//         <LoginScreen
+//           onLoginSuccess={() => setCurrentScreen('main')}
+//           onSignupPress={() => setCurrentScreen('signup')} 
+//         />
+//       )}
+
+//       {currentScreen === 'signup' && (
+//         <SignupFlowScreen
+//           onComplete={() => setCurrentScreen('main')}
+//           onBackToLogin={() => setCurrentScreen('login')} // Optional: add back button if needed
+//         />
+//       )}
+
+//       {currentScreen === 'main' && <AppNavigation />}
+//     </SafeAreaView>
+//   );
+// }
+
+
+// App.js
+import React from 'react';
+import { StatusBar } from 'react-native';
+import AppNavigation from './src/navigations/AppNavigation';
+
+export default function App() {
   return (
-    <AppNavigation />
-  )
+    <>
+      <AppNavigation />
+    </>
+  );
 }
-export default App;
 
 
 // import React from "react";

@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import { Fonts } from "../constants/fonts";
 import Header from "../components/Header";
-import GoBack from "../components/GoBack";
 // import CheckBox from "@react-native-community/checkbox";
 import binIcon from "../assets/images/bin.png";
 import closeIcon from "../assets/images/Vector-cross.png";
@@ -54,7 +53,6 @@ const DeleteAccountScreen = () => {
     return (
 
         <View style={styles.container}>
-            {/* <GoBack title="Delete Account" /> */}
             <Text style={styles.subtitle}>
                 Please let us know why you're deleting your Recroot Lea account
             </Text>

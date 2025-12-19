@@ -66,20 +66,82 @@ const Communication = () => {
 
   if (!report) return null;
 
+  // ✅ MAP API → Percentage cards
+  const percentageData = [
+    {
+      key: "Fluency & Coherence",
+      percentage: report.Fluency_and_coherence_score ?? 0,
+      icon: require("../../assets/images/card1.png"),
+      color: "#AC0D6C",
+    },
+    {
+      key: "Lexical Resource",
+      percentage: report.Lexical_resource_score ?? 0,
+      icon: require("../../assets/images/card2.png"),
+      color: "#8329E3",
+    },
+    {
+      key: "Grammatical Range & Accuracy",
+      percentage: report.Grammatical_Range_and_Accuracy_score ?? 0,
+      icon: require("../../assets/images/card3.png"),
+      color: "#1151EB",
+    },
+    {
+      key: "Pronunciation",
+      percentage: report.Pronounciation_score ?? 0,
+      icon: require("../../assets/images/card4.png"),
+      color: "#FF4B4A",
+    },
+  ];
+
+  // ✅ MAP API → Content filters
+ const buildTextFromObject = (obj) => {
+  if (!obj || typeof obj !== "object") return "";
+
+  return Object.entries(obj)
+    .map(([title, points]) => {
+      if (!Array.isArray(points)) return "";
+      return `• ${title}\n${points.map(p => `- ${p}`).join("\n")}`;
+    })
+    .join("\n\n");
+};
+
+const strengthsText = buildTextFromObject(report.overAllStrengths);
+const improvementText = buildTextFromObject(report.overAllWeaknesses);
+
+const recommendationsText =
+  report.Comm_Overall_Recommendation?.[0]
+    ? [
+        ...(report.Comm_Overall_Recommendation[0].strengths || []),
+        ...(report.Comm_Overall_Recommendation[0].weaknesses || []),
+      ].map(item => `• ${item}`).join("\n")
+    : "";
+
+const feedback = {
+  Strengths: strengthsText,
+  "Areas of Improvement": improvementText,
+  Recommendations: recommendationsText,
+};
+
+
   return (
     <View>
-      <StatsSection score={report.communicationScore} />
+      {/* OVERALL SCORE */}
+      <StatsSection Overall_score={report.Overall_score} />
 
-      <PercentageCard data={report.breakdown} />
+      {/* PERCENTAGE CARDS */}
+      <PercentageCard data={percentageData} />
 
+      {/* FILTERS */}
       <CommunicationFilters
         activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
       />
 
+      {/* FILTERED CONTENT */}
       <ContentSection
         activeFilter={activeFilter}
-        feedback={report.feedback}
+        feedback={feedback}
       />
     </View>
   );

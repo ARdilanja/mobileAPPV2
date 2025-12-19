@@ -1,118 +1,154 @@
 import React from "react";
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 export default function Pagination({
-    activePage,
-    totalPages,
-    onPageChange,
+  activePage = 1,
+  totalPages = 1,
+  onPageChange,
 }) {
-    return (
-        <View style={styles.wrapper}>
-            <View style={styles.container}>
-                {/* LEFT ARROW */}
-                <TouchableOpacity
-                    onPress={() =>
-                        onPageChange(Math.max(activePage - 1, 1))
-                    }
-                >
-                    <Text style={styles.arrow}>‹</Text>
-                </TouchableOpacity>
+  if (totalPages <= 1) return null;
 
-                {/* PAGE NUMBERS */}
-                {Array.from({ length: totalPages }).map((_, i) => {
-                    const page = i + 1;
-                    const isActive = page === activePage;
+  const MAX_VISIBLE = 5;
 
-                    return (
-                        <TouchableOpacity
-                            key={page}
-                            style={[
-                                styles.page,
-                                isActive && styles.activePage,
-                            ]}
-                            onPress={() => onPageChange(page)}
-                        >
-                            <Text
-                                style={[
-                                    styles.pageText,
-                                    isActive && styles.activePageText,
-                                ]}
-                            >
-                                {page}
-                            </Text>
-                        </TouchableOpacity>
-                    );
-                })}
+  let start = Math.max(
+    1,
+    activePage - Math.floor(MAX_VISIBLE / 2)
+  );
+  let end = start + MAX_VISIBLE - 1;
 
-                {/* RIGHT ARROW */}
-                <TouchableOpacity
-                    onPress={() =>
-                        onPageChange(
-                            Math.min(activePage + 1, totalPages)
-                        )
-                    }
-                >
-                    <Text style={styles.arrow}>›</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
+  if (end > totalPages) {
+    end = totalPages;
+    start = Math.max(1, end - MAX_VISIBLE + 1);
+  }
+
+  const visiblePages = [];
+  for (let i = start; i <= end; i++) {
+    visiblePages.push(i);
+  }
+
+  return (
+    <View style={styles.wrapper}>
+      <View style={styles.container}>
+        {/* LEFT ARROW */}
+        <TouchableOpacity
+          disabled={activePage === 1}
+          onPress={() => onPageChange(activePage - 1)}
+          style={styles.arrowBtn}
+        >
+          <Text
+            style={[
+              styles.arrow,
+              activePage === 1 && styles.disabled,
+            ]}
+          >
+            ‹
+          </Text>
+        </TouchableOpacity>
+
+        {/* PAGE NUMBERS */}
+        {visiblePages.map((page) => {
+          const isActive = page === activePage;
+
+          return (
+            <TouchableOpacity
+              key={page}
+              style={[
+                styles.page,
+                isActive && styles.activePage,
+              ]}
+              onPress={() => onPageChange(page)}
+            >
+              <Text
+                style={[
+                  styles.pageText,
+                  isActive && styles.activePageText,
+                ]}
+              >
+                {page}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+
+        {/* RIGHT ARROW */}
+        <TouchableOpacity
+          disabled={activePage === totalPages}
+          onPress={() => onPageChange(activePage + 1)}
+          style={styles.arrowBtn}
+        >
+          <Text
+            style={[
+              styles.arrow,
+              activePage === totalPages && styles.disabled,
+            ]}
+          >
+            ›
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 }
 
+
 const styles = StyleSheet.create({
-    /* OUTER WRAPPER (for floating) */
-    wrapper: {
-        alignItems: "center",
-    },
+  wrapper: {
+    alignItems: "center",
+    marginVertical: 16,
+  },
 
-    /* PILL CONTAINER */
-    container: {
-        flexDirection: "row",
-        alignItems: "center",
-        paddingHorizontal: 14,
-        paddingVertical: 8,
-        backgroundColor: "#FFFFFF",
-        borderRadius: 24,
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    paddingHorizontal: 12,
+    height: 48,
 
-        /* SHADOW */
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.1,
-        shadowRadius: 16,
-        elevation: 8, // Android shadow
-    },
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.1,
+    shadowRadius: 16,
+    elevation: 8,
+  },
 
-    arrow: {
-        fontSize: 25,
-        color: "#787878",
-        paddingHorizontal: 6,
-    },
+  arrowBtn: {
+    width: 36,
+    height: 36,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
-    page: {
-        width: 28,
-        height: 28,
-        borderRadius: 14,
-        alignItems: "center",
-        justifyContent: "center",
-        marginHorizontal: 4,
-    },
+  arrow: {
+    fontSize: 22,
+    color: "#787878",
+  },
 
-    activePage: {
-        backgroundColor: "#0069FF",
-    },
+  page: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 4,
+  },
 
-    pageText: {
-        fontSize: 12,
-        color: "#2D2D2D",
-    },
+  activePage: {
+    backgroundColor: "#0069FF",
+  },
 
-    activePageText: {
-        color: "#FFFFFF",
-        fontWeight: "600",
-    },
+  pageText: {
+    fontSize: 13,
+    color: "#2D2D2D",
+  },
+
+  activePageText: {
+    color: "#FFFFFF",
+    fontWeight: "600",
+  },
+
+  disabled: {
+    opacity: 0.3,
+  },
 });
+

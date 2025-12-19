@@ -2,7 +2,6 @@
  * @format
  */
 
-
 import 'react-native-get-random-values';
 import { registerGlobals } from '@livekit/react-native';
 

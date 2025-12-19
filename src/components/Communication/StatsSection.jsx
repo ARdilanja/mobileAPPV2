@@ -119,16 +119,20 @@ const { width } = Dimensions.get('window')
 //   )
 // }
 
-const StatsSection = ({ score }) => {
+const StatsSection = ({ Overall_score }) => {
   return (
     <View style={styles.container}>
       <LinearGradient
         colors={["#E9F5FF", "#0087FF"]}
+        start={{ x: 0, y: 4 }}
+        end={{ x: 1, y: 5 }}
         style={styles.card}
       >
         <View>
           <Text style={styles.title}>Communication Skills</Text>
-          <Text style={styles.percentage}>{score}%</Text>
+          <Text style={styles.percentage}>
+            {Math.round(Number(Overall_score || 0))}%
+          </Text>
         </View>
 
         <Image
@@ -139,6 +143,7 @@ const StatsSection = ({ score }) => {
     </View>
   );
 };
+
 
 export default StatsSection
 const styles = StyleSheet.create({

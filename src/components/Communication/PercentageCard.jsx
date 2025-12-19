@@ -253,8 +253,8 @@ const PercentageItem = ({
 //   );
 // };
 
-const PercentageCard = ({ data }) => {
-  const [selectedCard, setSelectedCard] = useState(null);
+const PercentageCard = ({ data = [] }) => {
+  const [selectedCard, setSelectedCard] = useState(0);
 
   return (
     <View style={styles.container}>
@@ -268,8 +268,8 @@ const PercentageCard = ({ data }) => {
           <PercentageItem
             title={item.key}
             percentage={item.percentage}
-            icon={require("../../assets/images/card1.png")}
-            cardColor="#1151EB"
+            icon={item.icon}
+            cardColor={item.color}
             isActive={selectedCard === index}
             onPress={() => setSelectedCard(index)}
           />
@@ -278,6 +278,7 @@ const PercentageCard = ({ data }) => {
     </View>
   );
 };
+
 
 export default PercentageCard;
 

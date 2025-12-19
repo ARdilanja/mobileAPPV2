@@ -1,22 +1,21 @@
 import React, { useEffect } from "react";
-import { View, Text, Image, StyleSheet, StatusBar } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
-export default function LoginLoaderPage({ onFinish }) {
+export default function LoginLoaderPage({ onFinish,navigation }) {
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (onFinish) onFinish(); // navigate to InterviewScreen
-    }, 2500);
+  const timer = setTimeout(() => {
+    navigation.replace('Login');
+  }, 2500);
 
-    return () => clearTimeout(timer);
-  }, []);
+  return () => clearTimeout(timer);
+}, []);
 
   return (
     <LinearGradient
       colors={["#EAF4FF", "#B0D1FF"]} // light to slightly darker gradient
       style={styles.container}
     >
-      <StatusBar barStyle="dark-content" backgroundColor="#EAF4FF" />
 
       <Image
         source={require("../assets/images/Lea.png")}
