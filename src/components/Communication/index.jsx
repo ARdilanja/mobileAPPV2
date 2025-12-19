@@ -37,7 +37,7 @@ import ContentSection from "./ContentSection";
 import CommunicationFilters from "./CommunicationFilters";
 
 const REPORT_API =
-  "https://api.arinnovate.io/api/getTestReportcand/690992d53679680155cb6923";
+  "https://api.arinnovate.io/api/getTestReportcand/690c41c310dd9af2591d89de";
 
 const Communication = () => {
   const [activeFilter, setActiveFilter] = useState("All");
