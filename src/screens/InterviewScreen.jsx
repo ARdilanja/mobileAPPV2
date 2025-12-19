@@ -192,7 +192,8 @@ export default function InterviewScreen() {
   const fetchInterview = async () => {
     try {
       setLoading(true);
-      const res = await fetch("https://api.arinnovate.io/api/getTestReportcand/690992d53679680155cb6923");
+      // const res = await fetch("https://api.arinnovate.io/api/getTestReportcand/690992d53679680155cb6923");
+      const res = await fetch("https://api.arinnovate.io/api/getTestReportcand/690c41c310dd9af2591d89de");
       const json = await res.json();
       setInterviewData(json);
     } catch (e) {

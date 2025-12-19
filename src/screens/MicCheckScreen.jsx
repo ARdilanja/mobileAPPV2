@@ -96,7 +96,8 @@ import { request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import SuccessModal from "../components/SuccessModal";
 import { Fonts } from "../constants/fonts";
 
-export default function MicCheckScreen({ navigation }) {
+export default function MicCheckScreen({ navigation, route }) {
+    const { roomName } = route.params;
     const [status, setStatus] = useState("idle");
     // idle | listening | success
 
@@ -201,7 +202,7 @@ export default function MicCheckScreen({ navigation }) {
                 ) : (
                     <Pressable
                         style={styles.circleBtn}
-                        onPress={() => navigation.navigate("CameraCheckScreen")}
+                        onPress={() => navigation.navigate("CameraCheckScreen", { roomName })}
                     >
                         <Image
                             source={require("../assets/images/Next_arrow.png")}

@@ -125,7 +125,9 @@ export default function SubjectExpertise({
 }) {
   if (!data) return null;
 
-  const { questionsList = [], TestsimilarList = [] } = data;
+  // const { questionsList = [], TestsimilarList = [] } = data;
+  const { questionsList = [], TestsimilarList = [], answerList = [] } = data;
+
   const currentQuestion = questionsList[activePage - 1];
   if (!currentQuestion) return null;
 
@@ -136,19 +138,56 @@ export default function SubjectExpertise({
     );
   }, [currentQuestion, TestsimilarList]);
 
+
+  /* MATCH ANSWERLIST */
+  const matchedAnswer = useMemo(() => {
+  return answerList.find(
+    (item) => item.questionId === currentQuestion._id
+  )?.result || null;
+}, [currentQuestion, answerList]);
+
   /* BUILD CONTENT DATA */
+  // const contentData = useMemo(() => ({
+  //   "Ideal Answer": currentQuestion?.answer || "",
+  //   Strengths: matchedTestSimilar?.strengths || "",
+  //   "Areas of Improvement":
+  //     matchedTestSimilar?.candidate_answer_analysis
+  //       ? Object.values(
+  //           matchedTestSimilar.candidate_answer_analysis
+  //         ).join("\n\n")
+  //       : "",
+  //   Recommendations:
+  //     matchedTestSimilar?.recommendations || "",
+  // }), [currentQuestion, matchedTestSimilar]);
+
+
   const contentData = useMemo(() => ({
-    "Ideal Answer": currentQuestion?.answer || "",
-    Strengths: matchedTestSimilar?.strengths || "",
-    "Areas of Improvement":
-      matchedTestSimilar?.candidate_answer_analysis
-        ? Object.values(
-            matchedTestSimilar.candidate_answer_analysis
-          ).join("\n\n")
-        : "",
-    Recommendations:
-      matchedTestSimilar?.recommendations || "",
-  }), [currentQuestion, matchedTestSimilar]);
+  // (optional, keep if you want)
+  "Ideal Answer": currentQuestion?.answer || "",
+
+  // 🔵 From TestsimilarList
+  "Areas of Improvement":
+    matchedTestSimilar?.candidate_answer_analysis
+      ? Object.values(
+          matchedTestSimilar.candidate_answer_analysis
+        )
+          .filter(Boolean)
+          .join("\n\n")
+      : "",
+
+  // 🔵 From answerList (THIS FIXES IT)
+  "Recommendations":
+    matchedAnswer?.recommendations?.length
+      ? matchedAnswer.recommendations
+          .filter(Boolean)
+          .join("\n\n")
+      : "",
+}), [
+  currentQuestion,
+  matchedTestSimilar,
+  matchedAnswer,
+]);
+
 
   /* AVAILABLE FILTERS ONLY */
   const availableFilters = useMemo(() => {
