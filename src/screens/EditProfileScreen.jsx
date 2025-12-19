@@ -977,7 +977,7 @@ const EditProfileScreen = () => {
     try {
       // Prepare the payload according to your API requirements
       const payload = {
-        id: userId, // Assuming the API needs user ID
+        _id: userId, // Assuming the API needs user ID
         firstName: firstName.trim(),
         lastName: lastName.trim(),
         email: email.trim(),
@@ -989,7 +989,7 @@ const EditProfileScreen = () => {
       };
 
       const response = await fetch(UPDATE_API, {
-        method: 'POST', // or 'PUT' depending on your API
+        method: 'PUT', // or 'PUT' depending on your API
         headers: {
           'Content-Type': 'application/json',
           // Add any other headers your API requires (like Authorization)
