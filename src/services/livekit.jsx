@@ -28,3 +28,47 @@ export async function fetchLiveKitToken({ roomName, identity }) {
     }
 }
 
+export async function startEgressRecording({ roomName, interviewId }) {
+    try {
+        console.log("🎬 [MOBILE] Start egress request");
+
+        const res = await fetch(`${API_BASE}/api/livekit/egress/start`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ roomName, interviewId }),
+        });
+
+        const data = await res.json();
+        console.log("📤 [MOBILE] Start egress response:", data);
+
+        if (!data.ok) throw new Error("Start egress failed");
+
+        return data.egressId;
+    } catch (err) {
+        console.error("❌ [MOBILE] Start egress error:", err);
+        throw err;
+    }
+}
+
+/**
+ * STOP EGRESS
+ */
+export async function stopEgressRecording(egressId) {
+    try {
+        console.log("🛑 [MOBILE] Stop egress request:", egressId);
+
+        const res = await fetch(`${API_BASE}/api/livekit/egress/stop`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ egressId }),
+        });
+
+        const data = await res.json();
+        console.log("📤 [MOBILE] Stop egress response:", data);
+
+        if (!data.ok) throw new Error("Stop egress failed");
+    } catch (err) {
+        console.error("❌ [MOBILE] Stop egress error:", err);
+        throw err;
+    }
+}

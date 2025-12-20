@@ -10,13 +10,19 @@ import {
   KeyboardAvoidingView,
   Platform,
   TextInput,
+  Alert,
 } from 'react-native';
 import { Fonts } from '../../constants/fonts';
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from 'axios';
+import { API_BASE } from '../../config/api';
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const VerificationScreen = ({ onVerifySuccess }) => {
+const VerificationScreen = ({ route, navigation }) => {
+  const { email, otpCode } = route.params;
+  console.log(email, otpCode);
   const [code, setCode] = useState(['', '', '', '']);
+  const [loading, setLoading] = useState(false);
   const inputs = useRef([]);
 
   const handleCodeChange = (text, index) => {
@@ -30,15 +36,63 @@ const VerificationScreen = ({ onVerifySuccess }) => {
     }
   };
 
-  const handleSignIn = () => {
+  const handleVerify = async () => {
     const enteredCode = code.join('');
+
     if (enteredCode.length !== 4) {
-      alert('Please enter the full 4-digit code');
+      Alert.alert('Error', 'Please enter the 4-digit OTP');
       return;
     }
-    console.log('otp :>> ', enteredCode);
-    onVerifySuccess();
+
+    // ✅ Frontend OTP check (optional)
+    if (String(enteredCode) !== String(otpCode)) {
+      Alert.alert('Invalid OTP', 'Incorrect OTP. Please try again.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // ✅ LOGIN WITHOUT PASSWORD (GET TOKEN)
+      const response = await axios.post(
+        `${API_BASE}/auth/login-no-password`,
+        { email }
+      );
+      console.log('response', response)
+      const { token, refreshToken, User } = response.data;
+
+      if (!token || !refreshToken) {
+        throw new Error('Token not received from server');
+      }
+
+      // ✅ Store tokens & user
+      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('refreshToken', refreshToken);
+      await AsyncStorage.setItem('user', JSON.stringify(User));
+      const storedToken = await AsyncStorage.getItem('token');
+      const storedRefreshToken = await AsyncStorage.getItem('refreshToken');
+      const storedUser = await AsyncStorage.getItem('user');
+
+      console.log('storedToken:', storedToken);
+      console.log('storedRefreshToken:', storedRefreshToken);
+      console.log('storedUser:', JSON.parse(storedUser));
+
+      console.log('Auth data saved successfully');
+
+      navigation.navigate("BottomDash")
+
+    } catch (error) {
+      console.error('Login error:', error);
+      Alert.alert(
+        'Login Failed',
+        error?.response?.data?.message || 'Something went wrong'
+      );
+    } finally {
+      setLoading(false);
+    }
   };
+
+
 
   return (
     <KeyboardAvoidingView
@@ -74,8 +128,8 @@ const VerificationScreen = ({ onVerifySuccess }) => {
           ))}
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-          <Text style={styles.buttonText}>Sign in</Text>
+        <TouchableOpacity style={styles.button} onPress={handleVerify}>
+          <Text style={styles.buttonText}>{loading ? 'Verifying...' : 'Sign in'}</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

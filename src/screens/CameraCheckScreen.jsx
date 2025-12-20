@@ -6,7 +6,6 @@ import {
     Pressable,
     Image,
     SafeAreaView,
-    StatusBar,
 } from "react-native";
 
 import {
@@ -21,17 +20,17 @@ import { LIVEKIT_URL } from "../config/api";
 import { fetchLiveKitToken } from "../services/livekit";
 import { Fonts } from "../constants/fonts";
 
-/* =========================
-   CAMERA CHECK SCREEN
-========================= */
-export default function CameraCheckScreen({ navigation }) {
+
+export default function CameraCheckScreen({ navigation, route }) {
+    const { roomName } = route.params;
     const [token, setToken] = useState(null);
     const [ready, setReady] = useState(false);
 
-    /* 🔑 FETCH TOKEN */
+
+
     useEffect(() => {
         fetchLiveKitToken({
-            roomName: "demo-room",
+            roomName,
             identity: `mobile-${Date.now()}`,
         }).then((t) => {
             console.log("🎫 CameraCheck token received:", t);
@@ -41,7 +40,6 @@ export default function CameraCheckScreen({ navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
 
             {/* HEADER */}
             <View style={styles.header}>
@@ -93,7 +91,10 @@ export default function CameraCheckScreen({ navigation }) {
                         style={styles.circleBtn}
                         onPress={() => {
                             console.log("➡ Navigating to LiveRoomScreen");
-                            navigation.replace("LiveRoomScreen", { token });
+                            navigation.replace("LiveRoomScreen", {
+                                token,
+                                roomName,
+                            });
                         }}
                     >
                         <Image
@@ -218,7 +219,7 @@ const styles = StyleSheet.create({
     },
     successText: {
         fontSize: 16,
-        fontFamily:Fonts.Medium,
+        fontFamily: Fonts.Medium,
         color: "#333",
         textAlign: "center",
     },

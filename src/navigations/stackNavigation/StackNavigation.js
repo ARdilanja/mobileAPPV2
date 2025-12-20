@@ -107,12 +107,15 @@ import DeleteAccountScreen from '../../screens/DeleteAccountScreen';
 import EditProfileScreen from '../../screens/EditProfileScreen';
 import EmployerInterviewScreen from '../../screens/EmployerInterviewScreen';
 import CompletedInterviewsScreen from '../../screens/CompletedInterviewsScreen';
+import FeedbackScreen from '../../screens/CompletedInterviewsScreen';
 import DrawerHeader from '../../components/DrawerHeader';
 import Dashboard from '../../screens/Dashboard';
 import LiveRoomScreen from '../../screens/LiveRoomScreen';
 import MicCheckScreen from '../../screens/MicCheckScreen';
 import CameraCheckScreen from '../../screens/CameraCheckScreen';
 import InterviewScreen from '../../screens/InterviewScreen';
+import CreateRoomScreen from '../../screens/CreateRoomScreen';
+import VerificationScreen from '../../screens/auth/VerificationScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -130,6 +133,10 @@ const StackNavigation = () => {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
+      />
+      <Stack.Screen
+        name="VerificationScreen"
+        component={VerificationScreen}
       />
 
       {/* 3️⃣ Signup */}
@@ -155,16 +162,51 @@ const StackNavigation = () => {
           };
         }}
       />
+      <Stack.Screen
+        name="DeleteAccountScreen"
+        component={DeleteAccountScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EditProfileScreen"
+        component={EditProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EmployerInterviewScreen"
+        component={EmployerInterviewScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="FeedbackScreen"
+        component={FeedbackScreen}
 
-      {/* 5️⃣ Other Screens */}
-      <Stack.Screen name="DeleteAccountScreen" component={DeleteAccountScreen} />
-      <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
-      <Stack.Screen name="EmployerInterviewScreen" component={EmployerInterviewScreen} />
-      <Stack.Screen name="CompletedInterviewsScreen" component={CompletedInterviewsScreen} />
-      <Stack.Screen name="Dashboard" component={Dashboard} />
-      <Stack.Screen name="MicCheckScreen" component={MicCheckScreen} />
-      <Stack.Screen name="CameraCheckScreen" component={CameraCheckScreen} />
-      <Stack.Screen name="LiveRoomScreen" component={LiveRoomScreen} />
+      />
+      <Stack.Screen
+        name="Dashboard"
+        component={Dashboard}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CreateRoomScreen"
+        component={CreateRoomScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="MicCheckScreen"
+        component={MicCheckScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CameraCheckScreen"
+        component={CameraCheckScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="LiveRoomScreen"
+        component={LiveRoomScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="InterviewScreen"
         component={InterviewScreen}

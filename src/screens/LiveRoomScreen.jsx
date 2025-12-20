@@ -1,175 +1,10 @@
 
-// import React, { useEffect, useState } from "react";
-// import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 
-// // REQUIRED polyfill
-// import "react-native-get-random-values";
-
-// import {
-//     LiveKitRoom,
-//     useTracks,
-//     VideoTrack,
-//     isTrackReference,
-//     AudioSession,
-// } from "@livekit/react-native";
-
-// import { Track } from "livekit-client";
-
-// // CHANGE THIS TO YOUR PC IP
-// const API_BASE = "http://192.168.0.8:5000";
-// const LIVEKIT_URL = "wss://teststream-lepxfkhc.livekit.cloud";
-
-// export default function LiveRoomScreen() {
-//     const [token, setToken] = useState(null);
-//     const [error, setError] = useState(null);
-
-//     const roomName = "demo-room";
-//     const identity = `mobile-${Date.now()}`;
-
-//     // 🔊 Start audio session (REQUIRED)
-//     useEffect(() => {
-//         AudioSession.startAudioSession();
-//         return () => {
-//             AudioSession.stopAudioSession();
-//         };
-//     }, []);
-
-//     // 🔑 Fetch token from backend
-//     useEffect(() => {
-//         let mounted = true;
-
-//         const fetchToken = async () => {
-//             try {
-//                 console.log("🔑 Fetching LiveKit token...");
-
-//                 const res = await fetch(`${API_BASE}/api/livekit/token`, {
-//                     method: "POST",
-//                     headers: { "Content-Type": "application/json" },
-//                     body: JSON.stringify({ roomName, identity }),
-//                 });
-
-//                 const data = await res.json();
-
-//                 if (!data.ok) {
-//                     throw new Error(data.error || "Token API failed");
-//                 }
-
-//                 if (mounted) {
-//                     setToken(data.token);
-//                 }
-//             } catch (err) {
-//                 console.error("❌ Token fetch error:", err);
-//                 setError(err.message);
-//             }
-//         };
-
-//         fetchToken();
-//         return () => {
-//             mounted = false;
-//         };
-//     }, []);
-
-//     // ❌ Error UI
-//     if (error) {
-//         return <CenterText text={`Error: ${error}`} />;
-//     }
-
-//     // ⏳ Loading UI
-//     if (!token) {
-//         return (
-//             <View style={styles.center}>
-//                 <ActivityIndicator size="large" color="#ffffff" />
-//                 <Text style={styles.text}>Connecting to LiveKit…</Text>
-//             </View>
-//         );
-//     }
-
-//     // ✅ LiveKit Room
-//     return (
-//         <LiveKitRoom
-//             serverUrl={LIVEKIT_URL}
-//             token={token}
-//             connect={true}
-//             audio={true}
-//             video={true}
-//             options={{
-//                 adaptiveStream: { pixelDensity: "screen" },
-//             }}
-//             style={{ flex: 1 }}
-//             onConnected={() => console.log("✅ LiveKit connected")}
-//             onDisconnected={() => console.log("❌ LiveKit disconnected")}
-//         >
-//             <RoomView />
-//         </LiveKitRoom>
-//     );
-// }
-
-// // =========================
-// // ROOM VIEW (VIDEO GRID)
-// // =========================
-// function RoomView() {
-//     // Get all camera tracks (local + remote)
-//     const tracks = useTracks([Track.Source.Camera]);
-
-//     return (
-//         <View style={styles.container}>
-//             {tracks.map((track) =>
-//                 isTrackReference(track) ? (
-//                     <VideoTrack
-//                         key={track.publication.trackSid}
-//                         trackRef={track}
-//                         style={styles.video}
-//                     />
-//                 ) : (
-//                     <View key={track.sid} style={styles.video} />
-//                 )
-//             )}
-//         </View>
-//     );
-// }
-
-// // =========================
-// // CENTER TEXT
-// // =========================
-// function CenterText({ text }) {
-//     return (
-//         <View style={styles.center}>
-//             <Text style={styles.text}>{text}</Text>
-//         </View>
-//     );
-// }
-
-// // =========================
-// // STYLES
-// // =========================
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         backgroundColor: "black",
-//     },
-//     video: {
-//         flex: 1,
-//         backgroundColor: "black",
-//     },
-//     center: {
-//         flex: 1,
-//         justifyContent: "center",
-//         alignItems: "center",
-//         backgroundColor: "black",
-//     },
-//     text: {
-//         marginTop: 12,
-//         color: "white",
-//         fontSize: 16,
-//     },
-// });
+//////////////////////////////////////////////////////without the screenshare///////////////////////////////////////
 
 
 
-
-
-
-// import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState, useRef } from "react";
 // import { View, ActivityIndicator, StyleSheet } from "react-native";
 // import "react-native-get-random-values";
 
@@ -185,8 +20,14 @@
 
 // import QuestionOverlay from "../components/Livekit/QuestionOverlay";
 // import { LIVEKIT_URL } from "../config/api";
-// import { fetchLiveKitToken } from "../services/livekit";
+// import {
+//     startEgressRecording,
+//     stopEgressRecording,
+// } from "../services/livekit.jsx"; 
 
+// /* =========================
+//    STATIC QUESTIONS (UNCHANGED)
+// ========================= */
 // const QUESTIONS = [
 //     { title: "Question 1", text: "How would you approach generating new sales leads?" },
 //     { title: "Question 2", text: "Explain your design process from start to finish." },
@@ -195,32 +36,86 @@
 //     { title: "Question 5", text: "Can you walk us through your design process from start to finish?" },
 // ];
 
-// export default function LiveRoomScreen() {
-//     const [token, setToken] = useState(null);
-//     const [index, setIndex] = useState(0);
-//     const [videoReady, setVideoReady] = useState(false); // 🔑 KEY STATE
+// export default function LiveRoomScreen({ route }) {
+//     const token = route?.params?.token;
+//     const roomName = route?.params?.roomName;
+//     const interviewId = route?.params?.interviewId;
 
+//     const [index, setIndex] = useState(0);
+//     const [videoReady, setVideoReady] = useState(false);
+
+//     const egressIdRef = useRef(null); // ✅ store egress id safely
+
+//     /* =========================
+//        AUDIO SESSION (UNCHANGED)
+//     ========================= */
 //     useEffect(() => {
 //         AudioSession.startAudioSession();
 //         return () => AudioSession.stopAudioSession();
 //     }, []);
 
-//     useEffect(() => {
-//         fetchLiveKitToken({
-//             roomName: "demo-room",
-//             identity: `mobile-${Date.now()}`,
-//         }).then(setToken);
-//     }, []);
+//     /* =========================
+//        START EGRESS ON CONNECT
+//     ========================= */
+//     const handleConnected = async () => {
+//         console.log("✅ [MOBILE] LiveKit connected");
 
-//     const handleNext = () => {
-//         if (index < QUESTIONS.length - 1) {
-//             setIndex((i) => i + 1);
-//         } else {
-//             console.log("📤 Interview submitted");
-//             // 👉 API submit later
+//         if (!egressIdRef.current) {
+//             try {
+//                 const egressId = await startEgressRecording({
+//                     roomName,
+//                     interviewId,
+//                 });
+
+//                 egressIdRef.current = egressId;
+//                 console.log("🎥 [MOBILE] Egress started:", egressId);
+//             } catch (err) {
+//                 console.error("❌ [MOBILE] Failed to start egress", err);
+//             }
 //         }
 //     };
 
+//     /* =========================
+//        STOP EGRESS
+//     ========================= */
+//     const stopRecording = async () => {
+//         if (egressIdRef.current) {
+//             try {
+//                 console.log("🛑 [MOBILE] Stopping egress:", egressIdRef.current);
+//                 await stopEgressRecording(egressIdRef.current);
+//                 console.log("🎉 [MOBILE] Recording saved to S3");
+//                 egressIdRef.current = null;
+//             } catch (err) {
+//                 console.error("❌ [MOBILE] Failed to stop egress", err);
+//             }
+//         }
+//     };
+
+//     /* =========================
+//        NEXT / SUBMIT HANDLER
+//     ========================= */
+//     const handleNext = async () => {
+//         if (index < QUESTIONS.length - 1) {
+//             setIndex((prev) => prev + 1);
+//         } else {
+//             console.log("📤 [MOBILE] Interview submitted");
+//             await stopRecording();
+//         }
+//     };
+
+//     /* =========================
+//        SAFETY: STOP ON UNMOUNT
+//     ========================= */
+//     useEffect(() => {
+//         return () => {
+//             console.log("⚠️ [MOBILE] Screen unmounted → stopping egress");
+//             stopRecording();
+//         };
+//     }, []);
+
+//     /* =========================
+//        SAFETY CHECK
+//     ========================= */
 //     if (!token) {
 //         return (
 //             <View style={styles.center}>
@@ -231,7 +126,7 @@
 
 //     return (
 //         <View style={styles.root}>
-//             {/* 🎥 LiveKit Video */}
+//             {/* 🎥 LIVEKIT ROOM */}
 //             <LiveKitRoom
 //                 serverUrl={LIVEKIT_URL}
 //                 token={token}
@@ -239,14 +134,15 @@
 //                 audio
 //                 video
 //                 style={StyleSheet.absoluteFill}
-//                 onConnected={() => {
-//                     console.log("✅ LiveKit connected");
-//                 }}
+//                 onConnected={handleConnected}
+//                 onDisconnected={() =>
+//                     console.log("❌ [MOBILE] LiveKit disconnected")
+//                 }
 //             >
 //                 <CameraView onVideoReady={() => setVideoReady(true)} />
 //             </LiveKitRoom>
 
-//             {/* 🧠 SHOW QUESTIONS ONLY AFTER VIDEO */}
+//             {/* 🧠 QUESTIONS */}
 //             {videoReady && (
 //                 <QuestionOverlay
 //                     title={QUESTIONS[index].title}
@@ -259,15 +155,15 @@
 //     );
 // }
 
-// // =========================
-// // CAMERA VIEW
-// // =========================
+// /* =========================
+//    CAMERA VIEW (UNCHANGED)
+// ========================= */
 // function CameraView({ onVideoReady }) {
 //     const tracks = useTracks([Track.Source.Camera]);
 
 //     useEffect(() => {
 //         if (tracks.length > 0) {
-//             console.log("📷 Camera track ready");
+//             console.log("📷 Camera video ready");
 //             onVideoReady();
 //         }
 //     }, [tracks]);
@@ -275,11 +171,11 @@
 //     return (
 //         <View style={StyleSheet.absoluteFill}>
 //             {tracks.map(
-//                 (t) =>
-//                     isTrackReference(t) && (
+//                 (track) =>
+//                     isTrackReference(track) && (
 //                         <VideoTrack
-//                             key={t.publication.trackSid}
-//                             trackRef={t}
+//                             key={track.publication.trackSid}
+//                             trackRef={track}
 //                             style={StyleSheet.absoluteFill}
 //                             resizeMode="cover"
 //                         />
@@ -289,6 +185,9 @@
 //     );
 // }
 
+// /* =========================
+//    STYLES (UNCHANGED)
+// ========================= */
 // const styles = StyleSheet.create({
 //     root: {
 //         flex: 1,
@@ -310,8 +209,25 @@
 
 
 
-import React, { useEffect, useState } from "react";
-import { View, ActivityIndicator, StyleSheet } from "react-native";
+
+
+
+
+
+
+///////////////////////////////////////////////with camera validation///////////////////////////////////////////////
+
+
+
+
+
+
+import React, { useEffect, useState, useRef } from "react";
+import {
+    View,
+    ActivityIndicator,
+    StyleSheet,
+} from "react-native";
 import "react-native-get-random-values";
 
 import {
@@ -325,10 +241,18 @@ import {
 import { Track } from "livekit-client";
 
 import QuestionOverlay from "../components/Livekit/QuestionOverlay";
+import CameraStateMonitor from "../components/Livekit/CameraStateMonitor";
+import AppExitMonitor from "../components/Livekit/AppExitMonitor";
+
+
 import { LIVEKIT_URL } from "../config/api";
+import {
+    startEgressRecording,
+    stopEgressRecording,
+} from "../services/livekit.jsx";
 
 /* =========================
-   STATIC QUESTIONS
+   QUESTIONS (UNCHANGED)
 ========================= */
 const QUESTIONS = [
     { title: "Question 1", text: "How would you approach generating new sales leads?" },
@@ -338,14 +262,19 @@ const QUESTIONS = [
     { title: "Question 5", text: "Can you walk us through your design process from start to finish?" },
 ];
 
-export default function LiveRoomScreen({ route }) {
+export default function LiveRoomScreen({ route, navigation }) {
     const token = route?.params?.token;
+    const roomName = route?.params?.roomName;
+    const interviewId = route?.params?.interviewId;
 
     const [index, setIndex] = useState(0);
     const [videoReady, setVideoReady] = useState(false);
 
+    const egressIdRef = useRef(null);
+    const terminatedRef = useRef(false);
+
     /* =========================
-       AUDIO SESSION (REQUIRED)
+       AUDIO SESSION
     ========================= */
     useEffect(() => {
         AudioSession.startAudioSession();
@@ -353,14 +282,66 @@ export default function LiveRoomScreen({ route }) {
     }, []);
 
     /* =========================
-       NEXT / SUBMIT HANDLER
+       START EGRESS AFTER CONNECT
     ========================= */
-    const handleNext = () => {
+    const handleConnected = async () => {
+        console.log("✅ [MOBILE] LiveKit connected");
+
+        if (!egressIdRef.current) {
+            try {
+                const egressId = await startEgressRecording({
+                    roomName,
+                    interviewId,
+                });
+                egressIdRef.current = egressId;
+                console.log("🎥 [MOBILE] Egress started:", egressId);
+            } catch (err) {
+                console.error("❌ [MOBILE] Failed to start egress", err);
+            }
+        }
+    };
+
+    /* =========================
+       STOP EGRESS (SAFE)
+    ========================= */
+    const stopRecording = async () => {
+        if (!egressIdRef.current) return;
+
+        try {
+            console.log("🛑 [MOBILE] Stopping egress:", egressIdRef.current);
+            await stopEgressRecording(egressIdRef.current);
+            console.log("🎉 [MOBILE] Recording saved to S3");
+            egressIdRef.current = null;
+        } catch (err) {
+            console.error("❌ [MOBILE] Failed to stop egress", err);
+        }
+    };
+
+    /* =========================
+       TERMINATE INTERVIEW (SINGLE SOURCE)
+    ========================= */
+    const terminateInterview = async (reason) => {
+        if (terminatedRef.current) return;
+        terminatedRef.current = true;
+
+        console.log("❌ [MOBILE] Interview terminated:", reason);
+        await stopRecording();
+
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "CreateRoomScreen" }],
+        });
+    };
+
+    /* =========================
+       NEXT / SUBMIT
+    ========================= */
+    const handleNext = async () => {
         if (index < QUESTIONS.length - 1) {
             setIndex((prev) => prev + 1);
         } else {
-            console.log("📤 Interview submitted");
-            // 👉 submit interview API later
+            console.log("📤 [MOBILE] Interview submitted");
+            await terminateInterview("SUBMIT");
         }
     };
 
@@ -377,7 +358,7 @@ export default function LiveRoomScreen({ route }) {
 
     return (
         <View style={styles.root}>
-            {/* 🎥 LIVEKIT INTERVIEW ROOM */}
+            {/* 🎥 LIVEKIT ROOM */}
             <LiveKitRoom
                 serverUrl={LIVEKIT_URL}
                 token={token}
@@ -385,13 +366,21 @@ export default function LiveRoomScreen({ route }) {
                 audio
                 video
                 style={StyleSheet.absoluteFill}
-                onConnected={() => console.log("✅ LiveKit connected (Interview)")}
-                onDisconnected={() => console.log("❌ LiveKit disconnected")}
+                onConnected={handleConnected}
             >
                 <CameraView onVideoReady={() => setVideoReady(true)} />
+
+                {/* ✅ TERMINATE ONLY ON MANUAL CAMERA OFF */}
+                <CameraStateMonitor
+                    enabled={videoReady}
+                    onTerminate={terminateInterview}
+                />
+
+                {/* ✅ TERMINATE ON APP EXIT / BACKGROUND */}
+                <AppExitMonitor onTerminate={terminateInterview} />
             </LiveKitRoom>
 
-            {/* 🧠 QUESTIONS — ONLY AFTER CAMERA IS VISIBLE */}
+            {/* 🧠 QUESTIONS */}
             {videoReady && (
                 <QuestionOverlay
                     title={QUESTIONS[index].title}
@@ -405,14 +394,14 @@ export default function LiveRoomScreen({ route }) {
 }
 
 /* =========================
-   CAMERA VIEW
+   CAMERA VIEW (UNCHANGED)
 ========================= */
 function CameraView({ onVideoReady }) {
     const tracks = useTracks([Track.Source.Camera]);
 
     useEffect(() => {
         if (tracks.length > 0) {
-            console.log("📷 Camera video ready");
+            console.log("📷 Camera ready");
             onVideoReady();
         }
     }, [tracks]);

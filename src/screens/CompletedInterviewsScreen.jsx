@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import {  Text, StyleSheet, SafeAreaView, StatusBar } from "react-native";
-
-import EmployerInterviewHeader from "../components/employerInterview/EmployerInterviewHeader";
 import InterviewTabSwitcher from "../components/employerInterview/EmployerInterviewTabSwitcher";
 import CompleteCardData from "../components/CompleteCardData";
 
 const CompletedInterviewsScreen = ({ navigation }) => {
   const [activeTab, setActiveTab] = useState("employer");
-
-  const handleBack = () => {
-    navigation?.goBack();
-  };
-
+// https://api.arinnovate.io/api/getScheduleInterCandByStatus/6672592aa821dc12db9fc26e?status=completed&page=1
   const employerCount = 0;
   const mockCount = 0;
 
@@ -21,13 +15,6 @@ const CompletedInterviewsScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-
-      <EmployerInterviewHeader
-        onBackPress={handleBack}
-        title="Completed Interviews"
-      />
-
       <InterviewTabSwitcher
         activeTab={activeTab}
         setActiveTab={setActiveTab}

@@ -9,6 +9,7 @@ import EditProfileScreen from '../../screens/EditProfileScreen';
 import EmployerInterviewScreen from '../../screens/EmployerInterviewScreen';
 import CompletedInterviewsScreen from '../../screens/CompletedInterviewsScreen';
 import Dashboard from '../../screens/Dashboard';
+import FeedbackScreen from '../../screens/FeedbackScreen'
 
 const Tab = createBottomTabNavigator();
 
@@ -27,24 +28,27 @@ const BottomNavigation = () => {
         name="StartInterview"
         component={EmployerInterviewScreen}
         options={{
-          headerShown:false,
-          title: 'Start Interview',
+          headerShown:true,
+          title: 'Interviews',
+          headerTitleAlign:'center',
         }}
       />
       <Tab.Screen
         name="CompletedInterview"
-        component={CompletedInterviewsScreen}
+        component={FeedbackScreen}
         options={{
-          headerShown:false,
+          headerShown:true,
           title: 'Completed Interview',
+          headerTitleAlign:'center',
         }}
       />
       <Tab.Screen
         name="MyProfile"
         component={EditProfileScreen}
        options={{
-          headerShown:false,
+          headerShown:true,
           title: 'MyProfile',
+          headerTitleAlign:'center'
         }}
       />
     </Tab.Navigator>
