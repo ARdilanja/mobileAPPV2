@@ -13,11 +13,47 @@ const InterviewCard = ({
 }) => {
   const handlePress = () => {
     if (hasCoding) {
-            console.log('Starting interview:', companyName, role);
+      console.log('Starting interview:', companyName, role);
 
       onStartPress(); // ✅ just open modal
     } else {
       console.log('Starting interview:', companyName, role);
+    }
+  };
+  const renderActionButton = () => {
+    switch (isExpired) {
+      case "expired":
+        return (
+          <View style={styles.expiredButton}>
+            <Text style={styles.expiredText}>Expired</Text>
+          </View>
+        );
+
+      case "completed":
+        return (
+          <TouchableOpacity
+            style={styles.reportButton}
+            // onPress={onViewReport}
+            onPress={() =>
+              navigation.navigate("InterviewScreen", {
+                interviewId: item._id,   
+              })
+            }
+          >
+            <Text style={styles.reportText}>View Report</Text>
+          </TouchableOpacity>
+        );
+
+      case "invited":
+      default:
+        return (
+          <TouchableOpacity
+            style={styles.startButton}
+            onPress={handlePress}
+          >
+            <Text style={styles.startText}>Start</Text>
+          </TouchableOpacity>
+        );
     }
   };
 
@@ -31,7 +67,7 @@ const InterviewCard = ({
         </View>
       </View>
 
-      {isExpired==="expired"? (
+      {/* {isExpired==="expired"? (
         <View style={styles.expiredButton}>
           <Text style={styles.expiredText}>Expired</Text>
         </View>
@@ -39,7 +75,8 @@ const InterviewCard = ({
         <TouchableOpacity style={styles.startButton} onPress={handlePress}>
           <Text style={styles.startText}>Start</Text>
         </TouchableOpacity>
-      )}
+      )} */}
+      {renderActionButton()}
     </View>
   );
 };

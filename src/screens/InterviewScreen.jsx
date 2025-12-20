@@ -178,7 +178,9 @@ import SubjectExpertise from "../components/SubjectExpertise";
 import Communication from "../components/Communication";
 import Pagination from "../components/SubjectExpertise/Pagination";
 
-export default function InterviewScreen() {
+export default function InterviewScreen({ route }) {
+const { interviewId } = route.params;
+
   const [activeTab, setActiveTab] = useState("expertise");
   const [activePage, setActivePage] = useState(1);
 
