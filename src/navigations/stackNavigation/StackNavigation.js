@@ -107,6 +107,7 @@ import DeleteAccountScreen from '../../screens/DeleteAccountScreen';
 import EditProfileScreen from '../../screens/EditProfileScreen';
 import EmployerInterviewScreen from '../../screens/EmployerInterviewScreen';
 import CompletedInterviewsScreen from '../../screens/CompletedInterviewsScreen';
+import FeedbackScreen from '../../screens/CompletedInterviewsScreen';
 import DrawerHeader from '../../components/DrawerHeader';
 import Dashboard from '../../screens/Dashboard';
 import LiveRoomScreen from '../../screens/LiveRoomScreen';
@@ -177,8 +178,9 @@ const StackNavigation = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="CompletedInterviewsScreen"
-        component={CompletedInterviewsScreen}
+        name="FeedbackScreen"
+        component={FeedbackScreen}
+
       />
       <Stack.Screen
         name="Dashboard"

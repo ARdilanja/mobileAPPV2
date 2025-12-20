@@ -5,7 +5,7 @@ import CompleteCardData from "../components/CompleteCardData";
 
 const CompletedInterviewsScreen = ({ navigation }) => {
   const [activeTab, setActiveTab] = useState("employer");
-
+// https://api.arinnovate.io/api/getScheduleInterCandByStatus/6672592aa821dc12db9fc26e?status=completed&page=1
   const employerCount = 0;
   const mockCount = 0;
 
