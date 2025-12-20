@@ -973,46 +973,62 @@ const EditProfileScreen = () => {
       return;
     }
 
-    setIsUpdating(true);
-    try {
-      // Prepare the payload according to your API requirements
-      const payload = {
-        id: userId, // Assuming the API needs user ID
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        email: email.trim(),
-        // Include other fields as needed by your API
-        // For job title, you might need to update it in experience array
-        newExperience: [{
-          job_title: jobTitle.trim()
-        }]
-      };
+// ... inside updateProfile function
+setIsUpdating(true);
+try {
+  const payload = {
+    id: userId,
+    firstName: firstName.trim(),
+    lastName: lastName.trim(),
+    email: email.trim(),
+    newExperience: [{
+      job_title: jobTitle.trim()
+    }]
+  };
 
-      const response = await fetch(UPDATE_API, {
-        method: 'POST', // or 'PUT' depending on your API
-        headers: {
-          'Content-Type': 'application/json',
-          // Add any other headers your API requires (like Authorization)
-          // 'Authorization': `Bearer ${yourToken}`,
-        },
-        body: JSON.stringify(payload),
-      });
+  const response = await fetch(UPDATE_API, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      // If your API needs an auth token, add it here:
+      // 'Authorization': `Bearer YOUR_TOKEN_HERE`,
+    },
+    body: JSON.stringify(payload),
+  });
 
-      const result = await response.json();
+  // 🔍 CRITICAL DEBUGGING STEP: Get the raw response text
+  const responseText = await response.text();
+  console.log('Raw API Response:', responseText); // Check this in your console
 
-      if (response.ok && result.success) {
-        Alert.alert('Success', 'Profile updated successfully!');
-        // Optionally refresh user data
-        fetchUser();
-      } else {
-        Alert.alert('Error', result.message || 'Failed to update profile');
-      }
-    } catch (error) {
-      console.log('Update profile error:', error);
-      Alert.alert('Error', 'Network error. Please try again.');
-    } finally {
-      setIsUpdating(false);
-    }
+  // Now try to parse it as JSON
+  let result;
+  try {
+    result = JSON.parse(responseText);
+  } catch (parseError) {
+    console.error('Failed to parse JSON:', parseError);
+    // The response is NOT JSON. It might be HTML, plain text, or empty.
+    Alert.alert(
+      'Server Error',
+      `The server returned an unexpected format. Check console. Status: ${response.status}`
+    );
+    setIsUpdating(false);
+    return; // Stop further execution
+  }
+
+  // If we reach here, parsing succeeded
+  if (response.ok && result.success) {
+    Alert.alert('Success', 'Profile updated successfully!');
+    fetchUser();
+  } else {
+    Alert.alert('Update Failed', result.message || `Error: ${response.status}`);
+  }
+
+} catch (error) {
+  console.log('Network or other error:', error);
+  Alert.alert('Error', 'Network error. Please try again.');
+} finally {
+  setIsUpdating(false);
+}
   };
 
   // 🔹 HANDLE SAVE SUBMIT
