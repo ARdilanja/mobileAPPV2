@@ -78,15 +78,17 @@ const SignupFlowScreen = () => {
       lastName,
       email,
       phone,
-      password: '', // password set later
+      // password: '', // password set later
       recrootUserType: 'Candidate',
       countryDetails: {
         country: 'India',
         dialCode: '+91',
       },
     };
-
+    console.log('payload :>> ', payload);
     const res = await dispatch(registerUser(payload));
+    console.log('res :>> ', res);
+
     if (res.meta.requestStatus === 'fulfilled') {
       Alert.alert('Success', 'OTP sent to your email');
       nextStep(); // Go to OTP step
@@ -111,33 +113,36 @@ const SignupFlowScreen = () => {
     }
   };
 
-const handleFinish = async () => {
-  if (password !== confirmPassword) {
-    Alert.alert('Error', 'Passwords do not match');
-    return;
-  }
-  if (!password) {
-    Alert.alert('Error', 'Please enter a password');
-    return;
-  }
-
-  try {
-    const res = await Api.post("/auth/set-password", {
-      email,
-      password,
-      confirmPassword,
-    });
-
-    if (res.data.message) {
-      Alert.alert('Success', 'Account created successfully!');
-      navigation.replace('BottomDash');
+  const handleFinish = async () => {
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match');
+      return;
     }
-  } catch (err) {
-    Alert.alert('Error', err.response?.data?.message || 'Failed to set password');
-  }
-};
+    if (!password) {
+      Alert.alert('Error', 'Please enter a password');
+      return;
+    }
 
-  const getInputBorderColor = (fieldName) =>
+    try {
+      const res = await Api.post('/auth/set-password', {
+        email,
+        password,
+        confirmPassword,
+      });
+
+      if (res.data.message) {
+        Alert.alert('Success', 'Account created successfully!');
+        navigation.replace('BottomDash');
+      }
+    } catch (err) {
+      Alert.alert(
+        'Error',
+        err.response?.data?.message || 'Failed to set password',
+      );
+    }
+  };
+
+  const getInputBorderColor = fieldName =>
     focusedInput === fieldName ? '#006CD9' : '#ddd';
 
   return (
@@ -160,10 +165,22 @@ const handleFinish = async () => {
               colors={['#006CD9', '#017FFF00']}
               style={styles.gradientTopBackground}
             />
-            <Image source={BOY_IMAGE} style={styles.boyImage} resizeMode="contain" />
-            <Image source={RECROOT_LOGO} style={styles.recrootLogo} resizeMode="contain" />
+            <Image
+              source={BOY_IMAGE}
+              style={styles.boyImage}
+              resizeMode="contain"
+            />
+            <Image
+              source={RECROOT_LOGO}
+              style={styles.recrootLogo}
+              resizeMode="contain"
+            />
             <View style={styles.reviewCard}>
-              <Image source={PROFILE_IMAGE} style={styles.reviewAvatar} resizeMode="contain" />
+              <Image
+                source={PROFILE_IMAGE}
+                style={styles.reviewAvatar}
+                resizeMode="contain"
+              />
               <View style={{ marginLeft: 8 }}>
                 <Text style={styles.reviewName}>Maria Jose</Text>
                 <Text style={styles.reviewStars}>★★★★★</Text>
@@ -172,7 +189,10 @@ const handleFinish = async () => {
             <Text style={styles.bigText}>
               Build confidence.{'\n'}Speak up.{'\n'}Grow your career.
             </Text>
-            <TouchableOpacity style={styles.blueButtonAbsolute} onPress={nextStep}>
+            <TouchableOpacity
+              style={styles.blueButtonAbsolute}
+              onPress={nextStep}
+            >
               <Text style={styles.blueButtonText}>Get Started</Text>
             </TouchableOpacity>
           </View>
@@ -186,11 +206,15 @@ const handleFinish = async () => {
             </TouchableOpacity>
             <Text style={styles.screenTitle}>Enter your details</Text>
             <Text style={styles.subtitle}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry.
             </Text>
 
             <TextInput
-              style={[styles.input, { borderColor: getInputBorderColor('firstName') }]}
+              style={[
+                styles.input,
+                { borderColor: getInputBorderColor('firstName') },
+              ]}
               placeholder="First name"
               placeholderTextColor="#000"
               value={firstName}
@@ -199,7 +223,10 @@ const handleFinish = async () => {
               onBlur={() => setFocusedInput(null)}
             />
             <TextInput
-              style={[styles.input, { borderColor: getInputBorderColor('lastName') }]}
+              style={[
+                styles.input,
+                { borderColor: getInputBorderColor('lastName') },
+              ]}
               placeholder="Last name"
               placeholderTextColor="#000"
               value={lastName}
@@ -208,7 +235,10 @@ const handleFinish = async () => {
               onBlur={() => setFocusedInput(null)}
             />
             <TextInput
-              style={[styles.input, { borderColor: getInputBorderColor('email') }]}
+              style={[
+                styles.input,
+                { borderColor: getInputBorderColor('email') },
+              ]}
               placeholder="Email id"
               keyboardType="email-address"
               placeholderTextColor="#000"
@@ -219,10 +249,20 @@ const handleFinish = async () => {
             />
 
             <View style={styles.phoneRow}>
-              <View style={[styles.flagInputBox, { borderColor: getInputBorderColor('phone') }]}>
+              <View
+                style={[
+                  styles.flagInputBox,
+                  { borderColor: getInputBorderColor('phone') },
+                ]}
+              >
                 <Text style={styles.flag}>🇮🇳</Text>
               </View>
-              <View style={[styles.phoneNumberBox, { borderColor: getInputBorderColor('phone') }]}>
+              <View
+                style={[
+                  styles.phoneNumberBox,
+                  { borderColor: getInputBorderColor('phone') },
+                ]}
+              >
                 <Text style={styles.countryCode}>+91</Text>
                 <TextInput
                   style={styles.phoneTextInput}
@@ -237,7 +277,11 @@ const handleFinish = async () => {
               </View>
             </View>
 
-            <TouchableOpacity style={styles.blueButton} onPress={handleRegister} disabled={loading}>
+            <TouchableOpacity
+              style={styles.blueButton}
+              onPress={handleRegister}
+              disabled={loading}
+            >
               {loading ? (
                 <ActivityIndicator color="#fff" />
               ) : (
@@ -261,10 +305,10 @@ const handleFinish = async () => {
               {otp.map((digit, idx) => (
                 <TextInput
                   key={idx}
-                  ref={(ref) => (otpRefs.current[idx] = ref)}
+                  ref={ref => (otpRefs.current[idx] = ref)}
                   style={[styles.otpBox, digit ? styles.otpBoxFilled : null]}
                   value={digit}
-                  onChangeText={(text) => handleOtpChange(text, idx)}
+                  onChangeText={text => handleOtpChange(text, idx)}
                   keyboardType="number-pad"
                   maxLength={1}
                   textAlign="center"
@@ -272,8 +316,16 @@ const handleFinish = async () => {
               ))}
             </View>
 
-            <TouchableOpacity style={[styles.blueButton, loading && styles.buttonDisabled]} onPress={handleVerifyOtp} disabled={loading}>
-              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.blueButtonText}>Verify</Text>}
+            <TouchableOpacity
+              style={[styles.blueButton, loading && styles.buttonDisabled]}
+              onPress={handleVerifyOtp}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={styles.blueButtonText}>Verify</Text>
+              )}
             </TouchableOpacity>
           </View>
         )}
@@ -288,7 +340,13 @@ const handleFinish = async () => {
 
             <View style={styles.passwordContainer}>
               <TextInput
-                style={[styles.input, { borderColor: getInputBorderColor('password'), paddingRight: 60 }]}
+                style={[
+                  styles.input,
+                  {
+                    borderColor: getInputBorderColor('password'),
+                    paddingRight: 60,
+                  },
+                ]}
                 placeholder="Password"
                 secureTextEntry={!showPassword}
                 value={password}
@@ -296,14 +354,26 @@ const handleFinish = async () => {
                 onFocus={() => setFocusedInput('password')}
                 onBlur={() => setFocusedInput(null)}
               />
-              <TouchableOpacity style={styles.eyeIcon} onPress={() => setShowPassword(!showPassword)}>
-                <Image source={showPassword ? visibilitySvg : visibilityOffSvg} style={{ width: 24, height: 24 }} />
+              <TouchableOpacity
+                style={styles.eyeIcon}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Image
+                  source={showPassword ? visibilitySvg : visibilityOffSvg}
+                  style={{ width: 24, height: 24 }}
+                />
               </TouchableOpacity>
             </View>
 
             <View style={styles.passwordContainer}>
               <TextInput
-                style={[styles.input, { borderColor: getInputBorderColor('confirm'), paddingRight: 60 }]}
+                style={[
+                  styles.input,
+                  {
+                    borderColor: getInputBorderColor('confirm'),
+                    paddingRight: 60,
+                  },
+                ]}
                 placeholder="Confirm Password"
                 secureTextEntry={!showConfirmPassword}
                 value={confirmPassword}
@@ -311,8 +381,16 @@ const handleFinish = async () => {
                 onFocus={() => setFocusedInput('confirm')}
                 onBlur={() => setFocusedInput(null)}
               />
-              <TouchableOpacity style={styles.eyeIcon} onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
-                <Image source={showConfirmPassword ? visibilitySvg : visibilityOffSvg} style={{ width: 24, height: 24 }} />
+              <TouchableOpacity
+                style={styles.eyeIcon}
+                onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                <Image
+                  source={
+                    showConfirmPassword ? visibilitySvg : visibilityOffSvg
+                  }
+                  style={{ width: 24, height: 24 }}
+                />
               </TouchableOpacity>
             </View>
 
@@ -426,6 +504,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     fontSize: 16,
     color: '#000',
+    placeholderTextColor: '#000',
   },
   phoneRow: {
     flexDirection: 'row',
