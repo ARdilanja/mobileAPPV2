@@ -12,16 +12,64 @@ import {
   ScrollView,
 } from 'react-native';
 import { Fonts } from '../../constants/fonts';
+import { API_BASE } from '../../config/api';
+import axios from 'axios';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const LoginScreen = ({ onLoginSuccess, onSignupPress,navigation }) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
 
-  const handleNext = () => {
-    navigation.replace('BottomDash');
-    // navigation.replace('VerificationScreen');
-  };
+  const handleNext = async () => {
+     navigation.navigate('BottomDash')
+//   if (email.trim() === '') {
+//     alert('Please enter your email');
+//     return;
+//   }
+
+//   try {
+//     console.log('Api/auth/check-user', API_BASE)
+//     const response = await axios.post(`${API_BASE}/auth/check-user`, {
+//       email,
+//     });
+
+//     console.log('check-user response:', response.data);
+//  const user = response.data.updatedUser || response.data.existingUser;
+//     if (!user) {
+//       alert('User not found. Please sign up.');
+//       navigation.navigate("Signup")
+
+//       return;
+//     }
+
+//     // 2. Generate OTP code (here just a random 4-digit for demo)
+//     const otpCode = Math.floor(1000 + Math.random() * 9000);
+
+//     // 3. Send OTP email
+//     await axios.post(`${API_BASE}/auth/send-otp`, {
+//       firstName: user.firstName || 'User',
+//       email: email,
+//       referral_code: otpCode
+//     });
+
+//     console.log('OTP sent:', otpCode);
+
+//     // 4. Navigate to verification screen and pass email + OTP
+//     // onLoginSuccess({ email: user.email, otpCode });
+//     navigation.navigate('VerificationScreen', {
+//   email: user.email,
+//   otpCode: otpCode,
+// })
+//   } catch (error) {
+//     console.error('Check user error:', error);
+
+//     alert(
+//       error?.response?.data?.message ||
+//       'Something went wrong. Please try again.'
+//     );
+//   }
+};
+
 
   return (
     <KeyboardAvoidingView

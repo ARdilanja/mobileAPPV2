@@ -115,6 +115,7 @@ import CameraCheckScreen from '../../screens/CameraCheckScreen';
 import InterviewScreen from '../../screens/InterviewScreen';
 import CreateRoomScreen from '../../screens/CreateRoomScreen';
 import VerificationScreen from '../../screens/auth/VerificationScreen';
+// import MyProfile from '../../screens/BottomScreens/MyProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -169,7 +170,11 @@ const StackNavigation = () => {
       <Stack.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
-        options={{ headerShown: false }}
+         options={{
+          headerShown: true,
+          headerTitle: 'Edit Profile',
+          headerTitleAlign: 'center',
+        }}
       />
       <Stack.Screen
         name="EmployerInterviewScreen"
@@ -179,6 +184,11 @@ const StackNavigation = () => {
       <Stack.Screen
         name="CompletedInterviewsScreen"
         component={CompletedInterviewsScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Completed Interviews',
+          headerTitleAlign: 'center',
+        }}
       />
       <Stack.Screen
         name="Dashboard"
@@ -214,7 +224,6 @@ const StackNavigation = () => {
           headerTitleAlign: 'center',
         }}
       />
-
     </Stack.Navigator>
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
-export default function LoginLoaderPage({ onFinish,navigation }) {
+export default function LoginLoaderPage({ navigation }) {
   useEffect(() => {
   const timer = setTimeout(() => {
     navigation.replace('Login');

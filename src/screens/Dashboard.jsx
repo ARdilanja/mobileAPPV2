@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     View,
     Text,
@@ -12,11 +12,47 @@ import { Fonts } from "../constants/fonts";
 import Header from "../components/Header";
 import ProgressLineChart from "../components/ProgressLineChart";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
 const screenWidth = Dimensions.get("window").width;
 
 export default function Dashboard() {
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY4Yjg0M2RlYzY1ODg0ZjMxYzU0MjUyIiwiZW1haWwiOiJnb3BhbC5kaGFnZTU0QGdtYWlsLmNvbSIsImlhdCI6MTc2NjEyNTY4MSwiZXhwIjoxNzY2MjEyMDgxfQ.GOKZhwTgH4NM9JSmbm8ybe54gmajh9w-gEM0Aej981k'
+    const CANDIDATE_ID = '6672592aa821dc12db9fc26e'
+
     const [selectedCard, setSelectedCard] = useState(null);
+    const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [interviewData, setInterviewData] = useState(null);
+    const fetchInterviewDetails = async () => {
+        try {
+            const response = await axios.post(
+                "https://api.arinnovate.io/api/getStudentDetailsInterview",
+                {
+                    id: CANDIDATE_ID,
+                },
+                {
+                    headers: {
+                        "x-access-token": token,   // ✅ IMPORTANT CHANGE
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            console.log("Interview API Response:", response.data);
+            setInterviewData(response.data);
+
+        } catch (error) {
+            console.error(
+                "Error fetching interview details:",
+                error.response?.data || error.message
+            );
+        }
+    };
+    useEffect(() => {
+        fetchInterviewDetails();
+    }, []);
+
     return (
         <ScrollView style={{ backgroundColor: 'white' }} showsVerticalScrollIndicator={false}>
             {/* <Header title="Dashboard" /> */}
@@ -25,9 +61,27 @@ export default function Dashboard() {
                 <Text style={styles.sectionTitle}>Interviews</Text>
 
                 <View style={styles.cardRow}>
-                    <InfoCard icon={require("../assets/icons/Case.png")} title="Available" value="08" color="#3B82F6" />
-                    <InfoCard icon={require("../assets/icons/list.png")} title="Completed" value="02" color="#10B981" />
-                    <InfoCard icon={require("../assets/icons/case-clock.png")} title="Incomplete" value="08" color="#F59E0B" />
+                    <InfoCard
+                        icon={require("../assets/icons/Case.png")}
+                        title="Available"
+                        value={interviewData?.availableInterviews ?? 0}
+                        color="#3B82F6"
+                    />
+
+                    <InfoCard
+                        icon={require("../assets/icons/list.png")}
+                        title="Completed"
+                        value={interviewData?.completedInterviews ?? 0}
+                        color="#10B981"
+                    />
+
+                    <InfoCard
+                        icon={require("../assets/icons/case-clock.png")}
+                        title="Expired"
+                        value={interviewData?.expired ?? 0}
+                        color="#F59E0B"
+                    />
+
                 </View>
 
                 {/* PROGRESSION */}
@@ -216,7 +270,7 @@ const InterviewCard = ({ name, role, logo, isSelected, onPress }) => {
             </View>
 
             {/* RIGHT BUTTON */}
-            <TouchableOpacity onPress={() =>navigation.navigate('InterviewScreen')}>
+            <TouchableOpacity onPress={() => navigation.navigate('InterviewScreen')}>
                 <View
                     style={[
                         styles.button,
