@@ -181,7 +181,7 @@ import VideoModal from "../components/SubjectExpertise/VideoModal";
 
 
 export default function InterviewScreen({ route }) {
-const { interviewId } = route.params;
+// const { interviewId } = route.params;
 
   const [activeTab, setActiveTab] = useState("expertise");
   const [activePage, setActivePage] = useState(1);
