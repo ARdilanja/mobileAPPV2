@@ -119,14 +119,16 @@ import {
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { Fonts } from '../constants/fonts';
 import axios from 'axios';
+const defaultAvatar = require('../assets/images/edit_profile.png');
 
 const CustomDrawerContent = ({ navigation }) => {
     const [interviewData, setInterviewData] = useState(null);
     const [userData, setUserData] = useState(null);
+    const [profileImage, setProfileImage] = useState(null)
     const [isLoading, setIsLoading] = useState(false);
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY4Yjg0M2RlYzY1ODg0ZjMxYzU0MjUyIiwiZW1haWwiOiJnb3BhbC5kaGFnZTU0QGdtYWlsLmNvbSIsImlhdCI6MTc2NjEyNTY4MSwiZXhwIjoxNzY2MjEyMDgxfQ.GOKZhwTgH4NM9JSmbm8ybe54gmajh9w-gEM0Aej981k'
     const CANDIDATE_ID = '6672592aa821dc12db9fc26e'
-const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
+    const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
 
     const fetchInterviewDetails = async () => {
         try {
@@ -165,7 +167,7 @@ const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
         try {
             const res = await fetch(USER_API);
             const json = await res.json();
-                console.log("json", json)
+            console.log("json", json)
 
             if (json?.success && json?.User) {
                 const user = json.User;
@@ -192,7 +194,7 @@ const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
             {/* 🔵 PROFILE SECTION */}
             <View style={styles.profileSection}>
                 <Image
-                    source={require('../assets/icons/profile-icon.png')}
+                    source={profileImage ? { uri: profileImage } : defaultAvatar}
                     style={styles.profileImage}
                 />
                 <Text style={styles.name}>{userData?.firstName} {userData?.lastName}</Text>
@@ -228,14 +230,16 @@ const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
                 <DrawerItem
                     icon={require('../assets/icons/unknown-user.png')}
                     label="Profile"
-                    onPress={() => navigation.navigate('MyProfile')}
+                    onPress={() => navigation.navigate('MainApp', {
+                        screen: 'EditProfileScreen'
+                    })}
                 />
 
                 <DrawerItem
                     icon={require('../assets/icons/interview.png')}
                     label="Interviews"
                     onPress={() => navigation.navigate('MainApp', {
-                        screen: 'CreateRoomScreen',
+                        screen: 'CompletedInterviewsScreen',
                     })}
                 />
 

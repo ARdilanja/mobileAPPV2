@@ -1,15 +1,10 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import CustomTabBar from '../../components/CustomTabBar';
-import Home from '../../screens/BottomScreens/Home'
-import StartInterview from '../../screens/BottomScreens/StartInterview'
-import CompletedInterview from '../../screens/BottomScreens/CompletedInterview'
-import MyProfile from '../../screens/BottomScreens/MyProfile'
 import EditProfileScreen from '../../screens/EditProfileScreen';
 import EmployerInterviewScreen from '../../screens/EmployerInterviewScreen';
 import CompletedInterviewsScreen from '../../screens/CompletedInterviewsScreen';
 import Dashboard from '../../screens/Dashboard';
-import FeedbackScreen from '../../screens/FeedbackScreen'
 
 const Tab = createBottomTabNavigator();
 
@@ -35,7 +30,7 @@ const BottomNavigation = () => {
       />
       <Tab.Screen
         name="CompletedInterview"
-        component={FeedbackScreen}
+        component={CompletedInterviewsScreen}
         options={{
           headerShown:true,
           title: 'Completed Interview',

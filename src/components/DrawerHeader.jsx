@@ -20,8 +20,7 @@ const DrawerHeader = () => {
 
       {/* RIGHT: PROFILE */}
       <TouchableOpacity
-        // onPress={() => navigation.navigate("ProfileScreen")}
-        // hitSlop={10}
+        onPress={() => navigation.navigate("EditProfileScreen")}
       >
         <Image source={Profile} style={styles.profileImage} />
       </TouchableOpacity>
@@ -50,7 +49,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18, // 🔥 makes it circle
-    backgroundColor: "#E5E7EB",
+    backgroundColor: "#ebe5eaff",
   },
 });
 

@@ -946,74 +946,81 @@ const EditProfileScreen = () => {
     quality: 0.8,
   };
 
-  const pickFromCamera = () => {
-    launchCamera(options, response => {
-      if (response?.assets?.[0]?.uri) {
-        setProfileImage(response.assets[0].uri);
-        // Note: You might want to upload the image to your server here
-      }
-      setShowPhotoOptions(false);
-    });
-  };
-
   const pickFromGallery = () => {
     launchImageLibrary(options, response => {
-      if (response?.assets?.[0]?.uri) {
-        setProfileImage(response.assets[0].uri);
-        // Note: You might want to upload the image to your server here
+      if (response?.assets?.[0]) {
+        const asset = response.assets[0];
+
+        setProfileImage({
+          uri: asset.uri,
+          type: asset.type || 'image/jpeg',
+          name: asset.fileName || `profile_${Date.now()}.jpg`,
+        });
       }
       setShowPhotoOptions(false);
     });
   };
 
-  // 🔹 UPDATE PROFILE FUNCTION
-  const updateProfile = async () => {
-    if (!userId) {
-      Alert.alert('Error', 'User ID not found');
-      return;
-    }
+  const pickFromCamera = () => {
+    launchCamera(options, response => {
+      if (response?.assets?.[0]) {
+        const asset = response.assets[0];
 
-    setIsUpdating(true);
-    try {
-      // Prepare the payload according to your API requirements
-      const payload = {
-        _id: userId, // Assuming the API needs user ID
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        email: email.trim(),
-        // Include other fields as needed by your API
-        // For job title, you might need to update it in experience array
-        newExperience: [{
-          job_title: jobTitle.trim()
-        }]
-      };
-
-      const response = await fetch(UPDATE_API, {
-        method: 'PUT', // or 'PUT' depending on your API
-        headers: {
-          'Content-Type': 'application/json',
-          // Add any other headers your API requires (like Authorization)
-          // 'Authorization': `Bearer ${yourToken}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        Alert.alert('Success', 'Profile updated successfully!');
-        // Optionally refresh user data
-        fetchUser();
-      } else {
-        Alert.alert('Error', result.message || 'Failed to update profile');
+        setProfileImage({
+          uri: asset.uri,
+          type: asset.type || 'image/jpeg',
+          name: asset.fileName || `profile_${Date.now()}.jpg`,
+        });
       }
-    } catch (error) {
-      console.log('Update profile error:', error);
-      Alert.alert('Error', 'Network error. Please try again.');
-    } finally {
-      setIsUpdating(false);
-    }
+      setShowPhotoOptions(false);
+    });
   };
+
+
+  // 🔹 UPDATE PROFILE FUNCTION
+const updateProfile = async () => {
+  if (!userId) {
+    Alert.alert('Error', 'User ID not found');
+    return;
+  }
+
+  setIsUpdating(true);
+
+  try {
+    const payload = {
+      _id: userId,
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      email: email.trim(),
+      newExperience: [
+        { job_title: jobTitle.trim() }
+      ],
+    };
+
+    const response = await fetch(UPDATE_API, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      Alert.alert('Success', 'Profile updated successfully!');
+      fetchUser();
+    } else {
+      Alert.alert('Error', result.message || 'Update failed');
+    }
+  } catch (err) {
+    Alert.alert('Error', 'Network error');
+  } finally {
+    setIsUpdating(false);
+  }
+};
+
+
 
   // 🔹 HANDLE SAVE SUBMIT
   const handleSaveSubmit = () => {
@@ -1068,9 +1075,14 @@ const EditProfileScreen = () => {
           <View style={styles.avatarRow}>
             <View style={styles.avatarContainer}>
               <Image
-                source={profileImage ? { uri: profileImage } : defaultAvatar}
+                source={
+                  profileImage?.uri
+                    ? { uri: profileImage.uri }
+                    : defaultAvatar
+                }
                 style={styles.avatar}
               />
+
               <TouchableOpacity
                 style={styles.editIconOverlay}
                 onPress={() => setShowPhotoOptions(true)}
@@ -1092,36 +1104,36 @@ const EditProfileScreen = () => {
           <Text style={styles.sectionTitle}>Personal Information</Text>
 
           <Text style={styles.label}>First name</Text>
-          <TextInput 
-            style={styles.input} 
-            value={firstName} 
+          <TextInput
+            style={styles.input}
+            value={firstName}
             onChangeText={setFirstName}
             placeholder="Enter first name"
             placeholderTextColor="#999"
           />
 
           <Text style={styles.label}>Last name</Text>
-          <TextInput 
-            style={styles.input} 
-            value={lastName} 
+          <TextInput
+            style={styles.input}
+            value={lastName}
             onChangeText={setLastName}
             placeholder="Enter last name"
             placeholderTextColor="#999"
           />
 
           <Text style={styles.label}>Job Title</Text>
-          <TextInput 
-            style={styles.input} 
-            value={jobTitle} 
+          <TextInput
+            style={styles.input}
+            value={jobTitle}
             onChangeText={setJobTitle}
             placeholder="Enter job title"
             placeholderTextColor="#999"
           />
 
           <Text style={styles.label}>Email</Text>
-          <TextInput 
-            style={styles.input} 
-            value={email} 
+          <TextInput
+            style={styles.input}
+            value={email}
             onChangeText={setEmail}
             placeholder="Enter email"
             placeholderTextColor="#999"
@@ -1132,8 +1144,8 @@ const EditProfileScreen = () => {
       </ScrollView>
 
       <View style={styles.saveButtonContainer}>
-        <TouchableOpacity 
-          style={[styles.saveButton, isUpdating && styles.saveButtonDisabled]} 
+        <TouchableOpacity
+          style={[styles.saveButton, isUpdating && styles.saveButtonDisabled]}
           onPress={handleSaveSubmit}
           disabled={isUpdating}
         >
@@ -1146,8 +1158,8 @@ const EditProfileScreen = () => {
       </View>
 
       {showPhotoOptions && (
-        <TouchableOpacity 
-          style={styles.overlay} 
+        <TouchableOpacity
+          style={styles.overlay}
           onPress={() => setShowPhotoOptions(false)}
           activeOpacity={1}
         >
