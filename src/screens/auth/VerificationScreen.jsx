@@ -66,20 +66,32 @@ const VerificationScreen = ({ route, navigation }) => {
       }
 
       // ✅ Store tokens & user
-      await AsyncStorage.setItem('token', token);
-      await AsyncStorage.setItem('refreshToken', refreshToken);
-      await AsyncStorage.setItem('user', JSON.stringify(User));
-      const storedToken = await AsyncStorage.getItem('token');
-      const storedRefreshToken = await AsyncStorage.getItem('refreshToken');
-      const storedUser = await AsyncStorage.getItem('user');
+      // ✅ Store tokens & user (atomic write)
+await AsyncStorage.multiSet([
+  ["token", token],
+  ["refreshToken", refreshToken],
+  ["user", JSON.stringify(User)],
+]);
 
-      console.log('storedToken:', storedToken);
-      console.log('storedRefreshToken:', storedRefreshToken);
-      console.log('storedUser:', JSON.parse(storedUser));
+// 🔍 VERIFY STORAGE IMMEDIATELY
+const saved = await AsyncStorage.multiGet([
+  "token",
+  "refreshToken",
+  "user",
+]);
 
-      console.log('Auth data saved successfully');
+console.log("Saved auth data:", saved);
 
-      navigation.navigate("BottomDash")
+// ⏳ SMALL DELAY (Android safety)
+await new Promise(res => setTimeout(res, 300));
+
+// ✅ Navigate AFTER confirmed save
+navigation.reset({
+  index: 0,
+  routes: [{ name: "BottomDash" }],
+});
+
+     
 
     } catch (error) {
       console.error('Login error:', error);
