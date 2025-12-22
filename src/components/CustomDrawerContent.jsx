@@ -155,8 +155,6 @@ const loadAuth = async () => {
   }
 };
 
-
-
  const fetchInterviewDetails = async (userId, token) => {
   if (!userId || !token) return;
 

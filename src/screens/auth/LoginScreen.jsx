@@ -33,6 +33,10 @@ const LoginScreen = ({ onSignupPress,navigation }) => {
     });
 
     console.log('check-user response:', response.data);
+    const message = response.data.message; // usually APIs return a `message` field
+    if (message) {
+      alert(message); // show message to user
+    }
  const user = response.data.updatedUser || response.data.existingUser;
     if (!user) {
       alert('User not found. Please sign up.');
