@@ -17,12 +17,21 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
 import { API_BASE } from '../../config/api';
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
+import MessagePopup from '../../components/MessagePopup';
 const VerificationScreen = ({ route, navigation }) => {
   const { email, otpCode } = route.params;
   console.log(email, otpCode);
   const [code, setCode] = useState(['', '', '', '']);
   const [loading, setLoading] = useState(false);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [popupType, setPopupType] = useState('info');
+
+  const showPopup = (message, type = 'info') => {
+    setPopupMessage(message);
+    setPopupType(type);
+    setPopupVisible(true);
+  };
   const inputs = useRef([]);
 
   const handleCodeChange = (text, index) => {
@@ -40,7 +49,7 @@ const VerificationScreen = ({ route, navigation }) => {
     const enteredCode = code.join('');
 
     if (enteredCode.length !== 4) {
-      Alert.alert('Error', 'Please enter the 4-digit OTP');
+      showPopup('Please enter the 4-digit OTP', 'error');
       return;
     }
 
@@ -58,6 +67,7 @@ const VerificationScreen = ({ route, navigation }) => {
         `${API_BASE}/auth/login-no-password`,
         { email }
       );
+
       console.log('response', response)
       const { token, refreshToken, User } = response.data;
 
@@ -67,31 +77,31 @@ const VerificationScreen = ({ route, navigation }) => {
 
       // ✅ Store tokens & user
       // ✅ Store tokens & user (atomic write)
-await AsyncStorage.multiSet([
-  ["token", token],
-  ["refreshToken", refreshToken],
-  ["user", JSON.stringify(User)],
-]);
+      await AsyncStorage.multiSet([
+        ["token", token],
+        ["refreshToken", refreshToken],
+        ["user", JSON.stringify(User)],
+      ]);
 
-// 🔍 VERIFY STORAGE IMMEDIATELY
-const saved = await AsyncStorage.multiGet([
-  "token",
-  "refreshToken",
-  "user",
-]);
+      // 🔍 VERIFY STORAGE IMMEDIATELY
+      const saved = await AsyncStorage.multiGet([
+        "token",
+        "refreshToken",
+        "user",
+      ]);
 
-console.log("Saved auth data:", saved);
+      console.log("Saved auth data:", saved);
 
-// ⏳ SMALL DELAY (Android safety)
-await new Promise(res => setTimeout(res, 300));
+      // ⏳ SMALL DELAY (Android safety)
+      await new Promise(res => setTimeout(res, 300));
 
-// ✅ Navigate AFTER confirmed save
-navigation.reset({
-  index: 0,
-  routes: [{ name: "BottomDash" }],
-});
+      // ✅ Navigate AFTER confirmed save
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "BottomDash" }],
+      });
 
-     
+
 
     } catch (error) {
       console.error('Login error:', error);

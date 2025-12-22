@@ -11,6 +11,7 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
+import MessagePopup from '../../components/MessagePopup';
 import { Fonts } from '../../constants/fonts';
 import { API_BASE } from '../../config/api';
 import axios from 'axios';
@@ -19,10 +20,17 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const LoginScreen = ({ onSignupPress,navigation }) => {
   const [email, setEmail] = useState('');
-
+const [popupVisible, setPopupVisible] = useState(false);
+const [popupMessage, setPopupMessage] = useState('');
+const [popupType, setPopupType] = useState('info');
+const showPopup = (message, type = 'info') => {
+  setPopupMessage(message);
+  setPopupType(type);
+  setPopupVisible(true);
+};
   const handleNext = async () => {
   if (email.trim() === '') {
-    alert('Please enter your email');
+    showPopup('Please enter your email', 'error');
     return;
   }
 
@@ -35,7 +43,7 @@ const LoginScreen = ({ onSignupPress,navigation }) => {
     console.log('check-user response:', response.data);
     const message = response.data.message; // usually APIs return a `message` field
     if (message) {
-      alert(message); // show message to user
+      showPopup(message, 'success');
     }
  const user = response.data.updatedUser || response.data.existingUser;
     if (!user) {
@@ -66,15 +74,21 @@ const LoginScreen = ({ onSignupPress,navigation }) => {
   } catch (error) {
     console.error('Check user error:', error);
 
-    alert(
-      error?.response?.data?.message ||
-      'Something went wrong. Please try again.'
-    );
+    showPopup(
+    error?.response?.data?.message || 'Something went wrong',
+    'error'
+  );
   }
 };
 
-
   return (
+    <>
+    <MessagePopup
+  visible={popupVisible}
+  message={popupMessage}
+  type={popupType}
+  onClose={() => setPopupVisible(false)}
+/>
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -120,7 +134,7 @@ const LoginScreen = ({ onSignupPress,navigation }) => {
           </Text>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </KeyboardAvoidingView></>
   );
 };
 
