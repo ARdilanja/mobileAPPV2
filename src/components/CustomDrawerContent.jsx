@@ -250,17 +250,28 @@ const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
             <View style={styles.footer}>
                 <FooterItem
                     label="Settings & Security"
-                    onPress={() => navigation.navigate('Settings')}
+                     onPress={() => navigation.navigate('MainApp', {
+                        screen: 'SettingsSecurityScreen',
+                    })}
                 />
                 <FooterItem
                     label="Terms of Service"
-                    onPress={() => navigation.navigate('Terms')}
+                     onPress={() => navigation.navigate('MainApp', {
+                        screen: 'TermsofServiceScreen',
+                    })}
                 />
                 <FooterItem
                     label="Delete My Account"
                     // danger
                     onPress={() => navigation.navigate('MainApp', {
                         screen: 'DeleteAccountScreen',
+                    })}
+                />
+                <FooterItem
+                    label="Feedback"
+                    // danger
+                    onPress={() => navigation.navigate('MainApp', {
+                        screen: 'FeedbackScreen',
                     })}
                 />
             </View>
