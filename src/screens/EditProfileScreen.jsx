@@ -878,6 +878,7 @@ import {
 import { Fonts } from '../constants/fonts';
 import RemovePhotoModal from '../components/RemovePhotoModal';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { API_BASE } from '../config/api';
 
 const cameraIcon = require('../assets/images/camera.png');
 const galleryIcon = require('../assets/images/gallery.png');
@@ -891,6 +892,8 @@ const { width } = Dimensions.get('window');
 const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
 const UPDATE_API = 'https://api.arinnovate.io/api/updateCandidateUser';
 
+const UPLOAD_PROFILE_IMAGE_API =
+  'https://api.arinnovate.io/api/candidate/upload-profile-image';
 const EditProfileScreen = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -898,7 +901,8 @@ const EditProfileScreen = () => {
   const [email, setEmail] = useState('');
   const [userId, setUserId] = useState('');
 
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(null); // local image file
+  const [profileImageUrl, setProfileImageUrl] = useState(null);
   const [showPhotoOptions, setShowPhotoOptions] = useState(false);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -930,7 +934,7 @@ const EditProfileScreen = () => {
         // Profile photo
         const photo = user.profpicFileLocation?.photo;
         if (photo) {
-          setProfileImage(photo);
+          setProfileImageUrl(`https://your-s3-or-cdn-url/${photo}`);
         }
       }
     } catch (err) {
@@ -976,49 +980,86 @@ const EditProfileScreen = () => {
     });
   };
 
+ const uploadProfileImage = async () => {
+  if (!profileImage || !userId) return;
 
-  // 🔹 UPDATE PROFILE FUNCTION
-const updateProfile = async () => {
-  if (!userId) {
-    Alert.alert('Error', 'User ID not found');
-    return;
-  }
+  const formData = new FormData();
 
-  setIsUpdating(true);
+  formData.append('file', {
+    uri: profileImage.uri,
+    type: profileImage.type || 'image/jpeg',
+    name: profileImage.name || `profile_${Date.now()}.jpg`,
+  });
 
-  try {
-    const payload = {
-      _id: userId,
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
-      email: email.trim(),
-      newExperience: [
-        { job_title: jobTitle.trim() }
-      ],
-    };
-
-    const response = await fetch(UPDATE_API, {
+  const response = await fetch(
+    `${API_BASE}/user/upload-profile-image/${userId}`,
+    {
       method: 'PUT',
+      body: formData,
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
-      body: JSON.stringify(payload),
-    });
-
-    const result = await response.json();
-
-    if (response.ok) {
-      Alert.alert('Success', 'Profile updated successfully!');
-      fetchUser();
-    } else {
-      Alert.alert('Error', result.message || 'Update failed');
     }
-  } catch (err) {
-    Alert.alert('Error', 'Network error');
-  } finally {
-    setIsUpdating(false);
+  );
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || 'Image upload failed');
   }
 };
+
+
+  // 🔹 UPDATE PROFILE FUNCTION
+  const updateProfile = async () => {
+    if (!userId) {
+      Alert.alert('Error', 'User ID not found');
+      return;
+    }
+
+    setIsUpdating(true);
+
+    try {
+      const payload = {
+        _id: userId,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        newExperience: [
+          { job_title: jobTitle.trim() }
+        ],
+      };
+
+      const response = await fetch(UPDATE_API, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        Alert.alert('Error', result.message || 'Update failed');
+        return;
+      }
+
+      // 2️⃣ Upload profile image ONLY if changed
+      if (profileImage?.uri) {
+        await uploadProfileImage();
+      }
+      if (response.ok) {
+        Alert.alert('Success', 'Profile updated successfully!');
+        fetchUser();
+      } else {
+        Alert.alert('Error', result.message || 'Update failed');
+      }
+    } catch (err) {
+      Alert.alert('Error', 'Network error');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
 
 
@@ -1077,8 +1118,10 @@ const updateProfile = async () => {
               <Image
                 source={
                   profileImage?.uri
-                    ? { uri: profileImage.uri }
-                    : defaultAvatar
+                    ? { uri: profileImage.uri } // local preview
+                    : profileImageUrl
+                      ? { uri: profileImageUrl } // server image
+                      : defaultAvatar
                 }
                 style={styles.avatar}
               />
