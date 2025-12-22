@@ -119,7 +119,8 @@ import {
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { Fonts } from '../constants/fonts';
 import axios from 'axios';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CommonActions } from '@react-navigation/native';
 const CustomDrawerContent = ({ navigation }) => {
     const [interviewData, setInterviewData] = useState(null);
     const [userData, setUserData] = useState(null);
@@ -186,6 +187,22 @@ const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
             setIsLoading(false);
         }
     };
+
+ const handleLogout = async () => {
+  try {
+    await AsyncStorage.clear();
+
+    navigation.getParent()?.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      })
+    );
+  } catch (error) {
+    console.log('Logout error:', error);
+  }
+};
+
     return (
         <DrawerContentScrollView contentContainerStyle={styles.container}>
 
@@ -277,7 +294,7 @@ const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
             </View>
 
             {/* 🔵 LOGOUT */}
-            <TouchableOpacity style={styles.logout}>
+            <TouchableOpacity style={styles.logout} onPress={handleLogout}>
                 <Image
                     source={require('../assets/icons/logout.png')}
                     style={styles.logoutIcon}

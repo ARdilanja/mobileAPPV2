@@ -1,44 +1,49 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import Api from "../../services/authApi";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import Api from '../../services/authApi';
+import { API_BASE } from '../../config/api';
+import axios from 'axios';
 
 export const registerUser = createAsyncThunk(
-  "auth/registerUser",
+  'auth/registerUser',
   async (payload, { rejectWithValue }) => {
     try {
-      console.log("Sending payload:", payload); // already have
-      const res = await Api.post("/auth/register", payload);
-      console.log("Success response:", res.data);
+      console.log('Sending payload:', payload);
+      const res = await axios.post(`${API_BASE}/auth/register`, payload);
+      console.log('Success response:', res.data);
       return res.data;
     } catch (err) {
-      console.log("Full error object:", err); // ← ADD THIS
-      console.log("Error response:", err.response?.data); // ← ADD THIS
-      console.log("Status code:", err.response?.status);
+      console.log('Full error object:', err);
+      console.log('Error response:', err.response?.data);
+      console.log('Status code:', err.response?.status);
 
       return rejectWithValue(
-        err.response?.data?.message || 
-        err.message || 
-        "Registration failed"
+        err.response?.data?.message || err.message || 'Registration failed',
       );
     }
-  }
+  },
 );
 
 export const verifyOtp = createAsyncThunk(
-  "auth/verifyOtp",
+  'auth/verifyOtp',
   async ({ email, otp }, { rejectWithValue }) => {
     try {
-      const res = await Api.post("/auth/verify-otp", { email, otp });
+      const res = await axios.post(`${API_BASE}/auth/verify-otp`, {
+        email,
+        otp,
+      });
+
+      // const res = await API_BASE.post('/auth/verify-otp', { email, otp });
       return res.data;
     } catch (err) {
       return rejectWithValue(
-        err.response?.data?.message || "OTP verification failed"
+        err.response?.data?.message || 'OTP verification failed',
       );
     }
-  }
+  },
 );
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState: {
     loading: false,
     user: null,

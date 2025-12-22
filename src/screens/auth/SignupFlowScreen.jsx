@@ -19,7 +19,8 @@ import { Fonts } from '../../constants/fonts';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, verifyOtp } from '../../redux/slices/authSlice';
 import { useNavigation } from '@react-navigation/native';
-import Api from '../../services/authApi';
+import axios from 'axios';
+import { API_BASE } from '../../config/api';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -124,7 +125,7 @@ const SignupFlowScreen = () => {
     }
 
     try {
-      const res = await Api.post('/auth/set-password', {
+      const res = await axios.post(`${API_BASE}/auth/set-password`, {
         email,
         password,
         confirmPassword,
