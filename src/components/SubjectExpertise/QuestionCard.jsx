@@ -103,6 +103,7 @@ const CARD_WIDTH = Math.min(SCREEN_WIDTH - 32, 360);
 export default function QuestionCard({
   questionNo = "",
   questionText = "",
+  onPlayVideo, 
 }) {
   return (
     <View style={styles.wrapper}>
@@ -112,7 +113,7 @@ export default function QuestionCard({
             Question {questionNo}
           </Text>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onPlayVideo}>
             <Text style={styles.playVideo}>Play Video</Text>
           </TouchableOpacity>
         </View>

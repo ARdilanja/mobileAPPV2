@@ -122,6 +122,7 @@ export default function SubjectExpertise({
   activePage,
   setActivePage,
   data,
+  onPlayVideo, 
 }) {
   if (!data) return null;
 
@@ -218,6 +219,7 @@ export default function SubjectExpertise({
       <QuestionCard
         questionNo={activePage}
         questionText={currentQuestion.question}
+        onPlayVideo={onPlayVideo}
       />
 
       <Filters
