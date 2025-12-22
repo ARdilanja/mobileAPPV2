@@ -119,82 +119,113 @@ import {
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { Fonts } from '../constants/fonts';
 import axios from 'axios';
-const defaultAvatar = require('../assets/images/edit_profile.png');
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const CustomDrawerContent = ({ navigation }) => {
     const [interviewData, setInterviewData] = useState(null);
     const [userData, setUserData] = useState(null);
-    const [profileImage, setProfileImage] = useState(null)
     const [isLoading, setIsLoading] = useState(false);
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY4Yjg0M2RlYzY1ODg0ZjMxYzU0MjUyIiwiZW1haWwiOiJnb3BhbC5kaGFnZTU0QGdtYWlsLmNvbSIsImlhdCI6MTc2NjEyNTY4MSwiZXhwIjoxNzY2MjEyMDgxfQ.GOKZhwTgH4NM9JSmbm8ybe54gmajh9w-gEM0Aej981k'
-    const CANDIDATE_ID = '6672592aa821dc12db9fc26e'
-    const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
+    const [token, setToken] = useState(null);
+const [candidateId, setCandidateId] = useState(null);
 
-    const fetchInterviewDetails = async () => {
-        try {
-            const response = await axios.post(
-                "https://api.arinnovate.io/api/getStudentDetailsInterview",
-                {
-                    id: CANDIDATE_ID,
-                },
-                {
-                    headers: {
-                        "x-access-token": token,   // ✅ IMPORTANT CHANGE
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
+    // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY4Yjg0M2RlYzY1ODg0ZjMxYzU0MjUyIiwiZW1haWwiOiJnb3BhbC5kaGFnZTU0QGdtYWlsLmNvbSIsImlhdCI6MTc2NjEyNTY4MSwiZXhwIjoxNzY2MjEyMDgxfQ.GOKZhwTgH4NM9JSmbm8ybe54gmajh9w-gEM0Aej981k'
+//     const CANDIDATE_ID = '6672592aa821dc12db9fc26e'
+// const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
 
-            console.log("Interview API Response:", response.data);
-            setInterviewData(response.data);
+useEffect(() => {
+  loadAuth();
+}, []);
 
-        } catch (error) {
-            console.error(
-                "Error fetching interview details:",
-                error.response?.data || error.message
-            );
-        }
-    };
-    useEffect(() => {
-        fetchUser();
-        fetchInterviewDetails();
-    }, []);
+const loadAuth = async () => {
+  try {
+    const storedToken = await AsyncStorage.getItem("token");
+    const storedUser = await AsyncStorage.getItem("user");
+
+    if (!storedToken || !storedUser) return;
+
+    const user = JSON.parse(storedUser);
+
+    setToken(storedToken);
+    setCandidateId(user?._id);
+
+    fetchUser(user?._id, storedToken);
+    fetchInterviewDetails(user?._id, storedToken);
+
+  } catch (e) {
+    console.log("Auth load error", e);
+  }
+};
+
+ const fetchInterviewDetails = async (userId, token) => {
+  if (!userId || !token) return;
+
+  try {
+    const response = await axios.post(
+      "https://api.arinnovate.io/api/getStudentDetailsInterview",
+      { id: userId },
+      {
+        headers: {
+          "x-access-token": token,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    setInterviewData(response.data);
+  } catch (error) {
+    console.log("Interview error", error);
+  }
+};
+
+    const fetchUser = async (userId, token) => {
+  if (!userId || !token) return;
+
+  setIsLoading(true);
+  try {
+    const res = await fetch(
+      `https://api.arinnovate.io/getUser/${userId}`,
+      {
+        headers: {
+          "x-access-token": token,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    // 🔴 important safety check
+    const text = await res.text();
+
+    // If HTML came, log it
+    if (text.startsWith("<")) {
+      console.log("HTML response instead of JSON:", text);
+      return;
+    }
+
+    const json = JSON.parse(text);
+    console.log("User JSON:", json);
+
+    if (json?.success && json?.User) {
+      setUserData(json.User);
+    }
+
+  } catch (err) {
+    console.log("Fetch user error:", err);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
 
-
-    const fetchUser = async () => {
-        setIsLoading(true);
-        try {
-            const res = await fetch(USER_API);
-            const json = await res.json();
-            console.log("json", json)
-
-            if (json?.success && json?.User) {
-                const user = json.User;
-                console.log("user", user)
-                setUserData(user)
-
-
-                // Profile photo
-                const photo = user.profpicFileLocation?.photo;
-                if (photo) {
-                    setProfileImage(photo);
-                }
-            }
-        } catch (err) {
-            console.log('Fetch user error:', err);
-            Alert.alert('Error', 'Failed to fetch user data');
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const logout = async () => {
+  await AsyncStorage.multiRemove(["token", "refreshToken", "user"]);
+  navigation.replace("Login");
+};
     return (
         <DrawerContentScrollView contentContainerStyle={styles.container}>
 
             {/* 🔵 PROFILE SECTION */}
             <View style={styles.profileSection}>
                 <Image
-                    source={profileImage ? { uri: profileImage } : defaultAvatar}
+                    source={require('../assets/icons/profile-icon.png')}
                     style={styles.profileImage}
                 />
                 <Text style={styles.name}>{userData?.firstName} {userData?.lastName}</Text>
@@ -230,16 +261,14 @@ const CustomDrawerContent = ({ navigation }) => {
                 <DrawerItem
                     icon={require('../assets/icons/unknown-user.png')}
                     label="Profile"
-                    onPress={() => navigation.navigate('MainApp', {
-                        screen: 'EditProfileScreen'
-                    })}
+                    onPress={() => navigation.navigate('MyProfile')}
                 />
 
                 <DrawerItem
                     icon={require('../assets/icons/interview.png')}
                     label="Interviews"
                     onPress={() => navigation.navigate('MainApp', {
-                        screen: 'CompletedInterviewsScreen',
+                        screen: 'CreateRoomScreen',
                     })}
                 />
 
@@ -254,11 +283,15 @@ const CustomDrawerContent = ({ navigation }) => {
             <View style={styles.footer}>
                 <FooterItem
                     label="Settings & Security"
-                    onPress={() => navigation.navigate('Settings')}
+                     onPress={() => navigation.navigate('MainApp', {
+                        screen: 'SettingsSecurityScreen',
+                    })}
                 />
                 <FooterItem
                     label="Terms of Service"
-                    onPress={() => navigation.navigate('Terms')}
+                     onPress={() => navigation.navigate('MainApp', {
+                        screen: 'TermsofServiceScreen',
+                    })}
                 />
                 <FooterItem
                     label="Delete My Account"
@@ -267,10 +300,17 @@ const CustomDrawerContent = ({ navigation }) => {
                         screen: 'DeleteAccountScreen',
                     })}
                 />
+                <FooterItem
+                    label="Feedback"
+                    // danger
+                    onPress={() => navigation.navigate('MainApp', {
+                        screen: 'FeedbackScreen',
+                    })}
+                />
             </View>
 
             {/* 🔵 LOGOUT */}
-            <TouchableOpacity style={styles.logout}>
+            <TouchableOpacity style={styles.logout} onPress={logout}>
                 <Image
                     source={require('../assets/icons/logout.png')}
                     style={styles.logoutIcon}

@@ -107,6 +107,7 @@ import DeleteAccountScreen from '../../screens/DeleteAccountScreen';
 import EditProfileScreen from '../../screens/EditProfileScreen';
 import EmployerInterviewScreen from '../../screens/EmployerInterviewScreen';
 import CompletedInterviewsScreen from '../../screens/CompletedInterviewsScreen';
+import FeedbackScreen from '../../screens/FeedbackScreen';
 import DrawerHeader from '../../components/DrawerHeader';
 import Dashboard from '../../screens/Dashboard';
 import LiveRoomScreen from '../../screens/LiveRoomScreen';
@@ -115,7 +116,8 @@ import CameraCheckScreen from '../../screens/CameraCheckScreen';
 import InterviewScreen from '../../screens/InterviewScreen';
 import CreateRoomScreen from '../../screens/CreateRoomScreen';
 import VerificationScreen from '../../screens/auth/VerificationScreen';
-// import MyProfile from '../../screens/BottomScreens/MyProfile';
+import TermsOfServiceScreen from '../../screens/TermsOfServiceScreen';
+import SettingsSecurityScreen from '../../screens/SettingsSecurityScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -165,16 +167,27 @@ const StackNavigation = () => {
       <Stack.Screen
         name="DeleteAccountScreen"
         component={DeleteAccountScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: true, headerTitle: 'Delete Account', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="TermsofServiceScreen"
+        component={TermsOfServiceScreen}
+        options={{ headerShown: true, headerTitle: 'Terms of Service', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="SettingsSecurityScreen"
+        component={SettingsSecurityScreen}
+        options={{ headerShown: true, headerTitle: 'Settings and Security', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="FeedbackScreen"
+        component={FeedbackScreen}
+        options={{ headerShown: true, headerTitle: 'Recroot', headerTitleAlign: 'center'}}
       />
       <Stack.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
-         options={{
-          headerShown: true,
-          headerTitle: 'Edit Profile',
-          headerTitleAlign: 'center',
-        }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="EmployerInterviewScreen"
@@ -182,13 +195,9 @@ const StackNavigation = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="CompletedInterviewsScreen"
+        name="CompletedInterview"
         component={CompletedInterviewsScreen}
-        options={{
-          headerShown: true,
-          headerTitle: 'Completed Interviews',
-          headerTitleAlign: 'center',
-        }}
+
       />
       <Stack.Screen
         name="Dashboard"
@@ -224,6 +233,7 @@ const StackNavigation = () => {
           headerTitleAlign: 'center',
         }}
       />
+
     </Stack.Navigator>
   );
 };

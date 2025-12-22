@@ -2,7 +2,6 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Fonts } from '../../constants/fonts';
-import { useNavigation } from '@react-navigation/native';
 
 const InterviewCard = ({
   companyLogo,
@@ -12,8 +11,52 @@ const InterviewCard = ({
   hasCoding = false,
   onStartPress,
 }) => {
+  const handlePress = () => {
+    if (hasCoding) {
+      console.log('Starting interview:', companyName, role);
 
-  const navigation = useNavigation();
+      onStartPress(); // ✅ just open modal
+    } else {
+      console.log('Starting interview:', companyName, role);
+    }
+  };
+  const renderActionButton = () => {
+    switch (isExpired) {
+      case "expired":
+        return (
+          <View style={styles.expiredButton}>
+            <Text style={styles.expiredText}>Expired</Text>
+          </View>
+        );
+
+      case "completed":
+        return (
+          <TouchableOpacity
+            style={styles.reportButton}
+            // onPress={onViewReport}
+            onPress={() =>
+              navigation.navigate("InterviewScreen", {
+                interviewId: item._id,   
+              })
+            }
+          >
+            <Text style={styles.reportText}>View Report</Text>
+          </TouchableOpacity>
+        );
+
+      case "invited":
+      default:
+        return (
+          <TouchableOpacity
+            style={styles.startButton}
+            onPress={handlePress}
+          >
+            <Text style={styles.startText}>Start</Text>
+          </TouchableOpacity>
+        );
+    }
+  };
+
   return (
     <View style={styles.card}>
       <View style={styles.left}>
@@ -24,15 +67,16 @@ const InterviewCard = ({
         </View>
       </View>
 
-      {isExpired === "expired" ? (
+      {/* {isExpired==="expired"? (
         <View style={styles.expiredButton}>
           <Text style={styles.expiredText}>Expired</Text>
         </View>
       ) : (
-        <TouchableOpacity style={styles.startButton} onPress={() => navigation.navigate('CreateRoomScreen')}>
+        <TouchableOpacity style={styles.startButton} onPress={handlePress}>
           <Text style={styles.startText}>Start</Text>
         </TouchableOpacity>
-      )}
+      )} */}
+      {renderActionButton()}
     </View>
   );
 };
@@ -84,6 +128,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#2563EB',
     borderRadius: 6,
+    width: 70,
     height: 32,
     paddingHorizontal: 18,
     paddingVertical: 7.5,

@@ -180,7 +180,9 @@ import Pagination from "../components/SubjectExpertise/Pagination";
 import VideoModal from "../components/SubjectExpertise/VideoModal";
 
 
-export default function InterviewScreen() {
+export default function InterviewScreen({ route }) {
+const { interviewId } = route.params;
+
   const [activeTab, setActiveTab] = useState("expertise");
   const [activePage, setActivePage] = useState(1);
   const [showVideo, setShowVideo] = useState(false);
