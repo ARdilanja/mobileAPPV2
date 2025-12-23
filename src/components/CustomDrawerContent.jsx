@@ -239,7 +239,7 @@ const CustomDrawerContent = ({ navigation }) => {
                     icon={require('../assets/icons/interview.png')}
                     label="Interviews"
                     onPress={() => navigation.navigate('MainApp', {
-                        screen: 'CompletedInterviewsScreen',
+                        screen: 'CreateRoomScreen',
                     })}
                 />
 
