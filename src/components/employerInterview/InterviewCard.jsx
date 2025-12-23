@@ -16,9 +16,7 @@ const InterviewCard = ({
   const navigation = useNavigation();
 
   const handlePress = () => {
-    if (hasCoding) {
-      onStartPress();
-    }
+    navigation.navigate('CreateRoomScreen')
   };
 
   const renderActionButton = () => {
@@ -121,7 +119,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#2563EB',
     borderRadius: 6,
-    width: 70,
     height: 32,
     paddingHorizontal: 18,
     paddingVertical: 7.5,
