@@ -126,6 +126,15 @@ export default function SubjectExpertise({
 }) {
   if (!data) return null;
 
+   const cleanHtml = (text) => {
+    if (!text) return "";
+    return text
+      .replace(/<[^>]*>?/gm, "") // Removes all <p>, <div>, etc.
+      .replace(/\s+/g, " ")      // Collapses multiple spaces/newlines into one
+      .trim();
+  };
+
+
   // const { questionsList = [], TestsimilarList = [] } = data;
   const { questionsList = [], TestsimilarList = [], answerList = [] } = data;
 
@@ -147,20 +156,7 @@ export default function SubjectExpertise({
   )?.result || null;
 }, [currentQuestion, answerList]);
 
-  /* BUILD CONTENT DATA */
-  // const contentData = useMemo(() => ({
-  //   "Ideal Answer": currentQuestion?.answer || "",
-  //   Strengths: matchedTestSimilar?.strengths || "",
-  //   "Areas of Improvement":
-  //     matchedTestSimilar?.candidate_answer_analysis
-  //       ? Object.values(
-  //           matchedTestSimilar.candidate_answer_analysis
-  //         ).join("\n\n")
-  //       : "",
-  //   Recommendations:
-  //     matchedTestSimilar?.recommendations || "",
-  // }), [currentQuestion, matchedTestSimilar]);
-
+  
 
   const contentData = useMemo(() => ({
   // (optional, keep if you want)
@@ -218,7 +214,8 @@ export default function SubjectExpertise({
 
       <QuestionCard
         questionNo={activePage}
-        questionText={currentQuestion.question}
+        // questionText={currentQuestion.question}
+        questionText={cleanHtml(currentQuestion.question)} 
         onPlayVideo={onPlayVideo}
       />
 

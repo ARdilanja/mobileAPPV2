@@ -217,7 +217,12 @@ const { interviewId } = route.params;
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      {/* 🔵 SCROLLABLE CONTENT */}
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={{ paddingBottom: 12 }}
+        showsVerticalScrollIndicator={false}
+      >
         <InterviewTabs
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -235,10 +240,10 @@ const { interviewId } = route.params;
         )}
       </ScrollView>
 
-      {/* QUESTION-BASED PAGINATION */}
+      {/* 🔵 FIXED PAGINATION */}
       {activeTab === "expertise" &&
-        interviewData?.questionsList?.length > 0 && (
-          <View style={styles.paginationWrapper}>
+        interviewData?.questionsList?.length > 1 && (
+          <View style={styles.paginationContainer}>
             <Pagination
               activePage={activePage}
               totalPages={interviewData.questionsList.length}
@@ -252,20 +257,31 @@ const { interviewId } = route.params;
         videoUrl={interviewData?.TestvideoData}
         onClose={() => setShowVideo(false)}
       />
-
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
-  scrollContent: { paddingBottom: 140 },
-  paginationWrapper: {
-    position: "absolute",
-    bottom: 60,
-    left: 0,
-    right: 0,
-    alignItems: "center",
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
   },
-  loader: { flex: 1, justifyContent: "center" },
+
+  content: {
+    flex: 1, // 👈 allows pagination to sit below
+  },
+
+  paginationContainer: {
+  borderTopWidth: 1,
+  borderTopColor: "#EEE",
+  paddingVertical: 4, // ✅ REDUCED
+  paddingBottom: 6,  // ✅ tight bottom
+  backgroundColor: "#FFFFFF",
+},
+
+  loader: {
+    flex: 1,
+    justifyContent: "center",
+  },
 });
+
