@@ -2,8 +2,10 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Fonts } from '../../constants/fonts';
+import { useNavigation } from '@react-navigation/native';
 
 const InterviewCard = ({
+  interviewId,          // ✅ RECEIVE ID
   companyLogo,
   companyName,
   role,
@@ -11,15 +13,14 @@ const InterviewCard = ({
   hasCoding = false,
   onStartPress,
 }) => {
+  const navigation = useNavigation();
+
   const handlePress = () => {
     if (hasCoding) {
-      console.log('Starting interview:', companyName, role);
-
-      onStartPress(); // ✅ just open modal
-    } else {
-      console.log('Starting interview:', companyName, role);
+      onStartPress();
     }
   };
+
   const renderActionButton = () => {
     switch (isExpired) {
       case "expired":
@@ -33,10 +34,9 @@ const InterviewCard = ({
         return (
           <TouchableOpacity
             style={styles.reportButton}
-            // onPress={onViewReport}
             onPress={() =>
               navigation.navigate("InterviewScreen", {
-                interviewId: item._id,   
+                interviewId,   // ✅ NOW VALID
               })
             }
           >
@@ -60,22 +60,15 @@ const InterviewCard = ({
   return (
     <View style={styles.card}>
       <View style={styles.left}>
-        <Image source={companyLogo} style={styles.logo} resizeMode="contain" />
+        {companyLogo && (
+          <Image source={companyLogo} style={styles.logo} />
+        )}
         <View style={styles.textContainer}>
           <Text style={styles.company}>{companyName}</Text>
           <Text style={styles.role}>{role}</Text>
         </View>
       </View>
 
-      {/* {isExpired==="expired"? (
-        <View style={styles.expiredButton}>
-          <Text style={styles.expiredText}>Expired</Text>
-        </View>
-      ) : (
-        <TouchableOpacity style={styles.startButton} onPress={handlePress}>
-          <Text style={styles.startText}>Start</Text>
-        </TouchableOpacity>
-      )} */}
       {renderActionButton()}
     </View>
   );

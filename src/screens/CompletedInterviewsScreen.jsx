@@ -76,7 +76,7 @@ const CompletedInterviewsScreen = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-console.log('totalPages', totalPages)
+  console.log('totalPages', totalPages)
   const candidateId = "6672592aa821dc12db9fc26e";
 
   // 🔹 Fetch completed interviews
@@ -98,7 +98,7 @@ console.log('totalPages', totalPages)
 
       const data = res?.data || [];
       console.log('data', data)
-      const total = data?.totalItems ;
+      const total = data?.totalItems;
 
       setInterviews(data.data);
       setTotalPages(Math.ceil(total / PAGE_SIZE));
@@ -193,19 +193,18 @@ console.log('totalPages', totalPages)
 
             return (
               <InterviewCard
+                interviewId={item._id}          // ✅ PASS ID HERE
                 companyLogo={logoUrl ? { uri: logoUrl } : null}
                 companyName={item?.companyId?.company_name}
                 role={item?.job_title}
                 isExpired={item?.status}
                 hasCoding={item?.hasCoding}
-                onStartPress={() => {}}
+                onStartPress={() => { }}
               />
             );
           }}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 30 }}
-          ListEmptyComponent={<CompleteCardData activeTab={activeTab} />}
         />
+
       )}
 
       {renderPagination()}

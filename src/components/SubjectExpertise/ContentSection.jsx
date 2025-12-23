@@ -93,10 +93,12 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-const cleanBulletText = (text) => {
+const cleanBulletText = (text = "") => {
+  if (typeof text !== "string") return "";
+
   return text
-    .replace(/<\/?p>/gi, "")   // remove <p> tags
-    .replace(/^[-•]\s*/, "")   // remove - or •
+    .replace(/<\/?p>/gi, "")
+    .replace(/^[-•]\s*/, "")
     .trim();
 };
 
@@ -116,10 +118,18 @@ export default function ContentSection({
   return (
     <View style={styles.wrapper}>
       {sections.map(([title, text]) => {
-        // 🔹 Convert content into bullet points
-        const points = (Array.isArray(text) ? text : text.split("\n"))
-          .map(cleanBulletText)
-          .filter(item => item.length > 0);
+  const safeText =
+    Array.isArray(text)
+      ? text
+      : typeof text === "string"
+        ? text.split("\n")
+        : [];
+
+  const points = safeText
+    .map(cleanBulletText)
+    .filter(item => item.length > 0);
+
+  if (points.length === 0) return null;
 
         return (
           <View key={title} style={styles.section}>
