@@ -177,13 +177,15 @@ import InterviewTabs from "../components/InterviewTabs";
 import SubjectExpertise from "../components/SubjectExpertise";
 import Communication from "../components/Communication";
 import Pagination from "../components/SubjectExpertise/Pagination";
+import VideoModal from "../components/SubjectExpertise/VideoModal";
+
 
 export default function InterviewScreen({ route }) {
 const { interviewId } = route.params;
 
   const [activeTab, setActiveTab] = useState("expertise");
   const [activePage, setActivePage] = useState(1);
-
+  const [showVideo, setShowVideo] = useState(false);
   const [loading, setLoading] = useState(true);
   const [interviewData, setInterviewData] = useState(null);
 
@@ -226,6 +228,7 @@ const { interviewId } = route.params;
             activePage={activePage}
             setActivePage={setActivePage}
             data={interviewData}
+            onPlayVideo={() => setShowVideo(true)}
           />
         ) : (
           <Communication data={interviewData} />
@@ -243,6 +246,13 @@ const { interviewId } = route.params;
             />
           </View>
         )}
+
+      <VideoModal
+        visible={showVideo}
+        videoUrl={interviewData?.TestvideoData}
+        onClose={() => setShowVideo(false)}
+      />
+
     </View>
   );
 }
