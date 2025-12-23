@@ -148,7 +148,7 @@ const StackNavigation = () => {
       />
 
       {/* 4️⃣ Bottom Tabs */}
-      <Stack.Screen
+      {/* <Stack.Screen
         name="BottomDash"
         component={BottomNavigation}
         options={({ route }) => {
@@ -163,6 +163,12 @@ const StackNavigation = () => {
             headerLeft: isHome ? () => <DrawerHeader /> : undefined,
           };
         }}
+      /> */}
+
+      <Stack.Screen
+        name="BottomDash"
+        component={BottomNavigation}
+        options={{ headerShown: false }} // Disable stack header entirely
       />
       <Stack.Screen
         name="DeleteAccountScreen"
