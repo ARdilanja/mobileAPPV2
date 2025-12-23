@@ -130,7 +130,6 @@ const showPopup = (message, type = 'info') => {
             <Text onPress={() => navigation.navigate('Signup')}>
               Sign up here
             </Text>
-
           </Text>
         </View>
       </ScrollView>
