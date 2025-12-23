@@ -63,7 +63,7 @@ export default function LoginLoaderPage({ navigation }) {
       const res = await axios.post(`${API_BASE}/auth/refresh-token`, {
         refreshToken,
       });
-console.log('refereshtokenres', res)
+      console.log('refereshtokenres', res)
       const { token, refreshToken: newRefresh } = res.data;
 
       await AsyncStorage.setItem("token", token);
@@ -73,9 +73,9 @@ console.log('refereshtokenres', res)
 
       return true;
     } catch (error) {
-  console.log("Refresh token failed:", error?.response?.data || error.message);
-  return false;
-}
+      console.log("Refresh token failed:", error?.response?.data || error.message);
+      return false;
+    }
   };
 
   const clearAuth = async () => {

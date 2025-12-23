@@ -125,100 +125,100 @@ const CustomDrawerContent = ({ navigation }) => {
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [token, setToken] = useState(null);
-const [candidateId, setCandidateId] = useState(null);
+    const [candidateId, setCandidateId] = useState(null);
 
     // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY4Yjg0M2RlYzY1ODg0ZjMxYzU0MjUyIiwiZW1haWwiOiJnb3BhbC5kaGFnZTU0QGdtYWlsLmNvbSIsImlhdCI6MTc2NjEyNTY4MSwiZXhwIjoxNzY2MjEyMDgxfQ.GOKZhwTgH4NM9JSmbm8ybe54gmajh9w-gEM0Aej981k'
-//     const CANDIDATE_ID = '6672592aa821dc12db9fc26e'
-// const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
+    //     const CANDIDATE_ID = '6672592aa821dc12db9fc26e'
+    // const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
 
-useEffect(() => {
-  loadAuth();
-}, []);
+    useEffect(() => {
+        loadAuth();
+    }, []);
 
-const loadAuth = async () => {
-  try {
-    const storedToken = await AsyncStorage.getItem("token");
-    const storedUser = await AsyncStorage.getItem("user");
+    const loadAuth = async () => {
+        try {
+            const storedToken = await AsyncStorage.getItem("token");
+            const storedUser = await AsyncStorage.getItem("user");
 
-    if (!storedToken || !storedUser) return;
+            if (!storedToken || !storedUser) return;
 
-    const user = JSON.parse(storedUser);
+            const user = JSON.parse(storedUser);
 
-    setToken(storedToken);
-    setCandidateId(user?._id);
+            setToken(storedToken);
+            setCandidateId(user?._id);
 
-    fetchUser(user?._id, storedToken);
-    fetchInterviewDetails(user?._id, storedToken);
+            fetchUser(user?._id, storedToken);
+            fetchInterviewDetails(user?._id, storedToken);
 
-  } catch (e) {
-    console.log("Auth load error", e);
-  }
-};
+        } catch (e) {
+            console.log("Auth load error", e);
+        }
+    };
 
- const fetchInterviewDetails = async (userId, token) => {
-  if (!userId || !token) return;
+    const fetchInterviewDetails = async (userId, token) => {
+        if (!userId || !token) return;
 
-  try {
-    const response = await axios.post(
-      "https://api.arinnovate.io/api/getStudentDetailsInterview",
-      { id: userId },
-      {
-        headers: {
-          "x-access-token": token,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+        try {
+            const response = await axios.post(
+                "https://api.arinnovate.io/api/getStudentDetailsInterview",
+                { id: userId },
+                {
+                    headers: {
+                        "x-access-token": token,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
 
-    setInterviewData(response.data);
-  } catch (error) {
-    console.log("Interview error", error);
-  }
-};
+            setInterviewData(response.data);
+        } catch (error) {
+            console.log("Interview error", error);
+        }
+    };
 
     const fetchUser = async (userId, token) => {
-  if (!userId || !token) return;
+        if (!userId || !token) return;
 
-  setIsLoading(true);
-  try {
-    const res = await fetch(
-      `https://api.arinnovate.io/getUser/${userId}`,
-      {
-        headers: {
-          "x-access-token": token,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+        setIsLoading(true);
+        try {
+            const res = await fetch(
+                `https://api.arinnovate.io/getUser/${userId}`,
+                {
+                    headers: {
+                        "x-access-token": token,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
 
-    // 🔴 important safety check
-    const text = await res.text();
+            // 🔴 important safety check
+            const text = await res.text();
 
-    // If HTML came, log it
-    if (text.startsWith("<")) {
-      console.log("HTML response instead of JSON:", text);
-      return;
-    }
+            // If HTML came, log it
+            if (text.startsWith("<")) {
+                console.log("HTML response instead of JSON:", text);
+                return;
+            }
 
-    const json = JSON.parse(text);
-    console.log("User JSON:", json);
+            const json = JSON.parse(text);
+            console.log("User JSON:", json);
 
-    if (json?.success && json?.User) {
-      setUserData(json.User);
-    }
+            if (json?.success && json?.User) {
+                setUserData(json.User);
+            }
 
-  } catch (err) {
-    console.log("Fetch user error:", err);
-  } finally {
-    setIsLoading(false);
-  }
-};
+        } catch (err) {
+            console.log("Fetch user error:", err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
 
     const logout = async () => {
-  await AsyncStorage.multiRemove(["token", "refreshToken", "user"]);
-  navigation.replace("Login");
-};
+        await AsyncStorage.multiRemove(["token", "refreshToken", "user"]);
+        navigation.replace("Login");
+    };
     return (
         <DrawerContentScrollView contentContainerStyle={styles.container}>
 
@@ -283,13 +283,13 @@ const loadAuth = async () => {
             <View style={styles.footer}>
                 <FooterItem
                     label="Settings & Security"
-                     onPress={() => navigation.navigate('MainApp', {
+                    onPress={() => navigation.navigate('MainApp', {
                         screen: 'SettingsSecurityScreen',
                     })}
                 />
                 <FooterItem
                     label="Terms of Service"
-                     onPress={() => navigation.navigate('MainApp', {
+                    onPress={() => navigation.navigate('MainApp', {
                         screen: 'TermsofServiceScreen',
                     })}
                 />
