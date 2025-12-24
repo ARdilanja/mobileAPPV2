@@ -1,19 +1,76 @@
-import { Box, TextField } from "@mui/material";
-import AuthHeader from "../components/AuthHeader";
-import AuthButton from "../components/AuthButton";
+import React from 'react';
+import { Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, View  } from 'react-native';
+import AuthHeader from '../../components/auth/AuthHeader';
+import AuthButton from '../../components/auth/AuthButton';
+import OtpInput from '../../components/auth/OtpInput';
+import Gradient from '../../constants/Gradient';
 
-const MobileInput = () => {
+const OtpVerification = ({ navigation }) => {
+  const email = "demo@email.com"
   return (
-    <Box px={3} pt={6}>
-      <AuthHeader
-        title="Sign in"
-        subtitle="Sign in and find your dream job"
-      />
+    <Gradient>
 
-      <TextField fullWidth placeholder="+91 9876543210" />
-      <AuthButton text="Next" />
-    </Box>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={{ flex: 1 }}>
+
+              <View style={styles.topSection}>
+                <AuthHeader
+                  title="OTP Verification"
+                  subtitle={`Enter the 4-digit OTP sent to ${email} `}
+                  showBack={true}
+                  showLogo={true}
+                />
+
+                <OtpInput />
+
+                <Text style={styles.resend}>Resend <Text style={{ color: 'rgba(42, 42, 42, 1)' }}>OTP</Text></Text>
+              </View>
+
+              <View style={styles.bottomSection}>
+                <AuthButton text="Continue" onPress={() => navigation.navigate("JourneyGetStartScreen")} />
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </Gradient>
   );
 };
 
-export default MobileInput;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 48,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+  },
+  topSection: {
+    // alignItems: 'center',
+    flex: 1,
+  },
+  bottomSection: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  resend: {
+    color: '#1a73e8',
+    marginTop: 24,
+    marginLeft: 16,
+    lineHeight: 28,
+    fontWeight: '400',
+    fontSize: 18,
+  },
+});
+
+export default OtpVerification;

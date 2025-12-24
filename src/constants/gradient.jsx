@@ -1,21 +1,22 @@
-import { createTheme } from "@mui/material/styles";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
-const gradient = createTheme({
-  palette: {
-    primary: {
-      main: "#1a73e8",
-    },
-  },
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          minHeight: "100vh",
-          background: "linear-gradient(180deg, #9acbff 0%, #ffffff 70%)",
-        },
-      },
-    },
+const Gradient = ({ children, style }) => {
+  return (
+    <LinearGradient
+      colors={['#9acbff','#c3ddf8ff', '#fff', '#ffffff']}
+      style={[styles.container, style]}
+    >
+      {children}
+    </LinearGradient>
+  );
+};
+
+export default Gradient;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
   },
 });
-
-export default gradient;

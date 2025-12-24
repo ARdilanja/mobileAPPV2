@@ -118,18 +118,37 @@ import CreateRoomScreen from '../../screens/CreateRoomScreen';
 import VerificationScreen from '../../screens/auth/VerificationScreen';
 import TermsOfServiceScreen from '../../screens/TermsOfServiceScreen';
 import SettingsSecurityScreen from '../../screens/SettingsSecurityScreen';
+import SignIn from '../../screens/authentication/SignIn';
+import SignUp from '../../screens/authentication/SignUp';
+import EmailInput from '../../screens/authentication/EmailInput';
+import Password from '../../screens/authentication/Password';
+import MobileInput from '../../screens/authentication/MobileInput';
+import OtpVerification from '../../screens/authentication/OtpVerification';
+import GetStarted from '../../screens/authentication/GetStarted';
+import CreatePassword from '../../screens/authentication/CreatePassword';
+import JourneyGetStartScreen from '../../screens/authentication/JourneyGetStart';
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigation = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="LoginLoaderPage">
 
       {/* 1️⃣ Loader (Initial Screen) */}
       <Stack.Screen
         name="LoginLoaderPage"
         component={LoginLoaderPage}
       />
+
+      <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="EmailInput" component={EmailInput} />
+      <Stack.Screen name="Password" component={Password} />
+      <Stack.Screen name="MobileInput" component={MobileInput} />
+      <Stack.Screen name="OtpVerification" component={OtpVerification} />
+      <Stack.Screen name="GetStarted" component={GetStarted} />
+      <Stack.Screen name="CreatePassword" component={CreatePassword} />
+      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="JourneyGetStartScreen" component={JourneyGetStartScreen} />
 
       {/* 2️⃣ Login */}
       <Stack.Screen
@@ -167,22 +186,22 @@ const StackNavigation = () => {
       <Stack.Screen
         name="DeleteAccountScreen"
         component={DeleteAccountScreen}
-        options={{ headerShown: true, headerTitle: 'Delete Account', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Delete Account', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="TermsofServiceScreen"
         component={TermsOfServiceScreen}
-        options={{ headerShown: true, headerTitle: 'Terms of Service', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Terms of Service', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="SettingsSecurityScreen"
         component={SettingsSecurityScreen}
-        options={{ headerShown: true, headerTitle: 'Settings and Security', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Settings and Security', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="FeedbackScreen"
         component={FeedbackScreen}
-        options={{ headerShown: true, headerTitle: 'Recroot', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Recroot', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="EditProfileScreen"
@@ -233,6 +252,8 @@ const StackNavigation = () => {
           headerTitleAlign: 'center',
         }}
       />
+
+
 
     </Stack.Navigator>
   );

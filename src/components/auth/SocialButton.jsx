@@ -1,23 +1,54 @@
-import { Button } from "@mui/material";
+import React from 'react';
+import { TouchableOpacity, Text, StyleSheet, Dimensions, View , Image} from 'react-native';
 
-const SocialButton = ({ icon, text, onClick }) => {
+const screenWidth = Dimensions.get("window").width;
+
+const AuthButton = ({ text, onPress, style, icon ,iconWidth = 22,}) => {
   return (
-    <Button
-      fullWidth
-      variant="outlined"
-      startIcon={icon}
-      onClick={onClick}
-      sx={{
-        borderRadius: "24px",
-        py: 1.3,
-        textTransform: "none",
-        fontWeight: 500,
-        mb: 1.5,
-      }}
-    >
-      {text}
-    </Button>
+   <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
+      <View style={styles.content}>
+         {icon && (
+          <Image
+            source={icon}
+            style={{ width: iconWidth, height: iconWidth }}
+            // resizeMode="contain"
+          />
+        )}
+        <Text style={styles.text}>{text}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
-export default SocialButton;
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#fff',
+    borderRadius: 48,
+    paddingVertical: 14,
+    // paddingHorizontal: 16,
+    width: screenWidth - 32,
+    marginHorizontal: 'auto',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+    alignItems: 'center',
+    marginTop: 16,
+  },
+   
+   content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10, 
+  },
+  text: {
+    color: '#000',
+    fontSize: 18,
+    lineHeight:28,
+    fontWeight: '400',
+  },
+});
+
+export default AuthButton;
