@@ -212,29 +212,19 @@ const CustomDrawerContent = ({ navigation }) => {
 
 
 
-    const handleLogout = async () => {
-        try {
-            // 1️⃣ Clear auth storage
-            await AsyncStorage.multiRemove([
-                'token',
-                'refreshToken',
-                'user',
-            ]);
-
-            console.log('✅ Logged out, storage cleared');
-
-            // 2️⃣ Reset STACK (same as Delete Account)
-            navigation.getParent()?.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [{ name: 'Login' }],
-                })
-            );
-
-        } catch (error) {
-            console.error('Logout error:', error);
-        }
-    };
+const handleLogout = async () => {
+    await AsyncStorage.clear();
+    console.log('✅ Logged out, storage cleared');
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: 'MainApp',
+          params: { screen: 'Login' },
+        },
+      ],
+    });
+  };
     return (
         <DrawerContentScrollView contentContainerStyle={styles.container}>
 
