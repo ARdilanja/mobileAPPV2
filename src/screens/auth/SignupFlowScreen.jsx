@@ -21,6 +21,7 @@ import { registerUser, verifyOtp } from '../../redux/slices/authSlice';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { API_BASE } from '../../config/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -86,11 +87,16 @@ const SignupFlowScreen = () => {
         dialCode: '+91',
       },
     };
+    console.log('payload :>> ', payload);
     const res = await dispatch(registerUser(payload));
+    console.log('res :>> ', res);
 
     if (res.meta.requestStatus === 'fulfilled') {
+      console.log('TOKEN FROM REGISTER:', res.payload.token);
+      console.log('USER FROM REGISTER:', res.payload.User);
+
       Alert.alert('Success', 'OTP sent to your email');
-      nextStep(); // Go to OTP step
+      nextStep();
     } else {
       Alert.alert('Error', res.payload || 'Registration failed');
     }
@@ -104,6 +110,8 @@ const SignupFlowScreen = () => {
     }
 
     const res = await dispatch(verifyOtp({ email, otp: otpCode }));
+    console.log('OTP VERIFY RESPONSE:', res);
+
     if (res.meta.requestStatus === 'fulfilled') {
       Alert.alert('Success', 'OTP verified successfully');
       nextStep(); // Go to password step
@@ -128,6 +136,12 @@ const SignupFlowScreen = () => {
         password,
         confirmPassword,
       });
+      console.log('SET PASSWORD RESPONSE:', res.data);
+
+      await AsyncStorage.setItem('token', res.data.token);
+      await AsyncStorage.setItem('user', JSON.stringify(res.data.user));
+
+      console.log('💾 TOKEN SAVED TO STORAGE');
 
       if (res.data.message) {
         Alert.alert('Success', 'Account created successfully!');
