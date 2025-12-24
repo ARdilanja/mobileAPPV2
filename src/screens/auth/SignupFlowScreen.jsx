@@ -86,9 +86,7 @@ const SignupFlowScreen = () => {
         dialCode: '+91',
       },
     };
-    console.log('payload :>> ', payload);
     const res = await dispatch(registerUser(payload));
-    console.log('res :>> ', res);
 
     if (res.meta.requestStatus === 'fulfilled') {
       Alert.alert('Success', 'OTP sent to your email');

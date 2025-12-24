@@ -106,334 +106,388 @@
 //     },
 // });
 
-
-
 import React, { useEffect, useState } from 'react';
-import {
-    View,
-    Text,
-    Image,
-    TouchableOpacity,
-    StyleSheet,
-} from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { Fonts } from '../constants/fonts';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CommonActions } from '@react-navigation/native';
+
 const defaultAvatar = require('../assets/images/edit_profile.png');
 
 const CustomDrawerContent = ({ navigation }) => {
-    const [interviewData, setInterviewData] = useState(null);
-    const [userData, setUserData] = useState(null);
-    const [profileImage, setProfileImage] = useState(null)
-    const [isLoading, setIsLoading] = useState(false);
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY4Yjg0M2RlYzY1ODg0ZjMxYzU0MjUyIiwiZW1haWwiOiJnb3BhbC5kaGFnZTU0QGdtYWlsLmNvbSIsImlhdCI6MTc2NjEyNTY4MSwiZXhwIjoxNzY2MjEyMDgxfQ.GOKZhwTgH4NM9JSmbm8ybe54gmajh9w-gEM0Aej981k'
-    const CANDIDATE_ID = '6672592aa821dc12db9fc26e'
-    const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
+  const [interviewData, setInterviewData] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY4Yjg0M2RlYzY1ODg0ZjMxYzU0MjUyIiwiZW1haWwiOiJnb3BhbC5kaGFnZTU0QGdtYWlsLmNvbSIsImlhdCI6MTc2NjEyNTY4MSwiZXhwIjoxNzY2MjEyMDgxfQ.GOKZhwTgH4NM9JSmbm8ybe54gmajh9w-gEM0Aej981k';
+  const CANDIDATE_ID = '6672592aa821dc12db9fc26e';
+  const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
 
-    const fetchInterviewDetails = async () => {
-        try {
-            const response = await axios.post(
-                "https://api.arinnovate.io/api/getStudentDetailsInterview",
-                {
-                    id: CANDIDATE_ID,
-                },
-                {
-                    headers: {
-                        "x-access-token": token,   // ✅ IMPORTANT CHANGE
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
+  const fetchInterviewDetails = async () => {
+    try {
+      const response = await axios.post(
+        'https://api.arinnovate.io/api/getStudentDetailsInterview',
+        {
+          id: CANDIDATE_ID,
+        },
+        {
+          headers: {
+            'x-access-token': token, // ✅ IMPORTANT CHANGE
+            'Content-Type': 'application/json',
+          },
+        },
+      );
 
-            console.log("Interview API Response:", response.data);
-            setInterviewData(response.data);
+      console.log('Interview API Response:', response.data);
+      setInterviewData(response.data);
+    } catch (error) {
+      console.error(
+        'Error fetching interview details:',
+        error.response?.data || error.message,
+      );
+    }
+  };
+  useEffect(() => {
+    fetchUser();
+    fetchInterviewDetails();
+  }, []);
 
-        } catch (error) {
-            console.error(
-                "Error fetching interview details:",
-                error.response?.data || error.message
-            );
+  const handleLogout = async () => {
+    await AsyncStorage.clear();
+    console.log('✅ Logged out, storage cleared');
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: 'MainApp',
+          params: { screen: 'Login' },
+        },
+      ],
+    });
+  };
+
+  // const handleLogout = async () => {
+  //   try {
+  //     //  BEFORE CLEAR
+  //     const allKeysBefore = await AsyncStorage.getAllKeys();
+  //     const allItemsBefore = await AsyncStorage.multiGet(allKeysBefore);
+
+  //     console.log('📦 AsyncStorage BEFORE logout:');
+  //     console.log('Keys:', allKeysBefore);
+  //     console.log('Items:', allItemsBefore);
+
+  //     //  CLEAR STORAGE
+  //     await AsyncStorage.clear();
+  //     console.log(' Logged out, storage cleared');
+
+  //     //  AFTER CLEAR
+  //     const allKeysAfter = await AsyncStorage.getAllKeys();
+  //     console.log(' AsyncStorage AFTER logout:', allKeysAfter);
+
+  //     // NAVIGATION RESET
+  //     console.log('Navigating to Login screen via reset');
+
+  //     navigation.reset({
+  //       index: 0,
+  //       routes: [
+  //         {
+  //           name: 'MainApp',
+  //           params: { screen: 'Login' },
+  //         },
+  //       ],
+  //     });
+
+  //   } catch (error) {
+  //     console.error('❌ Logout error:', error);
+  //   }
+  // };
+
+  const fetchUser = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch(USER_API);
+      const json = await res.json();
+      console.log('json', json);
+
+      if (json?.success && json?.User) {
+        const user = json.User;
+        console.log('user', user);
+        setUserData(user);
+
+        // Profile photo
+        const photo = user.profpicFileLocation?.photo;
+        if (photo) {
+          setProfileImage(photo);
         }
-    };
-    useEffect(() => {
-        fetchUser();
-        fetchInterviewDetails();
-    }, []);
+      }
+    } catch (err) {
+      console.log('Fetch user error:', err);
+      Alert.alert('Error', 'Failed to fetch user data');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  return (
+    <DrawerContentScrollView contentContainerStyle={styles.container}>
+      {/* 🔵 PROFILE SECTION */}
+      <View style={styles.profileSection}>
+        <Image
+          source={profileImage ? { uri: profileImage } : defaultAvatar}
+          style={styles.profileImage}
+        />
+        <Text style={styles.name}>
+          {userData?.firstName} {userData?.lastName}
+        </Text>
+        <Text style={styles.role}>{userData?.newExperience[0]?.job_title}</Text>
 
-
-
-    const fetchUser = async () => {
-        setIsLoading(true);
-        try {
-            const res = await fetch(USER_API);
-            const json = await res.json();
-            console.log("json", json)
-
-            if (json?.success && json?.User) {
-                const user = json.User;
-                console.log("user", user)
-                setUserData(user)
-
-
-                // Profile photo
-                const photo = user.profpicFileLocation?.photo;
-                if (photo) {
-                    setProfileImage(photo);
-                }
-            }
-        } catch (err) {
-            console.log('Fetch user error:', err);
-            Alert.alert('Error', 'Failed to fetch user data');
-        } finally {
-            setIsLoading(false);
-        }
-    };
-    return (
-        <DrawerContentScrollView contentContainerStyle={styles.container}>
-
-            {/* 🔵 PROFILE SECTION */}
-            <View style={styles.profileSection}>
-                <Image
-                    source={profileImage ? { uri: profileImage } : defaultAvatar}
-                    style={styles.profileImage}
-                />
-                <Text style={styles.name}>{userData?.firstName} {userData?.lastName}</Text>
-                <Text style={styles.role}>{userData?.newExperience[0]?.job_title}</Text>
-
-                {/* 🔵 STATS */}
-                <View style={styles.statsRow}>
-                    <View style={styles.statItem}>
-                        <View style={styles.statCircle}>
-                            <Text style={styles.statNumber}>{interviewData?.completedInterviews || 0}</Text>
-                        </View>
-                        <Text style={styles.statLabel}>Invited Interviews</Text>
-                    </View>
-
-                    <View style={styles.statItem}>
-                        <View style={styles.statCircle}>
-                            <Text style={styles.statNumber}>{interviewData?.completedInterviews || 0}</Text>
-                        </View>
-                        <Text style={styles.statLabel}>Completed Interviews</Text>
-                    </View>
-
-                    <View style={styles.statItem}>
-                        <View style={styles.statCircle}>
-                            <Text style={styles.statNumber}>{interviewData?.availableInterviews || 0}</Text>
-                        </View>
-                        <Text style={styles.statLabel}>Available</Text>
-                    </View>
-                </View>
+        {/* 🔵 STATS */}
+        <View style={styles.statsRow}>
+          <View style={styles.statItem}>
+            <View style={styles.statCircle}>
+              <Text style={styles.statNumber}>
+                {interviewData?.completedInterviews || 0}
+              </Text>
             </View>
+            <Text style={styles.statLabel}>Invited Interviews</Text>
+          </View>
 
-            {/* 🔵 MENU */}
-            <View style={styles.menuSection}>
-                <DrawerItem
-                    icon={require('../assets/icons/unknown-user.png')}
-                    label="Profile"
-                    onPress={() => navigation.navigate('MainApp', {
-                        screen: 'EditProfileScreen'
-                    })}
-                />
-
-                <DrawerItem
-                    icon={require('../assets/icons/interview.png')}
-                    label="Interviews"
-                    onPress={() => navigation.navigate('MainApp', {
-                        screen: 'CreateRoomScreen',
-                    })}
-                />
-
-                <DrawerItem
-                    icon={require('../assets/icons/chat.png')}
-                    label="Chat"
-                    onPress={() => navigation.navigate('Chat')}
-                />
+          <View style={styles.statItem}>
+            <View style={styles.statCircle}>
+              <Text style={styles.statNumber}>
+                {interviewData?.completedInterviews || 0}
+              </Text>
             </View>
+            <Text style={styles.statLabel}>Completed Interviews</Text>
+          </View>
 
-            {/* 🔵 FOOTER */}
-            <View style={styles.footer}>
-                <FooterItem
-                    label="Settings & Security"
-                    onPress={() => navigation.navigate('Settings')}
-                />
-                <FooterItem
-                    label="Terms of Service"
-                    onPress={() => navigation.navigate('Terms')}
-                />
-                <FooterItem
-                    label="Delete My Account"
-                    // danger
-                    onPress={() => navigation.navigate('MainApp', {
-                        screen: 'DeleteAccountScreen',
-                    })}
-                />
+          <View style={styles.statItem}>
+            <View style={styles.statCircle}>
+              <Text style={styles.statNumber}>
+                {interviewData?.availableInterviews || 0}
+              </Text>
             </View>
+            <Text style={styles.statLabel}>Available</Text>
+          </View>
+        </View>
+      </View>
 
-            {/* 🔵 LOGOUT */}
-            <TouchableOpacity style={styles.logout}>
-                <Image
-                    source={require('../assets/icons/logout.png')}
-                    style={styles.logoutIcon}
-                />
-                <Text style={styles.logoutText}>Log Out</Text>
-            </TouchableOpacity>
+      {/* 🔵 MENU */}
+      <View style={styles.menuSection}>
+        <DrawerItem
+          icon={require('../assets/icons/unknown-user.png')}
+          label="Profile"
+          onPress={() =>
+            navigation.navigate('MainApp', {
+              screen: 'EditProfileScreen',
+            })
+          }
+        />
 
-        </DrawerContentScrollView>
-    );
+        <DrawerItem
+          icon={require('../assets/icons/interview.png')}
+          label="Interviews"
+          onPress={() =>
+            navigation.navigate('MainApp', {
+              screen: 'CreateRoomScreen',
+            })
+          }
+        />
+
+        <DrawerItem
+          icon={require('../assets/icons/chat.png')}
+          label="Chat"
+          onPress={() => navigation.navigate('Chat')}
+        />
+      </View>
+
+      {/* 🔵 FOOTER */}
+      <View style={styles.footer}>
+        <FooterItem
+          label="Settings & Security"
+          onPress={() => navigation.navigate('Settings')}
+        />
+        <FooterItem
+          label="Terms of Service"
+          onPress={() => navigation.navigate('Terms')}
+        />
+        <FooterItem
+          label="Delete My Account"
+          // danger
+          onPress={() =>
+            navigation.navigate('MainApp', {
+              screen: 'DeleteAccountScreen',
+            })
+          }
+        />
+      </View>
+
+      {/* 🔵 LOGOUT */}
+      <TouchableOpacity style={styles.logout} onPress={handleLogout}>
+        <Image
+          source={require('../assets/icons/logout.png')}
+          style={styles.logoutIcon}
+        />
+        <Text style={styles.logoutText}>Log Out</Text>
+      </TouchableOpacity>
+    </DrawerContentScrollView>
+  );
 };
 
 export default CustomDrawerContent;
 
 /* 🔵 REUSABLE COMPONENTS */
 const DrawerItem = ({ icon, label, onPress }) => (
-    <TouchableOpacity style={styles.menuItem} onPress={onPress}>
-        <Image source={icon} style={styles.menuIcon} />
-        <Text style={styles.menuText}>{label}</Text>
-    </TouchableOpacity>
+  <TouchableOpacity style={styles.menuItem} onPress={onPress}>
+    <Image source={icon} style={styles.menuIcon} />
+    <Text style={styles.menuText}>{label}</Text>
+  </TouchableOpacity>
 );
 
 const FooterItem = ({ label, onPress, danger }) => (
-    <TouchableOpacity style={styles.footerItem} onPress={onPress}>
-        <Text style={[styles.menuText, danger && { color: '#DC2626' }]}>
-            {label}
-        </Text>
-    </TouchableOpacity>
+  <TouchableOpacity style={styles.footerItem} onPress={onPress}>
+    <Text style={[styles.menuText, danger && { color: '#DC2626' }]}>
+      {label}
+    </Text>
+  </TouchableOpacity>
 );
 
 /* 🔵 STYLES */
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
 
-    profileSection: {
-        paddingHorizontal: 20,
-        paddingVertical: 25,
-        alignItems: 'left',
-        borderBottomWidth: 1,
-        borderColor: '#EDEFEF',
-    },
+  profileSection: {
+    paddingHorizontal: 20,
+    paddingVertical: 25,
+    alignItems: 'left',
+    borderBottomWidth: 1,
+    borderColor: '#EDEFEF',
+  },
 
-    profileImage: {
-        width: 60,
-        height: 60,
-        borderRadius: 35,
-        marginBottom: 10,
-    },
+  profileImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 35,
+    marginBottom: 10,
+  },
 
-    name: {
-        fontSize: 16,
-        lineHeight: 26,
-        fontFamily: Fonts.SemiBold,
-        // fontWeight: '600',
-        color: '#111827',
-    },
+  name: {
+    fontSize: 16,
+    lineHeight: 26,
+    fontFamily: Fonts.SemiBold,
+    // fontWeight: '600',
+    color: '#111827',
+  },
 
-    role: {
-        fontSize: 14,
-        lineHeight: 26,
-        fontFamily: Fonts.Bold,
-        color: '#5C6363',
-        marginTop: 2,
-    },
+  role: {
+    fontSize: 14,
+    lineHeight: 26,
+    fontFamily: Fonts.Bold,
+    color: '#5C6363',
+    marginTop: 2,
+  },
 
-    statsRow: {
-        flexDirection: 'row',
-        marginTop: 20,
-        // paddingHorizontal: 10,
-    },
+  statsRow: {
+    flexDirection: 'row',
+    marginTop: 20,
+    // paddingHorizontal: 10,
+  },
 
-    statItem: {
-        alignItems: 'center',
-        marginHorizontal: 10,
-        width: 80,
-    },
+  statItem: {
+    alignItems: 'center',
+    marginHorizontal: 10,
+    width: 80,
+  },
 
-    statCircle: {
-        width: 50,
-        height: 50,
-        borderRadius: '50%',
-        backgroundColor: '#115CC7',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 6,
-    },
+  statCircle: {
+    width: 50,
+    height: 50,
+    borderRadius: '50%',
+    backgroundColor: '#115CC7',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
 
-    statNumber: {
-        color: '#fff',
-        fontSize: 16,
-        fontFamily: Fonts.Bold,
-        lineHeight: 22,
-    },
+  statNumber: {
+    color: '#fff',
+    fontSize: 16,
+    fontFamily: Fonts.Bold,
+    lineHeight: 22,
+  },
 
-    statLabel: {
-        fontSize: 13,
-        fontFamily: Fonts.Regular,
-        lineHeight: 22,
-        textAlign: 'center',
-        color: '#374151',
-    },
+  statLabel: {
+    fontSize: 13,
+    fontFamily: Fonts.Regular,
+    lineHeight: 22,
+    textAlign: 'center',
+    color: '#374151',
+  },
 
-    menuSection: {
-        paddingBottom: 24,
-        borderBottomWidth: 1,
-        borderColor: '#EDEFEF',
-    },
+  menuSection: {
+    paddingBottom: 24,
+    borderBottomWidth: 1,
+    borderColor: '#EDEFEF',
+  },
 
-    menuItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingTop: 25,
-        paddingHorizontal: 20,
-    },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 25,
+    paddingHorizontal: 20,
+  },
 
-    menuIcon: {
-        width: 24,
-        height: 24,
-        marginRight: 14,
-        resizeMode: 'contain',
-    },
+  menuIcon: {
+    width: 24,
+    height: 24,
+    marginRight: 14,
+    resizeMode: 'contain',
+  },
 
-    menuText: {
-        fontSize: 16,
-        fontFamily: Fonts.Regular,
-        lineHeight: 26,
-        color: '#111827',
-    },
+  menuText: {
+    fontSize: 16,
+    fontFamily: Fonts.Regular,
+    lineHeight: 26,
+    color: '#111827',
+  },
 
-    footer: {
-        marginTop: 10,
-        paddingHorizontal: 20,
-    },
+  footer: {
+    marginTop: 10,
+    paddingHorizontal: 20,
+  },
 
-    footerItem: {
-        paddingVertical: 12,
-    },
+  footerItem: {
+    paddingVertical: 12,
+  },
 
-    footerText: {
-        fontSize: 13,
-        color: '#374151',
-    },
+  footerText: {
+    fontSize: 13,
+    color: '#374151',
+  },
 
-    logout: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 20,
-        marginTop: 'auto',
-        borderTopWidth: 1,
-        borderColor: '#EDEFEF',
-    },
+  logout: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+    marginTop: 'auto',
+    borderTopWidth: 1,
+    borderColor: '#EDEFEF',
+  },
 
-    logoutIcon: {
-        width: 18,
-        height: 18,
-        marginRight: 10,
-    },
+  logoutIcon: {
+    width: 18,
+    height: 18,
+    marginRight: 10,
+  },
 
-    logoutText: {
-        fontSize: 14,
-        color: '#111827',
-        fontWeight: '500',
-    },
+  logoutText: {
+    fontSize: 14,
+    color: '#111827',
+    fontWeight: '500',
+  },
 });
