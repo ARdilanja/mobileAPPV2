@@ -52,6 +52,15 @@ const InterviewCard = ({
             <Text style={styles.startText}>Start</Text>
           </TouchableOpacity>
         );
+        case "interrupted":
+        return (
+          <TouchableOpacity
+            style={styles.terminateButton}
+            onPress={handlePress}
+          >
+            <Text style={styles.terminateText}>Terminated</Text>
+          </TouchableOpacity>
+        );
     }
   };
 
@@ -73,6 +82,32 @@ const InterviewCard = ({
 };
 
 const styles = StyleSheet.create({
+  startButton:{
+    backgroundColor: '#F3F4F6',
+    borderRadius: 6,
+    width: 70,
+    height: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+  },
+  startText:{
+    color: '#6B7280',
+    fontFamily: Fonts.Medium,
+    fontSize: 14,
+  },
+  reportText: {
+    color: "white",
+    fontSize: 14,
+    fontFamily: Fonts.Medium
+  },
+  reportButton: {
+    backgroundColor: "#0069FF",
+    borderRadius: 6,
+    paddingVertical: 7.5,
+    paddingHorizontal: 10,
+  },
   card: {
     width: 375,
     height: 76,
@@ -114,17 +149,17 @@ const styles = StyleSheet.create({
     color: '#5C6363',
     lineHeight: 22,
   },
-  startButton: {
-    backgroundColor: 'white',
+  terminateButton: {
+    backgroundColor: '#828284ff',
     borderWidth: 1,
-    borderColor: '#2563EB',
+    borderColor: '#828284ff',
     borderRadius: 6,
     height: 32,
-    paddingHorizontal: 18,
+    paddingHorizontal: 10,
     paddingVertical: 7.5,
   },
-  startText: {
-    color: '#115CC7',
+  terminateText: {
+    color: '#f6f7f8ff',
     fontWeight: '500',
     fontSize: 14,
     lineHeight: 17,

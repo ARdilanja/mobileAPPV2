@@ -193,12 +193,12 @@ const StackNavigation = () => {
       <Stack.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: true,headerTitle:'EditProfile',headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="EmployerInterviewScreen"
         component={EmployerInterviewScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: true,headerTitle:'Employer Interviews', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="CompletedInterview"
