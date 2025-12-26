@@ -121,7 +121,7 @@ import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { Fonts } from '../constants/fonts';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions, DrawerActions, useNavigation } from '@react-navigation/native';
 const defaultAvatar = require('../assets/images/edit_profile.png');
 const CloseIcon = require('../assets/images/close.png');
 
@@ -134,7 +134,8 @@ const fetchWithTimeout = (url, options = {}, timeout = 15000) => {
     ]);
 };
 
-const CustomDrawerContent = ({ navigation }) => {
+const CustomDrawerContent = () => {
+    const navigation = useNavigation();
     const [interviewData, setInterviewData] = useState(null);
     const [userData, setUserData] = useState(null);
     const [profileImage, setProfileImage] = useState(null)
@@ -212,31 +213,30 @@ const CustomDrawerContent = ({ navigation }) => {
 
 
 
-const handleLogout = async () => {
-    await AsyncStorage.clear();
-    console.log('✅ Logged out, storage cleared');
-    navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: 'MainApp',
-          params: { screen: 'Login' },
-        },
-      ],
-    });
-  };
+    const handleLogout = async () => {
+        await AsyncStorage.clear();
+        console.log('✅ Logged out, storage cleared');
+        navigation.reset({
+            index: 0,
+            routes: [
+                {
+                    name: 'MainApp',
+                    params: { screen: 'Login' },
+                },
+            ],
+        });
+    };
     return (
         <DrawerContentScrollView contentContainerStyle={styles.container}>
 
             <View style={styles.closeRow}>
                 <TouchableOpacity
-                    onPress={() => navigation.closeDrawer()}
+                    onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
                     hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 >
                     <Image source={CloseIcon} style={styles.closeIcon} />
                 </TouchableOpacity>
             </View>
-
             {/* 🔵 PROFILE SECTION */}
             <View style={styles.profileSection}>
                 <Image
@@ -276,17 +276,18 @@ const handleLogout = async () => {
                 <DrawerItem
                     icon={require('../assets/icons/unknown-user.png')}
                     label="Profile"
-                    onPress={() => navigation.navigate('MainApp', {
-                        screen: 'EditProfileScreen'
-                    })}
+                    onPress={() => navigation.navigate('EditProfileScreen')}
                 />
 
                 <DrawerItem
                     icon={require('../assets/icons/interview.png')}
                     label="Interviews"
-                    onPress={() => navigation.navigate('MainApp', {
-                        screen: 'EmployerInterviewScreen',
-                    })}
+                    onPress={() => navigation.navigate('EmployerInterviewScreen')}
+                />
+                <DrawerItem
+                    icon={require('../assets/icons/interview.png')}
+                    label="Chat"
+                    onPress={() => navigation.navigate('ChatOnboardingScreen')}
                 />
             </View>
 
@@ -294,22 +295,16 @@ const handleLogout = async () => {
             <View style={styles.footer}>
                 <FooterItem
                     label="Settings & Security"
-                    onPress={() => navigation.navigate('MainApp', {
-                        screen: 'SettingsSecurityScreen',
-                    })}
+                    onPress={() => navigation.navigate('SettingsSecurityScreen')}
                 />
                 <FooterItem
                     label="Terms of Service"
-                    onPress={() => navigation.navigate('MainApp', {
-                        screen: 'TermsofServiceScreen',
-                    })}
+                    onPress={() => navigation.navigate('TermsofServiceScreen')}
                 />
                 <FooterItem
                     label="Delete My Account"
                     // danger
-                    onPress={() => navigation.navigate('MainApp', {
-                        screen: 'DeleteAccountScreen',
-                    })}
+                    onPress={() => navigation.navigate('DeleteAccountScreen')}
                 />
             </View>
 

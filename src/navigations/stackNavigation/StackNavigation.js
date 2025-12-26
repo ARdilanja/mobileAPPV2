@@ -118,6 +118,7 @@ import CreateRoomScreen from '../../screens/CreateRoomScreen';
 import VerificationScreen from '../../screens/auth/VerificationScreen';
 import TermsOfServiceScreen from '../../screens/TermsOfServiceScreen';
 import SettingsSecurityScreen from '../../screens/SettingsSecurityScreen';
+import ChatOnboardingScreen from '../../screens/ChatScreen/ChatOnboardingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -194,6 +195,11 @@ const StackNavigation = () => {
         name="EditProfileScreen"
         component={EditProfileScreen}
         options={{ headerShown: true,headerTitle:'EditProfile',headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="ChatOnboardingScreen"
+        component={ChatOnboardingScreen}
+        options={{ headerShown: true,headerTitle:'ChatOnboardingScreen',headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="EmployerInterviewScreen"
