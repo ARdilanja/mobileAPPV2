@@ -119,6 +119,11 @@ import VerificationScreen from '../../screens/auth/VerificationScreen';
 import TermsOfServiceScreen from '../../screens/TermsOfServiceScreen';
 import SettingsSecurityScreen from '../../screens/SettingsSecurityScreen';
 import ChatOnboardingScreen from '../../screens/ChatScreen/ChatOnboardingScreen';
+import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
+import PracticeConversationScreen from '../../screens/practiceInterview/PracticeConversationScreen';
+import PracticeInterviewInfoScreen from '../../screens/practiceInterview/PracticeInterviewInfoScreen';
+
+// import MyProfile from '../../screens/BottomScreens/MyProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -147,24 +152,6 @@ const StackNavigation = () => {
         name="Signup"
         component={SignupFlowScreen}
       />
-
-      {/* 4️⃣ Bottom Tabs */}
-      {/* <Stack.Screen
-        name="BottomDash"
-        component={BottomNavigation}
-        options={({ route }) => {
-          const routeName =
-            getFocusedRouteNameFromRoute(route) ?? 'Bottom';
-
-          const isHome = routeName === 'Bottom';
-
-          return {
-            headerShown: isHome,
-            headerTitle: '',
-            headerLeft: isHome ? () => <DrawerHeader /> : undefined,
-          };
-        }}
-      /> */}
 
       <Stack.Screen
         name="BottomDash"
@@ -234,6 +221,21 @@ const StackNavigation = () => {
       <Stack.Screen
         name="LiveRoomScreen"
         component={LiveRoomScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PracticeStartScreen"
+        component={PracticeStartScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PracticeConversationScreen"
+        component={PracticeConversationScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PracticeInterviewInfoScreen"
+        component={PracticeInterviewInfoScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
