@@ -18,7 +18,7 @@ import { API_BASE_URL } from "../config/api";
 const screenWidth = Dimensions.get("window").width;
 
 export default function Dashboard() {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3MjU5MmFhODIxZGMxMmRiOWZjMjZlIiwiZW1haWwiOiJ1ZGVzaGluaWV0aGFyYW5nYUBnbWFpbC5jb20iLCJpYXQiOjE3NjY0ODE3MjcsImV4cCI6MTc2NjU2ODEyN30.XI8X7EHCXbSmHov6HW9Csdg6N9D6zWFE5nJR9SnKHqo';
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjhjYjlkMDQ3Yjk0MDZhN2JiMTdiMjQ2IiwiZW1haWwiOiJ1ZGVzaGluaWV0aGFyYW5nYUBnbWFpbC5jb20iLCJpYXQiOjE3NjY3NDQ0NzgsImV4cCI6MTc2NjgzMDg3OH0.0qwVmUswoDaKr8I4TyLxCVJOZRnCe5ghZEwbhugQO0c";
     const CANDIDATE_ID = '6672592aa821dc12db9fc26e';
 
     const [selectedCard, setSelectedCard] = useState(null);

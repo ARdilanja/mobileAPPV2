@@ -443,6 +443,24 @@ const checkIcon = require("../../assets/images/check.png");
 const sendIcon = require("../../assets/images/send.png");
 
 /* DATA */
+const levelOptions = ["Junior", "Senior", "Manager"];
+const experienceOptions = ["0–1", "2–4", "5–7", "8–10", "10+"];
+
+const industryOptions = [
+  "Tech / IT",
+  "Healthcare",
+  "Finance",
+  "Retail / E-commerce",
+  "Education",
+];
+
+const workingSituationOptions = [
+  "Individual contributor",
+  "Leading a team",
+  "Cross-functional role",
+  "Stakeholder-facing (clients / execs)",
+];
+
 const challengesList = [
   "Speaking in meetings",
   "Presenting ideas",
@@ -464,46 +482,26 @@ const worriesList = [
 export default function ChatOnboardingScreen() {
   const [step, setStep] = useState(1);
 
-  /* STEP 1 */
   const [chat, setChat] = useState([]);
   const [input, setInput] = useState("");
   const [step1Answered, setStep1Answered] = useState(false);
 
-  /* STEP 2 */
+  const [level, setLevel] = useState(null);
+  const [experience, setExperience] = useState(null);
+  const [industries, setIndustries] = useState([]);
+  const [workingSituations, setWorkingSituations] = useState([]);
   const [challenges, setChallenges] = useState([]);
-
-  /* STEP 3 */
   const [worries, setWorries] = useState([]);
   const [extraNote, setExtraNote] = useState("");
 
-  /* STEP 1 TEXT SEND */
   const handleSendStep1 = () => {
     if (!input.trim()) return;
-
-    setChat((prev) => [
-      ...prev,
-      { id: Date.now(), type: "text", value: input },
-    ]);
-
+    setChat((prev) => [...prev, { id: Date.now(), value: input }]);
     setInput("");
     setStep1Answered(true);
   };
 
-  /* STEP 1 VOICE */
-  const handleVoiceStep1 = (path) => {
-    setChat((prev) => [
-      ...prev,
-      { id: Date.now(), type: "voice", path },
-    ]);
-    setStep1Answered(true);
-  };
-
-  /* STEP 3 SEND (NO ACTION) */
-  const handleSendStep3 = () => {
-    setExtraNote("");
-  };
-
-  const toggleSelection = (item, list, setList) => {
+  const toggleMulti = (item, list, setList) => {
     setList(
       list.includes(item)
         ? list.filter((i) => i !== item)
@@ -511,89 +509,182 @@ export default function ChatOnboardingScreen() {
     );
   };
 
-  /* BUTTON ENABLE LOGIC */
   const isButtonEnabled = () => {
     if (step === 1) return step1Answered;
-    if (step === 2) return challenges.length > 0;
-    if (step === 3) return worries.length > 0;
+    if (step === 2) return !!level;
+    if (step === 3) return !!experience;
+    if (step === 4) return industries.length > 0;
+    if (step === 5) return workingSituations.length > 0;
+    if (step === 6) return challenges.length > 0;
+    if (step === 7) return worries.length > 0;
     return false;
   };
 
   return (
     <View style={styles.container}>
-      {/* HEADER */}
-      <Text style={styles.headerText}>
-        Let’s personalize this for you
-      </Text>
+      <Text style={styles.headerText}>Let’s personalize this for you</Text>
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+      >
         {/* STEP 1 */}
         {step === 1 && (
           <>
             <Text style={styles.question}>
-              What’s your current role or field?
+              What role do you currently work in?
             </Text>
 
-            {chat.map((item) =>
-              item.type === "voice" ? (
-                <View key={item.id} style={styles.userBubble}>
-                  <VoiceMessageBubble path={item.path} />
-                </View>
-              ) : (
-                <View key={item.id} style={styles.userBubble}>
-                  <Text style={styles.userText}>{item.value}</Text>
-                </View>
-              )
-            )}
+            {chat.map((item) => (
+              <View key={item.id} style={styles.userBubble}>
+                <Text style={styles.userText}>{item.value}</Text>
+              </View>
+            ))}
           </>
         )}
 
-        {/* STEP 2 */}
+        {/* STEP 2 – RADIO */}
         {step === 2 && (
+          <>
+            <Text style={styles.question}>
+              How would you describe your level?
+            </Text>
+
+            <View style={styles.bottomOptions}>
+              <View style={styles.radioWrap}>
+                {levelOptions.map((item) => (
+                  <RadioPill
+                    key={item}
+                    label={item}
+                    selected={level === item}
+                    onPress={() => setLevel(item)}
+                  />
+                ))}
+              </View>
+            </View>
+          </>
+        )}
+
+        {/* STEP 3 – RADIO */}
+        {step === 3 && (
+          <>
+            <Text style={styles.question}>
+              How many years of experience do you have?
+            </Text>
+
+            <View style={styles.bottomOptions}>
+              <View style={styles.radioWrap}>
+                {experienceOptions.map((item) => (
+                  <RadioPill
+                    key={item}
+                    label={item}
+                    selected={experience === item}
+                    onPress={() => setExperience(item)}
+                  />
+                ))}
+              </View>
+            </View>
+          </>
+        )}
+
+        {/* STEP 4 */}
+        {step === 4 && (
+          <>
+            <Text style={styles.question}>
+              Which industry do you work in?
+            </Text>
+
+            <View style={styles.bottomOptions}>
+              <View style={styles.checkboxWrap}>
+                {industryOptions.map((item) => (
+                  <PillCheckbox
+                    key={item}
+                    label={item}
+                    selected={industries.includes(item)}
+                    onPress={() =>
+                      toggleMulti(item, industries, setIndustries)
+                    }
+                  />
+                ))}
+              </View>
+            </View>
+          </>
+        )}
+
+        {/* STEP 5 */}
+        {step === 5 && (
+          <>
+            <Text style={styles.question}>
+              What’s your working situation like?
+            </Text>
+
+            <View style={styles.bottomOptions}>
+              <View style={styles.checkboxWrap}>
+                {workingSituationOptions.map((item) => (
+                  <PillCheckbox
+                    key={item}
+                    label={item}
+                    selected={workingSituations.includes(item)}
+                    onPress={() =>
+                      toggleMulti(item, workingSituations, setWorkingSituations)
+                    }
+                  />
+                ))}
+              </View>
+            </View>
+          </>
+        )}
+
+        {/* STEP 6 */}
+        {step === 6 && (
           <>
             <Text style={styles.question}>
               What’s your biggest challenge at work right now?
             </Text>
 
-            <View style={styles.checkboxWrap}>
-              {challengesList.map((item) => (
-                <PillCheckbox
-                  key={item}
-                  label={item}
-                  selected={challenges.includes(item)}
-                  onPress={() =>
-                    toggleSelection(item, challenges, setChallenges)
-                  }
-                />
-              ))}
+            <View style={styles.bottomOptions}>
+              <View style={styles.checkboxWrap}>
+                {challengesList.map((item) => (
+                  <PillCheckbox
+                    key={item}
+                    label={item}
+                    selected={challenges.includes(item)}
+                    onPress={() =>
+                      toggleMulti(item, challenges, setChallenges)
+                    }
+                  />
+                ))}
+              </View>
             </View>
           </>
         )}
 
-        {/* STEP 3 */}
-        {step === 3 && (
+        {/* STEP 7 */}
+        {step === 7 && (
           <>
             <Text style={styles.question}>
               What worries you the most?
             </Text>
 
-            <View style={styles.checkboxWrap}>
-              {worriesList.map((item) => (
-                <PillCheckbox
-                  key={item}
-                  label={item}
-                  selected={worries.includes(item)}
-                  onPress={() =>
-                    toggleSelection(item, worries, setWorries)
-                  }
-                />
-              ))}
+            <View style={styles.bottomOptions}>
+              <View style={styles.checkboxWrap}>
+                {worriesList.map((item) => (
+                  <PillCheckbox
+                    key={item}
+                    label={item}
+                    selected={worries.includes(item)}
+                    onPress={() =>
+                      toggleMulti(item, worries, setWorries)
+                    }
+                  />
+                ))}
+              </View>
             </View>
           </>
         )}
       </ScrollView>
 
-      {/* BOTTOM INPUT - STEP 1 */}
+      {/* STEP 1 INPUT – UNCHANGED */}
       {step === 1 && (
         <View style={styles.bottomArea}>
           <View style={styles.inputContainer}>
@@ -603,9 +694,7 @@ export default function ChatOnboardingScreen() {
               onChangeText={setInput}
               style={styles.input}
             />
-
-            <VoiceRecorder onRecorded={handleVoiceStep1} />
-
+            <VoiceRecorder onRecorded={() => {}} />
             <TouchableOpacity onPress={handleSendStep1}>
               <Image source={sendIcon} style={styles.sendIcon} />
             </TouchableOpacity>
@@ -613,25 +702,31 @@ export default function ChatOnboardingScreen() {
         </View>
       )}
 
-      {/* BOTTOM INPUT - STEP 3 */}
-      {step === 3 && (
-        <View style={styles.bottomArea}>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Anything you want to add?"
-              value={extraNote}
-              onChangeText={setExtraNote}
-              style={styles.input}
-            />
+      {/* STEP 7 INPUT */}
+{/* STEP 7 INPUT */}
+{step === 7 && (
+  <View style={styles.bottomArea}>
+    <View style={styles.inputContainer}>
+      <TextInput
+        placeholder="Anything you want to add?"
+        value={extraNote}
+        onChangeText={setExtraNote}
+        style={styles.input}
+      />
 
-            <VoiceRecorder onRecorded={() => {}} />
+      {/* Mic icon – UI only */}
+      <TouchableOpacity activeOpacity={0.7}>
+        <VoiceRecorder onRecorded={() => {}} />
+      </TouchableOpacity>
 
-            <TouchableOpacity onPress={handleSendStep3}>
-              <Image source={sendIcon} style={styles.sendIcon} />
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
+      {/* Send icon – UI only */}
+      <TouchableOpacity activeOpacity={0.7}>
+        <Image source={sendIcon} style={styles.sendIcon} />
+      </TouchableOpacity>
+    </View>
+  </View>
+)}
+
 
       {/* BUTTON */}
       <View style={styles.buttonWrap}>
@@ -641,12 +736,10 @@ export default function ChatOnboardingScreen() {
             !isButtonEnabled() && styles.disabled,
           ]}
           disabled={!isButtonEnabled()}
-          onPress={() => {
-            if (step < 3) setStep(step + 1);
-          }}
+          onPress={() => step < 7 && setStep(step + 1)}
         >
           <Text style={styles.nextText}>
-            {step === 3 ? "Create my 90-day plan" : "Next"}
+            {step === 7 ? "Create my 90-day plan" : "Next"}
           </Text>
         </TouchableOpacity>
       </View>
@@ -654,7 +747,37 @@ export default function ChatOnboardingScreen() {
   );
 }
 
-/* CHECKBOX */
+/* RADIO */
+const RadioPill = ({ label, selected, onPress }) => (
+  <TouchableOpacity
+    activeOpacity={0.85}
+    onPress={onPress}
+    style={[
+      styles.radioPill,
+      selected && styles.radioPillSelected,
+    ]}
+  >
+    <View
+      style={[
+        styles.radioCircle,
+        selected && styles.radioCircleSelected,
+      ]}
+    >
+      {selected && <View style={styles.radioDot} />}
+    </View>
+
+    <Text
+      style={[
+        styles.radioText,
+        selected && styles.radioTextSelected,
+      ]}
+    >
+      {label}
+    </Text>
+  </TouchableOpacity>
+);
+
+/* CHECKBOX – UNCHANGED */
 const PillCheckbox = ({ label, selected, onPress }) => (
   <TouchableOpacity
     onPress={onPress}
@@ -665,10 +788,7 @@ const PillCheckbox = ({ label, selected, onPress }) => (
         <Image source={checkIcon} style={styles.checkIcon} />
       )}
     </View>
-
-    <Text
-      style={[styles.pillText, selected && styles.pillTextSelected]}
-    >
+    <Text style={[styles.pillText, selected && styles.pillTextSelected]}>
       {label}
     </Text>
   </TouchableOpacity>
@@ -676,53 +796,75 @@ const PillCheckbox = ({ label, selected, onPress }) => (
 
 /* STYLES */
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
+  container: { flex: 1, backgroundColor: "#F5F5F5" },
+  headerText: { fontSize: 24, padding: 16 },
+  content: { paddingHorizontal: 16, flexGrow: 1 },
+  question: { fontSize: 32, marginBottom: 16 },
 
-  headerText: {
-    fontSize: 24,
-    fontWeight: "400",
-    color: "#2A2A2A",
-    padding: 16,
-  },
-
-  content: {
-    paddingHorizontal: 16,
-    paddingBottom: 20,
-  },
-
-  question: {
-    fontSize: 32,
-    fontWeight: "500",
-    lineHeight: 48,
-    marginBottom: 12,
-    color: "#2A2A2A",
+  bottomOptions: {
+    marginTop: "auto",
+    paddingBottom: 16,
   },
 
   userBubble: {
     alignSelf: "flex-end",
     backgroundColor: "#007AFF",
+    padding: 12,
     borderRadius: 24,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    marginTop: 8,
-    maxWidth: "80%",
+    marginBottom: 8,
   },
+  userText: { color: "#fff" },
 
-  userText: {
-    color: "#fff",
-    fontSize: 14,
-    lineHeight: 20,
-  },
-
-  checkboxWrap: {
+  radioWrap: {
     flexDirection: "row",
     flexWrap: "wrap",
   },
 
+  radioPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 36  ,
+    paddingHorizontal: 10,
+    borderRadius: 24,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
+    marginRight: 12,
+    marginBottom: 12,
+    elevation: 3,
+  },
+
+  radioPillSelected: { borderColor: "#1E88FF" },
+
+  radioCircle: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    borderWidth: 2,
+    borderColor: "#CFCFCF",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 10,
+  },
+
+  radioCircleSelected: { borderColor: "#1E88FF" },
+
+  radioDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#1E88FF",
+  },
+
+  radioText: { fontSize: 16, color: "#2A2A2A" },
+  radioTextSelected: { color: "#1E88FF", fontWeight: "500" },
+
+  checkboxWrap: { flexDirection: "row", flexWrap: "wrap" },
+
   pill: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 8,
+    height: 36,
     paddingHorizontal: 12,
     borderRadius: 24,
     backgroundColor: "#fff",
@@ -731,14 +873,12 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
 
-  pillSelected: {
-    backgroundColor: "#1E88FF",
-  },
+  pillSelected: { backgroundColor: "#1E88FF" },
 
   checkbox: {
     width: 18,
     height: 18,
-    borderRadius: 4,
+    borderRadius: 2,
     borderWidth: 1.5,
     borderColor: "#D0D0D0",
     marginRight: 8,
@@ -747,44 +887,24 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
 
-  checkboxSelected: {
-    borderColor: "#fff",
-  },
+  checkboxSelected: { borderColor: "#fff" },
+  checkIcon: { width: 12, height: 12, tintColor: "#1E88FF" },
 
-  checkIcon: {
-    width: 12,
-    height: 12,
-    tintColor: "#1E88FF",
-  },
+  pillText: { fontSize: 13, color: "#333" },
+  pillTextSelected: { color: "#fff" },
 
-  pillText: {
-    fontSize: 13,
-    color: "#333",
-    flexShrink: 1,
-  },
-
-  pillTextSelected: {
-    color: "#fff",
-  },
-
-  bottomArea: {
-    padding: 16,
-    borderTopWidth: 1,
-    borderColor: "#eee",
-  },
+  bottomArea: { padding: 16 },
 
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F1F1F1",
+    backgroundColor: "#E2E2E2",
     borderRadius: 24,
     paddingHorizontal: 12,
     height: 56,
   },
 
-  input: {
-    flex: 1,
-  },
+  input: { flex: 1 },
 
   sendIcon: {
     width: 22,
@@ -793,25 +913,17 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
 
-  buttonWrap: {
-    padding: 16,
-  },
+  buttonWrap: { padding: 16 },
 
   nextButton: {
-    backgroundColor: "#007AFF",
     height: 56,
     borderRadius: 48,
+    backgroundColor: "#007AFF",
     alignItems: "center",
     justifyContent: "center",
   },
 
-  disabled: {
-    backgroundColor: "#00000040",
-  },
+  disabled: { backgroundColor: "#999" },
 
-  nextText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "600",
-  },
+  nextText: { color: "#fff", fontSize: 18 },
 });

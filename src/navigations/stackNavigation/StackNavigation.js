@@ -122,6 +122,7 @@ import ChatOnboardingScreen from '../../screens/ChatScreen/ChatOnboardingScreen'
 import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
 import PracticeConversationScreen from '../../screens/practiceInterview/PracticeConversationScreen';
 import PracticeInterviewInfoScreen from '../../screens/practiceInterview/PracticeInterviewInfoScreen';
+import Home from '../../screens/Home'
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
 
@@ -199,8 +200,8 @@ const StackNavigation = () => {
 
       />
       <Stack.Screen
-        name="Dashboard"
-        component={Dashboard}
+        name="Home"
+        component={Home}
         options={{ headerShown: false }}
       />
       <Stack.Screen

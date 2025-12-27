@@ -6,6 +6,7 @@ import EmployerInterviewScreen from '../../screens/EmployerInterviewScreen';
 import CompletedInterviewsScreen from '../../screens/CompletedInterviewsScreen';
 import Dashboard from '../../screens/Dashboard';
 import DrawerHeader from '../../components/DrawerHeader';
+import Home from '../../screens/Home';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +24,7 @@ const BottomNavigation = () => {
 
       <Tab.Screen
         name="Bottom"
-        component={Dashboard}
+        component={Home}
         options={{
           title: 'Home',
           headerShown: true, // Enable header here instead
