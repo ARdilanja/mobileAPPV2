@@ -481,8 +481,10 @@ const worriesList = [
 ];
 
 export default function ChatOnboardingScreen() {
-  const [step, setStep] = useState(1);
+    const navigation = useNavigation()
 
+  const [step, setStep] = useState(1);
+console.log('hi :>> ');
   const [chat, setChat] = useState([]);
   const [input, setInput] = useState("");
   const [step1Answered, setStep1Answered] = useState(false);
@@ -496,7 +498,6 @@ export default function ChatOnboardingScreen() {
   const [extraNote, setExtraNote] = useState("");
 
   const handleSendStep1 = () => {
-    const navigation = useNavigation()
     if (!input.trim()) return;
     setChat((prev) => [...prev, { id: Date.now(), value: input }]);
     setInput("");
@@ -692,6 +693,7 @@ export default function ChatOnboardingScreen() {
           <View style={styles.inputContainer}>
             <TextInput
               placeholder="Type here..."
+              placeholderTextColor="#000"
               value={input}
               onChangeText={setInput}
               style={styles.input}
@@ -711,6 +713,7 @@ export default function ChatOnboardingScreen() {
           <View style={styles.inputContainer}>
             <TextInput
               placeholder="Anything you want to add?"
+              placeholderTextColor="#000"
               value={extraNote}
               onChangeText={setExtraNote}
               style={styles.input}
@@ -742,7 +745,7 @@ export default function ChatOnboardingScreen() {
             if (step < 7) {
               setStep(step + 1);
             } else {
-              navigation.navigate("StartDayOne");
+              navigation.navigate("startDayOne");
             }
           }}
         >

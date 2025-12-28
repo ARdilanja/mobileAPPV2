@@ -7,19 +7,19 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import Gradient from '../../constants/Gradient';
-import AuthButton from '../../components/auth/AuthButton';
+import Gradient from '../constants/Gradient';
+import AuthButton from '../components/auth/AuthButton';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
-const screenWidth = Dimensions.get("window").width;
-const screenHeight = Dimensions.get("window").height;
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 const StartDayOne = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
     <Gradient>
       <View style={styles.container}>
-
+        <Text style={styles.skip}>Skip</Text>
         {/* Illustration */}
         <View style={styles.topSection}>
           <View style={styles.imageWrapper}>
@@ -48,27 +48,30 @@ const StartDayOne = () => {
           {/* Text Content */}
           <View style={styles.textContainer}>
             <Text style={styles.title}>
-              Your confidence journey <Text style={styles.highlight}>
-                starts today 
-              </Text>
+              Your confidence journey{' '}
+              <Text style={styles.highlight}>starts today</Text>
             </Text>
-
-
           </View>
-          {/* Button */}
-          <AuthButton
-            text="Start Day 1"
-            onPress={() => navigation.reset({
-              index: 0,
-              routes: [{ name: 'BottomDash' }],
-            })}
-            />
-            <Text style={styles.link} onPress={navigation.navigate('PricingScreen')}>
-                     View plan Overview
-                    </Text>
+         
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'BottomDash' }],
+              })
+            }
+          >
+            <Text style={styles.text}>Start Day 1</Text>
+          </TouchableOpacity>
+          <Text
+            style={styles.link}
+            onPress={() => navigation.navigate('PricingScreen')}
+          >
+            View plan Overview
+          </Text>
         </View>
       </View>
-
     </Gradient>
   );
 };
@@ -78,10 +81,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // justifyContent: 'space-between',
-    height: screenHeight
+    height: screenHeight,
+    position:'relative'
   },
   topSection: {
     width: '100%',
+  },
+  skip: {
+    lineHeight: 24,
+    fontSize: 18,
+    fontWeight: 500,
+    textAlign: 'right',
+    marginRight: 16,
+    paddingTop: 12,
   },
   imageWrapper: {
     width: screenWidth,
@@ -127,6 +139,26 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingBottom: 30,
   },
-  link: {  marginTop: 15, fontSize: 16, textAlign: 'center',color: '#1a73e8', fontWeight: '600' },
+  button: {
+    width: screenWidth - 32,
+    position:'absolute',
+    bottom:110,
+    backgroundColor: 'rgba(1, 120, 255, 1)',
+    borderRadius: 48,
+    paddingVertical: 16,
+    alignItems: 'center',
+    elevation: 4,
+  },
+  text: { color: '#fff', fontSize: 24, fontWeight: '500' },
+  footer: {
+    marginTop: 15,
+    fontSize: 16,
+    color: '#2A2A2A',
+    textAlign: 'center',
+  },
+  link: { color: '#1a73e8', fontWeight: '600',position:'absolute',
+    textDecorationStyle:'solid',
+    bottom:70,
+    textDecorationLine:'underline' 
+  },
 });
-

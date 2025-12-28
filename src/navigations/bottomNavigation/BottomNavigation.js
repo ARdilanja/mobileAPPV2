@@ -8,6 +8,8 @@ import Dashboard from '../../screens/Dashboard';
 import DrawerHeader from '../../components/DrawerHeader';
 import Home from '../../screens/Home';
 import UpdateProfileScreen from '../../screens/topUpdatedrofile/UpdateProfileScreen';
+import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
+import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -38,33 +40,74 @@ const BottomNavigation = () => {
           }
         }}
       />
+      {/* <Tab.Screen
+        name="PracticeStartScreen"
+        component={PracticeStartScreen}
+        options={{
+          title: 'Practice',
+          headerShown: true, // Enable header here instead
+          headerTitle: '',
+          headerLeft: () => <DrawerHeader />, // Move the drawer button here
+          headerShadowVisible: false, // Removes the thin line under header
+          headerStyle: {
+             elevation: 0, // Removes shadow on Android
+             shadowOpacity: 0, // Removes shadow on iOS
+          }
+        }}
+      />
+      <Tab.Screen
+        name="Actions"
+        component={Home}
+        options={{
+          title: 'Actions',
+          headerShown: true, // Enable header here instead
+          headerTitle: 'Actions',
+          // headerLeft: () => <DrawerHeader />, // Move the drawer button here
+          headerShadowVisible: false, // Removes the thin line under header
+          headerStyle: {
+             elevation: 0, // Removes shadow on Android
+             shadowOpacity: 0, // Removes shadow on iOS
+          }
+        }}
+      />
+      <Tab.Screen
+        name="ProfileTopScreen"
+        component={ProfileTopScreen}
+        options={{
+          title: 'Profile',
+          headerShown: true, // Enable header here instead
+          headerTitle: 'Profile',
+          
+        }}
+      /> */}
       <Tab.Screen
         name="StartInterview"
         component={EmployerInterviewScreen}
         options={{
           headerShown:true,
-          title: 'Interviews',
+          title: 'start Interviews',
           headerTitleAlign:'center',
         }}
       />
       <Tab.Screen
-        name="CompletedInterview"
-        component={CompletedInterviewsScreen}
+        name="PracticeStartScreen"
+        component={PracticeStartScreen}
         options={{
           headerShown:true,
-          title: 'Completed Interview',
+          title: 'Practice',
           headerTitleAlign:'center',
         }}
       />
-      <Tab.Screen
-        name="MyProfile"
-        component={UpdateProfileScreen}
-        options={{
-          headerShown:true,
-          title: 'MyProfile',
-          headerTitleAlign:'center'
-        }}
-      />
+       <Tab.Screen
+         name="ProfileTopScreen"
+         component={ProfileTopScreen}
+         options={{
+           headerShown:true,
+           headerTitle: 'Profile',
+           title: 'My Profile',
+           headerTitleAlign:'center'
+         }}
+       />
     </Tab.Navigator>
   );
 };

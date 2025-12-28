@@ -10,11 +10,13 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import BoostOfferCard from '../../components/BoostOfferCard';
 import MoreSection from '../../components/MoreSection';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 
 export default function ProfileTopScreen() {
+  const navigation = useNavigation()
   return (
     <View style={styles.wrapper}>
       <View style={{ alignItems: 'center' }}>
@@ -34,7 +36,7 @@ export default function ProfileTopScreen() {
             <View style={styles.profileText}>
               <Text style={styles.name}>Claire henry</Text>
               <Text style={styles.email}>clairehenry@gmail.com</Text>
-              <Text style={styles.editprofile}>Edit Profile</Text>
+              <Text style={styles.editprofile} onPress={() => navigation.navigate('UpdateProfileScreen')}>Edit Profile</Text>
             </View>
 
             <Image

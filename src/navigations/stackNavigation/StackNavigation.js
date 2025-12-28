@@ -134,7 +134,7 @@ import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartSc
 import PracticeConversationScreen from '../../screens/practiceInterview/PracticeConversationScreen';
 import PracticeInterviewInfoScreen from '../../screens/practiceInterview/PracticeInterviewInfoScreen';
 import Home from '../../screens/Home';
-import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
+// import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
 import AboutScreen from '../../screens/topUpdatedrofile/AboutScreen';
 import TermsScreen from '../../screens/topUpdatedrofile/TermsScreen';
 import ProfileFeedbackScreen from '../../screens/topUpdatedrofile/FeedbackScreen';
@@ -145,6 +145,7 @@ import UpdateProfileScreen from '../../screens/topUpdatedrofile/UpdateProfileScr
 import PricingScreen from '../../screens/PricingScreen';
 import PaymentStatusScreen from '../../screens/PaymentStatusScreen';
 import StartDayOne from '../../screens/StartDayOne';
+import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
 
@@ -171,7 +172,6 @@ const StackNavigation = () => {
       <Stack.Screen name="NotificationScreen" component={NotificationsScreen} />
       <Stack.Screen name="JourneyGetStartScreen" component={JourneyGetStartScreen} />
       <Stack.Screen name="SubscriptionAgreement" component={SubscriptionAgreementScreen} />
-      <Stack.Screen name="startDayOne" component={StartDayOne} />
 
       {/* 2️⃣ Login */}
       <Stack.Screen
@@ -224,6 +224,8 @@ const StackNavigation = () => {
         component={ChatOnboardingScreen}
         options={{ headerShown: true, headerTitle: 'ChatOnboardingScreen', headerTitleAlign: 'center' }}
       />
+      <Stack.Screen name="startDayOne" component={StartDayOne} options={{headerShown:false}}/>
+
       <Stack.Screen
         name="EmployerInterviewScreen"
         component={EmployerInterviewScreen}
@@ -262,12 +264,8 @@ const StackNavigation = () => {
       <Stack.Screen
         name="PracticeStartScreen"
         component={PracticeStartScreen}
-        options={{
-          headerShown: true, headerStyle: {
-            backgroundColor: "#0178FF",
-          },
-          headerTintColor:'#F5F5F5'
-        }}
+               options={{ headerShown: true, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+
       />
       <Stack.Screen
         name="PracticeConversationScreen"
@@ -301,7 +299,8 @@ const StackNavigation = () => {
         <Stack.Screen
         name="ProfileTopScreen"
         component={ProfileTopScreen}
-        options={{ headerShown: true, headerTitle: 'Profile', headerTitleAlign: 'center'}}
+               options={{ headerShown: true, headerTitle: 'Employer Interviews', headerTitleAlign: 'center' }}
+
       />
       <Stack.Screen
         name="AboutScreen"
@@ -341,7 +340,7 @@ const StackNavigation = () => {
       <Stack.Screen
         name="UpdateProfileScreen"
         component={UpdateProfileScreen}
-        options={{ headerShown: true, headerTitle: 'UpdateProfileScreen', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Your Profile', headerTitleAlign: 'center'}}
       />
 
 

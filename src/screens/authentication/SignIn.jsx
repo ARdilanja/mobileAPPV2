@@ -17,7 +17,7 @@ const SignIn = () => {
       />
 
       <SocialButton text="Sign in with Google" icon={require('../../assets/icons/google-logo.png')}
-        onPress={() => navigation.navigate('NotificationScreen')}
+        onPress={() => navigation.navigate('BottomDash')}
         // onPress={() => navigation.navigate('SubscriptionAgreement')}
         iconWidth={24}
 
