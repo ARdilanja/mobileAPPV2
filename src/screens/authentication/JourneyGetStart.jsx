@@ -19,46 +19,46 @@ const JourneyGetStartScreen = ({ navigation }) => {
       <View style={styles.container}>
 
         {/* Illustration */}
-       <View style={styles.topSection}>
-         <View style={styles.imageWrapper}>
-          <Image
-            source={require('../../assets/images/buildconfidence.png')}
-            style={styles.image}
-            resizeMode="contain"
-          />
+        <View style={styles.topSection}>
+          <View style={styles.imageWrapper}>
+            <Image
+              source={require('../../assets/images/buildconfidence.png')}
+              style={styles.image}
+              resizeMode="contain"
+            />
 
-          {/* Gradient Overlay */}
-          <LinearGradient
-            colors={[
-              'rgba(255,255,255,0)',
-              'rgba(255,255,255,0.5)',
-              'rgba(255,255,255,0.85)',
-              'rgba(255, 255, 255, 1)',
-              '#FFFFFF',
-            ]}
-            locations={[0,0.25, 0.5, 0.76, 1]}
-            style={styles.imageGradient}
-          />
+            {/* Gradient Overlay */}
+            <LinearGradient
+              colors={[
+                'rgba(255,255,255,0)',
+                'rgba(255,255,255,0.35)',
+                'rgba(255,255,255,0.75)',
+                'rgba(255, 255, 255, 0.95)',
+                '#FFFFFF',
+              ]}
+              locations={[0, 0.25, 0.5, 0.76, 1]}
+              style={styles.imageGradient}
+            />
+          </View>
         </View>
 
-        {/* Text Content */}
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>
-            Ready to shape <Text style={styles.highlight}>
-            your own journey?
-          </Text>
-          </Text>
-          
-          
-        </View>
-</View>
-        {/* Button */}
-               <View style={styles.bottomSection}>
-        <AuthButton
-          text="Get Started"
-          onPress={() => navigation.navigate('SignIn')}
-        />
-</View>
+          <View style={styles.bottomSection}>
+            {/* Text Content */}
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>
+                Ready to shape <Text style={styles.highlight}>
+                  your own journey?
+                </Text>
+              </Text>
+
+
+            </View>
+            {/* Button */}
+            <AuthButton
+              text="Get Started"
+              onPress={() => navigation.navigate('SignIn')}
+            />
+          </View>
       </View>
 
     </Gradient>
@@ -69,39 +69,36 @@ export default JourneyGetStartScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
+height:screenHeight
   },
   topSection: {
     width: '100%',
   },
   imageWrapper: {
     width: screenWidth,
-    height: screenHeight * 0.45, // Reduce height so it doesn't push text down too much
+    height: screenHeight * 0.55, // Reduce height so it doesn't push text down too much
     position: 'relative',
     backgroundColor: 'transparent', // Ensure it doesn't block background
   },
 
   image: {
     width: '100%',
-    height: '90%',
+    height: '100%',
   },
 
   imageGradient: {
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: 200, // fade height
-  },
-  gradient: {
-    height: 440,
-    width: '100%',
+    height: 120, // fade height
   },
 
- textContainer: {
+  textContainer: {
     width: '100%',
     paddingHorizontal: 24,
+    marginBottom:'auto',
     marginTop: 0, // Space between image and text
-    backgroundColor: '#fff'
   },
 
   title: {
@@ -113,6 +110,14 @@ const styles = StyleSheet.create({
 
   highlight: {
     color: 'rgba(1, 120, 255, 1)',
+  },
+  bottomSection: {
+    width: '100%',
+   height:screenHeight - screenHeight * 0.55,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    justifyContent:'space-between',
+    paddingBottom: 30, 
   },
 });
 

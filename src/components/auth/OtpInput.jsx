@@ -1,15 +1,32 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 
-const OtpInput = ({ length = 4 }) => {
+const OtpInput = ({ length = 4 , value, onChange }) => {
+   const inputs = useRef([]);
+
+  const handleChange = (text, index) => {
+    const otpArray = value.split('');
+    otpArray[index] = text;
+    const updatedOtp = otpArray.join('');
+    onChange(updatedOtp);
+
+    // Auto focus next box
+    if (text && index < length - 1) {
+      inputs.current[index + 1]?.focus();
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      {[...Array(length)].map((_, i) => (
+     <View style={styles.container}>
+      {Array.from({ length }).map((_, i) => (
         <TextInput
           key={i}
+          ref={(ref) => (inputs.current[i] = ref)}
           maxLength={1}
           keyboardType="number-pad"
           style={styles.input}
+          value={value[i] || ''}
+          onChangeText={(text) => handleChange(text, i)}
         />
       ))}
     </View>

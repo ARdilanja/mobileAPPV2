@@ -1,12 +1,41 @@
-import React from 'react';
-import { TextInput, StyleSheet, Dimensions, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, View } from 'react-native';
+import React, { useState } from 'react';
+import { TextInput, StyleSheet, Dimensions, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, View, Alert } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
 import Gradient from '../../constants/Gradient';
+import axios from 'axios';
 
 const screenWidth = Dimensions.get("window").width;
 
-const Password = ({ navigation }) => {
+const Password = ({ navigation,route  }) => {
+  const { email } = route.params;
+  const [password, setPassword] = useState('');
+
+   const handleLogin = async () => {
+    console.log('hi')
+    if (!password) {
+      Alert.alert('Error', 'Please enter password');
+      return;
+    }
+
+    try {
+      console.log('email, password', email, password)
+      const response = await axios.post(`https://api.arinnovate.io/auth/login`, {
+        email,
+        password,
+      });
+console.log('response', response)
+      Alert.alert('Success', 'Login successful');
+      navigation.navigate('JourneyGetStartScreen');
+
+    } catch (error) {
+      Alert.alert(
+        'Login Failed',
+        error?.response?.data?.message || 'Invalid credentials'
+      );
+    }
+  };
+
   return (
     <Gradient>
       <KeyboardAvoidingView
@@ -32,10 +61,12 @@ const Password = ({ navigation }) => {
                   placeholderTextColor="#242424"
                   placeholder="Password"
                   style={styles.input}
+                  value={password}
+          onChangeText={setPassword}
                 /></View>
               <View style={styles.bottomSection}>
                 <AuthButton text="Sign in"
-                  onPress={() => navigation.navigate('CreatePassword')}
+                  onPress={handleLogin}
                 />
               </View>
             </View>

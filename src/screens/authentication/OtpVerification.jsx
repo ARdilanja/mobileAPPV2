@@ -1,12 +1,32 @@
-import React from 'react';
-import { Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, View  } from 'react-native';
+import React, { useState } from 'react';
+import { Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, View, Alert  } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
 import OtpInput from '../../components/auth/OtpInput';
 import Gradient from '../../constants/Gradient';
 
-const OtpVerification = ({ navigation }) => {
-  const email = "demo@email.com"
+const OtpVerification = ({ navigation, route  }) => {
+  const { email, phone, serverOtp } = route.params;
+  const [otp, setOtp] = useState('');
+
+  const handleVerifyOtp = () => {
+  if (!otp || otp.length < 4) {
+    Alert.alert('Invalid OTP', 'Please enter a valid 4-digit OTP');
+    return;
+  }
+
+  if (otp === serverOtp) {
+    Alert.alert('Success', 'OTP verified successfully', [
+      {
+        text: 'Continue',
+        onPress: () => navigation.navigate('JourneyGetStartScreen'),
+      },
+    ]);
+  } else {
+    Alert.alert('Error', 'Incorrect OTP. Please try again.');
+  }
+};
+
   return (
     <Gradient>
 
@@ -30,13 +50,13 @@ const OtpVerification = ({ navigation }) => {
                   showLogo={true}
                 />
 
-                <OtpInput />
+                <OtpInput value={otp} onChange={setOtp} />
 
                 <Text style={styles.resend}>Resend <Text style={{ color: 'rgba(42, 42, 42, 1)' }}>OTP</Text></Text>
               </View>
 
               <View style={styles.bottomSection}>
-                <AuthButton text="Continue" onPress={() => navigation.navigate("JourneyGetStartScreen")} />
+                <AuthButton text="Continue"  onPress={handleVerifyOtp} />
               </View>
             </View>
           </TouchableWithoutFeedback>

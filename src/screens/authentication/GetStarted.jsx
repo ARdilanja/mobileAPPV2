@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     width: screenWidth,
-    height: screenHeight * 0.45, // Reduce height so it doesn't push text down too much
+    height: screenHeight * 0.55, // Reduce height so it doesn't push text down too much
     position: 'relative',
     backgroundColor: 'transparent', // Ensure it doesn't block background
   },

@@ -1,114 +1,79 @@
-// import React from 'react';
-// import { View, TextInput, StyleSheet, Dimensions, Text } from 'react-native';
-// import AuthHeader from '../../components/auth/AuthHeader';
-// import AuthButton from '../../components/auth/AuthButton';
-// import Gradient from '../../constants/Gradient';
 
-// const screenWidth = Dimensions.get("window").width;
-
-// const EmailInput = ({ navigation }) => {
-//   return (
-//     <Gradient>
-//       <AuthHeader
-//         title="Sign in"
-//         subtitle="Sign in and find your dream job"
-//         showBack={true}
-//         showLogo={true}
-//       />
-//       <TextInput
-//         placeholderTextColor="#242424"
-//         placeholderT="#242424"
-//         placeholder="Email id"
-//         style={styles.input}
-//         keyboardType="email-address"
-//       />
-
-//       <AuthButton
-//         text="Next"
-//         signupText={true}
-//         onPress={() => navigation.navigate('Password')}
-//         onFooterPress={() => navigation.navigate('SignUp')}
-//       />
-      
-//     </Gradient>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     paddingHorizontal: 20,
-//     paddingTop: 48,
-//   },
-//   input: {
-//     width: screenWidth - 32,
-//     marginHorizontal: 'auto',
-//     borderWidth: 1,
-//     borderColor: 'white',
-//     backgroundColor: '#fff',
-//     borderRadius: 48,
-//     shadowColor: '#000',
-//     shadowOffset: { width: 0, height: 4 },
-//     shadowOpacity: 0.1,
-//     shadowRadius: 8,
-
-//     elevation: 4,
-
-//     fontSize: 18,
-//     lineHeight: 28,
-//     fontWeight: '400',
-//     padding: 14,
-//     paddingVertical: 16,
-//     paddingLeft: 24
-//   },
-//   footer: {
-//     position: 'fixed',  
-//     bottom: 60,           
-//     alignSelf: 'center',
-//     fontSize: 18,
-//     lineHeight: 28,
-//     fontWeight: 400,
-//     color: '#2A2A2A',
-//     textAlign: 'center',
-//     marginTop: 24,
-//   },
-//   link: {
-//     color: '#1a73e8',
-//     fontWeight: '400',
-//   },
-// });
-
-// export default EmailInput;
-
-
-
-
-import React from 'react';
-import { 
-  View, TextInput, StyleSheet, Dimensions, 
-  KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard 
+import React, { useState } from 'react';
+import {
+  View, TextInput, StyleSheet, Dimensions,
+  KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard
 } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
 import Gradient from '../../constants/Gradient';
-
+import MessagePopup from '../../components/MessagePopup';
+import axios from 'axios';
+const API_BASE = 'https://api.arinnovate.io/api';
 const screenWidth = Dimensions.get("window").width;
 
 const EmailInput = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [popupType, setPopupType] = useState('info');
+  
+  const showPopup = (message, type = 'info') => {
+    setPopupMessage(message);
+    setPopupType(type);
+    setPopupVisible(true);
+  };
+
+  const handleNext = async () => {
+    if (!email.trim()) {
+      showPopup('Please enter your email', 'error');
+      return;
+    }
+
+    try {
+      console.log('first', API_BASE,"checkUser")
+      const response = await axios.post(`${API_BASE}/checkUser`, { email });
+
+      const user = response.data.updatedUser || response.data.existingUser;
+
+      if (!user) {
+        showPopup('User not found. Please sign up.', 'error');
+        navigation.navigate('SignUp');
+        return;
+      }
+
+      // ✅ Navigate to password screen
+      navigation.navigate('Password', { email });
+
+    } catch (error) {
+      showPopup(
+        error?.response?.data?.message || 'Something went wrong',
+        'error'
+      );
+    }
+  };
   return (
+
     <Gradient>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === "ios" ? "padding" : "height"} 
+      <MessagePopup
+        visible={popupVisible}
+        message={popupMessage}
+        type={popupType}
+        onClose={() => setPopupVisible(false)}
+      />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
       >
-        <ScrollView 
-          contentContainerStyle={styles.scrollContainer} 
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={{ flex: 1 }}>
-              
+
               {/* TOP SECTION: Header + Input */}
               <View style={styles.topSection}>
                 <AuthHeader
@@ -122,6 +87,9 @@ const EmailInput = ({ navigation }) => {
                   placeholder="Email id"
                   style={styles.input}
                   keyboardType="email-address"
+                  autoCapitalize="none"
+                  value={email}
+                  onChangeText={setEmail}
                 />
               </View>
 
@@ -130,7 +98,7 @@ const EmailInput = ({ navigation }) => {
                 <AuthButton
                   text="Next"
                   signupText={true}
-                  onPress={() => navigation.navigate('Password')}
+                  onPress={handleNext}
                   onFooterPress={() => navigation.navigate('SignUp')}
                 />
               </View>
@@ -158,10 +126,10 @@ const styles = StyleSheet.create({
   input: {
     width: screenWidth - 32,
     backgroundColor: '#fff',
-    marginHorizontal:'auto',
+    marginHorizontal: 'auto',
     borderRadius: 48,
     paddingVertical: 16,
-    color:'#242424',
+    color: '#242424',
     paddingLeft: 24,
     fontSize: 18,
     elevation: 4,

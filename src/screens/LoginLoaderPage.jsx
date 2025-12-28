@@ -11,76 +11,82 @@ export default function LoginLoaderPage({ navigation }) {
   useEffect(() => {
     bootstrapAuth();
   }, []);
+const bootstrapAuth = async () => {
+  await new Promise(res => setTimeout(res, 2000));
+  navigation.reset({
+  index: 0,
+  routes: [{ name: 'GetStarted', params: { screen: 'GetStarted' } }],
+});
+};
+  // const bootstrapAuth = async () => {
+  //   try {
+  //     // optional splash delay
+  //     await new Promise(res => setTimeout(res, 2000));
 
-  const bootstrapAuth = async () => {
-    try {
-      // optional splash delay
-      await new Promise(res => setTimeout(res, 2000));
+  //     const token = await AsyncStorage.getItem("token");
+  //     const refreshToken = await AsyncStorage.getItem("refreshToken");
+  //     console.log('loadertoken', token)
+  //     console.log('refreshToken', refreshToken)
+  //     // ❌ No tokens → Login
+  //     if (!token || !refreshToken) {
+  //       console.log('no toekns found')
+  //       return navigation.replace("Login");
+  //     }
 
-      const token = await AsyncStorage.getItem("token");
-      const refreshToken = await AsyncStorage.getItem("refreshToken");
-      console.log('loadertoken', token)
-      console.log('refreshToken', refreshToken)
-      // ❌ No tokens → Login
-      if (!token || !refreshToken) {
-        console.log('no toekns found')
-        return navigation.replace("Login");
-      }
+  //     // ✅ Access token valid
+  //     if (!isTokenExpired(token)) {
+  //       console.log('token is valid')
+  //       return navigation.reset({
+  //         index: 0,
+  //         routes: [{ name: "BottomDash" }],
+  //       });
+  //     }
 
-      // ✅ Access token valid
-      if (!isTokenExpired(token)) {
-        console.log('token is valid')
-        return navigation.reset({
-          index: 0,
-          routes: [{ name: "BottomDash" }],
-        });
-      }
+  //     // 🔄 Access expired → try refresh
+  //     const refreshed = await refreshAccessToken(refreshToken);
+  //     console.log('refreshed', refreshed)
+  //     if (refreshed) {
+  //       return navigation.reset({
+  //         index: 0,
+  //         routes: [{ name: "BottomDash" }],
+  //       });
+  //     }
 
-      // 🔄 Access expired → try refresh
-      const refreshed = await refreshAccessToken(refreshToken);
-      console.log('refreshed', refreshed)
-      if (refreshed) {
-        return navigation.reset({
-          index: 0,
-          routes: [{ name: "BottomDash" }],
-        });
-      }
+  //     // ❌ Both expired
+  //     await clearAuth();
+  //     console.log('both expired')
+  //     navigation.replace("Login");
 
-      // ❌ Both expired
-      await clearAuth();
-      console.log('both expired')
-      navigation.replace("Login");
+  //   } catch (e) {
+  //     await clearAuth();
+  //     console.log('catch error')
+  //     navigation.replace("Login");
+  //   }
+  // };
 
-    } catch (e) {
-      await clearAuth();
-      console.log('catch error')
-      navigation.replace("Login");
-    }
-  };
+  // const refreshAccessToken = async (refreshToken) => {
+  //   try {
+  //     const res = await axios.post(`${API_BASE}/auth/refresh-token`, {
+  //       refreshToken,
+  //     });
+  //     console.log('refereshtokenres', res)
+  //     const { token, refreshToken: newRefresh } = res.data;
 
-  const refreshAccessToken = async (refreshToken) => {
-    try {
-      const res = await axios.post(`${API_BASE}/auth/refresh-token`, {
-        refreshToken,
-      });
-      console.log('refereshtokenres', res)
-      const { token, refreshToken: newRefresh } = res.data;
+  //     await AsyncStorage.setItem("token", token);
+  //     if (newRefresh) {
+  //       await AsyncStorage.setItem("refreshToken", newRefresh);
+  //     }
 
-      await AsyncStorage.setItem("token", token);
-      if (newRefresh) {
-        await AsyncStorage.setItem("refreshToken", newRefresh);
-      }
+  //     return true;
+  //   } catch (error) {
+  //     console.log("Refresh token failed:", error?.response?.data || error.message);
+  //     return false;
+  //   }
+  // };
 
-      return true;
-    } catch (error) {
-      console.log("Refresh token failed:", error?.response?.data || error.message);
-      return false;
-    }
-  };
-
-  const clearAuth = async () => {
-    await AsyncStorage.multiRemove(["token", "refreshToken", "user"]);
-  };
+  // const clearAuth = async () => {
+  //   await AsyncStorage.multiRemove(["token", "refreshToken", "user"]);
+  // };
 
   return (
     <LinearGradient

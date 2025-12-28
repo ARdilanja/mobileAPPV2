@@ -127,6 +127,8 @@ import OtpVerification from '../../screens/authentication/OtpVerification';
 import GetStarted from '../../screens/authentication/GetStarted';
 import CreatePassword from '../../screens/authentication/CreatePassword';
 import JourneyGetStartScreen from '../../screens/authentication/JourneyGetStart';
+import NotificationsScreen from '../../screens/NotificationsScreen';
+import SubscriptionAgreementScreen from '../../screens/SubscriptionSection';
 
 const Stack = createNativeStackNavigator();
 
@@ -148,7 +150,9 @@ const StackNavigation = () => {
       <Stack.Screen name="GetStarted" component={GetStarted} />
       <Stack.Screen name="CreatePassword" component={CreatePassword} />
       <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="NotificationScreen" component={NotificationsScreen} />
       <Stack.Screen name="JourneyGetStartScreen" component={JourneyGetStartScreen} />
+      <Stack.Screen name="SubscriptionAgreement" component={SubscriptionAgreementScreen} />
 
       {/* 2️⃣ Login */}
       <Stack.Screen

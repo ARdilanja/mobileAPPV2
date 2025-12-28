@@ -3,8 +3,10 @@ import { View, Text, StyleSheet } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import SocialButton from '../../components/auth/SocialButton';
 import Gradient from '../../constants/Gradient';
+import { useNavigation } from '@react-navigation/native';
 
-const SignIn = ({ navigation }) => {
+const SignIn = () => {
+  const navigation = useNavigation()
   return (
     <Gradient>
       <AuthHeader
@@ -15,7 +17,8 @@ const SignIn = ({ navigation }) => {
       />
 
       <SocialButton text="Sign in with Google" icon={require('../../assets/icons/google-logo.png')}
-        onPress={() => navigation.navigate('GetStarted')}
+        onPress={() => navigation.navigate('NotificationScreen')}
+        // onPress={() => navigation.navigate('SubscriptionAgreement')}
         iconWidth={24}
 
       />

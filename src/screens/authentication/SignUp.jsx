@@ -1,12 +1,69 @@
-import React from 'react';
-import { TextInput, StyleSheet, Dimensions, View, Image, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { TextInput, StyleSheet, Dimensions, View, Image, ScrollView, Alert } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
 import Gradient from '../../constants/Gradient';
 import { KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import axios from 'axios';
 const screenWidth = Dimensions.get("window").width;
 
 const SignUp = ({ navigation }) => {
+    const [fullName, setFullName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [signupData, setSignupData] = useState(null)
+
+    const handleSignUp = async () => {
+        if (!fullName || !phone || !email || !password) {
+            Alert.alert(
+                'Missing Details',
+                'Please fill all the fields'
+            );
+            return;
+        }
+        const payload = {
+            email: email,
+            firstName: fullName,
+            lastName: 'Test',
+            password: password,
+            phone: phone,
+            recrootUserType: 'Candidate',
+            country: 'in',
+        };
+        console.log('payload', payload)
+        try {
+            const response = await axios.post(
+                'https://api.arinnovate.io/auth/register',
+                payload
+            );
+            setSignupData(response.data)
+            console.log('Signup Success:', response.data);
+
+            Alert.alert(
+                'Success',
+                'Signup successful. Please verify OTP.',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () =>
+                            navigation.navigate('OtpVerification', {
+                                email,
+                                phone,
+                                serverOtp: response.data.referral_code, 
+                            }),
+                    },
+                ]
+            );
+        } catch (error) {
+            const errorMsg =
+                error.response?.data?.message ||
+                'Something went wrong. Please try again.';
+
+            Alert.alert('Signup Failed', errorMsg);
+        }
+    };
+
     return (
         <Gradient>
             <KeyboardAvoidingView
@@ -18,7 +75,7 @@ const SignUp = ({ navigation }) => {
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps="handled"
                 >
-                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                         <View style={{ flex: 1 }}>
 
                             {/* TOP SECTION */}
@@ -33,12 +90,14 @@ const SignUp = ({ navigation }) => {
                                     placeholderTextColor="#242424"
                                     placeholderT="#242424"
                                     placeholder="Full Name"
+                                    value={fullName}
+                                    onChangeText={setFullName}
                                     style={styles.input}
                                 // keyboardType="New password"
                                 />
                                 <View style={styles.content}>
                                     <Image
-                                        source={require('../../assets/images/india-flag.png')} // ✅ use require for local images
+                                        source={require('../../assets/images/india-flag.png')}
                                         style={styles.flag}
                                         resizeMode="contain"
                                     />
@@ -47,6 +106,8 @@ const SignUp = ({ navigation }) => {
                                         keyboardType="phone-pad"
                                         style={styles.mob_input}
                                         placeholderTextColor="#242424"
+                                        value={phone}
+                                        onChangeText={(text) => setPhone(text.replace(/[^0-9]/g, ''))}
                                     />
                                 </View>
 
@@ -55,6 +116,8 @@ const SignUp = ({ navigation }) => {
                                     placeholderT="#242424"
                                     placeholder="Email id"
                                     style={styles.input}
+                                    value={email}
+                                    onChangeText={setEmail}
                                     keyboardType="email-address"
                                 />
 
@@ -63,11 +126,14 @@ const SignUp = ({ navigation }) => {
                                     placeholderT="#242424"
                                     placeholder="Password"
                                     style={styles.input}
+                                    value={password}
+                                    onChangeText={setPassword}
+                                    // secureTextEntry
                                 />
                             </View>
                             <View style={styles.bottomSection}>
 
-                                <AuthButton text="Sign up" signinText={true} onPress={() => navigation.navigate('OtpVerification')} onFooterPress={() => navigation.navigate('SignUp')} />
+                                <AuthButton text="Sign up" signinText={true} onPress={handleSignUp} onFooterPress={() => navigation.navigate('SignUp')} />
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
@@ -87,7 +153,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     topSection: {
-        alignItems: 'center',
+        // alignItems: 'center',
         flex: 1,
     },
     bottomSection: {
@@ -117,8 +183,8 @@ const styles = StyleSheet.create({
         paddingLeft: 24,
     },
     content: {
-        flexDirection: 'row',      // ✅ side by side
-        alignItems: 'center',      // vertically center
+        flexDirection: 'row',
+        alignItems: 'center',
         borderWidth: 1,
         height: 60,
         borderColor: '#D1D5DB',
@@ -139,10 +205,10 @@ const styles = StyleSheet.create({
     flag: {
         width: 24,
         height: 18,
-        marginRight: 12,           // space between image and input
+        marginRight: 12,
     },
     mob_input: {
-        flex: 1,                    // ✅ take remaining width
+        flex: 1,
         lineHeight: 28,
         fontSize: 18,
         fontWeight: 400,
@@ -151,7 +217,3 @@ const styles = StyleSheet.create({
 });
 
 export default SignUp;
-
-
-
-
