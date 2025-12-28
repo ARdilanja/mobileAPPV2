@@ -742,7 +742,7 @@ export default function ChatOnboardingScreen() {
             if (step < 7) {
               setStep(step + 1);
             } else {
-              useNavigation.navigate("StartDayOne");
+              navigation.navigate("StartDayOne");
             }
           }}
         >
