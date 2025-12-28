@@ -162,37 +162,37 @@ const StackNavigation = () => {
       <Stack.Screen
         name="DeleteAccountScreen"
         component={DeleteAccountScreen}
-        options={{ headerShown: true, headerTitle: 'Delete Account', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Delete Account', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="TermsofServiceScreen"
         component={TermsOfServiceScreen}
-        options={{ headerShown: true, headerTitle: 'Terms of Service', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Terms of Service', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="SettingsSecurityScreen"
         component={SettingsSecurityScreen}
-        options={{ headerShown: true, headerTitle: 'Settings and Security', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Settings and Security', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="FeedbackScreen"
         component={FeedbackScreen}
-        options={{ headerShown: true, headerTitle: 'Recroot', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Recroot', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
-        options={{ headerShown: true,headerTitle:'EditProfile',headerTitleAlign: 'center' }}
+        options={{ headerShown: true, headerTitle: 'EditProfile', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="ChatOnboardingScreen"
         component={ChatOnboardingScreen}
-        options={{ headerShown: true,headerTitle:'ChatOnboardingScreen',headerTitleAlign: 'center' }}
+        options={{ headerShown: true, headerTitle: 'ChatOnboardingScreen', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="EmployerInterviewScreen"
         component={EmployerInterviewScreen}
-        options={{ headerShown: true,headerTitle:'Employer Interviews', headerTitleAlign: 'center' }}
+        options={{ headerShown: true, headerTitle: 'Employer Interviews', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="CompletedInterview"
@@ -227,17 +227,32 @@ const StackNavigation = () => {
       <Stack.Screen
         name="PracticeStartScreen"
         component={PracticeStartScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true, headerStyle: {
+            backgroundColor: "#0178FF",
+          },
+          headerTintColor:'#F5F5F5'
+        }}
       />
       <Stack.Screen
         name="PracticeConversationScreen"
         component={PracticeConversationScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true, headerStyle: {
+            backgroundColor: "#0178FF",
+          },
+          headerTintColor:'#F5F5F5'
+        }}
       />
       <Stack.Screen
         name="PracticeInterviewInfoScreen"
         component={PracticeInterviewInfoScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true, headerStyle: {
+            backgroundColor: "#0178FF",
+          },
+          headerTintColor:'#F5F5F5',
+        }}
       />
       <Stack.Screen
         name="InterviewScreen"

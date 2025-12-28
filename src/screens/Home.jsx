@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
   View,
@@ -16,6 +17,7 @@ const { width, height } = Dimensions.get('window');
 const scale = width / 375;
 
 export default function Home() {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <StatusBar hidden />
@@ -113,7 +115,7 @@ export default function Home() {
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.startPracticeButton}
-          onPress={() => console.log('Start Practice')}
+          onPress={() => navigation.navigate('PracticeStartScreen')}
         >
           <Text style={styles.startPracticeText}>Start Practice</Text>
         </TouchableOpacity>
