@@ -4,10 +4,13 @@ import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
 import Gradient from '../../constants/Gradient';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 const screenWidth = Dimensions.get("window").width;
 
-const Password = ({ navigation,route  }) => {
+const Password = ({ route  }) => {
+    const navigation = useNavigation()
+
   const { email } = route.params;
   const [password, setPassword] = useState('');
 
