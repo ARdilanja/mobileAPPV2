@@ -13,17 +13,25 @@ import Header from "../components/Header";
 import ProgressLineChart from "../components/ProgressLineChart";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 
 const screenWidth = Dimensions.get("window").width;
 
 export default function Dashboard() {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY4Yjg0M2RlYzY1ODg0ZjMxYzU0MjUyIiwiZW1haWwiOiJnb3BhbC5kaGFnZTU0QGdtYWlsLmNvbSIsImlhdCI6MTc2NjEyNTY4MSwiZXhwIjoxNzY2MjEyMDgxfQ.GOKZhwTgH4NM9JSmbm8ybe54gmajh9w-gEM0Aej981k'
-    const CANDIDATE_ID = '6672592aa821dc12db9fc26e'
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjhjYjlkMDQ3Yjk0MDZhN2JiMTdiMjQ2IiwiZW1haWwiOiJ1ZGVzaGluaWV0aGFyYW5nYUBnbWFpbC5jb20iLCJpYXQiOjE3NjY3NDQ0NzgsImV4cCI6MTc2NjgzMDg3OH0.0qwVmUswoDaKr8I4TyLxCVJOZRnCe5ghZEwbhugQO0c";
+    const CANDIDATE_ID = '6672592aa821dc12db9fc26e';
 
     const [selectedCard, setSelectedCard] = useState(null);
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [interviewData, setInterviewData] = useState(null);
+
+    // ✅ NEW STATE
+    const [latestCompleted, setLatestCompleted] = useState([]);
+
+    // ===============================
+    // EXISTING API (STATS)
+    // ===============================
     const fetchInterviewDetails = async () => {
         try {
             const response = await axios.post(
@@ -33,29 +41,69 @@ export default function Dashboard() {
                 },
                 {
                     headers: {
-                        "x-access-token": token,   // ✅ IMPORTANT CHANGE
+                        "x-access-token": token,
                         "Content-Type": "application/json",
                     },
                 }
             );
 
-            console.log("Interview API Response:", response.data);
-            setInterviewData(response.data);
+            console.log("✅ Dashboard Interview Count API:", response.data);
+
+            setInterviewData({
+                completedInterviews: response.data.completedInterviews || 0,
+                expired: response.data.expired || 0,
+                availableInterviews: response.data.availableInterviews || 0,
+            });
 
         } catch (error) {
             console.error(
-                "Error fetching interview details:",
+                "❌ Error fetching interview details:",
                 error.response?.data || error.message
             );
         }
     };
+
+
+    // ===============================
+    // ✅ REUSED COMPLETED INTERVIEWS API
+    // ===============================
+    const fetchLatestCompletedInterviews = async () => {
+        try {
+            const res = await axios.get(
+                `${API_BASE_URL}/getScheduleInterCandByStatus/${CANDIDATE_ID}`,
+                {
+                    params: {
+                        status: "completed",
+                    },
+                }
+            );
+
+            const allCompleted = res?.data?.data || [];
+
+            // ✅ SORT BY createdAt (LATEST FIRST)
+            const sortedByLatest = allCompleted.sort(
+                (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            );
+
+            // ✅ TAKE ONLY TOP 5
+            const latestFive = sortedByLatest.slice(0, 5);
+
+            setLatestCompleted(latestFive);
+
+        } catch (error) {
+            console.error("Latest completed interviews error:", error);
+            setLatestCompleted([]);
+        }
+    };
+
+
     useEffect(() => {
         fetchInterviewDetails();
+        fetchLatestCompletedInterviews();
     }, []);
 
     return (
         <ScrollView style={{ backgroundColor: 'white' }} showsVerticalScrollIndicator={false}>
-            {/* <Header title="Dashboard" /> */}
             <View style={styles.container}>
                 {/* INTERVIEWS CARDS */}
                 <Text style={styles.sectionTitle}>Interviews</Text>
@@ -81,65 +129,11 @@ export default function Dashboard() {
                         value={interviewData?.expired ?? 0}
                         color="#F59E0B"
                     />
-
                 </View>
 
                 {/* PROGRESSION */}
                 <Text style={styles.sectionTitle}>Your Progression</Text>
 
-                {/* <View style={styles.chartWrapper}>
-                    <LineChart
-                        data={{
-                            labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-                            datasets: [
-                                {
-                                    data: [70, 68, 50, 55, 62, 70, 78, 58, 48, 60],
-                                    color: () => "#9D00EA",
-                                    strokeWidth: 2
-                                },
-                                {
-                                    data: [20, 35, 30, 60, 15, 25, 55, 45, 40, 85],
-                                    color: () => "#1A6CFF",
-                                    strokeWidth: 2
-                                },
-                                {
-                                    data: [55, 50, 25, 45, 75, 60, 65, 30, 25, 35],
-                                    color: () => "#00BDAC",
-                                    strokeWidth: 2
-                                }
-                            ],
-
-                        }}
-                        width={screenWidth - 48}
-                        height={250}
-                        withDots={false}
-                        withInnerLines={true}
-                        withOuterLines={false}
-                        withVerticalLines={false}
-                        withHorizontalLines={true}
-                        bezier
-                        chartConfig={{
-                            backgroundGradientFrom: "#FFFFFF",
-                            backgroundGradientTo: "#FFFFFF",
-                            fillShadowGradientFrom: "#3B82F6",
-                            fillShadowGradientTo: "#FFFFFF",
-                            fillShadowGradientOpacity: 0.15,
-                            decimalPlaces: 0,
-                            color: () => "#E5E7EB",
-                            labelColor: () => "#9CA3AF",
-                            propsForBackgroundLines: {
-                                strokeDasharray: "4",
-                                stroke: "#E5E7EB"
-                            }
-                        }}
-                        style={styles.chart}
-                    />
-                    <View style={styles.chartLegend}>
-                        <LegendItem color="#9D00EA" label="Overall" />
-                        <LegendItem color="#1A6CFF" label="Subject Matter Expertise" />
-                        <LegendItem color="#00BDAC" label="Communication Skills" />
-                    </View>
-                </View> */}
                 <ProgressLineChart
                     labels={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
                     datasets={[
@@ -166,58 +160,29 @@ export default function Dashboard() {
                     ]}
                 />
 
-
                 {/* LATEST COMPLETED INTERVIEWS */}
                 <Text style={styles.sectionTitle}>Latest Completed Interviews</Text>
             </View>
 
-            <InterviewCard
-                name="Infosys"
-                role="React Native Developer"
-                logo={require("../assets/icons/infosys-logo.png")}
-                isSelected={selectedCard === 0}
-                onPress={() => setSelectedCard(0)}
-            />
+            {/* ✅ DYNAMIC COMPLETED INTERVIEWS */}
+            {latestCompleted.map((item, index) => {
+                const logoPath = item?.companyId?.companyLogo?.logo;
+                const logoUrl = logoPath
+                    ? `${API_BASE_URL}/openProfpic?photo=${logoPath}`
+                    : null;
 
-            <InterviewCard
-                name="Accenture"
-                role="UX Designer"
-                logo={require("../assets/icons/Accenture-logo.png")}
-                isSelected={selectedCard === 1}
-                onPress={() => setSelectedCard(1)}
-            />
-
-            <InterviewCard
-                name="Recroot"
-                role="UI Designer"
-                success
-                logo={require("../assets/icons/Recroot-logo.png")}
-                isSelected={selectedCard === 2}
-                onPress={() => setSelectedCard(2)}
-            />
-            <InterviewCard
-                name="Infosys"
-                role="React Native Developer"
-                logo={require("../assets/icons/infosys-logo.png")}
-                isSelected={selectedCard === 3}
-                onPress={() => setSelectedCard(3)}
-            />
-            <InterviewCard
-                name="Infosys"
-                role="React Native Developer"
-                logo={require("../assets/icons/infosys-logo.png")}
-                isSelected={selectedCard === 4}
-                onPress={() => setSelectedCard(4)}
-            />
-            <InterviewCard
-                name="Infosys"
-                role="React Native Developer"
-                logo={require("../assets/icons/infosys-logo.png")}
-                isSelected={selectedCard === 5}
-                onPress={() => setSelectedCard(5)}
-            />
-
-
+                return (
+                    <InterviewCard
+                        key={item._id}
+                        name={item?.companyId?.company_name}
+                        role={item?.job_title}
+                        logo={logoUrl ? { uri: logoUrl } : null}
+                        isSelected={selectedCard === index}
+                        onPress={() => setSelectedCard(index)}
+                        interviewId={item._id}
+                    />
+                );
+            })}
         </ScrollView>
     );
 }
@@ -226,28 +191,19 @@ export default function Dashboard() {
 
 const InfoCard = ({ title, value, color, icon }) => (
     <View style={styles.infoCard}>
-
-        {/* ICON + TITLE ROW */}
         <View style={styles.titleRow}>
-            <View style={[styles.iconWrapper,]}>
-                <Image
-                    source={icon}
-                    style={styles.icon}
-                    resizeMode="contain"
-                />
+            <View style={styles.iconWrapper}>
+                <Image source={icon} style={styles.icon} resizeMode="contain" />
             </View>
-
-            <Text style={[styles.cardTitle]}>{title}</Text>
+            <Text style={styles.cardTitle}>{title}</Text>
         </View>
-
-        {/* VALUE */}
         <Text style={[styles.cardValue, { color }]}>{value}</Text>
-
     </View>
 );
 
-const InterviewCard = ({ name, role, logo, isSelected, onPress }) => {
+const InterviewCard = ({ name, role, logo, isSelected, onPress, interviewId }) => {
     const navigation = useNavigation();
+
     return (
         <TouchableOpacity
             activeOpacity={0.85}
@@ -257,10 +213,11 @@ const InterviewCard = ({ name, role, logo, isSelected, onPress }) => {
                 isSelected && styles.selectedCard
             ]}
         >
-            {/* LEFT */}
             <View style={styles.interviewLeft}>
                 <View style={styles.logoWrapper}>
-                    <Image source={logo} style={styles.companyLogo} resizeMode="contain" />
+                    {logo && (
+                        <Image source={logo} style={styles.companyLogo} resizeMode="contain" />
+                    )}
                 </View>
 
                 <View>
@@ -269,8 +226,13 @@ const InterviewCard = ({ name, role, logo, isSelected, onPress }) => {
                 </View>
             </View>
 
-            {/* RIGHT BUTTON */}
-            <TouchableOpacity onPress={() => navigation.navigate('InterviewScreen')}>
+            <TouchableOpacity
+                onPress={() =>
+                    navigation.navigate("InterviewScreen", {
+                        interviewId,
+                    })
+                }
+            >
                 <View
                     style={[
                         styles.button,
@@ -289,8 +251,7 @@ const InterviewCard = ({ name, role, logo, isSelected, onPress }) => {
             </TouchableOpacity>
         </TouchableOpacity>
     );
-}
-
+};
 
 /* ---------------- STYLES ---------------- */
 const styles = StyleSheet.create({
@@ -299,13 +260,10 @@ const styles = StyleSheet.create({
         backgroundColor: "#F9FAFB",
         paddingHorizontal: 24,
         paddingTop: 20,
-        paddingBottom: 0,
-
     },
 
     sectionTitle: {
         fontSize: 14,
-        // fontWeight: "600",
         color: "#111827",
         fontFamily: Fonts.SemiBold,
         marginBottom: 12
@@ -326,11 +284,9 @@ const styles = StyleSheet.create({
         elevation: 2
     },
 
-
     titleRow: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: 'center',
         marginBottom: 6,
     },
 
@@ -340,7 +296,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: "center",
         justifyContent: "center",
-        marginRight: '8px'
+        marginRight: 8
     },
 
     icon: {
@@ -350,32 +306,27 @@ const styles = StyleSheet.create({
 
     cardTitle: {
         fontSize: 12,
-        // fontWeight: "400",
         fontFamily: Fonts.Regular,
-        lineHeight: '100%'
     },
 
     cardValue: {
-        lineHeight: '32px',
         fontSize: 24,
         fontFamily: Fonts.Bold,
-        color: "#111827"
     },
 
     interviewCard: {
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#E8F1FF",
         borderRadius: 14,
         paddingVertical: 14,
-        backgroundColor: "#E8F1FF", // light gray like Figma
         paddingHorizontal: 12,
         paddingLeft: 24,
-        minHeight: '76px',
         marginBottom: 12,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         elevation: 2
     },
+
     interviewLeft: {
         flexDirection: "row",
         alignItems: "center"
@@ -384,14 +335,11 @@ const styles = StyleSheet.create({
     logoWrapper: {
         width: 48,
         height: 48,
-        // borderRadius: 24,
-        alignItems: "center",
-        justifyContent: "center",
         marginRight: 12
     },
 
     companyLogo: {
-        width: '100%',
+        width: "100%",
         height: "100%"
     },
 
@@ -404,7 +352,6 @@ const styles = StyleSheet.create({
     role: {
         fontSize: 13,
         color: "#5C6363",
-        lineHeight: '22px',
         marginTop: 2,
         fontFamily: Fonts.Light,
     },
@@ -416,6 +363,7 @@ const styles = StyleSheet.create({
         paddingVertical: 7.5,
         paddingHorizontal: 18
     },
+
     selectedCard: {
         backgroundColor: "#FFFFFF"
     },
@@ -427,11 +375,10 @@ const styles = StyleSheet.create({
     selectedButtonText: {
         color: "#10B981"
     },
+
     buttonText: {
         color: "#0069FF",
         fontSize: 14,
-        // fontWeight: "500"
-
         fontFamily: Fonts.Medium
     }
 });

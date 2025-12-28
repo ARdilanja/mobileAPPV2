@@ -139,12 +139,12 @@ export default function Filters({
 }
 
 const styles = StyleSheet.create({
-  wrapper: { alignSelf: "center", marginTop: 16 },
+  wrapper: { alignSelf: "center", marginTop: 10 },
   container: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
-    gap: 8,
+    gap: 10,
   },
   pill: {
     paddingHorizontal: 16,

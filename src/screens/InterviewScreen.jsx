@@ -181,7 +181,7 @@ import VideoModal from "../components/SubjectExpertise/VideoModal";
 
 
 export default function InterviewScreen({ route }) {
-const { interviewId } = route.params;
+  const interviewId = route?.params?.interviewId;
 
   const [activeTab, setActiveTab] = useState("expertise");
   const [activePage, setActivePage] = useState(1);
@@ -190,24 +190,25 @@ const { interviewId } = route.params;
   const [interviewData, setInterviewData] = useState(null);
 
   useEffect(() => {
-    fetchInterview();
-  }, []);
+    if (interviewId) fetchInterview(interviewId);
+  }, [interviewId]);
 
-  const fetchInterview = async () => {
+  const fetchInterview = async (id) => {
     try {
       setLoading(true);
-      // const res = await fetch("https://api.arinnovate.io/api/getTestReportcand/690992d53679680155cb6923");
-      const res = await fetch("https://api.arinnovate.io/api/getTestReportcand/690c41c310dd9af2591d89de");
+      const res = await fetch(
+        `https://api.arinnovate.io/api/getTestReportcand/${id}`
+      );
       const json = await res.json();
       setInterviewData(json);
     } catch (e) {
-      console.error(e);
+      console.error("Fetch interview error:", e);
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading || !interviewData) {
+  if (!interviewId || loading) {
     return (
       <View style={styles.loader}>
         <ActivityIndicator size="large" />
@@ -217,28 +218,37 @@ const { interviewId } = route.params;
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      {/* 🔵 SCROLLABLE CONTENT */}
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={{ paddingBottom: 12 }}
+        showsVerticalScrollIndicator={false}
+      >
         <InterviewTabs
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
 
-        {activeTab === "expertise" ? (
+        {/* ✅ KEEP BOTH MOUNTED */}
+        <View style={{ display: activeTab === "expertise" ? "flex" : "none" }}>
           <SubjectExpertise
             activePage={activePage}
             setActivePage={setActivePage}
             data={interviewData}
             onPlayVideo={() => setShowVideo(true)}
           />
-        ) : (
+        </View>
+
+        <View style={{ display: activeTab === "communication" ? "flex" : "none" }}>
           <Communication data={interviewData} />
-        )}
+        </View>
       </ScrollView>
 
-      {/* QUESTION-BASED PAGINATION */}
+      {/* PAGINATION */}
+      {/* 🔵 FIXED PAGINATION */}
       {activeTab === "expertise" &&
-        interviewData?.questionsList?.length > 0 && (
-          <View style={styles.paginationWrapper}>
+        interviewData?.questionsList?.length > 1 && (
+          <View style={styles.paginationContainer}>
             <Pagination
               activePage={activePage}
               totalPages={interviewData.questionsList.length}
@@ -252,20 +262,32 @@ const { interviewId } = route.params;
         videoUrl={interviewData?.TestvideoData}
         onClose={() => setShowVideo(false)}
       />
-
     </View>
   );
 }
 
+
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
-  scrollContent: { paddingBottom: 140 },
-  paginationWrapper: {
-    position: "absolute",
-    bottom: 60,
-    left: 0,
-    right: 0,
-    alignItems: "center",
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
   },
-  loader: { flex: 1, justifyContent: "center" },
+
+  content: {
+    flex: 1, // 👈 allows pagination to sit below
+  },
+
+  paginationContainer: {
+  borderTopWidth: 1,
+  borderTopColor: "#EEE",
+  paddingVertical: 4, // ✅ REDUCED
+  paddingBottom: 6,  // ✅ tight bottom
+  backgroundColor: "#FFFFFF",
+},
+
+  loader: {
+    flex: 1,
+    justifyContent: "center",
+  },
 });
+

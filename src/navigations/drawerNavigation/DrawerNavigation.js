@@ -28,7 +28,7 @@ const DrawerNavigation = () => {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen
-        name="MainApp"
+        name="StackNavigation"
         component={StackNavigation}
       />
     </Drawer.Navigator>

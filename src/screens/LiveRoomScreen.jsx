@@ -329,7 +329,7 @@ export default function LiveRoomScreen({ route, navigation }) {
 
         navigation.reset({
             index: 0,
-            routes: [{ name: "CreateRoomScreen" }],
+            routes: [{ name: "BottomDash" }],
         });
     };
 

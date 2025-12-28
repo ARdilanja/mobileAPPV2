@@ -129,6 +129,23 @@ import CreatePassword from '../../screens/authentication/CreatePassword';
 import JourneyGetStartScreen from '../../screens/authentication/JourneyGetStart';
 import NotificationsScreen from '../../screens/NotificationsScreen';
 import SubscriptionAgreementScreen from '../../screens/SubscriptionSection';
+import ChatOnboardingScreen from '../../screens/ChatScreen/ChatOnboardingScreen';
+import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
+import PracticeConversationScreen from '../../screens/practiceInterview/PracticeConversationScreen';
+import PracticeInterviewInfoScreen from '../../screens/practiceInterview/PracticeInterviewInfoScreen';
+import Home from '../../screens/Home';
+import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
+import AboutScreen from '../../screens/topUpdatedrofile/AboutScreen';
+import TermsScreen from '../../screens/topUpdatedrofile/TermsScreen';
+import ProfileFeedbackScreen from '../../screens/topUpdatedrofile/FeedbackScreen';
+import SettingsScreen from '../../screens/topUpdatedrofile/SettingsScreen';
+import DeleteAccountReasonScreen from '../../screens/topUpdatedrofile/DeleteAccountReasonScreen';
+import DeleteAccountConfirmScreen from '../../screens/topUpdatedrofile/DeleteAccountConfirmScreen';
+import UpdateProfileScreen from '../../screens/topUpdatedrofile/UpdateProfileScreen';
+import PricingScreen from '../../screens/PricingScreen';
+import PaymentStatusScreen from '../../screens/PaymentStatusScreen';
+
+// import MyProfile from '../../screens/BottomScreens/MyProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -170,22 +187,10 @@ const StackNavigation = () => {
         component={SignupFlowScreen}
       />
 
-      {/* 4️⃣ Bottom Tabs */}
       <Stack.Screen
         name="BottomDash"
         component={BottomNavigation}
-        options={({ route }) => {
-          const routeName =
-            getFocusedRouteNameFromRoute(route) ?? 'Bottom';
-
-          const isHome = routeName === 'Bottom';
-
-          return {
-            headerShown: isHome,
-            headerTitle: '',
-            headerLeft: isHome ? () => <DrawerHeader /> : undefined,
-          };
-        }}
+        options={{ headerShown: false }} // Disable stack header entirely
       />
       <Stack.Screen
         name="DeleteAccountScreen"
@@ -210,12 +215,17 @@ const StackNavigation = () => {
       <Stack.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: true, headerTitle: 'EditProfile', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="ChatOnboardingScreen"
+        component={ChatOnboardingScreen}
+        options={{ headerShown: true, headerTitle: 'ChatOnboardingScreen', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="EmployerInterviewScreen"
         component={EmployerInterviewScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: true, headerTitle: 'Employer Interviews', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="CompletedInterview"
@@ -223,8 +233,8 @@ const StackNavigation = () => {
 
       />
       <Stack.Screen
-        name="Dashboard"
-        component={Dashboard}
+        name="Home"
+        component={Home}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -248,6 +258,36 @@ const StackNavigation = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="PracticeStartScreen"
+        component={PracticeStartScreen}
+        options={{
+          headerShown: true, headerStyle: {
+            backgroundColor: "#0178FF",
+          },
+          headerTintColor:'#F5F5F5'
+        }}
+      />
+      <Stack.Screen
+        name="PracticeConversationScreen"
+        component={PracticeConversationScreen}
+        options={{
+          headerShown: true, headerStyle: {
+            backgroundColor: "#0178FF",
+          },
+          headerTintColor:'#F5F5F5'
+        }}
+      />
+      <Stack.Screen
+        name="PracticeInterviewInfoScreen"
+        component={PracticeInterviewInfoScreen}
+        options={{
+          headerShown: true, headerStyle: {
+            backgroundColor: "#0178FF",
+          },
+          headerTintColor:'#F5F5F5',
+        }}
+      />
+      <Stack.Screen
         name="InterviewScreen"
         component={InterviewScreen}
         options={{
@@ -255,6 +295,51 @@ const StackNavigation = () => {
           headerTitle: 'Interview Report',
           headerTitleAlign: 'center',
         }}
+      />
+        <Stack.Screen
+        name="ProfileTopScreen"
+        component={ProfileTopScreen}
+        options={{ headerShown: true, headerTitle: 'Profile', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="AboutScreen"
+        component={AboutScreen}
+        options={{ headerShown: true, headerTitle: 'About', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="ProfileFeedbackSummar"
+        component={ProfileFeedbackScreen}
+        options={{ headerShown: true, headerTitle: 'Terms of service', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="SettingsScreen"
+        component={SettingsScreen}
+        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="DeleteAccountReasonScreen"
+        component={DeleteAccountReasonScreen}
+        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="DeleteAccountConfirmScreen"
+        component={DeleteAccountConfirmScreen}
+        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="PricingScreen"
+        component={PricingScreen}
+        options={{ headerShown: true, headerTitle: 'PricingScreen', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="PaymentStatusScreen"
+        component={PaymentStatusScreen}
+        options={{ headerShown: true, headerTitle: 'PaymentStatusScreen', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="UpdateProfileScreen"
+        component={UpdateProfileScreen}
+        options={{ headerShown: true, headerTitle: 'UpdateProfileScreen', headerTitleAlign: 'center'}}
       />
 
 

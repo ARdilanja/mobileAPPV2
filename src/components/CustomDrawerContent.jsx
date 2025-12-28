@@ -115,22 +115,47 @@ import {
     Image,
     TouchableOpacity,
     StyleSheet,
+    Alert,
 } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { Fonts } from '../constants/fonts';
 import axios from 'axios';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-const CustomDrawerContent = ({ navigation }) => {
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CommonActions, DrawerActions, useNavigation } from '@react-navigation/native';
+const defaultAvatar = require('../assets/images/edit_profile.png');
+const CloseIcon = require('../assets/images/close.png');
+
+const fetchWithTimeout = (url, options = {}, timeout = 15000) => {
+    return Promise.race([
+        fetch(url, options),
+        new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Request timeout')), timeout)
+        ),
+    ]);
+};
+
+const CustomDrawerContent = () => {
+    const navigation = useNavigation();
     const [interviewData, setInterviewData] = useState(null);
     const [userData, setUserData] = useState(null);
+    const [profileImage, setProfileImage] = useState(null)
     const [isLoading, setIsLoading] = useState(false);
     const [token, setToken] = useState(null);
     const [candidateId, setCandidateId] = useState(null);
 
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [jobTitle, setJobTitle] = useState('');
+    const [email, setEmail] = useState('');
+    const [userId, setUserId] = useState(null);
+    console.log('userId', userId)
+    console.log('interviewData', interviewData)
+    console.log('setUserData', setUserData)
     // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY4Yjg0M2RlYzY1ODg0ZjMxYzU0MjUyIiwiZW1haWwiOiJnb3BhbC5kaGFnZTU0QGdtYWlsLmNvbSIsImlhdCI6MTc2NjEyNTY4MSwiZXhwIjoxNzY2MjEyMDgxfQ.GOKZhwTgH4NM9JSmbm8ybe54gmajh9w-gEM0Aej981k'
     //     const CANDIDATE_ID = '6672592aa821dc12db9fc26e'
-    // const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
-
+    const defaultToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3MjU5MmFhODIxZGMxMmRiOWZjMjZlIiwiZW1haWwiOiJ1ZGVzaGluaWV0aGFyYW5nYUBnbWFpbC5jb20iLCJpYXQiOjE3NjY0ODE3MjcsImV4cCI6MTc2NjU2ODEyN30.XI8X7EHCXbSmHov6HW9Csdg6N9D6zWFE5nJR9SnKHqo"
+    const USER_API = `https://api.arinnovate.io/getUser/${userId}`;
+    console.log('USER_API', USER_API)
     useEffect(() => {
         loadAuth();
     }, []);
@@ -145,18 +170,28 @@ const CustomDrawerContent = ({ navigation }) => {
             const user = JSON.parse(storedUser);
 
             setToken(storedToken);
-            setCandidateId(user?._id);
+            setUserData(user);
 
-            fetchUser(user?._id, storedToken);
-            fetchInterviewDetails(user?._id, storedToken);
+            // 🔑 IMPORTANT: candidateId
+            const candidateId = user?.candidateId || user?._id;
+
+            if (!candidateId) {
+                console.log("❌ candidateId not found");
+                return;
+            }
+
+            fetchInterviewDetails(candidateId, storedToken);
 
         } catch (e) {
             console.log("Auth load error", e);
         }
     };
 
+
     const fetchInterviewDetails = async (userId, token) => {
+        console.log('first')
         if (!userId || !token) return;
+        console.log('second')
 
         try {
             const response = await axios.post(
@@ -169,63 +204,43 @@ const CustomDrawerContent = ({ navigation }) => {
                     },
                 }
             );
-
+            console.log('interview response', response)
             setInterviewData(response.data);
         } catch (error) {
             console.log("Interview error", error);
         }
     };
 
-    const fetchUser = async (userId, token) => {
-        if (!userId || !token) return;
 
-        setIsLoading(true);
-        try {
-            const res = await fetch(
-                `https://api.arinnovate.io/getUser/${userId}`,
+
+    const handleLogout = async () => {
+        await AsyncStorage.clear();
+        console.log('✅ Logged out, storage cleared');
+        navigation.reset({
+            index: 0,
+            routes: [
                 {
-                    headers: {
-                        "x-access-token": token,
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-
-            // 🔴 important safety check
-            const text = await res.text();
-
-            // If HTML came, log it
-            if (text.startsWith("<")) {
-                console.log("HTML response instead of JSON:", text);
-                return;
-            }
-
-            const json = JSON.parse(text);
-            console.log("User JSON:", json);
-
-            if (json?.success && json?.User) {
-                setUserData(json.User);
-            }
-
-        } catch (err) {
-            console.log("Fetch user error:", err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-
-    const logout = async () => {
-        await AsyncStorage.multiRemove(["token", "refreshToken", "user"]);
-        navigation.replace("Login");
+                    name: 'MainApp',
+                    params: { screen: 'Login' },
+                },
+            ],
+        });
     };
     return (
         <DrawerContentScrollView contentContainerStyle={styles.container}>
 
+            <View style={styles.closeRow}>
+                <TouchableOpacity
+                    onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                    <Image source={CloseIcon} style={styles.closeIcon} />
+                </TouchableOpacity>
+            </View>
             {/* 🔵 PROFILE SECTION */}
             <View style={styles.profileSection}>
                 <Image
-                    source={require('../assets/icons/profile-icon.png')}
+                    source={profileImage ? { uri: profileImage } : defaultAvatar}
                     style={styles.profileImage}
                 />
                 <Text style={styles.name}>{userData?.firstName} {userData?.lastName}</Text>
@@ -261,21 +276,18 @@ const CustomDrawerContent = ({ navigation }) => {
                 <DrawerItem
                     icon={require('../assets/icons/unknown-user.png')}
                     label="Profile"
-                    onPress={() => navigation.navigate('MyProfile')}
+                    onPress={() => navigation.navigate('EditProfileScreen')}
                 />
 
                 <DrawerItem
                     icon={require('../assets/icons/interview.png')}
                     label="Interviews"
-                    onPress={() => navigation.navigate('MainApp', {
-                        screen: 'CreateRoomScreen',
-                    })}
+                    onPress={() => navigation.navigate('EmployerInterviewScreen')}
                 />
-
                 <DrawerItem
-                    icon={require('../assets/icons/chat.png')}
+                    icon={require('../assets/icons/interview.png')}
                     label="Chat"
-                    onPress={() => navigation.navigate('Chat')}
+                    onPress={() => navigation.navigate('ChatOnboardingScreen')}
                 />
             </View>
 
@@ -283,34 +295,33 @@ const CustomDrawerContent = ({ navigation }) => {
             <View style={styles.footer}>
                 <FooterItem
                     label="Settings & Security"
-                    onPress={() => navigation.navigate('MainApp', {
-                        screen: 'SettingsSecurityScreen',
-                    })}
+                    onPress={() => navigation.navigate('SettingsSecurityScreen')}
                 />
                 <FooterItem
                     label="Terms of Service"
-                    onPress={() => navigation.navigate('MainApp', {
-                        screen: 'TermsofServiceScreen',
-                    })}
+                    onPress={() => navigation.navigate('TermsofServiceScreen')}
                 />
                 <FooterItem
                     label="Delete My Account"
                     // danger
-                    onPress={() => navigation.navigate('MainApp', {
-                        screen: 'DeleteAccountScreen',
-                    })}
+                    onPress={() => navigation.navigate('DeleteAccountScreen')}
+                />
+                 <FooterItem
+                    label="Profile"
+                    onPress={() => navigation.navigate('ProfileTopScreen')}
                 />
                 <FooterItem
-                    label="Feedback"
-                    // danger
-                    onPress={() => navigation.navigate('MainApp', {
-                        screen: 'FeedbackScreen',
-                    })}
+                    label="PricingScreen"
+                    onPress={() => navigation.navigate('PricingScreen')}
+                />
+                <FooterItem
+                    label="PaymentStatusScreen"
+                    onPress={() => navigation.navigate('PaymentStatusScreen')}
                 />
             </View>
 
             {/* 🔵 LOGOUT */}
-            <TouchableOpacity style={styles.logout} onPress={logout}>
+            <TouchableOpacity style={styles.logout} onPress={handleLogout}>
                 <Image
                     source={require('../assets/icons/logout.png')}
                     style={styles.logoutIcon}
@@ -345,6 +356,18 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+    },
+
+    closeRow: {
+        alignItems: 'flex-end',
+        paddingHorizontal: 20,
+        paddingTop: 15,
+    },
+
+    closeIcon: {
+        width: 25,
+        height: 25,
+        tintColor: '#111827', // optional
     },
 
     profileSection: {

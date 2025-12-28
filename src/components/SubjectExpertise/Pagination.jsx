@@ -91,46 +91,108 @@ export default function Pagination({
 }
 
 
+// const styles = StyleSheet.create({
+//   wrapper: {
+//     alignItems: "center",
+//     marginVertical: 16,
+//   },
+
+//   container: {
+//     flexDirection: "row",
+//     alignItems: "center",
+//     backgroundColor: "#FFFFFF",
+//     borderRadius: 24,
+//     paddingHorizontal: 12,
+//     height: 48,
+
+//     shadowColor: "#000",
+//     shadowOffset: { width: 0, height: 6 },
+//     shadowOpacity: 0.1,
+//     shadowRadius: 16,
+//     elevation: 8,
+//   },
+
+//   arrowBtn: {
+//     width: 36,
+//     height: 36,
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+
+//   arrow: {
+//     fontSize: 22,
+//     color: "#787878",
+//   },
+
+//   page: {
+//     width: 32,
+//     height: 32,
+//     borderRadius: 16,
+//     alignItems: "center",
+//     justifyContent: "center",
+//     marginHorizontal: 4,
+//   },
+
+//   activePage: {
+//     backgroundColor: "#0069FF",
+//   },
+
+//   pageText: {
+//     fontSize: 13,
+//     color: "#2D2D2D",
+//   },
+
+//   activePageText: {
+//     color: "#FFFFFF",
+//     fontWeight: "600",
+//   },
+
+//   disabled: {
+//     opacity: 0.3,
+//   },
+// });
+
+
 const styles = StyleSheet.create({
   wrapper: {
     alignItems: "center",
-    marginVertical: 16,
+    marginVertical: 0, // ✅ REMOVE EXTRA SPACE
   },
 
   container: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#FFFFFF",
-    borderRadius: 24,
-    paddingHorizontal: 12,
-    height: 48,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    height: 38, // ✅ COMPACT HEIGHT
 
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.1,
-    shadowRadius: 16,
-    elevation: 8,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 6,
   },
 
   arrowBtn: {
-    width: 36,
-    height: 36,
+    width: 32,
+    height: 32,
     alignItems: "center",
     justifyContent: "center",
   },
 
   arrow: {
-    fontSize: 22,
+    fontSize: 18, // ✅ smaller arrow
     color: "#787878",
   },
 
   page: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 4,
+    marginHorizontal: 3,
   },
 
   activePage: {
@@ -138,7 +200,7 @@ const styles = StyleSheet.create({
   },
 
   pageText: {
-    fontSize: 13,
+    fontSize: 12,
     color: "#2D2D2D",
   },
 
@@ -151,4 +213,3 @@ const styles = StyleSheet.create({
     opacity: 0.3,
   },
 });
-
