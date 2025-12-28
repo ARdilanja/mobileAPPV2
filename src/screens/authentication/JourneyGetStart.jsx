@@ -58,7 +58,7 @@ const JourneyGetStartScreen = () => {
             {/* Button */}
             <AuthButton
               text="Get Started"
-              onPress={() => navigation.navigate('Home')}
+              onPress={() => navigation.navigate('BottomDash')}
             />
           </View>
       </View>
