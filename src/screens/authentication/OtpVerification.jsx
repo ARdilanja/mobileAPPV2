@@ -4,25 +4,10 @@ import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
 import OtpInput from '../../components/auth/OtpInput';
 import Gradient from '../../constants/Gradient';
-import { useNavigation } from '@react-navigation/native';
 
-const OtpVerification = ({  route  }) => {
-    const navigation = useNavigation()
-
-  const {
-    email,
-    phone,
-    serverOtp,
-    otpType,
-  } = route.params;
-
+const OtpVerification = ({ navigation, route  }) => {
+  const { email, phone, serverOtp } = route.params;
   const [otp, setOtp] = useState('');
-
-  const contactText =
-    otpType === 'mobile'
-      ? phone
-      : email;
-
 
   const handleVerifyOtp = () => {
   if (!otp || otp.length < 4) {
@@ -60,7 +45,7 @@ const OtpVerification = ({  route  }) => {
               <View style={styles.topSection}>
                 <AuthHeader
                   title="OTP Verification"
-                 subtitle={`Enter the 4-digit OTP sent to ${contactText}`}
+                  subtitle={`Enter the 4-digit OTP sent to ${email} `}
                   showBack={true}
                   showLogo={true}
                 />

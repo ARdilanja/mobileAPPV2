@@ -5,11 +5,9 @@ import AuthButton from '../../components/auth/AuthButton';
 import Gradient from '../../constants/Gradient';
 import { KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
 const screenWidth = Dimensions.get("window").width;
 
-const SignUp = () => {
-    const navigation = useNavigation()
+const SignUp = ({ navigation }) => {
     const [fullName, setFullName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
@@ -53,7 +51,6 @@ const SignUp = () => {
                                 email,
                                 phone,
                                 serverOtp: response.data.referral_code, 
-                                otpType: 'email',
                             }),
                     },
                 ]

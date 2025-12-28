@@ -9,12 +9,10 @@ import AuthButton from '../../components/auth/AuthButton';
 import Gradient from '../../constants/Gradient';
 import MessagePopup from '../../components/MessagePopup';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+const API_BASE = 'https://api.arinnovate.io/api';
 const screenWidth = Dimensions.get("window").width;
 
-const EmailInput = () => {
-    const navigation = useNavigation()
-
+const EmailInput = ({ navigation }) => {
   const [email, setEmail] = useState('');
 
   const [popupVisible, setPopupVisible] = useState(false);
@@ -34,8 +32,8 @@ const EmailInput = () => {
     }
 
     try {
-      // console.log('first', API_BASE,"checkUser")
-      const response = await axios.post(`https://api.arinnovate.io/api/checkUser`, { email });
+      console.log('first', API_BASE,"checkUser")
+      const response = await axios.post(`${API_BASE}/checkUser`, { email });
 
       const user = response.data.updatedUser || response.data.existingUser;
 

@@ -132,14 +132,11 @@ import {
 import Gradient from '../../constants/Gradient';
 import AuthButton from '../../components/auth/AuthButton';
 import LinearGradient from 'react-native-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-const GetStartScreen = () => {
-    const navigation = useNavigation()
-
+const GetStartScreen = ({ navigation }) => {
   return (
     <Gradient>
       <View style={styles.container}>
