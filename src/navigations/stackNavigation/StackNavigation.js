@@ -122,7 +122,17 @@ import ChatOnboardingScreen from '../../screens/ChatScreen/ChatOnboardingScreen'
 import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
 import PracticeConversationScreen from '../../screens/practiceInterview/PracticeConversationScreen';
 import PracticeInterviewInfoScreen from '../../screens/practiceInterview/PracticeInterviewInfoScreen';
-import Home from '../../screens/Home'
+import Home from '../../screens/Home';
+import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
+import AboutScreen from '../../screens/topUpdatedrofile/AboutScreen';
+import TermsScreen from '../../screens/topUpdatedrofile/TermsScreen';
+import ProfileFeedbackScreen from '../../screens/topUpdatedrofile/FeedbackScreen';
+import SettingsScreen from '../../screens/topUpdatedrofile/SettingsScreen';
+import DeleteAccountReasonScreen from '../../screens/topUpdatedrofile/DeleteAccountReasonScreen';
+import DeleteAccountConfirmScreen from '../../screens/topUpdatedrofile/DeleteAccountConfirmScreen';
+import UpdateProfileScreen from '../../screens/topUpdatedrofile/UpdateProfileScreen';
+import PricingScreen from '../../screens/PricingScreen';
+import PaymentStatusScreen from '../../screens/PaymentStatusScreen';
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
 
@@ -262,6 +272,51 @@ const StackNavigation = () => {
           headerTitle: 'Interview Report',
           headerTitleAlign: 'center',
         }}
+      />
+        <Stack.Screen
+        name="ProfileTopScreen"
+        component={ProfileTopScreen}
+        options={{ headerShown: true, headerTitle: 'Profile', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="AboutScreen"
+        component={AboutScreen}
+        options={{ headerShown: true, headerTitle: 'About', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="ProfileFeedbackSummar"
+        component={ProfileFeedbackScreen}
+        options={{ headerShown: true, headerTitle: 'Terms of service', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="SettingsScreen"
+        component={SettingsScreen}
+        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="DeleteAccountReasonScreen"
+        component={DeleteAccountReasonScreen}
+        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="DeleteAccountConfirmScreen"
+        component={DeleteAccountConfirmScreen}
+        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="PricingScreen"
+        component={PricingScreen}
+        options={{ headerShown: true, headerTitle: 'PricingScreen', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="PaymentStatusScreen"
+        component={PaymentStatusScreen}
+        options={{ headerShown: true, headerTitle: 'PaymentStatusScreen', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="UpdateProfileScreen"
+        component={UpdateProfileScreen}
+        options={{ headerShown: true, headerTitle: 'UpdateProfileScreen', headerTitleAlign: 'center'}}
       />
 
     </Stack.Navigator>

@@ -7,6 +7,7 @@ import CompletedInterviewsScreen from '../../screens/CompletedInterviewsScreen';
 import Dashboard from '../../screens/Dashboard';
 import DrawerHeader from '../../components/DrawerHeader';
 import Home from '../../screens/Home';
+import UpdateProfileScreen from '../../screens/topUpdatedrofile/UpdateProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -57,7 +58,7 @@ const BottomNavigation = () => {
       />
       <Tab.Screen
         name="MyProfile"
-        component={EditProfileScreen}
+        component={UpdateProfileScreen}
         options={{
           headerShown:true,
           title: 'MyProfile',

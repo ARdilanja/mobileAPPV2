@@ -306,6 +306,18 @@ const CustomDrawerContent = () => {
                     // danger
                     onPress={() => navigation.navigate('DeleteAccountScreen')}
                 />
+                 <FooterItem
+                    label="Profile"
+                    onPress={() => navigation.navigate('ProfileTopScreen')}
+                />
+                <FooterItem
+                    label="PricingScreen"
+                    onPress={() => navigation.navigate('PricingScreen')}
+                />
+                <FooterItem
+                    label="PaymentStatusScreen"
+                    onPress={() => navigation.navigate('PaymentStatusScreen')}
+                />
             </View>
 
             {/* 🔵 LOGOUT */}
