@@ -144,6 +144,7 @@ import DeleteAccountConfirmScreen from '../../screens/topUpdatedrofile/DeleteAcc
 import UpdateProfileScreen from '../../screens/topUpdatedrofile/UpdateProfileScreen';
 import PricingScreen from '../../screens/PricingScreen';
 import PaymentStatusScreen from '../../screens/PaymentStatusScreen';
+import StartDayOne from '../../screens/StartDayOne';
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
 
@@ -170,6 +171,7 @@ const StackNavigation = () => {
       <Stack.Screen name="NotificationScreen" component={NotificationsScreen} />
       <Stack.Screen name="JourneyGetStartScreen" component={JourneyGetStartScreen} />
       <Stack.Screen name="SubscriptionAgreement" component={SubscriptionAgreementScreen} />
+      <Stack.Screen name="startDayOne" component={StartDayOne} />
 
       {/* 2️⃣ Login */}
       <Stack.Screen

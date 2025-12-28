@@ -437,6 +437,7 @@ import {
 
 import VoiceRecorder from "../../components/VoiceMessage/VoiceRecorder";
 import VoiceMessageBubble from "../../components/VoiceMessage/VoiceMessageBubble";
+import { useNavigation } from "@react-navigation/native";
 
 /* ICONS */
 const checkIcon = require("../../assets/images/check.png");
@@ -495,6 +496,7 @@ export default function ChatOnboardingScreen() {
   const [extraNote, setExtraNote] = useState("");
 
   const handleSendStep1 = () => {
+    const navigation = useNavigation()
     if (!input.trim()) return;
     setChat((prev) => [...prev, { id: Date.now(), value: input }]);
     setInput("");
@@ -694,7 +696,7 @@ export default function ChatOnboardingScreen() {
               onChangeText={setInput}
               style={styles.input}
             />
-            <VoiceRecorder onRecorded={() => {}} />
+            <VoiceRecorder onRecorded={() => { }} />
             <TouchableOpacity onPress={handleSendStep1}>
               <Image source={sendIcon} style={styles.sendIcon} />
             </TouchableOpacity>
@@ -703,29 +705,29 @@ export default function ChatOnboardingScreen() {
       )}
 
       {/* STEP 7 INPUT */}
-{/* STEP 7 INPUT */}
-{step === 7 && (
-  <View style={styles.bottomArea}>
-    <View style={styles.inputContainer}>
-      <TextInput
-        placeholder="Anything you want to add?"
-        value={extraNote}
-        onChangeText={setExtraNote}
-        style={styles.input}
-      />
+      {/* STEP 7 INPUT */}
+      {step === 7 && (
+        <View style={styles.bottomArea}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Anything you want to add?"
+              value={extraNote}
+              onChangeText={setExtraNote}
+              style={styles.input}
+            />
 
-      {/* Mic icon – UI only */}
-      <TouchableOpacity activeOpacity={0.7}>
-        <VoiceRecorder onRecorded={() => {}} />
-      </TouchableOpacity>
+            {/* Mic icon – UI only */}
+            <TouchableOpacity activeOpacity={0.7}>
+              <VoiceRecorder onRecorded={() => { }} />
+            </TouchableOpacity>
 
-      {/* Send icon – UI only */}
-      <TouchableOpacity activeOpacity={0.7}>
-        <Image source={sendIcon} style={styles.sendIcon} />
-      </TouchableOpacity>
-    </View>
-  </View>
-)}
+            {/* Send icon – UI only */}
+            <TouchableOpacity activeOpacity={0.7}>
+              <Image source={sendIcon} style={styles.sendIcon} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
 
 
       {/* BUTTON */}
@@ -736,7 +738,13 @@ export default function ChatOnboardingScreen() {
             !isButtonEnabled() && styles.disabled,
           ]}
           disabled={!isButtonEnabled()}
-          onPress={() => step < 7 && setStep(step + 1)}
+          onPress={() => {
+            if (step < 7) {
+              setStep(step + 1);
+            } else {
+              useNavigation.navigate("StartDayOne");
+            }
+          }}
         >
           <Text style={styles.nextText}>
             {step === 7 ? "Create my 90-day plan" : "Next"}
@@ -823,7 +831,7 @@ const styles = StyleSheet.create({
   radioPill: {
     flexDirection: "row",
     alignItems: "center",
-    height: 36  ,
+    height: 36,
     paddingHorizontal: 10,
     borderRadius: 24,
     backgroundColor: "#fff",

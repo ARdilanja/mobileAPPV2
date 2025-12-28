@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
-const JourneyGetStartScreen = () => {
+const StartDayOne = () => {
   const navigation = useNavigation()
   return (
     <Gradient>
@@ -73,7 +73,7 @@ const JourneyGetStartScreen = () => {
   );
 };
 
-export default JourneyGetStartScreen;
+export default StartDayOne;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
