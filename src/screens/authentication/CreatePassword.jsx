@@ -50,7 +50,7 @@ const CreatePassword = () => {
                 // keyboardType="Confirm password"
                 /></View>
               <View style={styles.bottomSection}>
-                <AuthButton text="Sign in" onPress={() => navigation.navigate('Home')}/>
+                <AuthButton text="Sign in" onPress={() => navigation.navigate('ChatOnboardingScreen')}/>
               </View>
             </View>
           </TouchableWithoutFeedback>

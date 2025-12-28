@@ -232,11 +232,11 @@ const StackNavigation = () => {
         component={CompletedInterviewsScreen}
 
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Home"
         component={Home}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name="CreateRoomScreen"
         component={CreateRoomScreen}

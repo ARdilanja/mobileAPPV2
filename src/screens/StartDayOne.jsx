@@ -24,7 +24,7 @@ const JourneyGetStartScreen = () => {
         <View style={styles.topSection}>
           <View style={styles.imageWrapper}>
             <Image
-              source={require('../../assets/images/buildconfidence.png')}
+              source={require('../assets/images/start-day-one.png')}
               style={styles.image}
               resizeMode="contain"
             />
@@ -48,8 +48,8 @@ const JourneyGetStartScreen = () => {
           {/* Text Content */}
           <View style={styles.textContainer}>
             <Text style={styles.title}>
-              Ready to shape <Text style={styles.highlight}>
-                your own journey?
+              Your confidence journey <Text style={styles.highlight}>
+                starts today 
               </Text>
             </Text>
 
@@ -57,12 +57,15 @@ const JourneyGetStartScreen = () => {
           </View>
           {/* Button */}
           <AuthButton
-            text="Get Started"
+            text="Start Day 1"
             onPress={() => navigation.reset({
               index: 0,
               routes: [{ name: 'BottomDash' }],
             })}
             />
+            <Text style={styles.link} onPress={navigation.navigate('PricingScreen')}>
+                     View plan Overview
+                    </Text>
         </View>
       </View>
 
@@ -124,5 +127,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingBottom: 30,
   },
+  link: {  marginTop: 15, fontSize: 16, textAlign: 'center',color: '#1a73e8', fontWeight: '600' },
 });
 

@@ -29,7 +29,7 @@ const Password = ({ route  }) => {
       });
 console.log('response', response)
       Alert.alert('Success', 'Login successful');
-      navigation.navigate('JourneyGetStartScreen');
+      navigation.navigate('CreatePassword');
 
     } catch (error) {
       Alert.alert(
