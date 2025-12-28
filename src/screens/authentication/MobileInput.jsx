@@ -43,7 +43,7 @@
 // }; 
 
 // const styles = StyleSheet.create({
-
+  
 //   content: {
 //     flexDirection: 'row',      // ✅ side by side
 //     alignItems: 'center',      // vertically center
@@ -81,36 +81,32 @@
 
 
 
-import React, { useState } from 'react';
-import {
-  TextInput, StyleSheet, View, Image, Dimensions,
-  KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard
+import React from 'react';
+import { 
+  TextInput, StyleSheet, View, Image, Dimensions, 
+  KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard 
 } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
 import Gradient from '../../constants/Gradient';
-import { useNavigation } from '@react-navigation/native';
 
 const screenWidth = Dimensions.get("window").width;
 
-const MobileInput = () => {
-  const navigation = useNavigation()
-  const [phone, setPhone] = useState('');
-
+const MobileInput = ({ navigation }) => {
   return (
     <Gradient>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === "ios" ? "padding" : "height"} 
         style={{ flex: 1 }}
       >
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
+        <ScrollView 
+          contentContainerStyle={styles.scrollContainer} 
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={{ flex: 1 }}>
-
+              
               {/* TOP SECTION */}
               <View style={styles.topSection}>
                 <AuthHeader
@@ -129,8 +125,6 @@ const MobileInput = () => {
                     placeholder="+91"
                     keyboardType="phone-pad"
                     style={styles.mob_input}
-                    value={phone}
-                    onChangeText={(text) => setPhone(text.replace(/[^0-9]/g, ''))}
                     placeholderTextColor="#242424"
                   />
                 </View>
@@ -141,12 +135,7 @@ const MobileInput = () => {
                 <AuthButton
                   text="Next"
                   signupText={true}
-                  onPress={() => navigation.navigate('OtpVerification', {
-                    email,
-                    phone,
-                    serverOtp,
-                    otpType: 'mobile', // or 'mobile'
-                  })}
+                  onPress={() => navigation.navigate('OtpVerification')}
                   onFooterPress={() => navigation.navigate('SignUp')}
                 />
               </View>

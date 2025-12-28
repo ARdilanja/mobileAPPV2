@@ -5,11 +5,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { API_BASE } from "../config/api";
 import { isTokenExpired } from "../utils/authUtils";
-import { useNavigation } from "@react-navigation/native";
 
-export default function LoginLoaderPage() {
-    const navigation = useNavigation()
-
+export default function LoginLoaderPage({ navigation }) {
 
   useEffect(() => {
     bootstrapAuth();
