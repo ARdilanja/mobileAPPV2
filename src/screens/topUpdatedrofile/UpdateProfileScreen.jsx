@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import PhotoActionModal from '../../components/PhotoActionModal';
+import { TextInput } from 'react-native-gesture-handler';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -17,44 +18,61 @@ const editPencilIcon = require('../../assets/images/edit_icon1.png');
 
 export default function UpdateProfileScreen() {
   const [modalVisible, setModalVisible] = useState(false);
-console.log('modalVisible :>> ', modalVisible);
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
-
-
         {/* PROFILE IMAGE */}
         <View style={styles.imageWrapper}>
-          <Image
-            source={defaultAvatar}
-            style={styles.profileImage}
-          />
+          <Image source={defaultAvatar} style={styles.profileImage} />
           <TouchableOpacity
             style={styles.editIcon}
             onPress={() => setModalVisible(true)}
           >
-                <Image source={editPencilIcon} style={styles.editPencil} />
+            <Image source={editPencilIcon} style={styles.editPencil} />
           </TouchableOpacity>
         </View>
 
         {/* INPUT CARDS */}
         <View style={styles.card}>
-          <Text style={styles.value}>Claire henry</Text>
+          <TextInput
+            value="Claire henry"
+            style={styles.value}
+            placeholder="Name"
+            placeholderTextColor="#999"
+          />
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.value}>🇮🇳  +91  86325 92563</Text>
+          <TextInput
+            value="🇮🇳  +91  86325 92563"
+            style={styles.value}
+            placeholder="Phone number"
+            placeholderTextColor="#999"
+            keyboardType="phone-pad"
+          />
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.value}>clairehenry@gmail.com</Text>
+          <TextInput
+            value="clairehenry@gmail.com"
+            style={styles.value}
+            placeholder="Email"
+            placeholderTextColor="#999"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.value}>********</Text>
+          <TextInput
+            value="********"
+            style={styles.value}
+            placeholder="Password"
+            placeholderTextColor="#999"
+            secureTextEntry
+          />
         </View>
 
-        {/* UPDATE BUTTON */}
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Update</Text>
         </TouchableOpacity>
@@ -100,11 +118,11 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
 
-//   profileImage: {
-//     width: 90 * scale,
-//     height: 90 * scale,
-//     borderRadius: 45 * scale,
-//   },
+  //   profileImage: {
+  //     width: 90 * scale,
+  //     height: 90 * scale,
+  //     borderRadius: 45 * scale,
+  //   },
 
   editIcon: {
     position: 'absolute',
@@ -139,6 +157,7 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 15,
     color: '#000',
+    padding: 0,
   },
 
   button: {
