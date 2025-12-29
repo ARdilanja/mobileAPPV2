@@ -25,7 +25,14 @@ export default function CreateRoomScreen({ navigation }) {
             <Pressable
                 style={styles.btn}
                 onPress={() =>
-                    navigation.replace("MicCheckScreen", { roomName })
+                    navigation.replace("MicCheckScreen", {
+                        roomName,
+                        // for sme
+                        interviewId: "67ee0d4febee98e48a182378",
+                        cid: "67ee0d4febee98e48a182376",
+                        // interviewId: "67ece15eedd3f67bc790bb00",
+                        // cid: "67ece15dedd3f67bc790baf6",
+                    })
                 }
             >
                 <Text style={styles.btnText}>Continue</Text>
