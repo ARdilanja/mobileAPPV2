@@ -814,7 +814,7 @@ const styles = StyleSheet.create({
 
   bottomOptions: {
     marginTop: "auto",
-    paddingBottom: 16,
+    paddingBottom: 100,
   },
 
   userBubble: {
@@ -867,7 +867,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1E88FF",
   },
 
-  radioText: { fontSize: 16, color: "#2A2A2A" },
+  radioText: { fontSize: 14, color: "#2A2A2A" },
   radioTextSelected: { color: "#1E88FF", fontWeight: "500" },
 
   checkboxWrap: { flexDirection: "row", flexWrap: "wrap" },
@@ -904,7 +904,7 @@ const styles = StyleSheet.create({
   pillText: { fontSize: 13, color: "#333" },
   pillTextSelected: { color: "#fff" },
 
-  bottomArea: { padding: 16 },
+  bottomArea: { padding: 16,bottom:100 },
 
   inputContainer: {
     flexDirection: "row",
@@ -924,7 +924,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
 
-  buttonWrap: { padding: 16 },
+  buttonWrap: { padding: 16,bottom:100 },
 
   nextButton: {
     height: 56,

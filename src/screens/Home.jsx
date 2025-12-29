@@ -20,9 +20,9 @@ export default function Home() {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <StatusBar hidden />
+      <StatusBar />
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      {/* <ScrollView showsVerticalScrollIndicator={false}> */}
         <View style={styles.heroWrapper}>
           <ImageBackground
             source={require('../assets/images/first-img.jpg')}
@@ -84,7 +84,7 @@ export default function Home() {
 
         {/* PRACTICE TIME */}
         <View style={styles.practiceTimeCard}>
-          <Text style={styles.practiceLabel}>Total practice time</Text>
+          <Text style={styles.practiceLabel}>Total {"\n"}practice time</Text>
           <Text style={styles.practiceValue}>60 minutes</Text>
         </View>
 
@@ -119,7 +119,7 @@ export default function Home() {
         >
           <Text style={styles.startPracticeText}>Start Practice</Text>
         </TouchableOpacity>
-      </ScrollView>
+      {/* </ScrollView> */}
     </View>
   );
 }
@@ -240,12 +240,9 @@ const styles = StyleSheet.create({
   },
 
   practiceTimeCard: {
-    marginTop: height * 0.025,
     marginHorizontal: 16,
     height: height * 0.06,
-    paddingHorizontal: 16,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
+    // paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -286,8 +283,7 @@ const styles = StyleSheet.create({
 
   startPracticeButton: {
     marginHorizontal: 16,
-    marginTop: height * 0.05,
-    marginBottom: height * 0.05,
+    marginTop: height * 0.03,
     height: height * 0.07,
     backgroundColor: '#007AFF',
     borderRadius: height * 0.04,

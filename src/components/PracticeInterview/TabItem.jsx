@@ -72,10 +72,9 @@ export default function TabItem({ icon, label, active, onPress }) {
 
 const styles = StyleSheet.create({
     container: {
+        width: "33.33%",        // ✅ 3 tabs per row max
         alignItems: "center",
-        paddingHorizontal: 14,
-        paddingVertical: 6,
-        minWidth: 90,   // ✅ keeps good touch size
+        paddingVertical: 8,
     },
     content: {
         alignItems: "center",
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     underline: {
         marginTop: 8,
         height: 2,
-        width: "100%",   // ✅ underline matches tab width
+        width: "80%",   // ✅ underline matches tab width
         backgroundColor: "#1677FF",
         borderRadius: 2,
     },

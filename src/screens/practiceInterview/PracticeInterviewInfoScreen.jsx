@@ -51,11 +51,7 @@ export default function PracticeInterviewInfoScreen({ navigation }) {
 
             {/* TABS */}
             <View style={styles.tabsContainer}>
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.tabsWrapper}
-                >
+                <View style={styles.tabsWrapper}>
                     <TabItem
                         label="Interview info"
                         active={activeTab === "info"}
@@ -71,7 +67,7 @@ export default function PracticeInterviewInfoScreen({ navigation }) {
                         active={activeTab === "sample"}
                         onPress={() => setActiveTab("sample")}
                     />
-                </ScrollView>
+                </View>
             </View>
 
 
@@ -115,10 +111,7 @@ export default function PracticeInterviewInfoScreen({ navigation }) {
                         </View>
 
                         <Text style={styles.jobDesc}>
-                            We are seeking a skilled Java Developer with 2 to 3
-                            years of experience to join our dynamic team. The
-                            ideal candidate must have strong expertise in core
-                            Java, REST APIs, and backend development.
+                            We are seeking a skilled Java Developer with 2 to 3 years of experience to join our dynamic team. The ideal candidate must have strong expertise in
                         </Text>
                     </View>
                 </>
@@ -132,7 +125,7 @@ export default function PracticeInterviewInfoScreen({ navigation }) {
     );
 }
 
- // Reusable row component to display an icon with text
+// Reusable row component to display an icon with text
 
 
 function InfoRow({ icon, text }) {
@@ -152,7 +145,7 @@ const styles = StyleSheet.create({
         // paddingBottom: 90, 
     },
     tabsContainer: {
-        height: 48,
+        // height: 48,
         marginBottom: 16,
     },
 
@@ -163,7 +156,7 @@ const styles = StyleSheet.create({
     },
 
     backBtn: {
-        padding: 4,              
+        padding: 4,
         marginRight: 12,
     },
 
@@ -171,7 +164,7 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         resizeMode: "contain",
-        marginBottom:13
+        marginBottom: 13
     },
     backText: {
         fontSize: 26,
@@ -187,9 +180,8 @@ const styles = StyleSheet.create({
 
     tabsWrapper: {
         flexDirection: "row",
-        paddingHorizontal: 6,
-        alignItems: "center",
-        gap: 2,                 // ✅ proper spacing
+        flexWrap: "wrap",        // ✅ allows next line
+        alignItems: "flex-start",
     },
 
     sectionTitle: {
@@ -238,6 +230,7 @@ const styles = StyleSheet.create({
     rowText: {
         fontSize: 14,
         color: "#111827",
+        lineHeight: 30,
     },
 
     jobHeader: {
@@ -254,9 +247,9 @@ const styles = StyleSheet.create({
     },
 
     jobDesc: {
-        fontSize: 13,
+        fontSize: 15,
         color: "#374151",
-        lineHeight: 18,
+        lineHeight:20,
     },
 
     startBtn: {

@@ -98,9 +98,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 60, // Increased slightly for images
     backgroundColor: '#FFFFFF', // Replaced Colors.primary (assuming black/dark)
-    paddingBottom: 5,
-    borderTopLeftRadius:20,
-    borderTopRightRadius:20,
+    paddingBottom: 15,
+    // borderTopLeftRadius:20,
+    // borderTopRightRadius:20,
   },
   tab: {
     flex: 1,

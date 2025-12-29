@@ -1,5 +1,5 @@
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CustomTabBar from '../../components/CustomTabBar';
 import EditProfileScreen from '../../screens/EditProfileScreen';
 import EmployerInterviewScreen from '../../screens/EmployerInterviewScreen';
@@ -30,13 +30,13 @@ const BottomNavigation = () => {
         component={Home}
         options={{
           title: 'Home',
-          headerShown: true, // Enable header here instead
+          headerShown: false, // Enable header here instead
           headerTitle: '',
           headerLeft: () => <DrawerHeader />, // Move the drawer button here
           headerShadowVisible: false, // Removes the thin line under header
           headerStyle: {
-             elevation: 0, // Removes shadow on Android
-             shadowOpacity: 0, // Removes shadow on iOS
+            elevation: 0, // Removes shadow on Android
+            shadowOpacity: 0, // Removes shadow on iOS
           }
         }}
       />
@@ -84,29 +84,38 @@ const BottomNavigation = () => {
         name="StartInterview"
         component={EmployerInterviewScreen}
         options={{
-          headerShown:true,
-          title: 'start Interviews',
-          headerTitleAlign:'center',
+          headerTitle:'Start Interview',
+          headerTitleAlign: 'center',
+          headerShown: true, headerStyle: {
+            backgroundColor: "#0178FF",
+          },
+          headerTintColor: '#F5F5F5'
         }}
       />
       <Tab.Screen
         name="PracticeStartScreen"
         component={PracticeStartScreen}
         options={{
-          headerShown:true,
-          title: 'Practice',
-          headerTitleAlign:'center',
+          headerTitle: 'Start Practice',
+          headerTitleAlign: 'center',
+          headerShown: true, headerStyle: {
+            backgroundColor: "#0178FF",
+          },
+          headerTintColor: '#F5F5F5'
         }}
       />
-       <Tab.Screen
-         name="ProfileTopScreen"
-         component={ProfileTopScreen}
-         options={{
-           headerShown:true,
-           headerTitle: 'Profile',
-           headerTitleAlign:'center'
-         }}
-       />
+      <Tab.Screen
+        name="ProfileTopScreen"
+        component={ProfileTopScreen}
+        options={{
+          headerTitle:"Profile",
+          headerTitleAlign: 'center',
+          headerShown: true, headerStyle: {
+            backgroundColor: "#0178FF",
+          },
+          headerTintColor: '#F5F5F5'
+        }}
+      />
     </Tab.Navigator>
   );
 };

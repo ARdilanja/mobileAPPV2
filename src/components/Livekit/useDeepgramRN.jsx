@@ -95,7 +95,7 @@ import LiveAudioStream from "react-native-live-audio-stream";
 import { Buffer } from "buffer";
 
 // CHANGE THIS to your backend server IP
-const STT_WS_URL = "ws://10.107.89.251:5000/stt"; 
+const STT_WS_URL = "ws://192.168.1.6:5000/stt"; 
 
 export default function useDeepgramRN(active) {
     const socketRef = useRef(null);
