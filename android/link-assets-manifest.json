@@ -2,6 +2,50 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "src/assets/fonts/IBMPlexSans-Bold.ttf",
+      "sha1": "73ca244ec7b02bca9c7ac07bc27ff44da5b913a1"
+    },
+    {
+      "path": "src/assets/fonts/IBMPlexSans-BoldItalic.ttf",
+      "sha1": "318c2c62f7030996b022f623356fde7849a0b63e"
+    },
+    {
+      "path": "src/assets/fonts/IBMPlexSans-ExtraLight.ttf",
+      "sha1": "45122c94c76c2c62250c25de6c1faa593f8701e2"
+    },
+    {
+      "path": "src/assets/fonts/IBMPlexSans-Italic.ttf",
+      "sha1": "4fa7e98a8bd3f39da60dc9b3e15844b53154320c"
+    },
+    {
+      "path": "src/assets/fonts/IBMPlexSans-Light.ttf",
+      "sha1": "734d51ab82208ed43745a6f68bae0a91b05b5ca3"
+    },
+    {
+      "path": "src/assets/fonts/IBMPlexSans-LightItalic.ttf",
+      "sha1": "81700534b9ccb5884b021716396166982669ad63"
+    },
+    {
+      "path": "src/assets/fonts/IBMPlexSans-Medium.ttf",
+      "sha1": "3ecdb89ad06afb5e3765fc2b24f7f72fbc70e847"
+    },
+    {
+      "path": "src/assets/fonts/IBMPlexSans-MediumItalic.ttf",
+      "sha1": "e81fbe9a11a42ca555c371877f37d6c1dd996ff8"
+    },
+    {
+      "path": "src/assets/fonts/IBMPlexSans-Regular.ttf",
+      "sha1": "6711c90aa2fb6ec2935d92d5183481290a430605"
+    },
+    {
+      "path": "src/assets/fonts/IBMPlexSans-SemiBold.ttf",
+      "sha1": "976602e2c2616e6783edeb597714a13478df9e83"
+    },
+    {
+      "path": "src/assets/fonts/IBMPlexSans-Thin.ttf",
+      "sha1": "259d7b71792fbabe0c4b80851e72a45eef21b922"
+    },
+    {
       "path": "src/assets/fonts/Inter_18pt-Bold.ttf",
       "sha1": "001ec1ea9a5f752d3248769c174b6fc030ab7dab"
     },
