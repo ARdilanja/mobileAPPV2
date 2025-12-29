@@ -404,9 +404,18 @@ import {
 
 import { PRACTICE_QUESTIONS } from "./practiceConversationConfig";
 
+
+import { KeyboardAvoidingView, Platform } from "react-native";
+
+import { Fonts } from "../../constants/fonts";
+
 const { width } = Dimensions.get("window");
-// Width for exactly 3 items per row
-const THREE_COL_WIDTH = (width * 0.9 - 16) / 3;
+
+const THREE_COL_WIDTH = Math.min(
+    (width * 0.9 - 16) / 3,
+    120
+);
+
 
 const EDIT_ICON = require("../../assets/images/pencil.png");
 const MIC_ICON = require("../../assets/images/circle-microphone.png");
@@ -559,29 +568,34 @@ export default function PracticeConversationScreen({ route, navigation }) {
             )}
 
             {/* BOTTOM BUTTON/INPUT */}
-            <View style={styles.bottomWrapper}>
-                {currentQuestion?.type === "multi" ? (
-                    // Show Get Started button only when items are selected
-                    multiAnswers.length > 0 ? (
-                        <TouchableOpacity style={styles.getStartedBtn} onPress={handleGetStarted}>
-                            <Text style={styles.getStartedText}>Get Started</Text>
-                        </TouchableOpacity>
-                    ) : null // Or keep input wrapper here if you want typing for multi-select
-                ) : (
-                    <View style={styles.inputWrapper}>
-                        <TextInput
-                            value={typedText}
-                            onChangeText={setTypedText}
-                            placeholder="Type here..."
-                            style={styles.textInput}
-                        />
-                        <Image source={MIC_ICON} style={styles.icon} />
-                        <TouchableOpacity onPress={handleSendText}>
-                            <Image source={SEND_ICON} style={styles.icon1} />
-                        </TouchableOpacity>
-                    </View>
-                )}
-            </View>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={80}
+            >
+                <View style={styles.bottomWrapper}>
+                    {currentQuestion?.type === "multi" ? (
+                        // Show Get Started button only when items are selected
+                        multiAnswers.length > 0 ? (
+                            <TouchableOpacity style={styles.getStartedBtn} onPress={handleGetStarted}>
+                                <Text style={styles.getStartedText}>Get Started</Text>
+                            </TouchableOpacity>
+                        ) : null // Or keep input wrapper here if you want typing for multi-select
+                    ) : (
+                        <View style={styles.inputWrapper}>
+                            <TextInput
+                                value={typedText}
+                                onChangeText={setTypedText}
+                                placeholder="Type here..."
+                                style={styles.textInput}
+                            />
+                            <Image source={MIC_ICON} style={styles.icon} />
+                            <TouchableOpacity onPress={handleSendText}>
+                                <Image source={SEND_ICON} style={styles.icon1} />
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                </View>
+            </KeyboardAvoidingView>
         </View>
     );
 }
@@ -590,7 +604,7 @@ const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: "#F9FAFB" },
     chat: { padding: width * 0.05 },
     block: { marginBottom: 24 },
-    questionText: { fontSize: 15, fontWeight: "500", color: "#4B5563", marginBottom: 10 },
+    questionText: { fontSize: 14, fontWeight: "400", color: "#4B5563", marginBottom: 10, fontFamily: Fonts.Regular },
 
     checkboxBase: {
         width: 16,
@@ -617,9 +631,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 14,
         paddingVertical: 8,
         borderRadius: 20,
-        gap: 8,
+        gap: 6,
     },
-    answerText: { color: "#FFF", fontSize: 14, fontWeight: "600" },
+    answerText: { color: "#FFF", fontSize: 14, fontWeight: "400", fontFamily: Fonts.Regular },
     answerIcon: { width: 16, height: 16, tintColor: "#FFFFFF", },
     editBelow: { marginTop: 4, alignSelf: 'flex-end' },
     editIcon: { width: 16, height: 16, tintColor: "#000000" },
@@ -651,7 +665,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF",
         borderRadius: 24,
     },
-    optionText: { fontSize: 12, fontWeight: "600", color: "#374151" },
+    optionText: { fontSize: 13, fontWeight: "400", color: "#374151", fontFamily: Fonts.Regular },
 
     bottomWrapper: {
         position: "absolute",
@@ -667,7 +681,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         height: 52,
     },
-    textInput: { flex: 1, fontSize: 14 },
+    textInput: { flex: 1, fontSize: 14, fontWeight: "400", fontFamily: Fonts.Regular },
     icon: { width: 22, height: 22, marginHorizontal: 8, tintColor: "#454545" },
     icon1: { width: 22, height: 22, marginHorizontal: 4, tintColor: "#1677FF" },
     getStartedBtn: {
@@ -677,5 +691,5 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    getStartedText: { color: "#FFF", fontSize: 16, fontWeight: "700" },
+    getStartedText: { color: "#FFF", fontSize: 18, fontWeight: "500", fontFamily: Fonts.Medium },
 });
