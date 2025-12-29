@@ -28,7 +28,7 @@ const BottomNavigation = () => {
         component={Home}
         options={{
           title: 'Home',
-          headerShown: true, // Enable header here instead
+          headerShown: false, // Enable header here instead
           headerTitle: '',
           headerLeft: () => <DrawerHeader />, // Move the drawer button here
           headerShadowVisible: false, // Removes the thin line under header
