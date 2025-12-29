@@ -202,7 +202,6 @@ const StackNavigation = () => {
       <Stack.Screen
         name="TermsofServiceScreen"
         component={TermsOfServiceScreen}
-        options={{ headerShown: true, headerTitle: 'Terms of Service', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="SettingsSecurityScreen"
@@ -299,33 +298,28 @@ const StackNavigation = () => {
         <Stack.Screen
         name="ProfileTopScreen"
         component={ProfileTopScreen}
-               options={{ headerShown: true, headerTitle: 'Employer Interviews', headerTitleAlign: 'center' }}
+               options={{ headerShown: false, headerTitle: 'Employer Interviews', headerTitleAlign: 'center' }}
 
       />
       <Stack.Screen
         name="AboutScreen"
         component={AboutScreen}
-        options={{ headerShown: true, headerTitle: 'About', headerTitleAlign: 'center'}}
       />
       <Stack.Screen
         name="ProfileFeedbackSummar"
         component={ProfileFeedbackScreen}
-        options={{ headerShown: true, headerTitle: 'Terms of service', headerTitleAlign: 'center'}}
       />
       <Stack.Screen
         name="SettingsScreen"
         component={SettingsScreen}
-        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center'}}
       />
       <Stack.Screen
         name="DeleteAccountReasonScreen"
         component={DeleteAccountReasonScreen}
-        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center'}}
       />
       <Stack.Screen
         name="DeleteAccountConfirmScreen"
         component={DeleteAccountConfirmScreen}
-        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center'}}
       />
       <Stack.Screen
         name="PricingScreen"

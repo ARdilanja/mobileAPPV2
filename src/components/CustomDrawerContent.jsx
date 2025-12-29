@@ -297,10 +297,10 @@ const CustomDrawerContent = () => {
                     label="Settings & Security"
                     onPress={() => navigation.navigate('SettingsSecurityScreen')}
                 />
-                <FooterItem
+                {/* <FooterItem
                     label="Terms of Service"
                     onPress={() => navigation.navigate('TermsofServiceScreen')}
-                />
+                /> */}
                 <FooterItem
                     label="Delete My Account"
                     // danger

@@ -108,13 +108,16 @@ const BottomNavigation = () => {
         name="ProfileTopScreen"
         component={ProfileTopScreen}
         options={{
-          headerTitle:"Profile",
-          headerTitleAlign: 'center',
-          headerShown: true, headerStyle: {
-            backgroundColor: "#0178FF",
-          },
-          headerTintColor: '#F5F5F5'
+          headerShown:false
         }}
+        // options={{
+        //   headerTitle:"Profile",
+        //   headerTitleAlign: 'center',
+        //   headerShown: true, headerStyle: {
+        //     backgroundColor: "#0178FF",
+        //   },
+        //   headerTintColor: '#F5F5F5'
+        // }}
       />
     </Tab.Navigator>
   );

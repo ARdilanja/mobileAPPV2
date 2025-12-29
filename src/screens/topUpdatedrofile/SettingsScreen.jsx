@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  StatusBar,
 } from 'react-native';
+import Header from '../../components/Header';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -17,6 +19,8 @@ export default function SettingsScreen() {
     
   return (
     <View style={styles.container}>
+    <StatusBar backgroundColor="#F6F6F6" />
+    <Header title="Settings" />
       {/* CARD */}
       <View style={styles.card}>
         <TouchableOpacity
@@ -41,14 +45,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F6F6F6',
-    padding: 16,
+    // paddingH: 16,
   },
 
   card: {
+    width:358,
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
     height: 56 * scale,
-    justifyContent: 'center',
+    alignSelf:'center',
+    justifyContent:'center',
 
     // shadow
     shadowColor: '#000',

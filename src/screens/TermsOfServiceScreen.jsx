@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
+  StatusBar,
 } from "react-native";
 import {
   INTRODUCTION_TEXT,
@@ -18,12 +19,15 @@ import {
   LIMITATION_TEXT,
 } from "../content/termsOfServiceContent";
 import { Fonts } from "../constants/fonts";
+import Header from "../components/Header";
 
 const screenWidth = Dimensions.get("window").width;
 
 export default function TermsOfServiceScreen() {
   return (
     <ScrollView style={styles.container}>
+    <StatusBar backgroundColor="#FFFFFF" />
+    <Header title="Terms of service" />
 
       {/* INTRODUCTION */}
       <View style={styles.sectionHeader}>
@@ -108,7 +112,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E1F1FF",
     paddingVertical: 8,
     paddingHorizontal: 20,
-    marginTop: 16,
+    marginTop: 10,
     marginBottom: 10,
   },
 

@@ -11,6 +11,7 @@ import Gradient from '../constants/Gradient';
 import AuthButton from '../components/auth/AuthButton';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import { Fonts } from '../constants/fonts';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -122,8 +123,9 @@ const styles = StyleSheet.create({
   },
 
   title: {
+    fontFamily:Fonts.Medium,
     fontSize: 40,
-    fontWeight: '700',
+    fontWeight: '500',
     color: 'rgba(42, 42, 42, 1)',
     lineHeight: 56,
   },
@@ -149,16 +151,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 4,
   },
-  text: { color: '#fff', fontSize: 24, fontWeight: '500' },
+  text: { color: '#fff',fontFamily:Fonts.Medium, fontSize: 18, fontWeight: '500' },
   footer: {
     marginTop: 15,
     fontSize: 16,
     color: '#2A2A2A',
     textAlign: 'center',
   },
-  link: { color: '#1a73e8', fontWeight: '600',position:'absolute',
+  link: { color: '#1a73e8', fontWeight: '500',position:'absolute',
     textDecorationStyle:'solid',
     bottom:70,
-    textDecorationLine:'underline' 
+    textDecorationLine:'underline',
+    fontSize:18,
+    fontFamily:Fonts.Medium
   },
 });

@@ -6,11 +6,14 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import BoostOfferCard from '../../components/BoostOfferCard';
 import MoreSection from '../../components/MoreSection';
 import { useNavigation } from '@react-navigation/native';
+import { Fonts } from '../../constants/fonts';
+import Header from '../../components/Header';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -19,6 +22,8 @@ export default function ProfileTopScreen() {
   const navigation = useNavigation()
   return (
     <View style={styles.wrapper}>
+    <StatusBar  barStyle="dark-content" backgroundColor="#F6F6F6" />
+    <Header title="Profile" />
       <View style={{ alignItems: 'center' }}>
         <View style={styles.topCard}>
           <Image
@@ -48,6 +53,7 @@ export default function ProfileTopScreen() {
 
           <View style={styles.divider} />
 
+          <View style={styles.bottomSection}>
           <View style={styles.premiumRow}>
             <View style={styles.premiumLeft}>
               <LinearGradient
@@ -71,6 +77,7 @@ export default function ProfileTopScreen() {
               />
             </TouchableOpacity>
           </View>
+          </View>
         </View>
       </View>
 
@@ -82,11 +89,11 @@ export default function ProfileTopScreen() {
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingTop: 20,
+    // paddingTop: 20,
   },
 
   topCard: {
-    width: width - 32,
+    width: width - 35,
     height: 170 * scale,
     backgroundColor: '#202126',
     borderRadius: 16,
@@ -118,40 +125,51 @@ const styles = StyleSheet.create({
   profileText: {
     flex: 1,
     marginLeft: 12,
+    lineHeight:20
   },
 
   name: {
     fontSize: 18 * scale,
-    fontWeight: '600',
+    fontWeight: '500',
     color: '#FFFFFF',
+    fontFamily:Fonts.Medium
   },
 
   email: {
     fontSize: 14 * scale,
-    color: '#A1A1A1',
+    color: '#FFFFFF',
     marginTop: 2,
+    fontFamily:Fonts.Regular,
+    fontWeight:400
   },
   editprofile: {
     fontSize: 14,
     color: '#ffffff',
     paddingVertical: 3,
+    fontFamily:Fonts.Medium,
+    fontWeight:500
   },
   divider: {
     height: 1,
     backgroundColor: '#FFFFFF',
     marginVertical: 14,
+    marginHorizontal: -12,
   },
 
-  premiumRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
+  bottomSection: {
+  flex: 1,                     
+  justifyContent: 'center',    
+},
 
+premiumRow: {
+  flexDirection: 'row',
+  alignItems: 'center',       
+  justifyContent: 'space-between',
+},
   premiumLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
+    // flex: 1,
   },
 
   premiumIcon: {
@@ -164,6 +182,8 @@ const styles = StyleSheet.create({
     fontSize: 14 * scale,
     color: '#FFFFFF',
     marginLeft: 8,
+    fontWeight:500,
+    fontFamily:Fonts.Medium
   },
 
   renewBadge: {

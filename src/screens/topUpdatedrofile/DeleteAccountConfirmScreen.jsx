@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
+import Header from '../../components/Header';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -16,6 +17,7 @@ export default function DeleteAccountConfirmScreen() {
 
   return (
     <View style={styles.container}>
+    <Header title="Delete Account" />
       <Text style={styles.title}>
         You have requested the deletion of your account
       </Text>

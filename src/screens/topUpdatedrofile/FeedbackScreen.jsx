@@ -6,7 +6,10 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
+  StatusBar,
 } from 'react-native';
+import Header from '../../components/Header';
+import { Fonts } from '../../constants/fonts';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -14,20 +17,25 @@ const scale = width / 390;
 export default function FeedbackScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Send feedback</Text>
-      <Text style={styles.subtitle}>
-        Tell us what you love about the app, or what we could be doing better.
-      </Text>
+    <StatusBar backgroundColor="#F6F6F6" />
+      <Header title="Feedback" />
+      <View style={styles.heading}>
+        <Text style={styles.title}>Send feedback</Text>
+        <Text style={styles.subtitle}>
+          Tell us what you love about the app, or what we could be doing better.
+        </Text>
+      
 
       <View style={styles.inputCard}>
         <TextInput
           placeholder="Enter your feedback"
           multiline
           style={styles.input}
-           placeholderTextColor="#9898A0"
+          placeholderTextColor="#9898A0"
         />
       </View>
 
+      </View>
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Submit feedback</Text>
       </TouchableOpacity>
@@ -41,26 +49,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
-    padding: 16,
+  },
+  heading:{
+    paddingHorizontal:20,
+    paddingTop:20
   },
 
   title: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: '500',
+    fontFamily:Fonts.Medium,
+    color:'#000000',
+    lineHeight:20,
+    marginBottom:8
   },
 
   subtitle: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 6,
+    fontSize: 13,
+    color: '#000000',
     marginBottom: 16,
+    fontFamily:Fonts.Regular,
+    fontWeight:'400',
+    lineHeight:20
   },
 
   inputCard: {
     height: 120 * scale,
     backgroundColor: '#FFF',
     borderRadius: 16,
-    padding: 12,
+    paddingLeft:10,
     shadowColor: '#000',
     shadowOpacity: 0.08,
     shadowRadius: 12,
@@ -70,7 +87,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     textAlignVertical: 'top',
-    color:'#000',
+    color: '#000',
   },
 
   button: {
@@ -86,7 +103,9 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    color: '#FFF',
-    fontWeight: '600',
+    color: '#FFFFFF',
+    fontWeight: 500,
+    fontSize:20,
+    fontFamily:Fonts.Medium
   },
 });

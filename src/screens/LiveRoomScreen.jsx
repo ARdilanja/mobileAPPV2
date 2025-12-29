@@ -338,7 +338,7 @@ export default function LiveRoomScreen({ route, navigation }) {
         const fetchQuestions = async () => {
             try {
                 const res = await fetch(
-                    `${API_BASE}/api/interview/questions/${interviewId}`
+                    `${API_BASE}/interview/questions/${interviewId}`
                 );
                 const data = await res.json();
 
@@ -443,7 +443,7 @@ export default function LiveRoomScreen({ route, navigation }) {
             console.log("📤 [MOBILE] Calling AI Follow-up API");
 
             const aiRes = await fetch(
-                `${API_BASE}/api/interview/generate-followup`,
+                `${API_BASE}/interview/generate-followup`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

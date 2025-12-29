@@ -8,6 +8,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
+import Header from '../../components/Header';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -39,6 +40,7 @@ export default function DeleteAccountReasonScreen() {
 
   return (
     <View style={styles.container}>
+    <Header title="Delete account" />
       <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
         <Text style={styles.title}>Delete account</Text>
         <Text style={styles.subtitle}>

@@ -9,6 +9,7 @@ import {
   Dimensions,
   Image,
   Modal,
+  StatusBar,
 } from 'react-native';
 
 const { width } = Dimensions.get('window');
@@ -33,9 +34,10 @@ export default function MoreSection() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>More</Text>
-
       <View style={styles.card}>
+        <Text style={styles.title}>More</Text>
+
+
         <MoreItem
           text="Send feedback"
           icon={require('../assets/images/feedback-alt.png')}
@@ -54,7 +56,7 @@ export default function MoreSection() {
         <MoreItem
           text="Invoice"
           icon={require('../assets/images/terms-check.png')}
-          // onPress={() => console.log('Invoice :>> ', Invoice)}
+        // onPress={() => console.log('Invoice :>> ', Invoice)}
         />
 
         <Divider />
@@ -131,21 +133,23 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 16 * scale,
-    fontWeight: '600',
-    marginBottom: 12,
+    fontSize: 18 * scale,
+    fontWeight: '500',
     color: '#000',
-    paddingLeft: 8,
+    paddingHorizontal: 20,
     borderLeftWidth: 3,
     borderLeftColor: '#2F80ED',
   },
 
   card: {
-    backgroundColor: 'transparent',
-    borderRadius: 0,
+    backgroundColor: '#FFF',
+    borderRadius: 16,
     paddingVertical: 0,
     shadowColor: 'transparent',
     elevation: 0,
+    paddingTop: 20,
+    width: width - 35,
+
   },
 
   row: {
@@ -153,8 +157,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 8,
-    backgroundColor: '#FFF',
+    paddingHorizontal: 20,
+
   },
   leftRow: {
     flexDirection: 'row',
@@ -186,6 +190,8 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#EAEAEA',
     marginHorizontal: 0,
+    width: "90%",
+    alignSelf: 'center'
   },
   modalOverlay: {
     flex: 1,

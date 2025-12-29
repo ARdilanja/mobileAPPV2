@@ -6,6 +6,7 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
+import { Fonts } from '../constants/fonts';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -37,7 +38,7 @@ export default function BoostOfferCard() {
 
 const styles = StyleSheet.create({
   container: {
-    width: width - 32,
+    width: width - 35,
     height: 80 * scale,
     borderRadius: 16,
     marginHorizontal: 16,
@@ -57,16 +58,16 @@ const styles = StyleSheet.create({
   },
 
   discountText: {
-    fontFamily: 'IBM Plex Sans',
+    fontFamily: Fonts.Bold,
     fontWeight: '700',
     fontSize: 28 * scale,
     lineHeight: 40 * scale,
     color: '#5B2EFF',
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
   },
 
   title: {
-    fontFamily: 'IBM Plex Sans',
+    fontFamily: Fonts.Medium,
     fontWeight: '500',
     fontSize: 18 * scale,
     lineHeight: 28 * scale,
@@ -75,11 +76,11 @@ const styles = StyleSheet.create({
   },
 
   subtitle: {
-    fontFamily: 'IBM Plex Sans',
+    fontFamily: Fonts.Regular,
     fontWeight: '400',
     fontSize: 12 * scale,
     lineHeight: 14 * scale,
-    color: '#555',
+    color: '#1E201D',
     marginTop: 4,
   },
 });

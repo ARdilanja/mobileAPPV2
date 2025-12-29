@@ -814,7 +814,7 @@ const styles = StyleSheet.create({
 
   bottomOptions: {
     marginTop: "auto",
-    paddingBottom: 100,
+    paddingBottom: 80,
   },
 
   userBubble: {
@@ -904,7 +904,7 @@ const styles = StyleSheet.create({
   pillText: { fontSize: 13, color: "#333" },
   pillTextSelected: { color: "#fff" },
 
-  bottomArea: { padding: 16,bottom:100 },
+  bottomArea: { padding: 16,bottom:80 },
 
   inputContainer: {
     flexDirection: "row",
@@ -924,7 +924,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
 
-  buttonWrap: { padding: 16,bottom:100 },
+  buttonWrap: { padding: 16,bottom:80 },
 
   nextButton: {
     height: 56,
