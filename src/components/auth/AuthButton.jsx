@@ -81,6 +81,7 @@
 
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, Dimensions, View } from 'react-native';
+import { Fonts } from '../../constants/fonts';
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'center',
-    paddingBottom: 20, // Distance from the very bottom
+    // paddingBottom: 20, 
   },
   button: {
     width: screenWidth - 32,
@@ -119,9 +120,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 4,
   },
-  text: { color: '#fff', fontSize: 24, fontWeight: '500' },
-  footer: { marginTop: 15, fontSize: 16, color: '#2A2A2A', textAlign: 'center' },
-  link: { color: '#1a73e8', fontWeight: '600' },
+  text: { color: '#fff', fontSize: 18, lineHeight:24, fontFamily:Fonts.Medium},
+  footer: { marginTop: 32, fontSize: 18,lineHeight:28, fontFamily:Fonts.Regular, color: '#2A2A2A', textAlign: 'center' },
+  link: { color: '#0178FF', fontFamily:Fonts.Regular},
 });
 
 export default AuthButton;

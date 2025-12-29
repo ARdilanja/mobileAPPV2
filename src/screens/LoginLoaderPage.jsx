@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, StatusBar } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { API_BASE } from "../config/api";
 import { isTokenExpired } from "../utils/authUtils";
 import { useNavigation } from "@react-navigation/native";
+import { Fonts } from "../constants/fonts";
 
 export default function LoginLoaderPage() {
     const navigation = useNavigation()
@@ -93,9 +94,11 @@ const bootstrapAuth = async () => {
 
   return (
     <LinearGradient
-      colors={["#EAF4FF", "#B0D1FF"]}
+      colors={['#9acbff','#c3ddf8ff', '#fff', '#ffffff']}
       style={styles.container}
     >
+            <StatusBar  barStyle="dark-content" backgroundColor="#9acbff"  />
+
       <Image
         source={require("../assets/images/Lea.png")}
         style={styles.robot}
@@ -121,13 +124,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 34,
-    fontWeight: "700",
+    fontFamily:Fonts.Bold,
     color: "#0A3D91",
     marginTop: 8,
   },
   subtitle: {
     fontSize: 16,
-    fontWeight: "500",
+    fontFamily:Fonts.Medium,
     color: "#0A3D91",
     marginTop: 6,
   },
@@ -135,7 +138,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 40,
     fontSize: 18,
-    fontWeight: "700",
+    fontFamily:Fonts.Bold,
     color: "#1B6EDC",
   },
 });

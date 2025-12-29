@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import {
   View, TextInput, StyleSheet, Dimensions,
-  KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard
+  KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard,
+  StatusBar
 } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
@@ -10,17 +11,18 @@ import Gradient from '../../constants/Gradient';
 import MessagePopup from '../../components/MessagePopup';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { Fonts } from '../../constants/fonts';
 const screenWidth = Dimensions.get("window").width;
 
 const EmailInput = () => {
-    const navigation = useNavigation()
+  const navigation = useNavigation()
 
   const [email, setEmail] = useState('');
 
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
   const [popupType, setPopupType] = useState('info');
-  
+
   const showPopup = (message, type = 'info') => {
     setPopupMessage(message);
     setPopupType(type);
@@ -58,6 +60,8 @@ const EmailInput = () => {
   return (
 
     <Gradient>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent"
+        translucent={true} />
       <MessagePopup
         visible={popupVisible}
         message={popupMessage}
@@ -116,13 +120,14 @@ const EmailInput = () => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1, // Ensures content fills the screen height
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+
   },
   topSection: {
-    // alignItems: 'center',
     flex: 1, // Takes up remaining space pushing bottomSection down
   },
   bottomSection: {
-    marginBottom: 20, // Space from very bottom of device
+    marginBottom: 60, // Space from very bottom of device
     alignItems: 'center',
   },
   input: {
@@ -134,6 +139,8 @@ const styles = StyleSheet.create({
     color: '#242424',
     paddingLeft: 24,
     fontSize: 18,
+    lineHeight: 28,
+    fontFamily: Fonts.Regular,
     elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },

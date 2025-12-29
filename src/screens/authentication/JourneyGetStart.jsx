@@ -6,11 +6,13 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  StatusBar,
 } from 'react-native';
 import Gradient from '../../constants/Gradient';
 import AuthButton from '../../components/auth/AuthButton';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import { Fonts } from '../../constants/fonts';
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -18,6 +20,9 @@ const JourneyGetStartScreen = () => {
   const navigation = useNavigation()
   return (
     <Gradient>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent"
+        translucent={true} />
+
       <View style={styles.container}>
 
         {/* Illustration */}
@@ -47,12 +52,9 @@ const JourneyGetStartScreen = () => {
         <View style={styles.bottomSection}>
           {/* Text Content */}
           <View style={styles.textContainer}>
-            <Text style={styles.title}>
-              Ready to shape <Text style={styles.highlight}>
-                your own journey?
-              </Text>
+            <Text style={styles.title}>Ready to shape <Text style={styles.highlight}>your own journey?
             </Text>
-
+            </Text>
 
           </View>
           {/* Button */}
@@ -62,7 +64,7 @@ const JourneyGetStartScreen = () => {
               index: 0,
               routes: [{ name: 'BottomDash' }],
             })}
-            />
+          />
         </View>
       </View>
 
@@ -75,14 +77,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // justifyContent: 'space-between',
-    height: screenHeight
+    height: screenHeight,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   topSection: {
     width: '100%',
   },
   imageWrapper: {
     width: screenWidth,
-    height: screenHeight * 0.55, // Reduce height so it doesn't push text down too much
+    height: screenHeight * 0.50, // Reduce height so it doesn't push text down too much
     position: 'relative',
     backgroundColor: 'transparent', // Ensure it doesn't block background
   },
@@ -101,28 +104,29 @@ const styles = StyleSheet.create({
 
   textContainer: {
     width: '100%',
-    paddingHorizontal: 24,
+    paddingLeft: 16,
+    paddingRight: 16,
     marginBottom: 'auto',
     marginTop: 0, // Space between image and text
   },
 
   title: {
-    fontSize: 40,
-    fontWeight: '700',
+    fontSize: 39,
+    fontFamily: Fonts.Medium,
     color: 'rgba(42, 42, 42, 1)',
     lineHeight: 56,
   },
 
   highlight: {
-    color: 'rgba(1, 120, 255, 1)',
+    color: '#0178FF',
   },
   bottomSection: {
     width: '100%',
-    height: screenHeight - screenHeight * 0.55,
+    height: screenHeight - screenHeight * 0.50,
     alignItems: 'center',
     backgroundColor: '#fff',
     justifyContent: 'space-between',
-    paddingBottom: 30,
+    paddingBottom: 120,
   },
 });
 

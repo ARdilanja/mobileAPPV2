@@ -11,7 +11,6 @@ import Gradient from '../constants/Gradient';
 import AuthButton from '../components/auth/AuthButton';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import { Fonts } from '../constants/fonts';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -53,7 +52,7 @@ const StartDayOne = () => {
               <Text style={styles.highlight}>starts today</Text>
             </Text>
           </View>
-         
+
           <TouchableOpacity
             style={styles.button}
             onPress={() =>
@@ -83,7 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: 'space-between',
     height: screenHeight,
-    position:'relative'
+    position: 'relative'
   },
   topSection: {
     width: '100%',
@@ -98,7 +97,7 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     width: screenWidth,
-    height: screenHeight * 0.55, // Reduce height so it doesn't push text down too much
+    height: screenHeight * 0.50, // Reduce height so it doesn't push text down too much
     position: 'relative',
     backgroundColor: 'transparent', // Ensure it doesn't block background
   },
@@ -123,9 +122,8 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily:Fonts.Medium,
     fontSize: 40,
-    fontWeight: '500',
+    fontWeight: '700',
     color: 'rgba(42, 42, 42, 1)',
     lineHeight: 56,
   },
@@ -135,7 +133,7 @@ const styles = StyleSheet.create({
   },
   bottomSection: {
     width: '100%',
-    height: screenHeight - screenHeight * 0.55,
+    height: screenHeight - screenHeight * 0.50,
     alignItems: 'center',
     backgroundColor: '#fff',
     justifyContent: 'space-between',
@@ -143,26 +141,25 @@ const styles = StyleSheet.create({
   },
   button: {
     width: screenWidth - 32,
-    position:'absolute',
-    bottom:110,
+    position: 'absolute',
+    bottom: 110,
     backgroundColor: 'rgba(1, 120, 255, 1)',
     borderRadius: 48,
     paddingVertical: 16,
     alignItems: 'center',
     elevation: 4,
   },
-  text: { color: '#fff',fontFamily:Fonts.Medium, fontSize: 18, fontWeight: '500' },
+  text: { color: '#fff', fontSize: 24, fontWeight: '500' },
   footer: {
     marginTop: 15,
     fontSize: 16,
     color: '#2A2A2A',
     textAlign: 'center',
   },
-  link: { color: '#1a73e8', fontWeight: '500',position:'absolute',
-    textDecorationStyle:'solid',
-    bottom:70,
-    textDecorationLine:'underline',
-    fontSize:18,
-    fontFamily:Fonts.Medium
+  link: {
+    color: '#1a73e8', fontWeight: '600', position: 'absolute',
+    textDecorationStyle: 'solid',
+    bottom: 70,
+    textDecorationLine: 'underline'
   },
 });

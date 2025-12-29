@@ -1,20 +1,40 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Modal, Pressable } from 'react-native';
+
+import React, { useState, useRef } from 'react'; // Added useRef
+import { View, Text, StyleSheet, TouchableOpacity, Image, Modal, Pressable, Dimensions } from 'react-native';
+import { Fonts } from '../constants/fonts';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 const NotificationItem = ({ item, isLast }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [bottomMenuVisible, setBottomMenuVisible] = useState(false);
   
-   const openBottomMenu = () => {
-    setMenuVisible(false);         
-    setBottomMenuVisible(true);  
-  };
-  return (
-    <View style={[
-          styles.container,
-          isLast && { borderBottomWidth: 0 }, 
-        ]}>
+  // 1. Create a ref and state for positioning
+  const dotsRef = useRef(null);
+  const [popupTop, setPopupTop] = useState(0);
 
+  const openMenu = () => {
+    // 2. Measure the position of the dots on the screen
+    dotsRef.current?.measure((x, y, width, height, pageX, pageY) => {
+      // pageY is the vertical position relative to the whole screen
+      setPopupTop(pageY + height - 35); 
+      setMenuVisible(true);
+    });
+  };
+
+  const openBottomMenu = () => {
+    setMenuVisible(false);
+    setBottomMenuVisible(true);
+  };
+
+  return (
+    <View
+      style={[
+        styles.container,
+        isLast && { borderBottomWidth: 0 },
+        menuVisible && { zIndex: 10 },
+      ]}
+    >
       {/* Icon */}
       <View style={styles.iconWrapper}>
         <Image
@@ -30,26 +50,43 @@ const NotificationItem = ({ item, isLast }) => {
       </View>
 
       {/* Three dots */}
-      <TouchableOpacity style={{width:16}} onPress={() => setMenuVisible(prev => !prev)}>
+      <TouchableOpacity
+        ref={dotsRef} // 3. Attach Ref here
+        style={styles.dotsTouchArea}
+        onPress={openMenu}
+      >
         <Image
           style={styles.dots}
           source={require('../assets/icons/three-dots.png')}
         />
       </TouchableOpacity>
 
-      {/* Popup */}
-      {menuVisible && (
-        <View style={styles.popup}>
-          <TouchableOpacity style={styles.popupItem} onPress={openBottomMenu}>
-            <Image
-              style={{ width: 16, height: 16, marginRight: 8 }}
-              source={require('../assets/icons/trash.png')}
-            />
-            <Text style={styles.popupText}>Delete this notification</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-       <Modal
+      {/* Small Popup Modal */}
+      <Modal
+        visible={menuVisible}
+        transparent={true}
+        animationType="none"
+        onRequestClose={() => setMenuVisible(false)}
+      >
+        <Pressable
+          style={styles.modalOverlay}
+          onPress={() => setMenuVisible(false)}
+        >
+          {/* 4. Use the dynamic 'top' position */}
+          <View style={[styles.popup, { top: popupTop }]}>
+            <TouchableOpacity style={styles.popupItem} onPress={openBottomMenu}>
+              <Image
+                style={{ width: 16, height: 16, marginRight: 8 }}
+                source={require('../assets/icons/trash.png')}
+              />
+              <Text style={styles.popupText}>Delete this notification</Text>
+            </TouchableOpacity>
+          </View>
+        </Pressable>
+      </Modal>
+
+      {/* Bottom Delete Confirmation */}
+      <Modal
         visible={bottomMenuVisible}
         transparent
         animationType="fade"
@@ -58,16 +95,14 @@ const NotificationItem = ({ item, isLast }) => {
         <Pressable
           style={styles.overlay}
           onPress={() => setBottomMenuVisible(false)}
-        >   
+        >
           <View style={styles.bottomPopup}>
             <TouchableOpacity style={styles.popupItem} onPress={() => setBottomMenuVisible(false)}>
               <Image
-                style={{ width: 16, height: 16, marginRight: 8, marginLeft:16 }}
+                style={{ width: 16, height: 16, marginRight: 8, marginLeft: 16 }}
                 source={require('../assets/icons/trash.png')}
               />
-              <Text style={styles.popupText}>
-                Delete this notification
-              </Text>
+              <Text style={styles.popupText}>Delete this notification</Text>
             </TouchableOpacity>
           </View>
         </Pressable>
@@ -77,6 +112,7 @@ const NotificationItem = ({ item, isLast }) => {
 };
 
 export default NotificationItem;
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -84,7 +120,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#D9D9D9',
-    position: 'relative',
+    backgroundColor: '#FFF',
   },
   iconWrapper: {
     width: 32,
@@ -104,32 +140,45 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     lineHeight: 20,
-    fontWeight:400,
+    fontFamily: Fonts.Regular,
     color: '#000',
   },
   time: {
     marginTop: 4,
     lineHeight: 16,
-    fontWeight:400,
+    fontFamily: Fonts.Regular,
     fontSize: 12,
     color: '#2A2A2A',
   },
+  dotsTouchArea: {
+    width: 30,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
   dots: {
-    width: 3.3,
+    width: 3.33,
     height: 16,
     marginTop: 12,
   },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
   popup: {
     position: 'absolute',
-    right: 8,
-    top: 36,
+    right: 25, // Fixed distance from right edge of screen
     backgroundColor: '#FFF',
     borderRadius: 8,
     padding: 12,
-    elevation: 6,
+    elevation: 10,
     shadowColor: '#000',
     shadowOpacity: 0.15,
-    shadowRadius: 6,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    borderWidth: 1,
+    borderColor: '#F0F0F0',
+    minWidth: 180, // Ensure it looks like a menu
   },
   popupItem: {
     flexDirection: 'row',
@@ -137,24 +186,21 @@ const styles = StyleSheet.create({
   },
   popupText: {
     fontSize: 14,
-    lineHeight:20,
-    fontWeight:400,
+    lineHeight: 20,
+    fontFamily: Fonts.Regular,
     color: '#000',
-    
   },
   overlay: {
-  flex: 1,
-  justifyContent: 'flex-end',
-  backgroundColor: 'rgba(0,0,0,0.2)',
-},
-bottomPopup: {
-  backgroundColor: '#FFF',
-  marginHorizontal:16,
-  height:60,
-//   padding: 16,
-  marginBottom:9,
-  justifyContent:'center',
-  
-  borderRadius: 12,
-},
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  bottomPopup: {
+    backgroundColor: '#FFF',
+    marginHorizontal: 16,
+    height: 60,
+    marginBottom: 20,
+    justifyContent: 'center',
+    borderRadius: 12,
+  },
 });

@@ -1,12 +1,14 @@
 import React from 'react';
 import {
   TextInput, StyleSheet, View, Dimensions,
-  KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard
+  KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard,
+  StatusBar
 } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
 import Gradient from '../../constants/Gradient';
 import { useNavigation } from '@react-navigation/native';
+import { Fonts } from '../../constants/fonts';
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -15,6 +17,8 @@ const CreatePassword = () => {
 
   return (
     <Gradient>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent"
+        translucent={true} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
@@ -40,17 +44,18 @@ const CreatePassword = () => {
                   placeholderT="#242424"
                   placeholder="New password"
                   style={styles.input}
-                // keyboardType="New password"
                 />
                 <TextInput
                   placeholderTextColor="#242424"
                   placeholderT="#242424"
                   placeholder="Confirm password"
                   style={styles.input}
-                // keyboardType="Confirm password"
-                /></View>
+                />
+              </View>
+
+              {/* Bottom button SECTION */}
               <View style={styles.bottomSection}>
-                <AuthButton text="Sign in" onPress={() => navigation.navigate('ChatOnboardingScreen')}/>
+                <AuthButton text="Sign in" onPress={() => navigation.navigate('ChatOnboardingScreen')} />
               </View>
             </View>
           </TouchableWithoutFeedback>
@@ -61,20 +66,18 @@ const CreatePassword = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 48,
-  },
+
   scrollContainer: {
     flexGrow: 1,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+
   },
   topSection: {
     // alignItems: 'center',
     flex: 1,
   },
   bottomSection: {
-    marginBottom: 20,
+    marginBottom: 120,
     alignItems: 'center',
   },
   input: {
@@ -95,7 +98,9 @@ const styles = StyleSheet.create({
 
     fontSize: 18,
     lineHeight: 28,
-    fontWeight: '400',
+    fontSize: 18,
+    lineHeight: 28,
+    fontFamily: Fonts.Regular,
     padding: 14,
     paddingVertical: 16,
     paddingLeft: 24,

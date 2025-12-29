@@ -1,95 +1,15 @@
-// import React from 'react';
-// import { TextInput, StyleSheet, View, Image, Dimensions } from 'react-native';
-// import AuthHeader from '../../components/auth/AuthHeader';
-// import AuthButton from '../../components/auth/AuthButton';
-// import Gradient from '../../constants/Gradient';
-
-// const screenWidth = Dimensions.get("window").width;
-
-// const MobileInput = ({ navigation }) => {
-//   return (
-//     <Gradient>
-//       <AuthHeader
-//         title="Sign in"
-//         subtitle="Sign in and find your dream job"
-//         showBack
-//         showLogo
-//       />
-//       <View style={styles.content}>
-//         <Image
-//           source={require('../../assets/images/india-flag.png')} // ✅ use require for local images
-//           style={styles.flag}
-//           resizeMode="contain"
-//         />
-//         <TextInput
-//           placeholder="+91"
-//           keyboardType="phone-pad"
-//           style={styles.input}
-//           placeholderTextColor="#242424"
-//         />
-//       </View>
-//       <AuthButton
-//         text="Next"
-//         signupText={true}
-//         onPress={() => navigation.navigate('OtpVerification')}
-//         onFooterPress={() => navigation.navigate('SignUp')}
-
-//       />
-//       {/* <Text style={styles.footer}>
-//         Don’t have an account? <Text style={styles.link}>Sign up</Text>
-//       </Text> */}
-//     </Gradient>
-//   );
-// }; 
-
-// const styles = StyleSheet.create({
-
-//   content: {
-//     flexDirection: 'row',      // ✅ side by side
-//     alignItems: 'center',      // vertically center
-//     borderWidth: 1,
-//     borderColor: '#D1D5DB',
-//     width: screenWidth - 32,
-//     marginHorizontal: 'auto',
-//     borderRadius: 48,
-//     paddingHorizontal: 16,
-//     paddingVertical: 12,
-//     backgroundColor: '#fff',
-//     shadowColor: '#000',
-//     shadowOffset: { width: 0, height: 4 },
-//     shadowOpacity: 0.1,
-//     shadowRadius: 8,
-//     elevation: 4,
-//   },
-//   flag: {
-//     width: 24,
-//     height: 18,
-//     marginRight: 12,           // space between image and input
-//   },
-//   input: {
-//     flex: 1,                    // ✅ take remaining width
-//     lineHeight: 28,
-//     fontSize: 18,
-//     fontWeight: 400,
-//     color: '#242424',
-//   },
-// });
-
-// export default MobileInput;
-
-
-
-
-
 import React, { useState } from 'react';
 import {
   TextInput, StyleSheet, View, Image, Dimensions,
-  KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard
+  KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard,
+  Text,
+  StatusBar
 } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
-import { useNavigation } from '@react-navigation/native';
 import Gradient from '../../constants/Gradient';
+import { useNavigation } from '@react-navigation/native';
+import { Fonts } from '../../constants/fonts';
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -99,6 +19,8 @@ const MobileInput = () => {
 
   return (
     <Gradient>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent"
+        translucent={true} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
@@ -125,15 +47,25 @@ const MobileInput = () => {
                     style={styles.flag}
                     resizeMode="contain"
                   />
+
+                  {/* Fixed Country Code */}
+                  <View style={styles.countryCodeBox}>
+                    <Text style={styles.countryCodeText}>+91</Text>
+                  </View>
+
+                  {/* Mobile Number Input */}
                   <TextInput
-                    placeholder="+91"
-                    keyboardType="phone-pad"
                     style={styles.mob_input}
+                    keyboardType="phone-pad"
+                    maxLength={10}
                     value={phone}
-                    onChangeText={(text) => setPhone(text.replace(/[^0-9]/g, ''))}
-                    placeholderTextColor="#242424"
+                    onChangeText={(text) =>
+                      setPhone(text.replace(/[^0-9]/g, ''))
+                    }
+                    placeholderTextColor="#9CA3AF"
                   />
                 </View>
+
               </View>
 
               {/* BOTTOM SECTION */}
@@ -142,9 +74,8 @@ const MobileInput = () => {
                   text="Next"
                   signupText={true}
                   onPress={() => navigation.navigate('OtpVerification', {
-                    email,
                     phone,
-                    serverOtp,
+                    serverOtp: '2222',
                     otpType: 'mobile', // or 'mobile'
                   })}
                   onFooterPress={() => navigation.navigate('SignUp')}
@@ -162,19 +93,22 @@ const MobileInput = () => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+
   },
   topSection: {
-    alignItems: 'center',
+    // alignItems: 'center',
     flex: 1,
   },
   bottomSection: {
-    marginBottom: 20,
-    alignItems: 'center',
+    marginBottom: 60,
+    // alignItems: 'center',
   },
   content: {
     flexDirection: 'row',
     alignItems: 'center',
     width: screenWidth - 32,
+    marginHorizontal: 'auto',
     borderRadius: 48,
     paddingHorizontal: 16,
     height: 60,
@@ -185,6 +119,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
   },
+  countryCodeBox: {
+    marginRight: 8,
+  },
+  countryCodeText: {
+    fontSize: 18,
+    lineHeight: 28,
+    fontFamily: Fonts.Regular,
+    color: '#242424',
+  },
+
   flag: {
     width: 24,
     height: 18,
@@ -193,6 +137,8 @@ const styles = StyleSheet.create({
   mob_input: {
     flex: 1,
     fontSize: 18,
+    lineHeight: 28,
+    fontFamily: Fonts.Regular,
     color: '#242424',
   },
 });
