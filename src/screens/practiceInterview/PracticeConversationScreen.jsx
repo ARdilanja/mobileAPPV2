@@ -426,12 +426,12 @@ const CustomCheckbox = ({ selected, isAnswerBubble = false }) => (
     <View style={[
         styles.checkboxBase,
         {
-            borderColor: selected ? (isAnswerBubble ? "#FFF" : "#0178FF") : "#D1D5DB",
-            backgroundColor: selected ? (isAnswerBubble ? "#FFF" : "#0178FF") : "transparent"
+            borderColor: selected ? (isAnswerBubble ? "#FFFFFF" : "#0178FF") : "#D1D5DB",
+            backgroundColor: selected ? (isAnswerBubble ? "#FFFFFF" : "#0178FF") : "transparent"
         }
     ]}>
         {selected && (
-            <Text style={[styles.tickText, { color: isAnswerBubble ? "#0178FF" : "#FFF" }]}>✓</Text>
+            <Text style={[styles.tickText, { color: isAnswerBubble ? "#0178FF" : "#FFFFFF" }]}>✓</Text>
         )}
     </View>
 );
