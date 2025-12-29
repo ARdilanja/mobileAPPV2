@@ -26,7 +26,13 @@ export default function PracticeStartScreen({ navigation }) {
     /* Screen UI */
     return (
         <View style={styles.container}>
-        <StatusBar hidden />
+            {/* <StatusBar hidden /> */}
+        
+            <StatusBar
+                backgroundColor="#0178FF"
+                barStyle="light-content"
+                translucent={false}
+            />
 
             {/* Main content */}
             <View style={styles.contentWrapper}>
@@ -114,7 +120,7 @@ const styles = StyleSheet.create({
     /* SAME COLUMN FOR TITLE + CHOICES */
     contentWrapper: {
         width: "90%",
-        maxWidth: 360,   
+        maxWidth: 360,
         alignSelf: "center",
     },
 

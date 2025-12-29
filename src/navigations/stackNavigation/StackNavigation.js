@@ -223,7 +223,7 @@ const StackNavigation = () => {
         component={ChatOnboardingScreen}
         options={{ headerShown: true, headerTitle: 'ChatOnboardingScreen', headerTitleAlign: 'center' }}
       />
-      <Stack.Screen name="startDayOne" component={StartDayOne} options={{headerShown:false}}/>
+      <Stack.Screen name="startDayOne" component={StartDayOne} options={{ headerShown: false }} />
 
       <Stack.Screen
         name="EmployerInterviewScreen"
@@ -263,17 +263,17 @@ const StackNavigation = () => {
       <Stack.Screen
         name="PracticeStartScreen"
         component={PracticeStartScreen}
-               options={{ headerShown: true, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+        options={{ headerShown: true, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
 
       />
       <Stack.Screen
         name="PracticeConversationScreen"
         component={PracticeConversationScreen}
         options={{
-          headerShown: true, headerStyle: {
+          headerShown: true, headerTitle: 'Practice', headerTitleAlign: 'center', headerStyle: {
             backgroundColor: "#0178FF",
           },
-          headerTintColor:'#F5F5F5'
+          headerTintColor: '#F5F5F5'
         }}
       />
       <Stack.Screen
@@ -283,7 +283,7 @@ const StackNavigation = () => {
           headerShown: true, headerStyle: {
             backgroundColor: "#0178FF",
           },
-          headerTintColor:'#F5F5F5',
+          headerTintColor: '#F5F5F5',
         }}
       />
       <Stack.Screen
@@ -295,10 +295,10 @@ const StackNavigation = () => {
           headerTitleAlign: 'center',
         }}
       />
-        <Stack.Screen
+      <Stack.Screen
         name="ProfileTopScreen"
         component={ProfileTopScreen}
-               options={{ headerShown: false, headerTitle: 'Employer Interviews', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'Employer Interviews', headerTitleAlign: 'center' }}
 
       />
       <Stack.Screen
@@ -324,17 +324,17 @@ const StackNavigation = () => {
       <Stack.Screen
         name="PricingScreen"
         component={PricingScreen}
-        options={{ headerShown: true, headerTitle: 'PricingScreen', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'PricingScreen', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="PaymentStatusScreen"
         component={PaymentStatusScreen}
-        options={{ headerShown: true, headerTitle: 'PaymentStatusScreen', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'PaymentStatusScreen', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="UpdateProfileScreen"
         component={UpdateProfileScreen}
-        options={{ headerShown: true, headerTitle: 'Your Profile', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Your Profile', headerTitleAlign: 'center' }}
       />
 
 
