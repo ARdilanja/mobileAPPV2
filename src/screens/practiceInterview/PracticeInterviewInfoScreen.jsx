@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
     View,
@@ -128,6 +127,7 @@ export default function PracticeInterviewInfoScreen({ navigation }) {
 
 // Reusable row component to display an icon with text
 
+
 function InfoRow({ icon, text }) {
     return (
         <View style={styles.row}>
@@ -141,9 +141,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#F5F5F5",
-        padding: width * 0.05, 
+        padding: width * 0.05,
+        // paddingBottom: 90, 
     },
-
     tabsContainer: {
         // height: 48,
         marginBottom: 16,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
 
     tabsWrapper: {
         flexDirection: "row",
-        flexWrap: "wrap",        
+        flexWrap: "wrap",        // ✅ allows next line
         alignItems: "flex-start",
     },
 

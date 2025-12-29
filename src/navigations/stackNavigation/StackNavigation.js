@@ -107,6 +107,7 @@ import DeleteAccountScreen from '../../screens/DeleteAccountScreen';
 import EditProfileScreen from '../../screens/EditProfileScreen';
 import EmployerInterviewScreen from '../../screens/EmployerInterviewScreen';
 import CompletedInterviewsScreen from '../../screens/CompletedInterviewsScreen';
+import FeedbackScreen from '../../screens/FeedbackScreen';
 import DrawerHeader from '../../components/DrawerHeader';
 import Dashboard from '../../screens/Dashboard';
 import LiveRoomScreen from '../../screens/LiveRoomScreen';
@@ -115,9 +116,36 @@ import CameraCheckScreen from '../../screens/CameraCheckScreen';
 import InterviewScreen from '../../screens/InterviewScreen';
 import CreateRoomScreen from '../../screens/CreateRoomScreen';
 import VerificationScreen from '../../screens/auth/VerificationScreen';
+import TermsOfServiceScreen from '../../screens/TermsOfServiceScreen';
+import SettingsSecurityScreen from '../../screens/SettingsSecurityScreen';
+import SignIn from '../../screens/authentication/SignIn';
+import SignUp from '../../screens/authentication/SignUp';
+import EmailInput from '../../screens/authentication/EmailInput';
+import Password from '../../screens/authentication/Password';
+import MobileInput from '../../screens/authentication/MobileInput';
+import OtpVerification from '../../screens/authentication/OtpVerification';
+import GetStarted from '../../screens/authentication/GetStarted';
+import CreatePassword from '../../screens/authentication/CreatePassword';
+import JourneyGetStartScreen from '../../screens/authentication/JourneyGetStart';
+import NotificationsScreen from '../../screens/NotificationsScreen';
+import SubscriptionAgreementScreen from '../../screens/SubscriptionSection';
+import ChatOnboardingScreen from '../../screens/ChatScreen/ChatOnboardingScreen';
 import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
 import PracticeConversationScreen from '../../screens/practiceInterview/PracticeConversationScreen';
 import PracticeInterviewInfoScreen from '../../screens/practiceInterview/PracticeInterviewInfoScreen';
+import Home from '../../screens/Home';
+// import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
+import AboutScreen from '../../screens/topUpdatedrofile/AboutScreen';
+import TermsScreen from '../../screens/topUpdatedrofile/TermsScreen';
+import ProfileFeedbackScreen from '../../screens/topUpdatedrofile/FeedbackScreen';
+import SettingsScreen from '../../screens/topUpdatedrofile/SettingsScreen';
+import DeleteAccountReasonScreen from '../../screens/topUpdatedrofile/DeleteAccountReasonScreen';
+import DeleteAccountConfirmScreen from '../../screens/topUpdatedrofile/DeleteAccountConfirmScreen';
+import UpdateProfileScreen from '../../screens/topUpdatedrofile/UpdateProfileScreen';
+import PricingScreen from '../../screens/PricingScreen';
+import PaymentStatusScreen from '../../screens/PaymentStatusScreen';
+import StartDayOne from '../../screens/StartDayOne';
+import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
 
@@ -125,13 +153,25 @@ const Stack = createNativeStackNavigator();
 
 const StackNavigation = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="LoginLoaderPage">
 
       {/* 1️⃣ Loader (Initial Screen) */}
       <Stack.Screen
         name="LoginLoaderPage"
         component={LoginLoaderPage}
       />
+
+      <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="EmailInput" component={EmailInput} />
+      <Stack.Screen name="Password" component={Password} />
+      <Stack.Screen name="MobileInput" component={MobileInput} />
+      <Stack.Screen name="OtpVerification" component={OtpVerification} />
+      <Stack.Screen name="GetStarted" component={GetStarted} />
+      <Stack.Screen name="CreatePassword" component={CreatePassword} />
+      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="NotificationScreen" component={NotificationsScreen} />
+      <Stack.Screen name="JourneyGetStartScreen" component={JourneyGetStartScreen} />
+      <Stack.Screen name="SubscriptionAgreement" component={SubscriptionAgreementScreen} />
 
       {/* 2️⃣ Login */}
       <Stack.Screen
@@ -157,36 +197,49 @@ const StackNavigation = () => {
       <Stack.Screen
         name="DeleteAccountScreen"
         component={DeleteAccountScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: true, headerTitle: 'Delete Account', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="TermsofServiceScreen"
+        component={TermsOfServiceScreen}
+      />
+      <Stack.Screen
+        name="SettingsSecurityScreen"
+        component={SettingsSecurityScreen}
+        options={{ headerShown: true, headerTitle: 'Settings and Security', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="FeedbackScreen"
+        component={FeedbackScreen}
+        options={{ headerShown: true, headerTitle: 'Recroot', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
-        options={{
-          headerShown: true,
-          headerTitle: 'Edit Profile',
-          headerTitleAlign: 'center',
-        }}
+        options={{ headerShown: true, headerTitle: 'EditProfile', headerTitleAlign: 'center' }}
       />
+      <Stack.Screen
+        name="ChatOnboardingScreen"
+        component={ChatOnboardingScreen}
+        options={{ headerShown: true, headerTitle: 'ChatOnboardingScreen', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen name="startDayOne" component={StartDayOne} options={{headerShown:false}}/>
+
       <Stack.Screen
         name="EmployerInterviewScreen"
         component={EmployerInterviewScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: true, headerTitle: 'Employer Interviews', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
-        name="CompletedInterviewsScreen"
+        name="CompletedInterview"
         component={CompletedInterviewsScreen}
-        options={{
-          headerShown: true,
-          headerTitle: 'Completed Interviews',
-          headerTitleAlign: 'center',
-        }}
+
       />
-      <Stack.Screen
-        name="Dashboard"
-        component={Dashboard}
+      {/* <Stack.Screen
+        name="Home"
+        component={Home}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name="CreateRoomScreen"
         component={CreateRoomScreen}
@@ -210,17 +263,28 @@ const StackNavigation = () => {
       <Stack.Screen
         name="PracticeStartScreen"
         component={PracticeStartScreen}
-        options={{ headerShown: false }}
+               options={{ headerShown: true, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+
       />
       <Stack.Screen
         name="PracticeConversationScreen"
         component={PracticeConversationScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true, headerStyle: {
+            backgroundColor: "#0178FF",
+          },
+          headerTintColor:'#F5F5F5'
+        }}
       />
       <Stack.Screen
         name="PracticeInterviewInfoScreen"
         component={PracticeInterviewInfoScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true, headerStyle: {
+            backgroundColor: "#0178FF",
+          },
+          headerTintColor:'#F5F5F5',
+        }}
       />
       <Stack.Screen
         name="InterviewScreen"
@@ -231,6 +295,50 @@ const StackNavigation = () => {
           headerTitleAlign: 'center',
         }}
       />
+        <Stack.Screen
+        name="ProfileTopScreen"
+        component={ProfileTopScreen}
+               options={{ headerShown: false, headerTitle: 'Employer Interviews', headerTitleAlign: 'center' }}
+
+      />
+      <Stack.Screen
+        name="AboutScreen"
+        component={AboutScreen}
+      />
+      <Stack.Screen
+        name="ProfileFeedbackSummar"
+        component={ProfileFeedbackScreen}
+      />
+      <Stack.Screen
+        name="SettingsScreen"
+        component={SettingsScreen}
+      />
+      <Stack.Screen
+        name="DeleteAccountReasonScreen"
+        component={DeleteAccountReasonScreen}
+      />
+      <Stack.Screen
+        name="DeleteAccountConfirmScreen"
+        component={DeleteAccountConfirmScreen}
+      />
+      <Stack.Screen
+        name="PricingScreen"
+        component={PricingScreen}
+        options={{ headerShown: true, headerTitle: 'PricingScreen', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="PaymentStatusScreen"
+        component={PaymentStatusScreen}
+        options={{ headerShown: true, headerTitle: 'PaymentStatusScreen', headerTitleAlign: 'center'}}
+      />
+      <Stack.Screen
+        name="UpdateProfileScreen"
+        component={UpdateProfileScreen}
+        options={{ headerShown: true, headerTitle: 'Your Profile', headerTitleAlign: 'center'}}
+      />
+
+
+
     </Stack.Navigator>
   );
 };

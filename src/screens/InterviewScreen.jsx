@@ -180,7 +180,9 @@ import Pagination from "../components/SubjectExpertise/Pagination";
 import VideoModal from "../components/SubjectExpertise/VideoModal";
 
 
-export default function InterviewScreen() {
+export default function InterviewScreen({ route }) {
+  const interviewId = route?.params?.interviewId;
+
   const [activeTab, setActiveTab] = useState("expertise");
   const [activePage, setActivePage] = useState(1);
   const [showVideo, setShowVideo] = useState(false);
@@ -188,24 +190,25 @@ export default function InterviewScreen() {
   const [interviewData, setInterviewData] = useState(null);
 
   useEffect(() => {
-    fetchInterview();
-  }, []);
+    if (interviewId) fetchInterview(interviewId);
+  }, [interviewId]);
 
-  const fetchInterview = async () => {
+  const fetchInterview = async (id) => {
     try {
       setLoading(true);
-      // const res = await fetch("https://api.arinnovate.io/api/getTestReportcand/690992d53679680155cb6923");
-      const res = await fetch("https://api.arinnovate.io/api/getTestReportcand/690c41c310dd9af2591d89de");
+      const res = await fetch(
+        `https://api.arinnovate.io/api/getTestReportcand/${id}`
+      );
       const json = await res.json();
       setInterviewData(json);
     } catch (e) {
-      console.error(e);
+      console.error("Fetch interview error:", e);
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading || !interviewData) {
+  if (!interviewId || loading) {
     return (
       <View style={styles.loader}>
         <ActivityIndicator size="large" />
@@ -226,18 +229,22 @@ export default function InterviewScreen() {
           setActiveTab={setActiveTab}
         />
 
-        {activeTab === "expertise" ? (
+        {/* ✅ KEEP BOTH MOUNTED */}
+        <View style={{ display: activeTab === "expertise" ? "flex" : "none" }}>
           <SubjectExpertise
             activePage={activePage}
             setActivePage={setActivePage}
             data={interviewData}
             onPlayVideo={() => setShowVideo(true)}
           />
-        ) : (
+        </View>
+
+        <View style={{ display: activeTab === "communication" ? "flex" : "none" }}>
           <Communication data={interviewData} />
-        )}
+        </View>
       </ScrollView>
 
+      {/* PAGINATION */}
       {/* 🔵 FIXED PAGINATION */}
       {activeTab === "expertise" &&
         interviewData?.questionsList?.length > 1 && (
@@ -258,6 +265,7 @@ export default function InterviewScreen() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

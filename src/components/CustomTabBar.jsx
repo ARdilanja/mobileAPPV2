@@ -5,15 +5,15 @@ import { Fonts } from "../constants/fonts";
 const TAB_ICONS = {
   Bottom: require('../assets/images/Home.png'),
   StartInterview: require('../assets/images/StartInterview.png'),
-  CompletedInterview: require('../assets/images/CompletedInterview.png'),
-  MyProfile: require('../assets/images/MyProfile.png'),
+  PracticeStartScreen: require('../assets/images/CompletedInterview.png'),
+  ProfileTopScreen: require('../assets/images/MyProfile.png'),
 };
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   
   // Filter the routes to include only "Bottom" and "StartInterview"
   const filteredRoutes = state.routes.filter(
-    route => route.name === 'Bottom' || route.name === 'StartInterview' || route.name === 'CompletedInterview' || route.name === 'MyProfile',
+    route => route.name === 'Bottom' || route.name === 'StartInterview' || route.name === 'PracticeStartScreen' || route.name === 'ProfileTopScreen',
   );
 
   return (
@@ -98,9 +98,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 60, // Increased slightly for images
     backgroundColor: '#FFFFFF', // Replaced Colors.primary (assuming black/dark)
-    paddingBottom: 5,
-    borderTopLeftRadius:20,
-    borderTopRightRadius:20,
+    paddingBottom: 15,
+    // borderTopLeftRadius:20,
+    // borderTopRightRadius:20,
   },
   tab: {
     flex: 1,

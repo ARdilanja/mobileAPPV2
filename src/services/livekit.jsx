@@ -7,7 +7,7 @@ export async function fetchLiveKitToken({ roomName, identity }) {
     try {
         console.log("🔑 Fetching LiveKit token...");
 
-        const res = await fetch(`${API_BASE}/api/livekit/token`, {
+        const res = await fetch(`${API_BASE}/livekit/token`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export async function startEgressRecording({ roomName, interviewId }) {
     try {
         console.log("🎬 [MOBILE] Start egress request");
 
-        const res = await fetch(`${API_BASE}/api/livekit/egress/start`, {
+        const res = await fetch(`${API_BASE}/livekit/egress/start`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ roomName, interviewId }),
@@ -57,7 +57,7 @@ export async function stopEgressRecording(egressId) {
     try {
         console.log("🛑 [MOBILE] Stop egress request:", egressId);
 
-        const res = await fetch(`${API_BASE}/api/livekit/egress/stop`, {
+        const res = await fetch(`${API_BASE}/livekit/egress/stop`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ egressId }),

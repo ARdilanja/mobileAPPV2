@@ -878,6 +878,7 @@ import {
 import { Fonts } from '../constants/fonts';
 import RemovePhotoModal from '../components/RemovePhotoModal';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { API_BASE, IMAGE_UPLOAD_BASE } from '../config/api';
 
 const cameraIcon = require('../assets/images/camera.png');
 const galleryIcon = require('../assets/images/gallery.png');
@@ -891,6 +892,8 @@ const { width } = Dimensions.get('window');
 const USER_API = 'https://api.arinnovate.io/getUser/668b843dec65884f31c54252';
 const UPDATE_API = 'https://api.arinnovate.io/api/updateCandidateUser';
 
+const UPLOAD_PROFILE_IMAGE_API =
+  'https://api.arinnovate.io/api/candidate/upload-profile-image';
 const EditProfileScreen = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -898,7 +901,8 @@ const EditProfileScreen = () => {
   const [email, setEmail] = useState('');
   const [userId, setUserId] = useState('');
 
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(null); // local image file
+  const [profileImageUrl, setProfileImageUrl] = useState(null);
   const [showPhotoOptions, setShowPhotoOptions] = useState(false);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -930,7 +934,7 @@ const EditProfileScreen = () => {
         // Profile photo
         const photo = user.profpicFileLocation?.photo;
         if (photo) {
-          setProfileImage(photo);
+          setProfileImageUrl(`https://your-s3-or-cdn-url/${photo}`);
         }
       }
     } catch (err) {
@@ -976,47 +980,69 @@ const EditProfileScreen = () => {
     });
   };
 
+const uploadProfileImage = async () => {
+  if (!profileImage || !userId) return;
+
+  const formData = new FormData();
+  
+  // Create the file object
+  const fileToUpload = {
+    uri: Platform.OS === 'android' ? profileImage.uri : profileImage.uri.replace('file://', ''),
+    type: 'image/jpeg', // Try hardcoding this first to test
+    name: 'profile_picture.jpg',
+  };
+
+  // The key 'file' MUST match your backend upload.single("file")
+  formData.append("file", fileToUpload);
+
+  try {
+    const response = await fetch(
+      `http://192.168.0.8:5000/api/user/upload-profile-image/${userId}`,
+      {
+        method: "POST", // Make sure backend and frontend are both POST
+        body: formData,
+        headers: {
+          'Accept': 'application/json',
+          // IMPORTANT: DO NOT add 'Content-Type': 'multipart/form-data'
+          // React Native sets the boundary automatically if you leave this out
+        },
+      }
+    );
+
+    const result = await response.json();
+    console.log("📥 Result:", result);
+  } catch (error) {
+    console.log("❌ Frontend Error:", error);
+  }
+};
+
+
 
   // 🔹 UPDATE PROFILE FUNCTION
 const updateProfile = async () => {
-  if (!userId) {
-    Alert.alert('Error', 'User ID not found');
-    return;
-  }
-
-  setIsUpdating(true);
-
   try {
     const payload = {
       _id: userId,
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
-      email: email.trim(),
-      newExperience: [
-        { job_title: jobTitle.trim() }
-      ],
+      firstName,
+      lastName,
+      email,
+      newExperience: [{ job_title: jobTitle }],
     };
 
-    const response = await fetch(UPDATE_API, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    await fetch(UPDATE_API, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
 
-    const result = await response.json();
-
-    if (response.ok) {
-      Alert.alert('Success', 'Profile updated successfully!');
-      fetchUser();
-    } else {
-      Alert.alert('Error', result.message || 'Update failed');
+    if (profileImage?.uri) {
+      await uploadProfileImage();
     }
-  } catch (err) {
-    Alert.alert('Error', 'Network error');
-  } finally {
-    setIsUpdating(false);
+
+    Alert.alert("Success", "Profile updated successfully");
+    fetchUser();
+  } catch (e) {
+    Alert.alert("Error", e.message);
   }
 };
 
@@ -1077,8 +1103,10 @@ const updateProfile = async () => {
               <Image
                 source={
                   profileImage?.uri
-                    ? { uri: profileImage.uri }
-                    : defaultAvatar
+                    ? { uri: profileImage.uri } // local preview
+                    : profileImageUrl
+                      ? { uri: profileImageUrl } // server image
+                      : defaultAvatar
                 }
                 style={styles.avatar}
               />

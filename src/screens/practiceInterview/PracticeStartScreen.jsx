@@ -4,6 +4,7 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
+    StatusBar,
 } from "react-native";
 
 import ChoiceCard from "../../components/PracticeInterview/ChoiceCard";
@@ -25,6 +26,7 @@ export default function PracticeStartScreen({ navigation }) {
     /* Screen UI */
     return (
         <View style={styles.container}>
+        <StatusBar hidden />
 
             {/* Main content */}
             <View style={styles.contentWrapper}>

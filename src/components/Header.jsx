@@ -1,67 +1,71 @@
-import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { Fonts } from "../constants/fonts";
+import React from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Platform,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Fonts } from '../constants/fonts';
 
-export default function Header({title}) {
-    return (
-        <View style={styles.container}>
-            {/* Left: Burger */}
-            <TouchableOpacity activeOpacity={1}>
-                <Image
-                    source={require("../assets/images/burger-menu.png")}
-                    style={styles.icon}
-                />
-            </TouchableOpacity>
+const Header = ({ title }) => {
+  const navigation = useNavigation();
 
-            {/* Center: Title */}
-            <Text style={styles.title}>{title}</Text>
+  return (
+    <View style={styles.container}>
+      {/* Back Arrow */}
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.backBtn}
+        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+      >
+        <Image
+          source={require('../assets/images/back.png')}
+          style={styles.backIcon}
+        />
+      </TouchableOpacity>
 
-            {/* Right: Profile */}
-            <View style={styles.profileWrapper}>
-                <Image
-                    source={require("../assets/images/profile.png")}
-                    style={styles.profile}
-                />
-            </View>
+      {/* Title */}
+      <Text style={styles.title}>{title}</Text>
 
-        </View>
-    );
-}
+      {/* Right spacer to center title */}
+      <View style={styles.rightSpace} />
+    </View>
+  );
+};
 
+export default Header;
 const styles = StyleSheet.create({
-    container: {
-        height: 56,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        paddingHorizontal: 16,
-        backgroundColor: "#fff",
-    },
-    icon: {
-        width: 22,
-        height: 22,
-        resizeMode: "contain",
-    },
-    title: {
-        fontSize: 14,
-        fontFamily: Fonts.SemiBold,
-        color: "#000",
-    },
-    profileWrapper: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
-        backgroundColor: "#E6F0FF", 
-        borderWidth: 2,
-        borderColor: "#0087FF",      
-        alignItems: "center",
-        justifyContent: "center",
-    },
+  container: {
+    height: 56,
+    flexDirection: 'row',
+    alignItems: 'center',
+    // paddingHorizontal: 16,
+  },
 
-    profile: {
-        width: 30,
-        height: 30,
-        borderRadius: 15,
-    },
+  backBtn: {
+    padding: 6,
+    paddingHorizontal:20
+  },
 
+  backIcon: {
+    width: 22,
+    height: 22,
+  },
+
+  title: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#000000',
+    fontFamily:Fonts.Bold,
+    paddingRight:30
+  },
+
+  rightSpace: {
+    width: 22, // same width as back icon
+  },
 });

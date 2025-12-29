@@ -11,67 +11,84 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
+import MessagePopup from '../../components/MessagePopup';
 import { Fonts } from '../../constants/fonts';
 import { API_BASE } from '../../config/api';
 import axios from 'axios';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ onSignupPress,navigation }) => {
   const [email, setEmail] = useState('');
-
+const [popupVisible, setPopupVisible] = useState(false);
+const [popupMessage, setPopupMessage] = useState('');
+const [popupType, setPopupType] = useState('info');
+const showPopup = (message, type = 'info') => {
+  setPopupMessage(message);
+  setPopupType(type);
+  setPopupVisible(true);
+};
   const handleNext = async () => {
-     navigation.navigate('BottomDash')
-//   if (email.trim() === '') {
-//     alert('Please enter your email');
-//     return;
-//   }
+  if (email.trim() === '') {
+    showPopup('Please enter your email', 'error');
+    return;
+  }
 
-//   try {
-//     console.log('Api/auth/check-user', API_BASE)
-//     const response = await axios.post(`${API_BASE}/auth/check-user`, {
-//       email,
-//     });
+  try {
+    console.log('Api/auth/check-user', API_BASE)
+    const response = await axios.post(`${API_BASE}/auth/check-user`, {
+      email,
+    });
 
-//     console.log('check-user response:', response.data);
-//  const user = response.data.updatedUser || response.data.existingUser;
-//     if (!user) {
-//       alert('User not found. Please sign up.');
-//       navigation.navigate("Signup")
+    console.log('check-user response:', response.data);
+    const message = response.data.message; // usually APIs return a `message` field
+    if (message) {
+      showPopup(message, 'success');
+    }
+ const user = response.data.updatedUser || response.data.existingUser;
+    if (!user) {
+      alert('User not found. Please sign up.');
+      navigation.navigate("Signup")
 
-//       return;
-//     }
+      return;
+    }
 
-//     // 2. Generate OTP code (here just a random 4-digit for demo)
-//     const otpCode = Math.floor(1000 + Math.random() * 9000);
+    // 2. Generate OTP code (here just a random 4-digit for demo)
+    const otpCode = Math.floor(1000 + Math.random() * 9000);
 
-//     // 3. Send OTP email
-//     await axios.post(`${API_BASE}/auth/send-otp`, {
-//       firstName: user.firstName || 'User',
-//       email: email,
-//       referral_code: otpCode
-//     });
+    // 3. Send OTP email
+    await axios.post(`${API_BASE}/auth/send-otp`, {
+      firstName: user.firstName || 'User',
+      email: email,
+      referral_code: otpCode
+    });
 
-//     console.log('OTP sent:', otpCode);
+    console.log('OTP sent:', otpCode);
 
-//     // 4. Navigate to verification screen and pass email + OTP
-//     // onLoginSuccess({ email: user.email, otpCode });
-//     navigation.navigate('VerificationScreen', {
-//   email: user.email,
-//   otpCode: otpCode,
-// })
-//   } catch (error) {
-//     console.error('Check user error:', error);
+    // 4. Navigate to verification screen and pass email + OTP
+    // onLoginSuccess({ email: user.email, otpCode });
+    navigation.navigate('VerificationScreen', {
+  email: user.email,
+  otpCode: otpCode,
+})
+  } catch (error) {
+    console.error('Check user error:', error);
 
-//     alert(
-//       error?.response?.data?.message ||
-//       'Something went wrong. Please try again.'
-//     );
-//   }
+    showPopup(
+    error?.response?.data?.message || 'Something went wrong',
+    'error'
+  );
+  }
 };
 
-
   return (
+    <>
+    <MessagePopup
+  visible={popupVisible}
+  message={popupMessage}
+  type={popupType}
+  onClose={() => setPopupVisible(false)}
+/>
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -113,11 +130,10 @@ const LoginScreen = ({ navigation }) => {
             <Text onPress={() => navigation.navigate('Signup')}>
               Sign up here
             </Text>
-
           </Text>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </KeyboardAvoidingView></>
   );
 };
 
