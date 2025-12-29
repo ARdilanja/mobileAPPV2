@@ -426,12 +426,12 @@ const CustomCheckbox = ({ selected, isAnswerBubble = false }) => (
     <View style={[
         styles.checkboxBase,
         {
-            borderColor: selected ? (isAnswerBubble ? "#FFF" : "#1677FF") : "#D1D5DB",
-            backgroundColor: selected ? (isAnswerBubble ? "#FFF" : "#1677FF") : "transparent"
+            borderColor: selected ? (isAnswerBubble ? "#FFF" : "#0178FF") : "#D1D5DB",
+            backgroundColor: selected ? (isAnswerBubble ? "#FFF" : "#0178FF") : "transparent"
         }
     ]}>
         {selected && (
-            <Text style={[styles.tickText, { color: isAnswerBubble ? "#1677FF" : "#FFF" }]}>✓</Text>
+            <Text style={[styles.tickText, { color: isAnswerBubble ? "#0178FF" : "#FFF" }]}>✓</Text>
         )}
     </View>
 );
@@ -627,7 +627,7 @@ const styles = StyleSheet.create({
     answerPill: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#1677FF",
+        backgroundColor: "#0178FF",
         paddingHorizontal: 14,
         paddingVertical: 8,
         borderRadius: 20,
@@ -683,10 +683,10 @@ const styles = StyleSheet.create({
     },
     textInput: { flex: 1, fontSize: 14, fontWeight: "400", fontFamily: Fonts.Regular },
     icon: { width: 22, height: 22, marginHorizontal: 8, tintColor: "#454545" },
-    icon1: { width: 22, height: 22, marginHorizontal: 4, tintColor: "#1677FF" },
+    icon1: { width: 22, height: 22, marginHorizontal: 4, tintColor: "#0178FF" },
     getStartedBtn: {
         height: 52,
-        backgroundColor: "#1677FF",
+        backgroundColor: "#0178FF",
         borderRadius: 30,
         alignItems: "center",
         justifyContent: "center",

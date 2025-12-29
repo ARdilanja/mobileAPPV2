@@ -276,8 +276,7 @@
 import React, { useEffect, useState, useRef, memo } from "react";
 import { View, ActivityIndicator, StyleSheet, Text } from "react-native";
 import "react-native-get-random-values";
-import { useDispatch } from "react-redux";
-import { saveAnswer } from "../redux/interviewSlice";
+
 
 import {
     LiveKitRoom,
@@ -293,6 +292,8 @@ import QuestionOverlay from "../components/Livekit/QuestionOverlay";
 import CameraStateMonitor from "../components/Livekit/CameraStateMonitor";
 import AppExitMonitor from "../components/Livekit/AppExitMonitor";
 import useDeepgramRN from "../components/Livekit/useDeepgramRN.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { saveAnswer, resetInterview } from "../redux/interviewSlice";
 
 import {
     startEgressRecording,
@@ -318,6 +319,7 @@ export default function LiveRoomScreen({ route, navigation }) {
     const [maxFollowUps, setMaxFollowUps] = useState(3);
 
     const [startTime, setStartTime] = useState(Date.now());
+    const answers = useSelector((state) => state.interview.answers);
     const { getTranscript, resetTranscript } = useDeepgramRN(videoReady);
 
     const egressIdRef = useRef(null);
@@ -387,23 +389,65 @@ export default function LiveRoomScreen({ route, navigation }) {
     };
 
     // ---------------- TERMINATE ----------------
+    // const terminateInterview = async (reason) => {
+    //     if (terminatedRef.current) return;
+    //     terminatedRef.current = true;
+
+    //     console.log("🛑 [MOBILE] Interview terminated:", reason);
+
+    //     if (egressIdRef.current) {
+    //         await stopEgressRecording(egressIdRef.current);
+    //     }
+
+    //     resetTranscript();
+
+    //     navigation.reset({
+    //         index: 0,
+    //         routes: [{ name: "CreateRoomScreen" }],
+    //     });
+    // };
+
     const terminateInterview = async (reason) => {
         if (terminatedRef.current) return;
         terminatedRef.current = true;
 
         console.log("🛑 [MOBILE] Interview terminated:", reason);
 
-        if (egressIdRef.current) {
-            await stopEgressRecording(egressIdRef.current);
+        try {
+            // 1️⃣ Stop recording
+            if (egressIdRef.current) {
+                await stopEgressRecording(egressIdRef.current);
+            }
+
+            // 2️⃣ SAVE ANSWERS (🔥 THIS WAS MISSING)
+            if (answers.length > 0) {
+                await fetch(`${API_BASE}/api/interview/save-structured-answers`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        interviewId,
+                        answers,
+                    }),
+                });
+
+                console.log("✅ Answers saved to DB");
+            }
+
+            // 3️⃣ Clear redux
+            dispatch(resetInterview());
+
+        } catch (err) {
+            console.error("❌ Terminate error:", err);
+        } finally {
+            resetTranscript();
+
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "CreateRoomScreen" }],
+            });
         }
-
-        resetTranscript();
-
-        navigation.reset({
-            index: 0,
-            routes: [{ name: "CreateRoomScreen" }],
-        });
     };
+
 
     // ---------------- NEXT QUESTION ----------------
     const handleNext = async () => {
