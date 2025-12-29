@@ -7,13 +7,14 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import { Fonts } from '../constants/fonts';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 
-
-const successImg = require('../assets/images/green_round.png');
-const failedImg = require('../assets/images/red_round.png');
+const successImg = require('../assets/images/green_success.png');
+const failedImg = require('../assets/images/red_circle.png');
+const recrootLogo = require('../assets/images/recroot_img.png');
 
 export default function PaymentStatusScreen({
   status = 'success', // 'success' | 'failed'
@@ -22,19 +23,16 @@ export default function PaymentStatusScreen({
 
   return (
     <View style={styles.container}>
-      {/* STATUS ICON */}
-      <View
-        style={[
-          styles.iconWrapper,
-          isSuccess ? styles.successBorder : styles.failedBorder,
-        ]}
-      >
-        <Image
-          source={isSuccess ? successImg : failedImg}
-          style={styles.statusIcon}
-          resizeMode="contain"
-        />
-      </View>
+      {/* STATUS ICON (ONLY FOR SUCCESS) */}
+      {isSuccess && (
+        <View style={[styles.iconWrapper, styles.successBorder]}>
+          <Image
+            source={successImg}
+            style={styles.statusIcon}
+            resizeMode="contain"
+          />
+        </View>
+      )}
 
       {/* TITLE */}
       <Text style={styles.title}>
@@ -43,41 +41,52 @@ export default function PaymentStatusScreen({
 
       {/* BOTTOM WHITE SECTION */}
       <View style={styles.bottomSection}>
-        <Text style={styles.sectionTitle}>
-          {isSuccess ? 'Paid to RECRoot' : 'Transaction failed'}
-        </Text>
+        {/* PAID TO ROW / FAILED TEXT */}
+        {isSuccess ? (
+          <View style={styles.paidRow}>
+            <Text style={styles.paidText}>Paid to</Text>
+            <Image
+              source={recrootLogo}
+              style={styles.logo}
+              resizeMode="contain"
+            />
+          </View>
+        ) : (
+          <Text style={styles.sectionTitle}>Transaction failed</Text>
+        )}
 
+        {/* TRANSACTION ID */}
         <Text style={styles.label}>Transaction id</Text>
         <Text style={styles.value}>89632533963253</Text>
 
+        {/* DATE */}
         <Text style={[styles.label, { marginTop: 12 * scale }]}>
           Date & Time
         </Text>
-        <Text style={styles.value}>
-          December 30, 2025 at 01:00 PM IST
-        </Text>
+        <Text style={styles.value}>December 30, 2025 at 01:00 PM IST</Text>
 
+        {/* LINK */}
         <Text style={styles.link}>View invoice ›</Text>
-      </View>
 
-      {/* ACTION BUTTON */}
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>
-          {isSuccess ? 'Home' : 'Retry payment'}
-        </Text>
-      </TouchableOpacity>
+        {/* ACTION BUTTON */}
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>
+            {isSuccess ? 'Home' : 'Retry payment'}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F7F7F7',
     alignItems: 'center',
-    paddingTop: 48 * scale,
+    paddingTop: 90 * scale,
   },
 
-  /* STATUS ICON CIRCLE */
   iconWrapper: {
     width: 120 * scale,
     height: 120 * scale,
@@ -96,39 +105,64 @@ const styles = StyleSheet.create({
   },
 
   statusIcon: {
-    width: 100 * scale,
-    height: 100 * scale,
+    width: 170 * scale,
+    height: 170 * scale,
   },
 
   title: {
     fontSize: 22 * scale,
-    fontWeight: '700',
-    marginTop: 24 * scale,
+    fontFamily: Fonts.Medium,
+    marginTop: 45 * scale,
   },
 
   bottomSection: {
+    position: 'absolute',
+    bottom: 0,
+    top: 300,
     width: '100%',
     backgroundColor: '#FFFFFF',
-    marginTop: 24 * scale,
     paddingHorizontal: 16 * scale,
     paddingTop: 24 * scale,
-    paddingBottom: 32 * scale,
+    paddingBottom: 24 * scale,
+    justifyContent: 'space-between',
   },
 
-  sectionTitle: {
-    fontSize: 16 * scale,
-    fontWeight: '600',
+  paidRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 16 * scale,
   },
 
+  paidText: {
+    fontSize: 18 * scale,
+    fontFamily: Fonts.Regular,
+    lineHeight: 24,
+    marginRight: 8,
+  },
+
+  logo: {
+    width: 109 * scale,
+    height: 24 * scale,
+  },
+
+  sectionTitle: {
+    fontSize: 18 * scale,
+    fontFamily: Fonts.Medium,
+    marginBottom: 16 * scale,
+    lineHeight: 24,
+  },
+
   label: {
-    fontSize: 12 * scale,
+    fontSize: 18 * scale,
     color: '#777777',
+    fontFamily: Fonts.Regular,
+    lineHeight: 24,
   },
 
   value: {
     fontSize: 14 * scale,
-    fontWeight: '600',
+    fontFamily: Fonts.Medium,
+    lineHeight: 24,
     marginTop: 4 * scale,
   },
 
@@ -136,6 +170,10 @@ const styles = StyleSheet.create({
     marginTop: 16 * scale,
     color: '#007AFF',
     fontSize: 14 * scale,
+    position: 'relative',
+    left: 10,
+    fontFamily: Fonts.Medium,
+    lineHeight: 24,
   },
 
   button: {
@@ -145,7 +183,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 24 * scale,
+    alignSelf: 'center',
+    marginTop: 30,
   },
 
   buttonText: {
