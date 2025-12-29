@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { TextInput, StyleSheet, Dimensions, View, Image, ScrollView, Alert } from 'react-native';
+import { TextInput, StyleSheet, Dimensions, View, Image, ScrollView, Alert, Text, StatusBar } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
 import Gradient from '../../constants/Gradient';
 import { KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { Fonts } from '../../constants/fonts';
 const screenWidth = Dimensions.get("window").width;
 
 const SignUp = () => {
@@ -16,6 +17,8 @@ const SignUp = () => {
     const [password, setPassword] = useState('');
     const [signupData, setSignupData] = useState(null)
 
+
+    // Handle signup API call
     const handleSignUp = async () => {
         if (!fullName || !phone || !email || !password) {
             Alert.alert(
@@ -27,20 +30,18 @@ const SignUp = () => {
         const payload = {
             email: email,
             firstName: fullName,
-            lastName: 'Test',
+            lastName: '',
             password: password,
             phone: phone,
             recrootUserType: 'Candidate',
             country: 'in',
         };
-        console.log('payload', payload)
         try {
             const response = await axios.post(
                 'https://api.arinnovate.io/auth/register',
                 payload
             );
             setSignupData(response.data)
-            console.log('Signup Success:', response.data);
 
             Alert.alert(
                 'Success',
@@ -52,7 +53,7 @@ const SignUp = () => {
                             navigation.navigate('OtpVerification', {
                                 email,
                                 phone,
-                                serverOtp: response.data.referral_code, 
+                                serverOtp: response.data.referral_code,
                                 otpType: 'email',
                             }),
                     },
@@ -69,6 +70,8 @@ const SignUp = () => {
 
     return (
         <Gradient>
+            <StatusBar barStyle="dark-content" backgroundColor="transparent"
+                translucent={true} />
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 style={{ flex: 1 }}
@@ -81,14 +84,16 @@ const SignUp = () => {
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                         <View style={{ flex: 1 }}>
 
-                            {/* TOP SECTION */}
+                            {/* Signup form section */}
                             <View style={styles.topSection}>
-                                <AuthHeader title="Create password"
-                                    subtitle="Sign in and find your dream job"
+
+                                <AuthHeader title="Sign up"
+                                    subtitle="Sign up and own your career journey"
                                     showBack={true}
                                     showLogo={true}
                                 />
 
+                                {/* Full name input */}
                                 <TextInput
                                     placeholderTextColor="#242424"
                                     placeholderT="#242424"
@@ -96,24 +101,33 @@ const SignUp = () => {
                                     value={fullName}
                                     onChangeText={setFullName}
                                     style={styles.input}
-                                // keyboardType="New password"
                                 />
+
+                                {/* Mobile number input with country code */}
                                 <View style={styles.content}>
                                     <Image
                                         source={require('../../assets/images/india-flag.png')}
                                         style={styles.flag}
                                         resizeMode="contain"
                                     />
+
+                                    <View style={styles.countryCodeBox}>
+                                        <Text style={styles.countryCodeText}>+91</Text>
+                                    </View>
+
                                     <TextInput
-                                        placeholder="+91"
-                                        keyboardType="phone-pad"
                                         style={styles.mob_input}
-                                        placeholderTextColor="#242424"
+                                        keyboardType="phone-pad"
+                                        maxLength={10}
                                         value={phone}
-                                        onChangeText={(text) => setPhone(text.replace(/[^0-9]/g, ''))}
+                                        onChangeText={(text) =>
+                                            setPhone(text.replace(/[^0-9]/g, ''))
+                                        }
+                                        placeholderTextColor="#9CA3AF"
                                     />
                                 </View>
 
+                                {/* Email input */}
                                 <TextInput
                                     placeholderTextColor="#242424"
                                     placeholderT="#242424"
@@ -124,6 +138,8 @@ const SignUp = () => {
                                     keyboardType="email-address"
                                 />
 
+
+                                {/* Password input */}
                                 <TextInput
                                     placeholderTextColor="#242424"
                                     placeholderT="#242424"
@@ -131,12 +147,13 @@ const SignUp = () => {
                                     style={styles.input}
                                     value={password}
                                     onChangeText={setPassword}
-                                    // secureTextEntry
+                                // secureTextEntry
                                 />
                             </View>
+                            {/* Bottom signup action section */}
                             <View style={styles.bottomSection}>
 
-                                <AuthButton text="Sign up" signinText={true} onPress={handleSignUp} onFooterPress={() => navigation.navigate('SignUp')} />
+                                <AuthButton text="Sign up" signinText={true} onPress={handleSignUp} onFooterPress={() => navigation.navigate('SignIn')} />
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
@@ -147,21 +164,27 @@ const SignUp = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingHorizontal: 20,
-        paddingTop: 48,
-    },
+
     scrollContainer: {
         flexGrow: 1,
+        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+
     },
     topSection: {
-        // alignItems: 'center',
         flex: 1,
     },
     bottomSection: {
-        marginBottom: 20,
+        marginBottom: 60,
         alignItems: 'center',
+    },
+    countryCodeBox: {
+        marginRight: 8,
+    },
+    countryCodeText: {
+        fontSize: 18,
+        lineHeight: 28,
+        fontFamily: Fonts.Regular,
+        color: '#242424',
     },
     input: {
         width: screenWidth - 32,
@@ -180,9 +203,8 @@ const styles = StyleSheet.create({
 
         fontSize: 18,
         lineHeight: 28,
-        fontWeight: '400',
-        // padding: 14,
-        paddingVertical: 16,
+        fontFamily: Fonts.Regular,
+        color: '#242424',
         paddingLeft: 24,
     },
     content: {

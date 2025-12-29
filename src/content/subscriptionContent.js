@@ -6,7 +6,6 @@ export const subscriptionContent = [
       'By accepting and making Payment to the Invoice, it is hereby informed that you subscribing to the Recroot AI-based interview platform and you (also referred as “Your” and “Customer”) are agreeing to the following Terms and Conditions, which govern your use of Recroot’s Services. We suggest you to read following Terms and Conditions very carefully:',
   },
 
-  /* ---------------- SECTION 1 ---------------- */
   {
     id: 'section1',
     type: 'section',
@@ -97,13 +96,13 @@ export const subscriptionContent = [
       },
       {
         index: '4.2',
-        bold: ' Limitations on Liability: ',
+        bold: 'Limitations on Liability: ',
         text:
           'To the extent permitted by law, Recroot’s liability to you for all claims arising out of or in connection with this Subscription Agreement shall not exceed the total value of any Subscription Fees collected by Recroot in the month prior to the incident giving rise to the liability, regardless of whether the liability arises under breach of contract, tort (including negligence), statute, equity, contract, or any other cause of action.',
       },
       {
         index: '4.3',
-        bold: ' Consequential Losses: ',
+        bold: 'Consequential Losses: ',
         text:
           'Neither you nor Recroot are liable to the other for any consequential or indirect loss, including but not limited to loss of profit, lost opportunity cost, or loss of enjoyment.',
       },

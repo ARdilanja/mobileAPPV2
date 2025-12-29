@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, View, Alert  } from 'react-native';
+import { Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, View, Alert, StatusBar } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
 import OtpInput from '../../components/auth/OtpInput';
 import Gradient from '../../constants/Gradient';
 import { useNavigation } from '@react-navigation/native';
+import { Fonts } from '../../constants/fonts';
 
-const OtpVerification = ({  route  }) => {
-    const navigation = useNavigation()
+const OtpVerification = ({ route }) => {
+  const navigation = useNavigation()
 
   const {
     email,
@@ -23,28 +24,29 @@ const OtpVerification = ({  route  }) => {
       ? phone
       : email;
 
-
+  // Handle OTP verification logic
   const handleVerifyOtp = () => {
-  if (!otp || otp.length < 4) {
-    Alert.alert('Invalid OTP', 'Please enter a valid 4-digit OTP');
-    return;
-  }
+    if (!otp || otp.length < 4) {
+      Alert.alert('Invalid OTP', 'Please enter a valid 4-digit OTP');
+      return;
+    }
 
-  if (otp === serverOtp) {
-    Alert.alert('Success', 'OTP verified successfully', [
-      {
-        text: 'Continue',
-        onPress: () => navigation.navigate('JourneyGetStartScreen'),
-      },
-    ]);
-  } else {
-    Alert.alert('Error', 'Incorrect OTP. Please try again.');
-  }
-};
+    if (otp === serverOtp) {
+      Alert.alert('Success', 'OTP verified successfully', [
+        {
+          text: 'Continue',
+          onPress: () => navigation.navigate('JourneyGetStartScreen'),
+        },
+      ]);
+    } else {
+      Alert.alert('Error', 'Incorrect OTP. Please try again.');
+    }
+  };
 
   return (
     <Gradient>
-
+      <StatusBar barStyle="dark-content" backgroundColor="transparent"
+        translucent={true} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
@@ -57,21 +59,25 @@ const OtpVerification = ({  route  }) => {
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={{ flex: 1 }}>
 
+              {/* Header and OTP input section */}
               <View style={styles.topSection}>
                 <AuthHeader
                   title="OTP Verification"
-                 subtitle={`Enter the 4-digit OTP sent to ${contactText}`}
+                  subtitle={`Enter the 4-digit OTP sent to ${contactText}`}
                   showBack={true}
                   showLogo={true}
                 />
-
+                {/* OTP input component */}
                 <OtpInput value={otp} onChange={setOtp} />
-
-                <Text style={styles.resend}>Resend <Text style={{ color: 'rgba(42, 42, 42, 1)' }}>OTP</Text></Text>
+                {/* Resend OTP action */}
+                <Text style={styles.resend}
+                //  onPress={() => navigation.navigate('JourneyGetStartScreen')} 
+                >Resend <Text style={{ color: '#2A2A2A' }}>OTP</Text></Text>
               </View>
 
+              {/* Bottom continue button section */}
               <View style={styles.bottomSection}>
-                <AuthButton text="Continue"  onPress={handleVerifyOtp} />
+                <AuthButton text="Continue" onPress={handleVerifyOtp} />
               </View>
             </View>
           </TouchableWithoutFeedback>
@@ -82,29 +88,26 @@ const OtpVerification = ({  route  }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 48,
-  },
+
   scrollContainer: {
     flexGrow: 1,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+
   },
   topSection: {
-    // alignItems: 'center',
     flex: 1,
   },
   bottomSection: {
-    marginBottom: 20,
+    marginBottom: 120,
     alignItems: 'center',
   },
   resend: {
-    color: '#1a73e8',
+    color: '#0178FF',
     marginTop: 24,
     marginLeft: 16,
-    lineHeight: 28,
-    fontWeight: '400',
     fontSize: 18,
+    lineHeight: 28,
+    fontFamily: Fonts.Regular,
   },
 });
 

@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
-import { TextInput, StyleSheet, Dimensions, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, View, Alert } from 'react-native';
+import { TextInput, StyleSheet, Dimensions, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, View, Alert, StatusBar } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
 import Gradient from '../../constants/Gradient';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { Fonts } from '../../constants/fonts';
 
 const screenWidth = Dimensions.get("window").width;
 
-const Password = ({ route  }) => {
-    const navigation = useNavigation()
+const Password = ({ route }) => {
+  const navigation = useNavigation()
 
   const { email } = route.params;
   const [password, setPassword] = useState('');
 
-   const handleLogin = async () => {
+  // Handle login API call
+  const handleLogin = async () => {
     console.log('hi')
     if (!password) {
       Alert.alert('Error', 'Please enter password');
@@ -27,7 +29,7 @@ const Password = ({ route  }) => {
         email,
         password,
       });
-console.log('response', response)
+      console.log('response', response)
       Alert.alert('Success', 'Login successful');
       navigation.navigate('CreatePassword');
 
@@ -41,6 +43,8 @@ console.log('response', response)
 
   return (
     <Gradient>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent"
+        translucent={true} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
@@ -53,6 +57,7 @@ console.log('response', response)
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={{ flex: 1 }}>
 
+              {/* Header and password input section */}
               <View style={styles.topSection}>
                 <AuthHeader title="Sign in"
                   subtitle="Sign in and find your dream job"
@@ -65,8 +70,11 @@ console.log('response', response)
                   placeholder="Password"
                   style={styles.input}
                   value={password}
-          onChangeText={setPassword}
-                /></View>
+                  onChangeText={setPassword}
+                />
+              </View>
+
+              {/* Bottom sign-in button section */}
               <View style={styles.bottomSection}>
                 <AuthButton text="Sign in"
                   onPress={handleLogin}
@@ -83,20 +91,22 @@ console.log('response', response)
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+
   },
   topSection: {
     // alignItems: 'center',
     flex: 1,
   },
   bottomSection: {
-    marginBottom: 20,
+    marginBottom: 120,
     alignItems: 'center',
   },
   input: {
     width: screenWidth - 32,
     marginHorizontal: 'auto',
     borderWidth: 1,
-    color:'#242424',
+    color: '#242424',
     borderColor: 'white',
     backgroundColor: '#fff',
     borderRadius: 48,
@@ -109,7 +119,7 @@ const styles = StyleSheet.create({
 
     fontSize: 18,
     lineHeight: 28,
-    fontWeight: '400',
+    fontFamily: Fonts.Regular,
     padding: 14,
     paddingVertical: 16,
     paddingLeft: 24

@@ -1,10 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Linking, StatusBar } from 'react-native';
 import { subscriptionContent } from '../content/subscriptionContent';
+import { Fonts } from '../constants/fonts';
 
 const SubscriptionAgreementScreen = () => {
     return (
         <View style={styles.container}>
+            <StatusBar barStyle="dark-content" backgroundColor="transparent"
+                translucent={true} />
             <ScrollView
                 contentContainerStyle={styles.content}
                 showsVerticalScrollIndicator={false}
@@ -97,6 +100,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+
     },
     content: {
         padding: 20,
@@ -104,13 +109,14 @@ const styles = StyleSheet.create({
     },
     heading: {
         fontSize: 18,
-        fontWeight: '500',
+        fontFamily: Fonts.Medium,
         marginBottom: 16,
         color: '#000',
     },
     paragraph: {
         fontSize: 14,
         lineHeight: 22,
+        fontFamily: Fonts.Regular,
         textAlign: 'justify',
         color: '#555',
     },
@@ -119,24 +125,26 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontSize: 18,
-        fontWeight: '500',
+        fontFamily: Fonts.Medium,
         marginBottom: 10,
         color: '#000',
     },
     sectionDescription: {
         fontSize: 14,
         color: '#555',
+        fontFamily: Fonts.Regular,
         marginBottom: 10,
     },
 
     bold: {
         color: '#000',
-        fontWeight: '500',
+        fontFamily: Fonts.Medium,
     },
     indexInline: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#000',
+        color: '#000', fontFamily: Fonts.Regular,
+
     },
     text: {
         fontSize: 14,
@@ -144,7 +152,8 @@ const styles = StyleSheet.create({
         color: '#444',
         marginBottom: 12,
         textAlign: 'justify',
-        marginLeft: 5
+        marginLeft: 5, fontFamily: Fonts.Regular,
+
     },
 
     glossaryItem: {
@@ -156,14 +165,17 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '500',
         color: '#000',
+        fontFamily: Fonts.Regular,
     },
     link: {
         color: '#1a73e8',
+        fontFamily: Fonts.Regular,
         textDecorationLine: 'underline',
     },
     glossaryText: {
         fontSize: 14,
         lineHeight: 22,
+        fontFamily: Fonts.Regular,
         color: '#444',
         textAlign: 'justify',
 

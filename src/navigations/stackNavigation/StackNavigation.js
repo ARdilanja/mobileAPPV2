@@ -224,7 +224,7 @@ const StackNavigation = () => {
         component={ChatOnboardingScreen}
         options={{ headerShown: true, headerTitle: 'ChatOnboardingScreen', headerTitleAlign: 'center' }}
       />
-      <Stack.Screen name="startDayOne" component={StartDayOne} options={{headerShown:false}}/>
+      <Stack.Screen name="startDayOne" component={StartDayOne} options={{ headerShown: false }} />
 
       <Stack.Screen
         name="EmployerInterviewScreen"
@@ -264,7 +264,7 @@ const StackNavigation = () => {
       <Stack.Screen
         name="PracticeStartScreen"
         component={PracticeStartScreen}
-               options={{ headerShown: true, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+        options={{ headerShown: true, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
 
       />
       <Stack.Screen
@@ -274,7 +274,7 @@ const StackNavigation = () => {
           headerShown: true, headerStyle: {
             backgroundColor: "#0178FF",
           },
-          headerTintColor:'#F5F5F5'
+          headerTintColor: '#F5F5F5'
         }}
       />
       <Stack.Screen
@@ -284,7 +284,7 @@ const StackNavigation = () => {
           headerShown: true, headerStyle: {
             backgroundColor: "#0178FF",
           },
-          headerTintColor:'#F5F5F5',
+          headerTintColor: '#F5F5F5',
         }}
       />
       <Stack.Screen
@@ -296,51 +296,50 @@ const StackNavigation = () => {
           headerTitleAlign: 'center',
         }}
       />
-        <Stack.Screen
+      <Stack.Screen
         name="ProfileTopScreen"
         component={ProfileTopScreen}
-               options={{ headerShown: true, headerTitle: 'Employer Interviews', headerTitleAlign: 'center' }}
-
+        options={{ headerShown: true, headerTitle: 'Employer Interviews', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="AboutScreen"
         component={AboutScreen}
-        options={{ headerShown: true, headerTitle: 'About', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'About', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="ProfileFeedbackSummar"
         component={ProfileFeedbackScreen}
-        options={{ headerShown: true, headerTitle: 'Terms of service', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Terms of service', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="SettingsScreen"
         component={SettingsScreen}
-        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="DeleteAccountReasonScreen"
         component={DeleteAccountReasonScreen}
-        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="DeleteAccountConfirmScreen"
         component={DeleteAccountConfirmScreen}
-        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="PricingScreen"
         component={PricingScreen}
-        options={{ headerShown: true, headerTitle: 'PricingScreen', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="PaymentStatusScreen"
         component={PaymentStatusScreen}
-        options={{ headerShown: true, headerTitle: 'PaymentStatusScreen', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'PaymentStatusScreen', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="UpdateProfileScreen"
         component={UpdateProfileScreen}
-        options={{ headerShown: true, headerTitle: 'Your Profile', headerTitleAlign: 'center'}}
+        options={{ headerShown: true, headerTitle: 'Your Profile', headerTitleAlign: 'center' }}
       />
 
 

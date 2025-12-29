@@ -29,7 +29,7 @@ const AuthHeader = ({
         {showBack ? (
           <TouchableOpacity onPress={handleBack} style={styles.backBtn}>
             <Image
-              source={require('../../assets/icons/angle-small-right.png')}
+              source={require('../../assets/icons/angle-small-back.png')}
               style={styles.backIcon}
               resizeMode="contain"
             />
@@ -40,9 +40,9 @@ const AuthHeader = ({
 
         {showLogo ? (
           <Image
-            source={require('../../assets/images/recroot-logo-header.png')}
-            style={{ width: 109, height: 24}}
-            // resizeMode="contain"
+            source={require('../../assets/images/recroot-logo2.png')}
+            style={{ width: 109, height: 24 }}
+          // resizeMode="contain"
           />
         ) : (
           <View style={styles.sidePlaceholder} />
@@ -72,19 +72,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     // justifyContent: 'space-between',
-    gap:8,
+    gap: 8,
     marginBottom: 24,
-    paddingVertical:10
+    paddingVertical: 10
   },
   backBtn: {
-    width: 32,
-    height: 32,
+    width: 24,
+    height: 24,
+    borderRadius:24,
+    backgroundColor:'#F5F5F51A',
     justifyContent: 'center',
     alignItems: 'center',
   },
   backIcon: {
-    width: 24,
-    height: 24,
+    width: 7.17,
+    height: 14,
   },
   sidePlaceholder: {
     width: 32,
@@ -98,13 +100,13 @@ const styles = StyleSheet.create({
     fontSize: 40,
     lineHeight: 56,
     fontWeight: '500',
+    fontFamily: Fonts.Medium,
     color: '#000',
   },
   subtitle: {
     fontSize: 14,
     lineHeight: 24,
-    fontWeight: '400',
-    color: '#2A2A2A',
+    fontFamily: Fonts.Regular, color: '#2A2A2A',
     marginTop: 4,
   },
 });

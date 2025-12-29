@@ -1,21 +1,39 @@
 import React, { useRef } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
+import { Fonts } from '../../constants/fonts';
 
 const OtpInput = ({ length = 4 , value, onChange }) => {
    const inputs = useRef([]);
 
+  // const handleChange = (text, index) => {
+  //   const otpArray = value.split('');
+  //   otpArray[index] = text;
+  //   const updatedOtp = otpArray.join('');
+  //   onChange(updatedOtp);
+
+  //   // Auto focus next box
+  //   if (text && index < length - 1) {
+  //     inputs.current[index + 1]?.focus();
+  //   }
+  // };
+
   const handleChange = (text, index) => {
     const otpArray = value.split('');
-    otpArray[index] = text;
-    const updatedOtp = otpArray.join('');
-    onChange(updatedOtp);
 
-    // Auto focus next box
+    otpArray[index] = text;
+    onChange(otpArray.join(''));
+
+    // Move to next input on enter
     if (text && index < length - 1) {
       inputs.current[index + 1]?.focus();
     }
   };
 
+  const handleKeyPress = ({ nativeEvent }, index) => {
+    if (nativeEvent.key === 'Backspace' && !value[index] && index > 0) {
+      inputs.current[index - 1]?.focus();
+    }
+  };
   return (
      <View style={styles.container}>
       {Array.from({ length }).map((_, i) => (
@@ -27,6 +45,7 @@ const OtpInput = ({ length = 4 , value, onChange }) => {
           style={styles.input}
           value={value[i] || ''}
           onChangeText={(text) => handleChange(text, i)}
+          onKeyPress={(e) => handleKeyPress(e, i)}
         />
       ))}
     </View>
@@ -48,8 +67,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor:'#fff',
     fontSize: 18,
-    lineHeight:28,
-    color:'rgba(36, 36, 36, 1)'
+    lineHeight: 28,
+    fontFamily: Fonts.Regular,
+    color: '#242424',
   },
 });
 

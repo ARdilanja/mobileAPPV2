@@ -1,12 +1,13 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, Dimensions, View , Image} from 'react-native';
+import { Fonts } from '../../constants/fonts';
 
 const screenWidth = Dimensions.get("window").width;
 
 const AuthButton = ({ text, onPress, style, icon ,iconWidth = 22,}) => {
   return (
-   <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-      <View style={styles.content}>
+   <TouchableOpacity style={[styles.socialbutton, style]} onPress={onPress}>
+      <View style={styles.socialcontent}>
          {icon && (
           <Image
             source={icon}
@@ -14,14 +15,14 @@ const AuthButton = ({ text, onPress, style, icon ,iconWidth = 22,}) => {
             // resizeMode="contain"
           />
         )}
-        <Text style={styles.text}>{text}</Text>
+        <Text style={styles.socialtext}>{text}</Text>
       </View>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  button: {
+  socialbutton: {
     backgroundColor: '#fff',
     borderRadius: 48,
     paddingVertical: 14,
@@ -37,17 +38,18 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
    
-   content: {
+   socialcontent: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10, 
   },
-  text: {
+  socialtext: {
     color: '#000',
     fontSize: 18,
     lineHeight:28,
     fontWeight: '400',
+     fontFamily:Fonts.Regular,
   },
 });
 

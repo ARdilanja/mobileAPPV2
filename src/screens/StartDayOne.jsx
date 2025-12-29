@@ -52,7 +52,7 @@ const StartDayOne = () => {
               <Text style={styles.highlight}>starts today</Text>
             </Text>
           </View>
-         
+
           <TouchableOpacity
             style={styles.button}
             onPress={() =>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: 'space-between',
     height: screenHeight,
-    position:'relative'
+    position: 'relative'
   },
   topSection: {
     width: '100%',
@@ -141,8 +141,8 @@ const styles = StyleSheet.create({
   },
   button: {
     width: screenWidth - 32,
-    position:'absolute',
-    bottom:110,
+    position: 'absolute',
+    bottom: 110,
     backgroundColor: 'rgba(1, 120, 255, 1)',
     borderRadius: 48,
     paddingVertical: 16,
@@ -156,9 +156,10 @@ const styles = StyleSheet.create({
     color: '#2A2A2A',
     textAlign: 'center',
   },
-  link: { color: '#1a73e8', fontWeight: '600',position:'absolute',
-    textDecorationStyle:'solid',
-    bottom:70,
-    textDecorationLine:'underline' 
+  link: {
+    color: '#1a73e8', fontWeight: '600', position: 'absolute',
+    textDecorationStyle: 'solid',
+    bottom: 70,
+    textDecorationLine: 'underline'
   },
 });
