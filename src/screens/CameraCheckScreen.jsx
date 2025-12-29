@@ -22,7 +22,8 @@ import { Fonts } from "../constants/fonts";
 
 
 export default function CameraCheckScreen({ navigation, route }) {
-    const { roomName } = route.params;
+    const { roomName, interviewId, cid } = route.params;
+
     const [token, setToken] = useState(null);
     const [ready, setReady] = useState(false);
 
@@ -94,7 +95,10 @@ export default function CameraCheckScreen({ navigation, route }) {
                             navigation.replace("LiveRoomScreen", {
                                 token,
                                 roomName,
+                                interviewId,
+                                cid,
                             });
+
                         }}
                     >
                         <Image

@@ -55,7 +55,8 @@ export default function CameraCheckScreen({ navigation }) {
 
   const goNext = () => {
     videoTrack?.stop();
-    navigation.replace("LiveRoom");
+    navigation.replace("LiveRoom", route.params);
+
   };
 
   return (
