@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
+import { Fonts } from '../constants/fonts';
 
 const { width, height } = Dimensions.get('window');
 
@@ -73,7 +74,7 @@ export default function Home() {
           >
             <View style={styles.streakBox}>
               <Text style={styles.streakValue}>40</Text>
-              <Text style={styles.streakLabel}>Earned points</Text>
+              <Text style={styles.streakLabel}>Garned {'\n'}points</Text>
             </View>
           </ImageBackground>
 
@@ -244,14 +245,14 @@ const styles = StyleSheet.create({
 
   streakValue: {
     fontSize: 32 * scale,
-    fontWeight: '700',
+    // fontWeight: '700',
+    fontFamily:Fonts.Bold,
     color: '#FFFFFF',
   },
 
   streakLabel: {
     fontSize: 12 * scale,
     color: '#EAF2FF',
-    width: Math.round(scale * 45),
   },
 
   journeyCard: {
@@ -321,16 +322,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFECEC',
   },
 
-  dayText: {
-    fontFamily: 'IBMPlexSans-Regular',
-    fontSize: 12 * scale,
-    color: '#666',
-  },
-
-  activeDayText: {
-    color: '#2D6BFF',
-    fontFamily: 'IBMPlexSans-Bold',
-  },
+ dayText: {
+  fontFamily: Fonts.Regular,
+  fontSize: 12 * scale,
+  color: '#666',
+},
+activeDayText: {
+  color: '#2D6BFF',
+  fontFamily: Fonts.Bold,
+},
 
   redDayText: {
     color: '#E53935',
