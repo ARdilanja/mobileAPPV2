@@ -134,6 +134,7 @@ import {
 } from "react-native";
 
 import ChoiceCard from "../../components/PracticeInterview/ChoiceCard";
+import { Fonts } from "../../constants/fonts";
 
 export default function PracticeStartScreen({ navigation }) {
     const [selected, setSelected] = useState(null);
@@ -236,7 +237,8 @@ const styles = StyleSheet.create({
 
     titleText: {
         fontSize: 24,
-        fontWeight: "700",
+        fontFamily:Fonts.Medium,
+        fontWeight: "500",
         textAlign: "center",
         lineHeight: 32,
         color: "#2A2A2A",
