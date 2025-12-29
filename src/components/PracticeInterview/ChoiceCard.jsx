@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 14,
         fontFamily: Fonts.Regular,
-        color: "#111827",
+        fontWeight:"400",
+        color: "#2A2A2A",
         flexShrink: 1,     // 👈 KEY FIX
     },
 
