@@ -1,86 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { View, Text, StyleSheet, Pressable, Platform } from "react-native";
-// import { request, PERMISSIONS, RESULTS } from "react-native-permissions";
-
-// export default function MicCheckScreen({ navigation }) {
-//     const [success, setSuccess] = useState(false);
-
-//     useEffect(() => {
-//         checkMic();
-//     }, []);
-
-//     const checkMic = async () => {
-//         const result = await request(
-//             Platform.OS === "ios"
-//                 ? PERMISSIONS.IOS.MICROPHONE
-//                 : PERMISSIONS.ANDROID.RECORD_AUDIO
-//         );
-
-//         if (result === RESULTS.GRANTED) {
-//             setTimeout(() => setSuccess(true), 800);
-//         }
-//     };
-
-//     return (
-//         <View style={styles.container}>
-//             <Text style={styles.title}>Mic Check</Text>
-
-//             {!success ? (
-//                 <View style={styles.box}>
-//                     <Text>🎤 Checking microphone…</Text>
-//                 </View>
-//             ) : (
-//                 <View style={styles.success}>
-//                     <Text style={styles.check}>✓</Text>
-//                     <Text>Microphone Check Successful</Text>
-//                 </View>
-//             )}
-
-//             {success && (
-//                 <Pressable
-//                     style={styles.nextBtn}
-//                     onPress={() => navigation.navigate("CameraCheckScreen")}
-//                 >
-//                     <Text style={styles.arrow}>›</Text>
-//                 </Pressable>
-//             )}
-//         </View>
-//     );
-// }
-
-// const styles = StyleSheet.create({
-//     container: { flex: 1, alignItems: "center", paddingTop: 80 },
-//     title: { fontSize: 16, fontWeight: "600" },
-//     box: {
-//         marginTop: 100,
-//         width: 260,
-//         height: 80,
-//         borderWidth: 1,
-//         justifyContent: "center",
-//         alignItems: "center",
-//     },
-//     success: {
-//         marginTop: 100,
-//         padding: 24,
-//         borderRadius: 12,
-//         backgroundColor: "#F4FFF8",
-//         alignItems: "center",
-//     },
-//     check: { fontSize: 28, color: "#1BB55C" },
-//     nextBtn: {
-//         marginTop: 40,
-//         width: 56,
-//         height: 56,
-//         borderRadius: 28,
-//         backgroundColor: "#1E6CFF",
-//         alignItems: "center",
-//         justifyContent: "center",
-//     },
-//     arrow: { color: "#FFF", fontSize: 28 },
-// });
-
-
-
 
 import React, { useRef, useState } from "react";
 import {
@@ -97,7 +14,7 @@ import SuccessModal from "../components/SuccessModal";
 import { Fonts } from "../constants/fonts";
 
 export default function MicCheckScreen({ navigation, route }) {
-    const { roomName } = route.params;
+    const { roomName, interviewId, cid } = route.params;
     const [status, setStatus] = useState("idle");
     // idle | listening | success
 
@@ -202,7 +119,11 @@ export default function MicCheckScreen({ navigation, route }) {
                 ) : (
                     <Pressable
                         style={styles.circleBtn}
-                        onPress={() => navigation.navigate("CameraCheckScreen", { roomName })}
+                        onPress={() => navigation.navigate("CameraCheckScreen", {
+                            roomName,
+                            interviewId,
+                            cid,
+                        })}
                     >
                         <Image
                             source={require("../assets/images/Next_arrow.png")}
@@ -268,11 +189,11 @@ const styles = StyleSheet.create({
         height: 48,
     },
     successText: {
-    fontSize: 16,
-    fontFamily: Fonts.Medium,
-    color: "#333",
-    textAlign: "center",
-    marginTop: 8,
-},
+        fontSize: 16,
+        fontFamily: Fonts.Medium,
+        color: "#333",
+        textAlign: "center",
+        marginTop: 8,
+    },
 
 });

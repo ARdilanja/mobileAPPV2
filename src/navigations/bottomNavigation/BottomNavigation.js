@@ -6,6 +6,7 @@ import EmployerInterviewScreen from '../../screens/EmployerInterviewScreen';
 import CompletedInterviewsScreen from '../../screens/CompletedInterviewsScreen';
 import Dashboard from '../../screens/Dashboard';
 import DrawerHeader from '../../components/DrawerHeader';
+import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -56,7 +57,7 @@ const BottomNavigation = () => {
       />
       <Tab.Screen
         name="MyProfile"
-        component={EditProfileScreen}
+        component={PracticeStartScreen}
         options={{
           headerShown:true,
           title: 'MyProfile',
