@@ -1,74 +1,25 @@
 
-
-// import React from "react";
-// import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-
-// export default function ChoiceCard({ icon, text, active, onPress }) {
-//     return (
-//         <TouchableOpacity
-//             onPress={onPress}
-//             activeOpacity={0.8}
-//             style={[
-//                 styles.card,
-//                 active && styles.cardActive,
-//             ]}
-//         >
-//             <Image source={icon} style={styles.icon} />
-//             <Text style={[styles.text, active && styles.textActive]}>
-//                 {text}
-//             </Text>
-//         </TouchableOpacity>
-//     );
-// }
-
-// const styles = StyleSheet.create({
-//     card: {
-//         flexDirection: "row",
-//         // alignItems: "center",
-//         alignSelf: "flex-start",   // Hug content
-//         paddingVertical: 8,        // 👈 Figma
-//         paddingHorizontal: 12,     // 👈 Figma
-//         borderRadius: 24,          // 👈 Figma
-//         borderWidth: 1,            // 👈 Figma
-//         borderColor: "#E5E7EB",
-//         backgroundColor: "#FFFFFF",
-//     },
-//     cardActive: {
-//         backgroundColor: "#E8F1FF",
-//         borderColor: "#1677FF",
-//     },
-//     icon: {
-//         width: 16,
-//         height: 16,
-//         resizeMode: "contain",
-//         marginRight: 4,            // 👈 Figma gap
-//     },
-//     text: {
-//         fontSize: 12,              // Better legibility than 10.5
-//         fontWeight: "500",
-//         color: "#111827",
-//     },
-//     textActive: {
-//         color: "#1677FF",
-//         fontWeight: "600",
-//     },
-// });
-
-
-
-
 import React from "react";
 import { Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { Fonts } from "../../constants/fonts";
 
-export default function ChoiceCard({ icon, text, active, onPress }) {
+export default function ChoiceCard({ icon, text, active, onPress, full }) {
     return (
         <TouchableOpacity
             onPress={onPress}
             activeOpacity={0.85}
-            style={[styles.card, active && styles.cardActive]}
+            style={[
+                styles.card,
+                !full && styles.halfWidth,   // only first row
+                full && styles.hugContent,   // third card hugs text
+                active && styles.cardActive,
+            ]}
         >
             <Image source={icon} style={styles.icon} />
-            <Text style={[styles.text, active && styles.textActive]}>
+            <Text
+                style={[styles.text, active && styles.textActive]}
+
+            >
                 {text}
             </Text>
         </TouchableOpacity>
@@ -79,15 +30,22 @@ const styles = StyleSheet.create({
     card: {
         flexDirection: "row",
         alignItems: "center",
-        alignSelf: "flex-start",     // hug content
-        paddingVertical: 8,          // 👈 FIGMA
-        paddingHorizontal: 12,       // 👈 FIGMA
-        borderRadius: 24,            // 👈 FIGMA
-        borderWidth: 1,              // 👈 FIGMA
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderRadius: 24,
+        borderWidth: 1,
         borderColor: "#E5E7EB",
         backgroundColor: "#FFFFFF",
+        minWidth: 0,
     },
 
+    halfWidth: {
+        width: "48%",
+    },
+
+    hugContent: {
+        alignSelf: "flex-start", // 👈 left aligned, not centered
+    },
     cardActive: {
         backgroundColor: "#E8F1FF",
         borderColor: "#1677FF",
@@ -97,17 +55,18 @@ const styles = StyleSheet.create({
         width: 16,
         height: 16,
         resizeMode: "contain",
-        marginRight: 4,              // 👈 FIGMA GAP
+        marginRight: 6,
     },
 
     text: {
-        fontSize: 12,
-        fontWeight: "500",
+        fontSize: 14,
+        fontFamily: Fonts.Regular,
         color: "#111827",
+        flexShrink: 1,     // 👈 KEY FIX
     },
 
     textActive: {
         color: "#1677FF",
-        fontWeight: "600",
+        fontFamily: Fonts.Medium,
     },
 });
