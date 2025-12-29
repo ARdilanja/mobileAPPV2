@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
     View,
@@ -10,19 +9,24 @@ import {
 import ChoiceCard from "../../components/PracticeInterview/ChoiceCard";
 import { Fonts } from "../../constants/fonts";
 
+/* Practice interview start screen */
 export default function PracticeStartScreen({ navigation }) {
+
+    /* Holds selected start option */
     const [selected, setSelected] = useState(null);
 
+    /* Navigate to next screen with selected option */
     const handleContinue = () => {
         navigation.navigate("PracticeConversationScreen", {
             startChoice: selected,
         });
     };
 
+    /* Screen UI */
     return (
         <View style={styles.container}>
 
-            {/* ===== CONTENT COLUMN ===== */}
+            {/* Main content */}
             <View style={styles.contentWrapper}>
 
                 {/* Title */}
@@ -32,8 +36,7 @@ export default function PracticeStartScreen({ navigation }) {
                     </Text>
                 </View>
 
-                {/* Row 1 */}
-                {/* Row 1 – EXACTLY 2 IN ROW */}
+                {/* First row options */}
                 <View style={styles.twoColRow}>
                     <ChoiceCard
                         icon={require("../../assets/images/job_desc.png")}
@@ -62,7 +65,7 @@ export default function PracticeStartScreen({ navigation }) {
                     />
                 </View>
 
-                {/* Row 2 – SINGLE CARD */}
+                {/* Second row option */}
                 <View style={styles.singleRow}>
                     <ChoiceCard
                         icon={require("../../assets/images/upload.png")}
@@ -79,10 +82,9 @@ export default function PracticeStartScreen({ navigation }) {
                     />
                 </View>
 
-
             </View>
 
-            {/* Continue Button */}
+            {/* Continue button */}
             <TouchableOpacity
                 disabled={!selected}
                 onPress={handleContinue}
@@ -95,12 +97,10 @@ export default function PracticeStartScreen({ navigation }) {
                 <Text style={styles.continueText}>Continue</Text>
             </TouchableOpacity>
 
-
-
-
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -170,3 +170,8 @@ const styles = StyleSheet.create({
     },
 
 });
+
+
+
+
+

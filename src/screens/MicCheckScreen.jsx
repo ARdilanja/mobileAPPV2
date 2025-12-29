@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from "react";
 import {
     View,
@@ -21,6 +20,7 @@ export default function MicCheckScreen({ navigation, route }) {
     const scaleAnim = useRef(new Animated.Value(1)).current;
     const waveLoop = useRef(null);
 
+    /* Start mic listening animation */
     const startWave = () => {
         console.log("🎤 Mic listening started");
 
@@ -42,12 +42,14 @@ export default function MicCheckScreen({ navigation, route }) {
         waveLoop.current.start();
     };
 
+    /* Stop mic animation and reset state */
     const stopWave = () => {
         console.log("🛑 Mic listening stopped");
         waveLoop.current?.stop();
         scaleAnim.setValue(1);
     };
 
+    /* Handle mic permission and listening flow */
     const handleMicPress = async () => {
         if (status !== "idle") return;
 
@@ -64,7 +66,7 @@ export default function MicCheckScreen({ navigation, route }) {
             console.log("✅ Mic permission granted");
             startWave();
 
-            // ⏱ simulate speaking window
+            // simulate speaking window
             setTimeout(() => {
                 stopWave();
                 console.log("🎉 Voice detected → mic success");
@@ -78,12 +80,13 @@ export default function MicCheckScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            {/* HEADER */}
+
+            {/* Header */}
             <View style={styles.header}>
                 <Text style={styles.headerText}>Mic Check</Text>
             </View>
 
-            {/* CENTER */}
+            {/* Center content */}
             <View style={styles.center}>
                 {status !== "success" && (
                     <Animated.Image
@@ -102,11 +105,10 @@ export default function MicCheckScreen({ navigation, route }) {
                             Microphone check successfully
                         </Text>
                     </SuccessModal>
-
                 )}
             </View>
 
-            {/* BOTTOM BUTTON */}
+            {/* Bottom action button */}
             <View style={styles.bottom}>
                 {status !== "success" ? (
                     <Pressable style={styles.circleBtn} onPress={handleMicPress}>
@@ -119,11 +121,13 @@ export default function MicCheckScreen({ navigation, route }) {
                 ) : (
                     <Pressable
                         style={styles.circleBtn}
-                        onPress={() => navigation.navigate("CameraCheckScreen", {
-                            roomName,
-                            interviewId,
-                            cid,
-                        })}
+                        onPress={() =>
+                            navigation.navigate("CameraCheckScreen", {
+                                roomName,
+                                interviewId,
+                                cid,
+                            })
+                        }
                     >
                         <Image
                             source={require("../assets/images/Next_arrow.png")}

@@ -20,15 +20,13 @@ import { LIVEKIT_URL } from "../config/api";
 import { fetchLiveKitToken } from "../services/livekit";
 import { Fonts } from "../constants/fonts";
 
-
 export default function CameraCheckScreen({ navigation, route }) {
     const { roomName, interviewId, cid } = route.params;
 
     const [token, setToken] = useState(null);
     const [ready, setReady] = useState(false);
 
-
-
+    /* Fetch LiveKit token for camera preview */
     useEffect(() => {
         fetchLiveKitToken({
             roomName,
@@ -42,12 +40,12 @@ export default function CameraCheckScreen({ navigation, route }) {
     return (
         <SafeAreaView style={styles.container}>
 
-            {/* HEADER */}
+            {/* Header */}
             <View style={styles.header}>
                 <Text style={styles.headerText}>Camera Check</Text>
             </View>
 
-            {/* 🎥 CAMERA PREVIEW */}
+            {/* Camera preview */}
             {token && (
                 <LiveKitRoom
                     serverUrl={LIVEKIT_URL}
@@ -61,7 +59,7 @@ export default function CameraCheckScreen({ navigation, route }) {
                 </LiveKitRoom>
             )}
 
-            {/* ✅ SUCCESS MODAL */}
+            {/* Success overlay */}
             {ready && (
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalCard}>
@@ -77,7 +75,7 @@ export default function CameraCheckScreen({ navigation, route }) {
                 </View>
             )}
 
-            {/* 🔵 BOTTOM BUTTON */}
+            {/* Bottom action button */}
             <View style={styles.bottom}>
                 {!ready ? (
                     <Pressable style={styles.circleBtn}>
@@ -98,7 +96,6 @@ export default function CameraCheckScreen({ navigation, route }) {
                                 interviewId,
                                 cid,
                             });
-
                         }}
                     >
                         <Image
@@ -113,12 +110,11 @@ export default function CameraCheckScreen({ navigation, route }) {
     );
 }
 
-/* =========================
-   CAMERA PREVIEW
-========================= */
+/* Camera feed renderer */
 function CameraPreview({ onReady }) {
     const tracks = useTracks([Track.Source.Camera]);
 
+    /* Notify parent when camera track is available */
     useEffect(() => {
         if (tracks.length > 0) {
             console.log("📷 Camera ready");
@@ -143,9 +139,7 @@ function CameraPreview({ onReady }) {
     );
 }
 
-/* =========================
-   STYLES
-========================= */
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

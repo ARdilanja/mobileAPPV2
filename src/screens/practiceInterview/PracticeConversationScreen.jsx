@@ -1,395 +1,3 @@
-// import React, { useState } from "react";
-// import {
-//     View,
-//     Text,
-//     StyleSheet,
-//     ScrollView,
-//     TouchableOpacity,
-//     TextInput,
-//     Image,
-//     Dimensions,
-// } from "react-native";
-
-// import CheckBox from "@react-native-community/checkbox";
-// import { PRACTICE_QUESTIONS } from "./practiceConversationConfig";
-
-// const { width } = Dimensions.get("window");
-
-// const EDIT_ICON = require("../../assets/images/pencil.png");
-// const MIC_ICON = require("../../assets/images/circle-microphone.png");
-// const SEND_ICON = require("../../assets/images/send.png");
-
-// export default function PracticeConversationScreen({ route, navigation }) {
-//     const { startChoice } = route.params;
-
-//     const [step, setStep] = useState(0);
-//     const [multiAnswers, setMultiAnswers] = useState([]);
-//     const [typedText, setTypedText] = useState("");
-
-//     // Maintains full question–answer chat history
-
-//     const [history, setHistory] = useState([
-//         {
-//             question: "Hi James, how do you want to start?",
-//             answer: {
-//                 label: startChoice.label,
-//                 icon: startChoice.icon,
-//             },
-//         },
-//     ]);
-
-//     const currentQuestion = PRACTICE_QUESTIONS[step];
-
-//     // Handles option selection for both single and multi-select questions
-
-//     const handleOptionSelect = (option) => {
-//         if (currentQuestion.type === "multi") {
-//             setMultiAnswers((prev) =>
-//                 prev.includes(option)
-//                     ? prev.filter((o) => o !== option)
-//                     : [...prev, option]
-//             );
-//             return;
-//         }
-
-//         setHistory((prev) => [
-//             ...prev,
-//             { question: currentQuestion.question, answer: option },
-//         ]);
-//         setStep((prev) => prev + 1);
-//     };
-
-//     // Handles sending typed text as an answer
-
-//     const handleSendText = () => {
-//         if (!typedText.trim()) return;
-
-//         if (currentQuestion.type === "multi") {
-//             setMultiAnswers((prev) => [...prev, typedText.trim()]);
-//             setTypedText("");
-//             return;
-//         }
-
-//         setHistory((prev) => [
-//             ...prev,
-//             { question: currentQuestion.question, answer: typedText.trim() },
-//         ]);
-
-//         setTypedText("");
-//         setStep((prev) => prev + 1);
-//     };
-
-//     // Navigates to interview info screen after selections are completed
-
-//     const handleGetStarted = () => {
-//         navigation.navigate("PracticeInterviewInfoScreen");
-//     };
-
-
-//     return (
-//         <View style={styles.container}>
-//             {/* CHAT */}
-//             <ScrollView
-//                 style={styles.chat}
-//                 contentContainerStyle={{ paddingBottom: 180 }}
-//                 showsVerticalScrollIndicator={false}
-//             >
-//                 {/* HISTORY */}
-//                 {history.map((item, index) => (
-//                     <View key={index} style={styles.block}>
-//                         <Text style={styles.questionText}>
-//                             {item.question}
-//                         </Text>
-
-//                         <View style={styles.answerWrap}>
-//                             {/* ===== MULTI ANSWER ===== */}
-//                             {Array.isArray(item.answer) &&
-//                                 item.answer.map((ans) => (
-//                                     <View key={ans} style={styles.answerPill}>
-//                                         <CheckBox
-//                                             value={true}
-//                                             disabled
-//                                             tintColors={{
-//                                                 true: "#FFFFFF",
-//                                                 false: "#FFFFFF",
-//                                             }}
-//                                         />
-//                                         <Text style={styles.answerText}>
-//                                             {ans}
-//                                         </Text>
-//                                     </View>
-//                                 ))}
-
-//                             {/* ===== NORMAL STRING ANSWER ===== */}
-//                             {typeof item.answer === "string" && (
-//                                 <View style={styles.answerPill}>
-//                                     <Text style={styles.answerText}>
-//                                         {item.answer}
-//                                     </Text>
-//                                 </View>
-//                             )}
-
-//                             {/* ===== FIRST ANSWER (ICON + LABEL) ===== */}
-//                             {typeof item.answer === "object" &&
-//                                 !Array.isArray(item.answer) && (
-//                                     <View style={styles.answerEditContainer}>
-//                                         <View style={styles.answerPill}>
-//                                             <Image
-//                                                 source={item.answer.icon}
-//                                                 style={styles.answerIcon}
-//                                             />
-//                                             <Text style={styles.answerText}>
-//                                                 {item.answer.label}
-//                                             </Text>
-//                                         </View>
-
-//                                         {index === 0 && (
-//                                             <TouchableOpacity style={styles.editBelow}>
-//                                                 <Image
-//                                                     source={EDIT_ICON}
-//                                                     style={styles.editIcon}
-//                                                 />
-//                                             </TouchableOpacity>
-//                                         )}
-//                                     </View>
-//                                 )}
-//                         </View>
-//                     </View>
-//                 ))}
-
-//                 {/* CURRENT QUESTION */}
-//                 {currentQuestion && (
-//                     <View>
-//                         <Text style={styles.questionText}>
-//                             {currentQuestion.question}
-//                         </Text>
-
-//                         {currentQuestion.type === "multi" &&
-//                             multiAnswers.length > 0 && (
-//                                 <View style={styles.answerWrap}>
-//                                     {multiAnswers.map((ans) => (
-//                                         <View key={ans} style={styles.answerPill}>
-//                                             <CheckBox
-//                                                 value={true}
-//                                                 disabled
-//                                                 tintColors={{
-//                                                     true: "#FFFFFF",
-//                                                     false: "#FFFFFF",
-//                                                 }}
-//                                             />
-//                                             <Text style={styles.answerText}>
-//                                                 {ans}
-//                                             </Text>
-//                                         </View>
-//                                     ))}
-//                                 </View>
-//                             )}
-//                     </View>
-//                 )}
-//             </ScrollView>
-
-//             {/* OPTIONS */}
-//             {currentQuestion && (
-//                 <View style={styles.options}>
-//                     {currentQuestion.options.map((opt) => {
-//                         const selected =
-//                             currentQuestion.type === "multi" &&
-//                             multiAnswers.includes(opt);
-
-//                         return (
-//                             <TouchableOpacity
-//                                 key={opt}
-//                                 style={styles.optionChip}
-//                                 onPress={() => handleOptionSelect(opt)}
-//                             >
-//                                 {currentQuestion.type === "multi" && (
-//                                     <CheckBox
-//                                         value={selected}
-//                                         onValueChange={() => handleOptionSelect(opt)}
-//                                         tintColors={{
-//                                             true: "#1677FF",
-//                                             false: "#9CA3AF",
-//                                         }}
-//                                         style={styles.checkbox}
-//                                     />
-
-//                                 )}
-//                                 <Text style={styles.optionText}>{opt}</Text>
-//                             </TouchableOpacity>
-//                         );
-//                     })}
-//                 </View>
-//             )}
-
-//             {/* INPUT / GET STARTED */}
-//             {currentQuestion?.type === "multi" ? (
-//                 multiAnswers.length > 0 && (
-//                     <TouchableOpacity
-//                         style={styles.getStartedBtn}
-//                         onPress={handleGetStarted}
-//                     >
-//                         <Text style={styles.getStartedText}>
-//                             Get Started
-//                         </Text>
-//                     </TouchableOpacity>
-//                 )
-//             ) : (
-//                 <View style={styles.inputWrapper}>
-//                     <TextInput
-//                         value={typedText}
-//                         onChangeText={setTypedText}
-//                         placeholder="Type here..."
-//                         style={styles.textInput}
-//                     />
-
-//                     <TouchableOpacity>
-//                         <Image source={MIC_ICON} style={styles.icon} />
-//                     </TouchableOpacity>
-
-//                     <TouchableOpacity onPress={handleSendText}>
-//                         <Image source={SEND_ICON} style={styles.icon} />
-//                     </TouchableOpacity>
-//                 </View>
-//             )}
-//         </View>
-//     );
-// }
-
-
-// const styles = StyleSheet.create({
-//     container: { flex: 1, backgroundColor: "#F5F5F5" },
-//     chat: { padding: width * 0.05 },
-//     block: { marginBottom: 20 },
-
-//     questionText: {
-//         fontSize: 14,
-//         fontWeight: "500",
-//         marginBottom: 10,
-//     },
-
-//     checkbox: {
-//     transform: [{ scaleX: 0.75 }, { scaleY: 0.75 }], 
-// },
-//     answerWrap: {
-//         alignItems: "flex-end",
-//         marginTop: 10,
-//     },
-
-//     answerPill: {
-//         flexDirection: "row",
-//         alignItems: "center",
-//         backgroundColor: "#0178FF",
-//         paddingHorizontal: 14,
-//         paddingVertical: 8,
-//         borderRadius: 18,
-//         marginBottom: 6,
-//         gap: 6,
-//     },
-
-//     answerText: {
-//         color: "#fff",
-//         fontSize: 14,
-//         fontWeight: "500",
-//     },
-
-//     answerEditContainer: {
-//         alignItems: "flex-end",
-//     },
-
-//     answerIcon: {
-//         width: 16,
-//         height: 16,
-//         resizeMode: "contain",
-//         marginRight: 6,
-//         tintColor: "#FFFFFF",
-//     },
-
-//     editBelow: {
-//         marginTop: 6,
-//         marginRight: 6,
-//     },
-
-//     editIcon: {
-//         width: 16,
-//         height: 16,
-//         resizeMode: "contain",
-//     },
-
-//     options: {
-//         position: "absolute",
-//         bottom: 90,
-//         left: width * 0.05,
-//         right: width * 0.05,
-//         flexDirection: "row",
-//         flexWrap: "wrap",
-//     },
-
-//     optionChip: {
-//         flexDirection: "row",
-//         alignItems: "center",
-//         borderWidth: 1,
-//         borderColor: "#E5E7EB",
-//         paddingHorizontal: 12,
-//         paddingVertical: 6,
-//         borderRadius: 18,
-//         marginRight: 8,
-//         marginBottom: 8,
-//         gap: 6,
-//     },
-
-//     optionText: {
-//         fontSize: 13,
-//         fontWeight: "500",
-//     },
-
-//     inputWrapper: {
-//         position: "absolute",
-//         bottom: 20,
-//         left: width * 0.05,
-//         right: width * 0.05,
-//         flexDirection: "row",
-//         alignItems: "center",
-//         backgroundColor: "#E5E7EB",
-//         borderRadius: 28,
-//         paddingHorizontal: 14,
-//         height: 52,
-//     },
-
-//     textInput: {
-//         flex: 1,
-//         fontSize: 14,
-//     },
-
-//     icon: {
-//         width: 24,
-//         height: 24,
-//         resizeMode: "contain",
-//         marginHorizontal: 6,
-//     },
-
-//     getStartedBtn: {
-//         position: "absolute",
-//         bottom: 20,
-//         left: width * 0.05,
-//         right: width * 0.05,
-//         height: 52,
-//         backgroundColor: "#1677FF",
-//         borderRadius: 28,
-//         alignItems: "center",
-//         justifyContent: "center",
-//     },
-
-//     getStartedText: {
-//         color: "#fff",
-//         fontSize: 18,
-//         fontWeight: "700",
-//     },
-// });
-
-
-
-
-
 import React, { useState } from "react";
 import {
     View,
@@ -403,10 +11,7 @@ import {
 } from "react-native";
 
 import { PRACTICE_QUESTIONS } from "./practiceConversationConfig";
-
-
 import { KeyboardAvoidingView, Platform } from "react-native";
-
 import { Fonts } from "../../constants/fonts";
 
 const { width } = Dimensions.get("window");
@@ -416,12 +21,11 @@ const THREE_COL_WIDTH = Math.min(
     120
 );
 
-
 const EDIT_ICON = require("../../assets/images/pencil.png");
 const MIC_ICON = require("../../assets/images/circle-microphone.png");
 const SEND_ICON = require("../../assets/images/send.png");
 
-// Custom 16x16 Checkbox
+/* Custom checkbox used for option selection and answer bubbles */
 const CustomCheckbox = ({ selected, isAnswerBubble = false }) => (
     <View style={[
         styles.checkboxBase,
@@ -438,6 +42,7 @@ const CustomCheckbox = ({ selected, isAnswerBubble = false }) => (
 
 export default function PracticeConversationScreen({ route, navigation }) {
     const { startChoice } = route.params;
+
     const [step, setStep] = useState(0);
     const [multiAnswers, setMultiAnswers] = useState([]);
     const [typedText, setTypedText] = useState("");
@@ -450,6 +55,7 @@ export default function PracticeConversationScreen({ route, navigation }) {
 
     const currentQuestion = PRACTICE_QUESTIONS[step];
 
+    /* Handles option selection for single and multi choice questions */
     const handleOptionSelect = (option) => {
         if (currentQuestion.type === "multi") {
             setMultiAnswers((prev) =>
@@ -461,6 +67,7 @@ export default function PracticeConversationScreen({ route, navigation }) {
         setStep((prev) => prev + 1);
     };
 
+    /* Sends typed text answer and moves to next question */
     const handleSendText = () => {
         if (!typedText.trim()) return;
         setHistory((prev) => [...prev, { question: currentQuestion.question, answer: typedText.trim() }]);
@@ -468,19 +75,21 @@ export default function PracticeConversationScreen({ route, navigation }) {
         setStep((prev) => prev + 1);
     };
 
+    /* Moves user to interview info screen after multi select */
     const handleGetStarted = () => {
-
         navigation.navigate("PracticeInterviewInfoScreen");
     };
 
     return (
         <View style={styles.container}>
+
+            {/* Chat history and current questions */}
             <ScrollView
                 style={styles.chat}
                 contentContainerStyle={{ paddingBottom: 220 }}
                 showsVerticalScrollIndicator={false}
             >
-                {/* PREVIOUS CHAT HISTORY */}
+                {/* Previous answered questions */}
                 {history.map((item, index) => (
                     <View key={index} style={styles.block}>
                         <Text style={styles.questionText}>{item.question}</Text>
@@ -518,12 +127,12 @@ export default function PracticeConversationScreen({ route, navigation }) {
                     </View>
                 ))}
 
-                {/* CURRENT ACTIVE QUESTION (ALWAYS VISIBLE) */}
+                {/* Active question */}
                 {currentQuestion && (
                     <View style={styles.block}>
                         <Text style={styles.questionText}>{currentQuestion.question}</Text>
 
-                        {/* Selected answers show here immediately for multi-select */}
+                        {/* Live preview for multi select answers */}
                         {currentQuestion.type === "multi" && multiAnswers.length > 0 && (
                             <View style={styles.multiAnswerContainer}>
                                 {multiAnswers.map((ans) => (
@@ -538,7 +147,7 @@ export default function PracticeConversationScreen({ route, navigation }) {
                 )}
             </ScrollView>
 
-            {/* OPTIONS SECTION */}
+            {/* Options for current question */}
             {currentQuestion && (
                 <View style={styles.optionsArea}>
                     <View style={[
@@ -567,19 +176,18 @@ export default function PracticeConversationScreen({ route, navigation }) {
                 </View>
             )}
 
-            {/* BOTTOM BUTTON/INPUT */}
+            {/* Bottom input or action button */}
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 keyboardVerticalOffset={80}
             >
                 <View style={styles.bottomWrapper}>
                     {currentQuestion?.type === "multi" ? (
-                        // Show Get Started button only when items are selected
                         multiAnswers.length > 0 ? (
                             <TouchableOpacity style={styles.getStartedBtn} onPress={handleGetStarted}>
                                 <Text style={styles.getStartedText}>Get Started</Text>
                             </TouchableOpacity>
-                        ) : null // Or keep input wrapper here if you want typing for multi-select
+                        ) : null
                     ) : (
                         <View style={styles.inputWrapper}>
                             <TextInput
@@ -604,7 +212,7 @@ const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: "#F9FAFB" },
     chat: { padding: width * 0.05 },
     block: { marginBottom: 24 },
-    questionText: { fontSize: 14, fontWeight: "400", color: "#4B5563", marginBottom: 10, fontFamily: Fonts.Regular },
+    questionText: { fontSize: 14, fontWeight: "400", color: "#2A2A2A", marginBottom: 10, fontFamily: Fonts.Regular },
 
     checkboxBase: {
         width: 16,
@@ -666,7 +274,7 @@ const styles = StyleSheet.create({
         borderColor: "#D9D9D9",
         borderRadius: 24,
     },
-    optionText: { fontSize: 13, fontWeight: "400", color: "#374151", fontFamily: Fonts.Regular },
+    optionText: { fontSize: 13, fontWeight: "400", color: "#2A2A2A", fontFamily: Fonts.Regular },
 
     bottomWrapper: {
         position: "absolute",

@@ -315,7 +315,6 @@ export default function LiveRoomScreen({ route, navigation }) {
     const [loadingQuestions, setLoadingQuestions] = useState(true);
     const [isAILoading, setIsAILoading] = useState(false);
 
-    // ⭐ NEW STATE (IMPORTANT)
     const [maxFollowUps, setMaxFollowUps] = useState(3);
 
     const [startTime, setStartTime] = useState(Date.now());
@@ -389,6 +388,7 @@ export default function LiveRoomScreen({ route, navigation }) {
     };
 
     // ---------------- TERMINATE ----------------
+    
     // const terminateInterview = async (reason) => {
     //     if (terminatedRef.current) return;
     //     terminatedRef.current = true;

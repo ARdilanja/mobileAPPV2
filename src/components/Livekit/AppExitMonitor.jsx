@@ -1,9 +1,8 @@
 import { useEffect } from "react";
 import { AppState, BackHandler } from "react-native";
 
-/**
- * Detects app close, background & back press
- */
+/* Monitors app exit, background, and back press */
+
 export default function AppExitMonitor({ onTerminate }) {
     useEffect(() => {
         const appStateSub = AppState.addEventListener("change", (state) => {

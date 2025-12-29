@@ -126,7 +126,7 @@ export default function SubjectExpertise({
 }) {
   if (!data) return null;
 
-   const cleanHtml = (text) => {
+  const cleanHtml = (text) => {
     if (!text) return "";
     return text
       .replace(/<[^>]*>?/gm, "") // Removes all <p>, <div>, etc.

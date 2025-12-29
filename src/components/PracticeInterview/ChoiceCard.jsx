@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     },
 
     hugContent: {
-        alignSelf: "flex-start", // 👈 left aligned, not centered
+        alignSelf: "flex-start", 
     },
     cardActive: {
         backgroundColor: "#E8F1FF",
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         fontFamily: Fonts.Regular,
         fontWeight:"400",
         color: "#2A2A2A",
-        flexShrink: 1,     // 👈 KEY FIX
+        flexShrink: 1,     // KEY FIX for overflow text
     },
 
     textActive: {

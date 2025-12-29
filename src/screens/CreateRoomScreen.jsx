@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 
+// Generate the random room id before enter room
+
 function generateSimpleId() {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let id = "";
@@ -13,6 +15,8 @@ function generateSimpleId() {
 export default function CreateRoomScreen({ navigation }) {
     const [roomName, setRoomName] = useState("");
 
+    // take generated id
+    
     useEffect(() => {
         setRoomName(generateSimpleId());
     }, []);
