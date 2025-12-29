@@ -88,8 +88,8 @@ import {
 } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
-import Gradient from '../../constants/Gradient';
 import { useNavigation } from '@react-navigation/native';
+import Gradient from '../../constants/Gradient';
 
 const screenWidth = Dimensions.get("window").width;
 

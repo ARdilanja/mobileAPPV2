@@ -104,7 +104,6 @@ const BottomNavigation = () => {
          options={{
            headerShown:true,
            headerTitle: 'Profile',
-           title: 'My Profile',
            headerTitleAlign:'center'
          }}
        />
