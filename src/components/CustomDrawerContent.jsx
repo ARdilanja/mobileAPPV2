@@ -287,7 +287,9 @@ const CustomDrawerContent = () => {
                 <DrawerItem
                     icon={require('../assets/icons/interview.png')}
                     label="Chat"
-                    onPress={() => navigation.navigate('ChatOnboardingScreen')}
+                    onPress={() => navigation.navigate('MainApp', {
+                        screen: 'PracticeStartScreen',
+                    })}
                 />
             </View>
 
