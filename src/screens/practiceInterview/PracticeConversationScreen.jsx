@@ -83,15 +83,11 @@ export default function PracticeConversationScreen({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-  <StatusBar
-                backgroundColor="#0178FF"
-                barStyle="light-content"
-                translucent={true}
-            />
+  
             {/* Chat history and current questions */}
             <ScrollView
                 style={styles.chat}
-                contentContainerStyle={{ paddingBottom: 220 }}
+                // contentContainerStyle={{ paddingBottom: 220 }}
                 showsVerticalScrollIndicator={false}
             >
                 {/* Previous answered questions */}

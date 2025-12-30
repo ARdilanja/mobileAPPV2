@@ -6,6 +6,8 @@ import {
     TouchableOpacity,
     StatusBar,
 } from "react-native";
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 import ChoiceCard from "../../components/PracticeInterview/ChoiceCard";
 import { Fonts } from "../../constants/fonts";
@@ -23,11 +25,25 @@ export default function PracticeStartScreen({ navigation }) {
         });
     };
 
+    useFocusEffect(
+        useCallback(() => {
+            // FORCE blue status bar when this screen is focused
+            StatusBar.setBarStyle('light-content');
+            StatusBar.setBackgroundColor('#0178FF');
+
+            return () => {
+                // optional reset (safe)
+                StatusBar.setBarStyle('dark-content');
+                StatusBar.setBackgroundColor('transparent');
+            };
+        }, [])
+    );
+
     /* Screen UI */
     return (
         <View style={styles.container}>
             {/* <StatusBar hidden /> */}
-        
+
             <StatusBar
                 backgroundColor="#0178FF"
                 barStyle="light-content"

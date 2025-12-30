@@ -84,7 +84,7 @@ const BottomNavigation = () => {
         name="StartInterview"
         component={EmployerInterviewScreen}
         options={{
-          headerTitle:'Start Interview',
+          headerTitle: 'Start Interview',
           headerTitleAlign: 'center',
           headerShown: true, headerStyle: {
             backgroundColor: "#0178FF",
@@ -98,7 +98,8 @@ const BottomNavigation = () => {
         options={{
           headerTitle: 'Start Practice',
           headerTitleAlign: 'center',
-          headerShown: true, headerStyle: {
+          headerShown: true,
+          headerStyle: {
             backgroundColor: "#0178FF",
           },
           headerTintColor: '#F5F5F5'
@@ -108,16 +109,16 @@ const BottomNavigation = () => {
         name="ProfileTopScreen"
         component={ProfileTopScreen}
         options={{
-          headerShown:false
+          headerShown: false
         }}
-        // options={{
-        //   headerTitle:"Profile",
-        //   headerTitleAlign: 'center',
-        //   headerShown: true, headerStyle: {
-        //     backgroundColor: "#0178FF",
-        //   },
-        //   headerTintColor: '#F5F5F5'
-        // }}
+      // options={{
+      //   headerTitle:"Profile",
+      //   headerTitleAlign: 'center',
+      //   headerShown: true, headerStyle: {
+      //     backgroundColor: "#0178FF",
+      //   },
+      //   headerTintColor: '#F5F5F5'
+      // }}
       />
     </Tab.Navigator>
   );
