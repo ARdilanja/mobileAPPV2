@@ -12,17 +12,50 @@ import {
   StatusBar,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import MaskedView from '@react-native-masked-view/masked-view';
+import { Fonts } from '../constants/fonts';
 
 const { width, height } = Dimensions.get('window');
-const scale = width / 375;
+
+const BASE_WIDTH = 390;
+const scale = width / BASE_WIDTH;
+
+const HERO_HEIGHT = Math.round(scale * 320);
+
+const STREAK_WIDTH = Math.round(scale * 100);
+const STREAK_HEIGHT = Math.round(scale * 88);
+
+const JOURNEY_WIDTH = Math.round(scale * 244);
+const JOURNEY_HEIGHT = Math.round(scale * 88);
+
+const DAY_SIZE = Math.round(scale * 42);
+
+const PRACTICE_CARD_HEIGHT = Math.round(scale * 40);
+
+const CONFIDENCE_HEIGHT = Math.round(scale * 90);
+const HORIZONTAL_GUTTER = Math.round(scale * 16);
+
+const getDayIcon = day => {
+  if (day < 3) return require('../assets/images/finish_task.png');
+  if (day === 3) return require('../assets/images/red-cross.png');
+  if (day === 4) return require('../assets/images/round_day1.png');
+  return require('../assets/images/snooze.png');
+};
 
 export default function Home() {
   const navigation = useNavigation();
-  return (
-    <View style={styles.container}>
-      <StatusBar />
+  const notificationState = 'active'; // 'default' | 'tooltip' | 'active'
 
-      {/* <ScrollView showsVerticalScrollIndicator={false}> */}
+  return (
+    <LinearGradient
+      colors={['#FFFFFF', '#F2F2F2']} 
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      style={styles.container}
+    >
+    <StatusBar  barStyle="light-content" backgroundColor="#48474784"  translucent={true}  />
+
+      <View style={{ flex: 1 }}>
         <View style={styles.heroWrapper}>
           <ImageBackground
             source={require('../assets/images/first-img.jpg')}
@@ -34,8 +67,39 @@ export default function Home() {
               style={styles.gradient}
             />
           </ImageBackground>
+          {/* 🔔 NOTIFICATION UI (SAFE) */}
+          {notificationState === 'default' && (
+            <TouchableOpacity style={styles.notifyDefault} activeOpacity={0.8}>
+              <Image
+                source={require('../assets/images/notification.png')}
+                style={styles.notifyIcon}
+              />
+            </TouchableOpacity>
+          )}
 
-          {/* STREAK FLOAT */}
+          {notificationState === 'tooltip' && (
+            <View style={styles.notifyTooltipContainer}>
+              <View style={styles.tooltipBox}>
+                <Text style={styles.tooltipText}>You have 1 notification</Text>
+
+                <Image
+                  source={require('../assets/images/notification_active.png')}
+                  style={styles.tooltipIcon}
+                />
+              </View>
+            </View>
+          )}
+
+          {notificationState === 'active' && (
+            <TouchableOpacity style={styles.notifyActive}>
+              <Image
+                source={require('../assets/images/notofication_after.png')}
+                style={styles.notifyIcon}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
+        <View>
           <ImageBackground
             source={require('../assets/images/Streak_points.png')}
             style={styles.streakBg}
@@ -43,75 +107,107 @@ export default function Home() {
           >
             <View style={styles.streakBox}>
               <Text style={styles.streakValue}>40</Text>
-              <Text style={styles.streakLabel}>Earned points</Text>
+              <Text style={styles.streakLabel}>Earned {'\n'}points</Text>
             </View>
           </ImageBackground>
-
           {/* JOURNEY CARD */}
           <View style={styles.journeyCard}>
             <View style={styles.journeyHeader}>
               <Text style={styles.journeyTitle}>Journey</Text>
-              <Text style={styles.journeyCount}>5 days continuous</Text>
+              <MaskedView
+                maskElement={
+                  <Text style={styles.journeyCount}>5 days continuous</Text>
+                }
+              >
+                <LinearGradient
+                  colors={['#0178FF', '#740CE3']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                >
+                  <Text style={[styles.journeyCount, { opacity: 0 }]}>
+                    5 days continuous
+                  </Text>
+                </LinearGradient>
+              </MaskedView>
             </View>
 
-            <View style={styles.journeyRow}>
-              {[
-                { label: 'Day 1', icon: require('../assets/images/finish_task.png') },
-                { label: 'Day 2', icon: require('../assets/images/finish_task.png') },
-                { label: 'Day 3', icon: require('../assets/images/round_day1.png') },
-                { label: 'Day 4', icon: require('../assets/images/round_day1.png') },
-                { label: 'Day 5', icon: require('../assets/images/snooze.png') },
-              ].map((item, index) => (
-                <View key={index} style={styles.journeyCol}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.journeyRow}
+            >
+              {Array.from({ length: 10 }).map((_, index) => {
+                const day = index + 1;
+                const isRed = day === 3;
+                const isActive = day === 4;
+
+                return (
                   <View
-                    style={[styles.dayItem, index === 2 && styles.activeDayBox]}
+                    key={day}
+                    style={[
+                      styles.dayItem,
+                      isActive && styles.activeDayBox,
+                      isRed && styles.redDayBox,
+                    ]}
                   >
-                    <Image source={item.icon} style={styles.dayIcon} />
+                    <Image
+                      source={getDayIcon(day)}
+                      style={[styles.dayIcon, isRed && styles.redDayIcon]}
+                    />
                     <Text
                       style={[
                         styles.dayText,
-                        index === 2 && styles.activeDayText,
+                        isActive && styles.activeDayText,
+                        isRed && styles.redDayText,
                       ]}
                     >
-                      {item.label}
+                      Day {day}
                     </Text>
                   </View>
-                </View>
-              ))}
-            </View>
+                );
+              })}
+            </ScrollView>
           </View>
         </View>
-
         {/* PRACTICE TIME */}
         <View style={styles.practiceTimeCard}>
-          <Text style={styles.practiceLabel}>Total {"\n"}practice time</Text>
+          <Text style={styles.practiceLabel}>Total {'\n'}practice time</Text>
           <Text style={styles.practiceValue}>60 minutes</Text>
         </View>
+        <View style={styles.bottomSection}>
+          <LinearGradient
+            colors={['#FFF9CA', '#EDC15C']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.confidenceCard}
+          >
+            <View>
+              <Text style={styles.confidenceTitle}>Confidence Readiness</Text>
+              <Text style={styles.confidenceValue}>24%</Text>
+            </View>
 
-        {/* CONFIDENCE CARDS */}
-        <ImageBackground
-          source={require('../assets/images/Confidence-bg.png')}
-          style={styles.confidenceCard}
-          resizeMode="stretch"
-        >
-          <View>
-            <Text style={styles.confidenceTitle}>Confidence Readiness</Text>
-            <Text style={styles.confidenceValue}>24%</Text>
-          </View>
-        </ImageBackground>
+            <Image
+              source={require('../assets/images/batch.png')}
+              style={styles.badge}
+            />
+          </LinearGradient>
 
-        <ImageBackground
-          source={require('../assets/images/Practiceskill-bg.png')}
-          style={styles.confidenceCard}
-          resizeMode="stretch"
-        >
-          <View>
-            <Text style={styles.confidenceTitle}>Most Practiced Skill</Text>
-            <Text style={styles.confidenceValue}>Speaking in Meeting</Text>
-          </View>
-        </ImageBackground>
-
-        {/* START BUTTON */}
+          <LinearGradient
+            colors={['#96F9D6', '#246951']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.confidenceCard1}
+          >
+            <View>
+              <Text style={styles.confidenceTitle}>Most Practiced Skill</Text>
+              <Text style={styles.confidenceValue}>Speaking in Meeting</Text>
+            </View>
+            <Image
+              source={require('../assets/images/Skills_wbg.png')}
+              style={styles.mostpracticed}
+            />
+          </LinearGradient>
+        </View>
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.startPracticeButton}
@@ -119,130 +215,154 @@ export default function Home() {
         >
           <Text style={styles.startPracticeText}>Start Practice</Text>
         </TouchableOpacity>
-      {/* </ScrollView> */}
-    </View>
+      </View>
+    </LinearGradient>
   );
 }
+
+// ================= STYLES =================
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    // paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
 
   heroWrapper: {
     position: 'relative',
-    paddingBottom: height * 0.06,
+    paddingBottom: 80,
   },
 
   hero: {
     width: '100%',
-    height: height * 0.42,
+    height: HERO_HEIGHT,
     justifyContent: 'flex-end',
   },
 
   gradient: {
-    height: height * 0.18,
+    height: 85,
     width: '100%',
   },
 
   streakBg: {
     position: 'absolute',
-    bottom: height * 0.01,
-    left: width * 0.04,
-    width: width * 0.26,
-    height: height * 0.1,
-    borderRadius: 16,
+    bottom: 0,
+    left: 16,
+    width: STREAK_WIDTH,
+    height: STREAK_HEIGHT,
+    borderRadius: 8,
     overflow: 'hidden',
+    justifyContent: 'center',
   },
 
   streakBox: {
-    padding: 10,
+    padding: Math.round(scale * 10),
   },
 
   streakValue: {
-    fontSize: 22 * scale,
-    fontWeight: '700',
+    fontSize: 32 * scale,
+    lineHeight: 40,
+    fontFamily: Fonts.Bold,
     color: '#FFFFFF',
   },
 
   streakLabel: {
     fontSize: 12 * scale,
     color: '#EAF2FF',
+    fontFamily: Fonts.Regular,
+    lineHeight: 14,
   },
 
   journeyCard: {
     position: 'absolute',
-    bottom: height * 0.01,
-    left: width * 0.34,
-    width: width * 0.6,
-    height: height * 0.1,
+    bottom: Math.round(scale * 0),
+    left: Math.round(scale * 130),
+    width: JOURNEY_WIDTH,
+    height: JOURNEY_HEIGHT,
     backgroundColor: '#FFFFFF',
-    padding: 10,
-    borderRadius: 12,
+    padding: Math.round(scale * 10),
+    borderRadius: Math.round(scale * 8),
     elevation: 6,
+    overflow: 'hidden',
   },
 
   journeyHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 6,
+    marginBottom: Math.round(scale * 6),
   },
 
   journeyTitle: {
     fontSize: 14 * scale,
-    fontWeight: '600',
+    lineHeight: 20,
+    fontFamily: Fonts.Regular,
   },
 
   journeyCount: {
     fontSize: 14 * scale,
-    fontWeight: '600',
+    fontFamily: Fonts.Medium,
+    lineHeight: 20,
     color: '#2D6BFF',
   },
 
   journeyRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-
-  journeyCol: {
-    paddingHorizontal: 1,
+    gap: Math.round(scale * 8),
+    alignItems: 'center',
   },
 
   dayItem: {
-    minWidth: width * 0.1,
-    minHeight: width * 0.1,
-    borderRadius: 10,
+    width: DAY_SIZE,
+    height: DAY_SIZE,
+    borderRadius: Math.round(scale * 6),
     backgroundColor: '#F3F4F6',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-
-  activeDayBox: {
-    backgroundColor: '#EEF4FF',
-    borderWidth: 1,
-    borderColor: '#2D6BFF',
+    overflow: 'hidden',
   },
 
   dayIcon: {
-    width: 16,
-    height: 16,
+    width: DAY_SIZE * 0.38,
+    height: DAY_SIZE * 0.38,
+    marginBottom: Math.round(scale * 4),
+    resizeMode: 'contain',
+  },
+
+  redDayIcon: {
+    tintColor: '#E53935',
+  },
+
+  activeDayBox: {
+    borderWidth: 1.5,
+    borderColor: '#2D6BFF',
+    backgroundColor: '#EEF4FF',
+  },
+
+  redDayBox: {
+    backgroundColor: '#FFECEC',
   },
 
   dayText: {
-    fontSize: 10 * scale,
+    fontFamily: Fonts.Regular,
+    lineHeight: 14,
+
+    fontSize: 12 * scale,
     color: '#666',
   },
-
   activeDayText: {
     color: '#2D6BFF',
-    fontWeight: '700',
+    fontFamily: Fonts.Bold,
+    lineHeight: 14,
+  },
+
+  redDayText: {
+    color: '#E53935',
+    lineHeight: 14,
   },
 
   practiceTimeCard: {
-    marginHorizontal: 16,
-    height: height * 0.06,
-    // paddingHorizontal: 10,
+    marginHorizontal: HORIZONTAL_GUTTER,
+    height: height * 0.08,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -250,35 +370,55 @@ const styles = StyleSheet.create({
 
   practiceLabel: {
     fontSize: 14 * scale,
+    fontFamily: Fonts.Regular,
+    height: PRACTICE_CARD_HEIGHT,
   },
 
   practiceValue: {
-    fontSize: 16 * scale,
-    fontWeight: '700',
+    fontSize: 18 * scale,
+    fontFamily: Fonts.Bold,
+    lineHeight: 24,
+
     color: '#0A84FF',
   },
 
   confidenceCard: {
-    marginTop: height * 0.02,
-    marginHorizontal: 16,
-    height: height * 0.11,
-    borderRadius: 16,
-    paddingHorizontal: 16,
+    marginHorizontal: HORIZONTAL_GUTTER,
+    height: CONFIDENCE_HEIGHT,
+    borderRadius: Math.round(scale * 16),
+    paddingHorizontal: Math.round(scale * 16),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     overflow: 'hidden',
+    elevation: 1,
+
+  },
+  confidenceCard1: {
+    marginTop: Math.round(scale * 16),
+    marginHorizontal: HORIZONTAL_GUTTER,
+    height: CONFIDENCE_HEIGHT,
+    borderRadius: Math.round(scale * 16),
+    paddingHorizontal: Math.round(scale * 16),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    overflow: 'hidden',
+    elevation: 1,
+
   },
 
   confidenceTitle: {
     fontSize: 14 * scale,
-    fontWeight: '500',
+    fontFamily: Fonts.Regular,
+    lineHeight: 20,
   },
 
   confidenceValue: {
-    fontSize: 20 * scale,
-    fontWeight: '700',
-    marginTop: 4,
+    fontSize: 18 * scale,
+    fontFamily: Fonts.Medium,
+    lineHeight: 24,
+    marginTop: Math.round(scale * 4),
   },
 
   startPracticeButton: {
@@ -289,12 +429,94 @@ const styles = StyleSheet.create({
     borderRadius: height * 0.04,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 6,
   },
 
   startPracticeText: {
     color: '#FFFFFF',
     fontSize: 18 * scale,
-    fontWeight: '600',
+    fontFamily: Fonts.Medium,
+    lineHeight: 24,
+  },
+
+  badge: {
+    position: 'absolute',
+    right: 24,
+    width: 90,
+    height: 86,
+    resizeMode: 'contain',
+  },
+  mostpracticed: {
+    position: 'absolute',
+    right: 2,
+    width: 160,
+    height: 90,
+  },
+
+  notifyDefault: {
+    position: 'absolute',
+    top: 39,
+    right: 16,
+    width: 32,
+    height: 32,
+    borderWidth: 1,
+    borderColor: '#2D6BFF',
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  notifyActive: {
+    position: 'absolute',
+    top: 39,
+    right: 16,
+    width: 32,
+    height: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  notifyTooltipContainer: {
+    position: 'absolute',
+    top: 39,
+    right: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  tooltipIcon: {
+    width: 18,
+    height: 18,
+    marginLeft: 8, // ✅ space from text
+    resizeMode: 'contain',
+    tintColor: '#FFFFFF', // ✅ white icon
+  },
+
+  // /* 🔔 TOOLTIP STATE */
+  // notifyTooltipContainer: {
+  //   position: 'absolute',
+  //   top: 60,
+  //   left: 186,
+  //   width: 188,
+  //   height: 32,
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  // },
+
+  tooltipBox: {
+    flexDirection: 'row', // ✅ text + icon in one line
+    alignItems: 'center',
+    backgroundColor: '#0178FF', // ✅ default blue
+    paddingHorizontal: 12,
+    height: 32,
+    borderRadius: 16,
+  },
+
+  tooltipText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontFamily: Fonts.Regular,
+    lineHeight: 20,
+  },
+  notifyIcon: {
+    width: 32,
+    height: 32,
+    resizeMode: 'contain',
   },
 });

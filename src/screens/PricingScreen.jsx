@@ -6,18 +6,27 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
-} from 'react-native';
+  StatusBar,
+} from 'react-native';import { useNavigation } from '@react-navigation/native';
+
 import PlanCard from '../components/PlanCard';
+import { Fonts } from '../constants/fonts';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 
 export default function PricingScreen() {
-  const [selectedPlan, setSelectedPlan] = useState('free'); // free | pro
+  const [selectedPlan, setSelectedPlan] = useState('free');
+  const navigation = useNavigation();
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <StatusBar hidden />
+
       <Text style={styles.heading}>Pick Your Confidence Plan</Text>
+      <Text style={styles.textHead}>
+        Why would you like to delete your account?
+      </Text>
 
       {/* FREE PLAN */}
       <TouchableOpacity
@@ -59,7 +68,10 @@ export default function PricingScreen() {
 
       {/* UPGRADE BUTTON (ONLY FOR PRO) */}
       {selectedPlan === 'pro' && (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('PaymentStatusScreen')}
+        >
           <Text style={styles.buttonText}>Upgrade</Text>
         </TouchableOpacity>
       )}
@@ -74,12 +86,18 @@ const styles = StyleSheet.create({
   },
 
   heading: {
-    fontSize: 22 * scale,
-    fontWeight: '700',
+    fontSize: 18 * scale,
+    fontFamily: Fonts.Medium,
     marginLeft: 16 * scale,
     marginBottom: 16 * scale,
+    lineHeight: 24,
   },
-
+  textHead: {
+    fontFamily: Fonts.Regular,
+    marginLeft: 16 * scale,
+    marginBottom: 16 * scale,
+    lineHeight: 20,
+  },
   button: {
     height: 56 * scale,
     width: 358 * scale,
@@ -93,7 +111,8 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: '#fff',
-    fontSize: 16 * scale,
-    fontWeight: '600',
+    fontSize: 18 * scale,
+    fontFamily: Fonts.Medium,
+    lineHeight: 24,
   },
 });

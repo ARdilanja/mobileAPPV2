@@ -18,6 +18,7 @@ const editPencilIcon = require('../../assets/images/edit_icon1.png');
 
 export default function UpdateProfileScreen() {
   const [modalVisible, setModalVisible] = useState(false);
+  console.log('modalVisible :>> ', modalVisible);
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
@@ -73,6 +74,7 @@ export default function UpdateProfileScreen() {
           />
         </View>
 
+        {/* UPDATE BUTTON */}
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Update</Text>
         </TouchableOpacity>
