@@ -56,7 +56,7 @@ export default function MoreSection() {
         <MoreItem
           text="Invoice"
           icon={require('../assets/images/terms-check.png')}
-        // onPress={() => console.log('Invoice :>> ', Invoice)}
+          onPress={() => navigation.navigate('StartInterviewScreen')}
         />
 
         <Divider />

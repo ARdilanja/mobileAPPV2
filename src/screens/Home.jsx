@@ -55,7 +55,7 @@ export default function Home() {
     const unreadCount = 1; // <-- replace with API value
 
     if (unreadCount > 0) {
-      setNotificationState('active');
+      setNotificationState('default');
     } else {
       setNotificationState('default');
     }
@@ -541,9 +541,9 @@ topBlackGradient: {
   // },
 
   tooltipBox: {
-    flexDirection: 'row', // ✅ text + icon in one line
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#0178FF', // ✅ default blue
+    backgroundColor: '#0178FF', 
     paddingHorizontal: 12,
     height: 32,
     borderRadius: 16,
