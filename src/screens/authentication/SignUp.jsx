@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
 
         elevation: 4,
 
-        fontSize: 18,
+        fontSize: 16,
         lineHeight: 28,
         fontFamily: Fonts.Regular,
         color: '#242424',

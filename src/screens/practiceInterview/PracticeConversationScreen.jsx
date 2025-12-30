@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
         borderColor: "#D9D9D9",
         borderRadius: 24,
     },
-    optionText: { fontSize: 13, fontWeight: "400", color: "#2A2A2A", fontFamily: Fonts.Regular },
+    optionText: { fontSize: 14, fontWeight: "400", color: "#2A2A2A", fontFamily: Fonts.Regular },
 
     bottomWrapper: {
         position: "absolute",

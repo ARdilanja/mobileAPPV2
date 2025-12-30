@@ -304,32 +304,32 @@ const StackNavigation = () => {
       <Stack.Screen
         name="AboutScreen"
         component={AboutScreen}
-        options={{ headerShown: true, headerTitle: 'About', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'About', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="ProfileFeedbackSummar"
         component={ProfileFeedbackScreen}
-        options={{ headerShown: true, headerTitle: 'Terms of service', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'Terms of service', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="SettingsScreen"
         component={SettingsScreen}
-        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'Settings', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="DeleteAccountReasonScreen"
         component={DeleteAccountReasonScreen}
-        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'Settings', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="DeleteAccountConfirmScreen"
         component={DeleteAccountConfirmScreen}
-        options={{ headerShown: true, headerTitle: 'Settings', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'Settings', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="PricingScreen"
         component={PricingScreen}
-        options={{ headerShown: true, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="PaymentStatusScreen"

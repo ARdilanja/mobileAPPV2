@@ -1,5 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+
 import {
   View,
   Text,
@@ -20,7 +21,7 @@ const { width, height } = Dimensions.get('window');
 const BASE_WIDTH = 390;
 const scale = width / BASE_WIDTH;
 
-const HERO_HEIGHT = Math.round(scale * 340);
+const HERO_HEIGHT = Math.round(scale * 320);
 
 const STREAK_WIDTH = Math.round(scale * 100);
 const STREAK_HEIGHT = Math.round(scale * 88);
@@ -44,7 +45,70 @@ const getDayIcon = day => {
 
 export default function Home() {
   const navigation = useNavigation();
-  const notificationState = 'tooltip'; // 'default' | 'tooltip' | 'active'
+
+  // Notification state
+  const [notificationState, setNotificationState] = useState('active');
+  // 'default' | 'tooltip' | 'active'
+
+  // AUTO SET NOTIFICATION (API / unread logic)
+  useEffect(() => {
+    const unreadCount = 1; // <-- replace with API value
+
+    if (unreadCount > 0) {
+      setNotificationState('tooltip');
+    } else {
+      setNotificationState('default');
+    }
+  }, []);
+
+  //  STATUS BAR RESET WHEN SCREEN IS FOCUSED
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('light-content');
+      StatusBar.setBackgroundColor('transparent');
+      StatusBar.setTranslucent(true);
+    }, []),
+  );
+
+  const renderNotification = () => {
+    switch (notificationState) {
+      case 'default':
+        return (
+          <TouchableOpacity style={styles.notifyDefault} activeOpacity={0.8}>
+            <Image
+              source={require('../assets/images/notification.png')}
+              style={styles.notifyIcon}
+            />
+          </TouchableOpacity>
+        );
+
+      case 'tooltip':
+        return (
+          <View style={styles.notifyTooltipContainer}>
+            <View style={styles.tooltipBox}>
+              <Text style={styles.tooltipText}>You have 1 notification</Text>
+              <Image
+                source={require('../assets/images/notification_active.png')}
+                style={styles.tooltipIcon}
+              />
+            </View>
+          </View>
+        );
+
+      case 'active':
+        return (
+          <TouchableOpacity style={styles.notifyActive}>
+            <Image
+              source={require('../assets/images/notofication_after.png')}
+              style={styles.notifyIcon}
+            />
+          </TouchableOpacity>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <LinearGradient
@@ -53,7 +117,7 @@ export default function Home() {
       end={{ x: 0, y: 1 }}
       style={styles.container}
     >
-    <StatusBar  barStyle="light-content" backgroundColor="#48474784"  translucent={true}  />
+    {/* <StatusBar  barStyle="light-content" backgroundColor="#48474784"  translucent={true}  /> */}
 
       <View style={{ flex: 1 }}>
         <View style={styles.heroWrapper}>
@@ -67,37 +131,7 @@ export default function Home() {
               style={styles.gradient}
             />
           </ImageBackground>
-          {/* 🔔 NOTIFICATION UI (SAFE) */}
-          {notificationState === 'default' && (
-            <TouchableOpacity style={styles.notifyDefault} activeOpacity={0.8}>
-              <Image
-                source={require('../assets/images/notification.png')}
-                style={styles.notifyIcon}
-              />
-            </TouchableOpacity>
-          )}
-
-          {notificationState === 'tooltip' && (
-            <View style={styles.notifyTooltipContainer}>
-              <View style={styles.tooltipBox}>
-                <Text style={styles.tooltipText}>You have 1 notification</Text>
-
-                <Image
-                  source={require('../assets/images/notification_active.png')}
-                  style={styles.tooltipIcon}
-                />
-              </View>
-            </View>
-          )}
-
-          {notificationState === 'active' && (
-            <TouchableOpacity style={styles.notifyActive}>
-              <Image
-                source={require('../assets/images/notofication_after.png')}
-                style={styles.notifyIcon}
-              />
-            </TouchableOpacity>
-          )}
+         {renderNotification()}
         </View>
         <View>
           <ImageBackground
@@ -227,7 +261,12 @@ const styles = StyleSheet.create({
     flex: 1,
     // paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
-
+topBlackGradient: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    height: 120,
+  },
   heroWrapper: {
     position: 'relative',
     paddingBottom: 80,
