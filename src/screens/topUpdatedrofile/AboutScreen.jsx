@@ -12,15 +12,17 @@ import {
 import Header from '../../components/Header';
 import { Fonts } from '../../constants/fonts';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const scale = width / 390;
 
 export default function AboutScreen() {
   const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#F6F6F6" />
       <Header title="About" />
+
       <View style={styles.card}>
         <TouchableOpacity
           style={styles.row}
@@ -34,10 +36,8 @@ export default function AboutScreen() {
         </TouchableOpacity>
 
         <View style={styles.divider} />
-        <TouchableOpacity
-          style={styles.row}
-        // onPress={() => navigation.navigate('TermsofServiceScreen')}
-        >
+
+        <TouchableOpacity style={styles.row}>
           <Text style={styles.text}>Privacy policy</Text>
           <Image
             source={require('../../assets/images/Arrow_3.png')}
@@ -55,63 +55,62 @@ export default function AboutScreen() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F6F6F6',
-    // padding: 16,
+    paddingHorizontal: width * 0.04, // responsive margin
+    paddingTop: height * 0.02,
   },
 
   card: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    paddingVertical: 8,
+    borderRadius: 16 * scale,
+    paddingVertical: height * 0.01,
     shadowColor: '#000',
     shadowOpacity: 0.08,
     shadowRadius: 12,
     elevation: 4,
-    width:358,
-    alignSelf:'center'
+    width: '100%',          // 🔥 full responsive width
+    alignSelf: 'center',
   },
 
   row: {
-    height: 52 * scale,
+    minHeight: 52 * scale,  // responsive height
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
+    paddingHorizontal: width * 0.04,
   },
 
   versionRow: {
-    height: 52 * scale,
+    minHeight: 52 * scale,
     justifyContent: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: width * 0.04,
   },
 
   text: {
     fontSize: 14 * scale,
     color: '#000',
-    fontWeight:400,
-    fontFamily:Fonts.Regular
+    fontFamily: Fonts.Regular,
   },
 
   version: {
     marginTop: 4,
-    fontSize: 14 * scale,
+    fontSize: 13 * scale,
     color: '#666',
-    fontWeight:400,
-    fontFamily:Fonts.Regular
+    fontFamily: Fonts.Regular,
   },
 
   arrow: {
-    width: 10,
-    height: 14,
+    width: 10 * scale,
+    height: 14 * scale,
+    resizeMode: 'contain',
   },
 
   divider: {
     height: 1,
     backgroundColor: '#EEE',
-    marginHorizontal: 16,
+    marginHorizontal: width * 0.04,
   },
 });

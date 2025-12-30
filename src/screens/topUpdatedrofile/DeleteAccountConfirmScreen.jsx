@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import Header from '../../components/Header';
+import { Fonts } from '../../constants/fonts';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -17,7 +18,7 @@ export default function DeleteAccountConfirmScreen() {
 
   return (
     <View style={styles.container}>
-    <Header title="Delete Account" />
+      <Header title="Delete Account" />
       <Text style={styles.title}>
         You have requested the deletion of your account
       </Text>
@@ -35,8 +36,7 @@ export default function DeleteAccountConfirmScreen() {
         <Text style={styles.primaryText}>Delete my account</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-       onPress={() => navigation.navigate('SettingsScreen')}>
+      <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')}>
         <Text style={styles.linkText}>Back to settings</Text>
       </TouchableOpacity>
     </View>
@@ -54,10 +54,12 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 22 * scale,
+    fontSize: 24 * scale,
     fontWeight: '600',
     color: '#000',
     marginBottom: 12,
+    fontFamily: Fonts.Regular,
+    lineHeight: 32 * scale,
   },
 
   description: {
@@ -65,6 +67,7 @@ const styles = StyleSheet.create({
     color: '#555',
     lineHeight: 20 * scale,
     marginBottom: 32,
+    fontFamily: Fonts.Regular,
   },
 
   primaryBtn: {
@@ -78,13 +81,17 @@ const styles = StyleSheet.create({
 
   primaryText: {
     color: '#FFFFFF',
-    fontSize: 16 * scale,
+    fontSize: 18 * scale,
     fontWeight: '600',
+    fontFamily: Fonts.Regular,
+    lineHeight: 24,
   },
 
   linkText: {
     color: '#007AFF',
-    fontSize: 14 * scale,
+    fontSize: 18 * scale,
     textAlign: 'center',
+    fontFamily: Fonts.Regular,
+    lineHeight: 24,
   },
 });

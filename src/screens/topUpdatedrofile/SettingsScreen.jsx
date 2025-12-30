@@ -11,16 +11,17 @@ import {
 } from 'react-native';
 import Header from '../../components/Header';
 
-const { width } = Dimensions.get('window');
-const scale = width / 390;
+const { width, height } = Dimensions.get('window');
+const scale = width / 390; // base design width
 
 export default function SettingsScreen() {
-      const navigation =useNavigation();
-    
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-    <StatusBar backgroundColor="#F6F6F6" />
-    <Header title="Settings" />
+      <StatusBar backgroundColor="#F6F6F6" />
+      <Header title="Settings" />
+
       {/* CARD */}
       <View style={styles.card}>
         <TouchableOpacity
@@ -45,29 +46,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F6F6F6',
-    // paddingH: 16,
+    paddingHorizontal: width * 0.04, // responsive horizontal padding
+    paddingTop: height * 0.02,       // responsive top padding
   },
 
   card: {
-    width:358,
+    width: width - width * 0.08,   // responsive: full width minus margins
     backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    height: 56 * scale,
-    alignSelf:'center',
-    justifyContent:'center',
+    borderRadius: 16 * scale,      // scaled border radius
+    height: 56 * scale,            // scaled height
+    alignSelf: 'center',
+    justifyContent: 'center',
 
     // shadow
     shadowColor: '#000',
     shadowOpacity: 0.08,
     shadowRadius: 12,
     elevation: 4,
+    marginBottom: 16 * scale,      // spacing between cards if more added
   },
 
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
+    paddingHorizontal: 16 * scale, // scaled horizontal padding
   },
 
   text: {
@@ -77,8 +80,8 @@ const styles = StyleSheet.create({
   },
 
   arrow: {
-    width: 16,
-    height: 16,
+    width: 16 * scale,
+    height: 16 * scale,
     tintColor: '#999',
   },
 });
