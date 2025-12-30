@@ -19,7 +19,7 @@ const Header = ({ title }) => {
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={styles.backBtn}
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        hitSlop={{ top: 0, bottom: 10, left: 10, right: 10 }}
       >
         <Image
           source={require('../assets/images/back.png')}
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     // paddingHorizontal: 16,
+    marginTop:25,
   },
 
   backBtn: {

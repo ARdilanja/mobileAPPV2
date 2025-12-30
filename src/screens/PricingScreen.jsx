@@ -11,6 +11,7 @@ import {
 
 import PlanCard from '../components/PlanCard';
 import { Fonts } from '../constants/fonts';
+import Header from '../components/Header';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -21,7 +22,8 @@ export default function PricingScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <StatusBar hidden />
+      <StatusBar  />
+      <Header title="Pricing" />
 
       <Text style={styles.heading}>Pick Your Confidence Plan</Text>
       <Text style={styles.textHead}>
@@ -81,7 +83,7 @@ export default function PricingScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 24 * scale,
+    // paddingTop: 24 * scale,
     paddingBottom: 40 * scale,
   },
 
