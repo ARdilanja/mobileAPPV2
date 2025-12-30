@@ -25,9 +25,14 @@ export default function PaymentStatusScreen({
     <View style={styles.container}>
       {/* STATUS ICON (ONLY FOR SUCCESS) */}
       {isSuccess && (
-        <View style={[styles.iconWrapper, styles.successBorder]}>
+        <View
+          style={[
+            styles.iconWrapper,
+            isSuccess ? styles.successBorder : styles.failedBorder,
+          ]}
+        >
           <Image
-            source={successImg}
+            source={isSuccess ? successImg : failedImg}
             style={styles.statusIcon}
             resizeMode="contain"
           />

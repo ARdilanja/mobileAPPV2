@@ -8,6 +8,7 @@ import {
     TextInput,
     Image,
     Dimensions,
+    StatusBar,
 } from "react-native";
 
 import { PRACTICE_QUESTIONS } from "./practiceConversationConfig";
@@ -82,7 +83,11 @@ export default function PracticeConversationScreen({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-
+  <StatusBar
+                backgroundColor="#0178FF"
+                barStyle="light-content"
+                translucent={true}
+            />
             {/* Chat history and current questions */}
             <ScrollView
                 style={styles.chat}

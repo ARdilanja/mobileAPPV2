@@ -20,7 +20,7 @@ const { width, height } = Dimensions.get('window');
 const BASE_WIDTH = 390;
 const scale = width / BASE_WIDTH;
 
-const HERO_HEIGHT = Math.round(scale * 320);
+const HERO_HEIGHT = Math.round(scale * 340);
 
 const STREAK_WIDTH = Math.round(scale * 100);
 const STREAK_HEIGHT = Math.round(scale * 88);
@@ -44,7 +44,7 @@ const getDayIcon = day => {
 
 export default function Home() {
   const navigation = useNavigation();
-  const notificationState = 'active'; // 'default' | 'tooltip' | 'active'
+  const notificationState = 'tooltip'; // 'default' | 'tooltip' | 'active'
 
   return (
     <LinearGradient
@@ -412,6 +412,8 @@ const styles = StyleSheet.create({
     fontSize: 14 * scale,
     fontFamily: Fonts.Regular,
     lineHeight: 20,
+    color:"#000000",
+    fontWeight:400
   },
 
   confidenceValue: {
@@ -454,7 +456,7 @@ const styles = StyleSheet.create({
 
   notifyDefault: {
     position: 'absolute',
-    top: 39,
+    top: 48,
     right: 16,
     width: 32,
     height: 32,
@@ -466,7 +468,7 @@ const styles = StyleSheet.create({
   },
   notifyActive: {
     position: 'absolute',
-    top: 39,
+    top: 48,
     right: 16,
     width: 32,
     height: 32,
@@ -475,7 +477,7 @@ const styles = StyleSheet.create({
   },
   notifyTooltipContainer: {
     position: 'absolute',
-    top: 39,
+    top: 48,
     right: 16,
     flexDirection: 'row',
     alignItems: 'center',

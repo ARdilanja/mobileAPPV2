@@ -31,7 +31,7 @@ export default function PracticeStartScreen({ navigation }) {
             <StatusBar
                 backgroundColor="#0178FF"
                 barStyle="light-content"
-                translucent={false}
+                translucent={true}
             />
 
             {/* Main content */}

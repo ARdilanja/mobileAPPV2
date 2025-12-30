@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 60, // Increased slightly for images
     backgroundColor: '#FFFFFF', // Replaced Colors.primary (assuming black/dark)
-    paddingBottom: 15,
+    paddingBottom: 18,
     // borderTopLeftRadius:20,
     // borderTopRightRadius:20,
   },

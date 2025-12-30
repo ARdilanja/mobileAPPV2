@@ -45,16 +45,19 @@
 
 // App.js
 import React from 'react';
-import { StatusBar } from 'react-native';        
+import { StatusBar } from 'react-native';
 import AppNavigation from './src/navigations/AppNavigation';
 import { store } from "./src/redux/store.jsx";
 import { Provider } from 'react-redux';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function App() {
   return (
-    <Provider store={store}>                      
+    <Provider store={store}>
       {/* <StatusBar barStyle="dark-content" backgroundColor="#fff" /> */}
-      <AppNavigation />
+      <SafeAreaProvider>
+        <AppNavigation />
+      </SafeAreaProvider>
     </Provider>
   );
 }
