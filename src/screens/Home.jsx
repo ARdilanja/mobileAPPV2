@@ -1,5 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -18,6 +19,23 @@ const scale = width / 375;
 
 export default function Home() {
   const navigation = useNavigation();
+  const clearAuthStorage = async () => {
+  try {
+    await AsyncStorage.multiRemove([
+      'token',
+      'refreshToken',
+      'user',
+    ]);
+
+    console.log('Auth storage cleared successfully');
+  } catch (error) {
+    console.error('Failed to clear auth storage:', error);
+  }
+};
+
+useEffect(() => {
+  clearAuthStorage()
+},[])
   return (
     <View style={styles.container}>
       <StatusBar hidden />

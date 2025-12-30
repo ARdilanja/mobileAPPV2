@@ -4,7 +4,7 @@ import { Fonts } from '../../constants/fonts';
 
 const screenWidth = Dimensions.get("window").width;
 
-const AuthButton = ({ text, onPress, style, icon ,iconWidth = 22,}) => {
+const SocialButton = ({ text, onPress, style, icon ,iconWidth = 22,}) => {
   return (
    <TouchableOpacity style={[styles.socialbutton, style]} onPress={onPress}>
       <View style={styles.socialcontent}>
@@ -53,4 +53,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AuthButton;
+export default SocialButton;

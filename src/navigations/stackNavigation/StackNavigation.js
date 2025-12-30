@@ -120,6 +120,7 @@ import TermsOfServiceScreen from '../../screens/TermsOfServiceScreen';
 import SettingsSecurityScreen from '../../screens/SettingsSecurityScreen';
 import SignIn from '../../screens/authentication/SignIn';
 import SignUp from '../../screens/authentication/SignUp';
+import ChooseSignupMethod from '../../screens/authentication/ChooseSignupMethod';
 import EmailInput from '../../screens/authentication/EmailInput';
 import Password from '../../screens/authentication/Password';
 import MobileInput from '../../screens/authentication/MobileInput';
@@ -169,6 +170,7 @@ const StackNavigation = () => {
       <Stack.Screen name="GetStarted" component={GetStarted} />
       <Stack.Screen name="CreatePassword" component={CreatePassword} />
       <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="ChooseSignupMethod" component={ChooseSignupMethod} />
       <Stack.Screen name="NotificationScreen" component={NotificationsScreen} />
       <Stack.Screen name="JourneyGetStartScreen" component={JourneyGetStartScreen} />
       <Stack.Screen name="SubscriptionAgreement" component={SubscriptionAgreementScreen} />

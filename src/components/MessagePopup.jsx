@@ -1,74 +1,211 @@
-import React from 'react';
-import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+// import React from 'react';
+// import { Modal, View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 
-const MessagePopup = ({ visible, message, onClose, type = 'info' }) => {
-  if (!message) return null;
+// const screenWidth = Dimensions.get("window").width;
+
+// const MessagePopup = ({ visible, message, onClose, type = 'info' }) => {
+//   if (!message) return null;
+
+
+//   return (
+//     <Modal
+//       transparent
+//       animationType="fade"
+//       visible={visible}
+//       onRequestClose={onClose}
+//     >
+//       <View style={styles.overlay}>
+//         <View
+//           style={[
+//             styles.popup,
+//             type === 'error' && styles.error,
+//             type === 'success' && styles.success,
+//           ]}
+//         >
+//           <Text style={styles.message}>{message}</Text>
+
+//           <TouchableOpacity style={styles.button} onPress={onClose}>
+//             <Text style={styles.buttonText}>OK</Text>
+//           </TouchableOpacity>
+//         </View>
+//       </View>
+//     </Modal>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   overlay: {
+//     flex: 1,
+//     backgroundColor: 'rgba(0,0,0,0.4)',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+//   popup: {
+//     width: screenWidth - 32,
+//     marginHorizontal:'auto',
+//     backgroundColor: '#fff',
+//     borderRadius: 12,
+//     padding: 20,
+//     alignItems: 'center',
+//   },
+//   success: {
+//     // borderLeftWidth: 5,
+//     // borderLeftColor: '#22c55e',
+//     color:'#22c55e'
+//   },
+//   error: {
+//     color:'#ef4444',
+//     // borderLeftWidth: 5,
+//     // borderLeftColor: '#ef4444',
+//   },
+//   message: {
+//     fontSize: 16,
+//     textAlign: 'center',
+//     marginBottom: 20,
+//     color: '#000',
+//   },
+//   button: {
+//     backgroundColor: '#007AFF',
+//     paddingHorizontal: 24,
+//     paddingVertical: 10,
+//     borderRadius: 20,
+//   },
+//   buttonText: {
+//     color: '#fff',
+//     fontWeight: '600',
+//   },
+// });
+
+// export default MessagePopup;
+import React, { useEffect, useRef } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Animated,
+  Dimensions,
+  Modal,
+} from 'react-native';
+import { Fonts } from '../constants/fonts';
+
+const screenWidth = Dimensions.get('window').width;
+
+const MessagePopup = ({
+  visible,
+  message,
+  type = 'error', // 'error' | 'success'
+  duration = 3000,
+  onHide,
+}) => {
+  const slideAnim = useRef(new Animated.Value(100)).current;
+
+  useEffect(() => {
+    if (visible) {
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+
+      const timer = setTimeout(() => {
+        hidePopup();
+      }, duration);
+
+      return () => clearTimeout(timer);
+    }
+  }, [visible]);
+
+  const hidePopup = () => {
+    Animated.timing(slideAnim, {
+      toValue: 100,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      onHide && onHide();
+    });
+  };
+
+  if (!visible) return null;
+
+  const icon =
+    type === 'error'
+      ? require('../assets/icons/error-emoji.png')
+      : require('../assets/images/success.png');
 
   return (
     <Modal
       transparent
-      animationType="fade"
       visible={visible}
-      onRequestClose={onClose}
+      animationType="none"
+      statusBarTranslucent
     >
-      <View style={styles.overlay}>
-        <View
+      <View style={styles.modalOverlay}>
+        <Animated.View
           style={[
-            styles.popup,
-            type === 'error' && styles.error,
-            type === 'success' && styles.success,
+            styles.container,
+            { transform: [{ translateY: slideAnim }] },
+            type === 'error' ? styles.errorBg : styles.successBg,
           ]}
         >
-          <Text style={styles.message}>{message}</Text>
-
-          <TouchableOpacity style={styles.button} onPress={onClose}>
-            <Text style={styles.buttonText}>OK</Text>
-          </TouchableOpacity>
-        </View>
+          <Image source={icon} style={styles.icon} />
+          <View style={{ paddingVertical: 6 }}>
+            <Text style={styles.title}>
+              {type === 'error' ? 'Something went wrong!' : 'Success'}
+            </Text>
+            <Text style={styles.message}>{message}</Text>
+          </View>
+        </Animated.View>
       </View>
     </Modal>
+
   );
 };
 
 const styles = StyleSheet.create({
-  overlay: {
+   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
+    backgroundColor: 'transparent', // keeps UI visible but uninteractive
   },
-  popup: {
-    width: '80%',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
+  
+  container: {
+    position: 'absolute',
+    bottom: 24,
+    alignSelf: 'center',
+    width: screenWidth - 32,
+    flexDirection: 'row',
+    // padding: 14,
+    borderRadius: 60,
     alignItems: 'center',
+    elevation: 20,
   },
-  success: {
-    // borderLeftWidth: 5,
-    // borderLeftColor: '#22c55e',
-    color:'#22c55e'
+
+  errorBg: {
+    backgroundColor: '#FEE2E2',
   },
-  error: {
-    color:'#ef4444',
-    // borderLeftWidth: 5,
-    // borderLeftColor: '#ef4444',
+  successBg: {
+    backgroundColor: '#DCFCE7',
   },
-  message: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 20,
+  icon: {
+    width: 24,
+    height: 24,
+    marginRight: 16,
+    marginLeft: 16,
+  },
+  title: {
+    fontSize: 18,
+    lineHeight: 24,
+    fontFamily: Fonts.Medium,
     color: '#000',
   },
-  button: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 24,
-    paddingVertical: 10,
-    borderRadius: 20,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: '600',
+  message: {
+    fontSize: 14,
+    lineHeight: 24,
+    fontFamily: Fonts.Regular,
+    color: '#2A2A2A',
+    marginTop: 4,
   },
 });
 

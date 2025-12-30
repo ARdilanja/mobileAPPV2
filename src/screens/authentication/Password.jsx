@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     padding: 14,
     paddingVertical: 16,
-    paddingLeft: 24
+    paddingLeft: 24,
   },
 });
 
