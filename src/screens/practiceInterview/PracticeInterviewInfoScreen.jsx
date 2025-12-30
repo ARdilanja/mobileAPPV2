@@ -7,9 +7,12 @@ import {
     Dimensions,
     Image,
     ScrollView,
+    StatusBar,
 } from "react-native";
 
 import TabItem from "../../components/PracticeInterview/TabItem";
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 const { width } = Dimensions.get("window");
 
@@ -28,6 +31,14 @@ const BACK_ICON = require("../../assets/images/back.png");
 
 export default function PracticeInterviewInfoScreen({ navigation }) {
     const [activeTab, setActiveTab] = useState("info");
+
+    useFocusEffect(
+        useCallback(() => {
+            StatusBar.setBarStyle('light-content');
+            StatusBar.setBackgroundColor('transparent');
+            StatusBar.setTranslucent(true);
+        }, []),
+    );
 
     return (
         <View style={styles.container}>
@@ -249,7 +260,7 @@ const styles = StyleSheet.create({
     jobDesc: {
         fontSize: 15,
         color: "#374151",
-        lineHeight:20,
+        lineHeight: 20,
     },
 
     startBtn: {

@@ -10,6 +10,8 @@ import Home from '../../screens/Home';
 import UpdateProfileScreen from '../../screens/topUpdatedrofile/UpdateProfileScreen';
 import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
 import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
+import PracticeConversationScreen from '../../screens/practiceInterview/PracticeConversationScreen';
+import PracticeInterviewInfoScreen from '../../screens/practiceInterview/PracticeInterviewInfoScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -97,6 +99,33 @@ const BottomNavigation = () => {
         component={PracticeStartScreen}
         options={{
           headerTitle: 'Start Practice',
+          headerTitleAlign: 'center',
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: "#0178FF",
+          },
+          headerTintColor: '#F5F5F5'
+        }}
+      />
+      <Tab.Screen
+        name="PracticeConversationScreen"
+        component={PracticeConversationScreen}
+        options={{
+          headerTitle: 'Practice',
+          headerTitleAlign: 'center',
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: "#0178FF",
+          },
+          headerTintColor: '#F5F5F5'
+        }}
+      />
+
+      <Tab.Screen
+        name="PracticeInterviewInfoScreen"
+        component={PracticeInterviewInfoScreen}
+        options={{
+          headerTitle: 'Practice',
           headerTitleAlign: 'center',
           headerShown: true,
           headerStyle: {

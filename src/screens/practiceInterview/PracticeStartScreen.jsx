@@ -27,29 +27,15 @@ export default function PracticeStartScreen({ navigation }) {
 
     useFocusEffect(
         useCallback(() => {
-            // FORCE blue status bar when this screen is focused
             StatusBar.setBarStyle('light-content');
-            StatusBar.setBackgroundColor('#0178FF');
-
-            return () => {
-                // optional reset (safe)
-                StatusBar.setBarStyle('dark-content');
-                StatusBar.setBackgroundColor('transparent');
-            };
-        }, [])
+            StatusBar.setBackgroundColor('transparent');
+            StatusBar.setTranslucent(true);
+        }, []),
     );
 
     /* Screen UI */
     return (
         <View style={styles.container}>
-            {/* <StatusBar hidden /> */}
-
-            <StatusBar
-                backgroundColor="#0178FF"
-                barStyle="light-content"
-                translucent={true}
-            />
-
             {/* Main content */}
             <View style={styles.contentWrapper}>
 

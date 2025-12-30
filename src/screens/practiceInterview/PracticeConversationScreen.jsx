@@ -8,8 +8,11 @@ import {
     TextInput,
     Image,
     Dimensions,
-    StatusBar,
+    StatusBar
 } from "react-native";
+
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 import { PRACTICE_QUESTIONS } from "./practiceConversationConfig";
 import { KeyboardAvoidingView, Platform } from "react-native";
@@ -81,13 +84,20 @@ export default function PracticeConversationScreen({ route, navigation }) {
         navigation.navigate("PracticeInterviewInfoScreen");
     };
 
+    useFocusEffect(
+        useCallback(() => {
+            StatusBar.setBarStyle('light-content');
+            StatusBar.setBackgroundColor('transparent');
+            StatusBar.setTranslucent(true);
+        }, []),
+    );
     return (
         <View style={styles.container}>
-  
+
             {/* Chat history and current questions */}
             <ScrollView
                 style={styles.chat}
-                // contentContainerStyle={{ paddingBottom: 220 }}
+                contentContainerStyle={{ paddingBottom: 220 }}
                 showsVerticalScrollIndicator={false}
             >
                 {/* Previous answered questions */}

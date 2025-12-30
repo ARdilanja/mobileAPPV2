@@ -55,7 +55,7 @@ export default function Home() {
     const unreadCount = 1; // <-- replace with API value
 
     if (unreadCount > 0) {
-      setNotificationState('tooltip');
+      setNotificationState('active');
     } else {
       setNotificationState('default');
     }
