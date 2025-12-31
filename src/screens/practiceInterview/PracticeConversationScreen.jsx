@@ -287,11 +287,18 @@ const styles = StyleSheet.create({
     },
     optionText: { fontSize: 14, fontWeight: "400", color: "#2A2A2A", fontFamily: Fonts.Regular },
 
+    // bottomWrapper: {
+    //     position: "absolute",
+    //     bottom: 20,
+    //     width: width * 0.9,
+    //     alignSelf: 'center',
+    // },
+
     bottomWrapper: {
-        position: "absolute",
-        bottom: 20,
-        width: width * 0.9,
-        alignSelf: 'center',
+        // REMOVE: position: "absolute", bottom: 20
+        paddingHorizontal: 20,
+        paddingBottom: 20, // Controlled spacing
+        backgroundColor: '#F9FAFB', // Match background to hide ScrollView overlap
     },
     inputWrapper: {
         flexDirection: "row",

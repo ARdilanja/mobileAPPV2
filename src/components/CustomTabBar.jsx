@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 import { Fonts } from "../constants/fonts";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const TAB_ICONS = {
   Bottom: require('../assets/images/Home.png'),
   StartInterview: require('../assets/images/StartInterview.png'),
-  PracticeStartScreen: require('../assets/images/CompletedInterview.png'),
+  Practice: require('../assets/images/CompletedInterview.png'),
   ProfileTopScreen: require('../assets/images/MyProfile.png'),
 };
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
-  
+   const insets = useSafeAreaInsets();
   // Filter the routes to include only "Bottom" and "StartInterview"
   const filteredRoutes = state.routes.filter(
-    route => route.name === 'Bottom' || route.name === 'StartInterview' || route.name === 'PracticeStartScreen' || route.name === 'ProfileTopScreen',
+    route => route.name === 'Bottom' || route.name === 'StartInterview' || route.name === 'Practice' || route.name === 'ProfileTopScreen',
   );
 
   return (
-    <View style={styles.tabBar}>
+     <View style={[
+      styles.tabBar, 
+      { paddingBottom: insets.bottom > 0 ? insets.bottom : 10, height: 60 + (insets.bottom > 0 ? insets.bottom : 5) }
+    ]}>
       {filteredRoutes.map((route, index) => {
         const { options } = descriptors[route.key];
         
@@ -94,13 +98,24 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  // tabBar: {
+  //   flexDirection: 'row',
+  //   height: 60, // Increased slightly for images
+  //   backgroundColor: '#FFFFFF', // Replaced Colors.primary (assuming black/dark)
+  //   paddingBottom: 18,
+  //   // borderTopLeftRadius:20,
+  //   // borderTopRightRadius:20,
+  // },
+
+
   tabBar: {
     flexDirection: 'row',
-    height: 60, // Increased slightly for images
-    backgroundColor: '#FFFFFF', // Replaced Colors.primary (assuming black/dark)
-    paddingBottom: 18,
-    // borderTopLeftRadius:20,
-    // borderTopRightRadius:20,
+    backgroundColor: '#FFFFFF',
+    elevation: 8, // Add a small shadow for production look
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   tab: {
     flex: 1,

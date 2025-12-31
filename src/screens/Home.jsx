@@ -1,3 +1,4 @@
+
 import React, { useCallback, useEffect, useState } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
@@ -55,7 +56,7 @@ export default function Home() {
     const unreadCount = 1; // <-- replace with API value
 
     if (unreadCount > 0) {
-      setNotificationState('active');
+      setNotificationState('default');
     } else {
       setNotificationState('default');
     }

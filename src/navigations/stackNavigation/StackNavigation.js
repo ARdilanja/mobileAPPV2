@@ -1,4 +1,3 @@
-
 // src/navigations/stackNavigation/StackNavigation.js
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -52,6 +51,7 @@ import PricingScreen from '../../screens/PricingScreen';
 import PaymentStatusScreen from '../../screens/PaymentStatusScreen';
 import StartDayOne from '../../screens/StartDayOne';
 import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
+import InvoicePreviewScreen from '../../screens/InvoicePreviewScreen';
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
 
@@ -103,12 +103,12 @@ const StackNavigation = () => {
       <Stack.Screen
         name="DeleteAccountScreen"
         component={DeleteAccountScreen}
-        options={{ headerShown: true, headerTitle: 'Delete Account', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'Delete Account', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="TermsofServiceScreen"
         component={TermsOfServiceScreen}
-        options={{ headerShown: true, headerTitle: 'Terms of Service', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'Terms of Service', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="SettingsSecurityScreen"
@@ -204,7 +204,7 @@ const StackNavigation = () => {
           },
           headerTintColor: '#F5F5F5',
         }}
-      /> */}
+      />  */}
       <Stack.Screen
         name="InterviewScreen"
         component={InterviewScreen}
@@ -252,12 +252,17 @@ const StackNavigation = () => {
       <Stack.Screen
         name="PaymentStatusScreen"
         component={PaymentStatusScreen}
-        options={{ headerShown: true, headerTitle: 'PaymentStatusScreen', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'PaymentStatusScreen', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="UpdateProfileScreen"
         component={UpdateProfileScreen}
         options={{ headerShown: true, headerTitle: 'Your Profile', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="InvoicePreviewScreen"
+        component={InvoicePreviewScreen}
+        options={{ headerShown: false, headerTitle: 'Your Profile', headerTitleAlign: 'center' }}
       />
 
 
