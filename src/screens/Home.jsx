@@ -19,23 +19,23 @@ const scale = width / 375;
 
 export default function Home() {
   const navigation = useNavigation();
-  const clearAuthStorage = async () => {
-  try {
-    await AsyncStorage.multiRemove([
-      'token',
-      'refreshToken',
-      'user',
-    ]);
+//   const clearAuthStorage = async () => {
+//   try {
+//     await AsyncStorage.multiRemove([
+//       'token',
+//       'refreshToken',
+//       'user',
+//     ]);
 
-    console.log('Auth storage cleared successfully');
-  } catch (error) {
-    console.error('Failed to clear auth storage:', error);
-  }
-};
+//     console.log('Auth storage cleared successfully');
+//   } catch (error) {
+//     console.error('Failed to clear auth storage:', error);
+//   }
+// };
 
-useEffect(() => {
-  clearAuthStorage()
-},[])
+// useEffect(() => {
+//   clearAuthStorage()
+// },[])
   return (
     <View style={styles.container}>
       <StatusBar hidden />

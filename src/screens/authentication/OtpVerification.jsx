@@ -7,6 +7,7 @@ import Gradient from '../../constants/Gradient';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const OtpVerification = ({ route }) => {
   const navigation = useNavigation()
@@ -16,43 +17,58 @@ const OtpVerification = ({ route }) => {
     userId,
     serverOtp,
   } = route.params;
-console.log('userId', userId)
-console.log('serverOtp', serverOtp)
+  console.log('userId', userId)
+  console.log('serverOtp', serverOtp)
   const [otp, setOtp] = useState('');
 
   // Handle OTP verification logic
   const handleVerifyOtp = async () => {
-  if (!otp || otp.length < 4) {
-    Alert.alert('Invalid OTP', 'Please enter a valid 4-digit OTP');
-    return;
-  }
+    if (!otp || otp.length < 4) {
+      Alert.alert('Invalid OTP', 'Please enter a valid 4-digit OTP');
+      return;
+    }
 
-  // Step 1: Match OTP first
-  if (otp !== serverOtp) {
-    Alert.alert('Error', 'Incorrect OTP. Please try again.');
-    return;
-  }
+    // Step 1: Match OTP first
+    if (otp !== serverOtp) {
+      Alert.alert('Error', 'Incorrect OTP. Please try again.');
+      return;
+    }
 
-  try {
-    // Step 2: Call backend PUT API only after OTP match
-    await axios.put('http://192.168.0.18:8000/api/auth/verify-email', {
-      code: true,
-      id: userId, 
-    });
+    try {
+      // Step 2: Call backend PUT API only after OTP match
+      const response = await axios.put(`http://192.168.0.18:5000/api/auth/verify-email/${userId}`, {
+        code: true,
+      });
+      const { User, token, refreshToken } = response.data;
 
-    Alert.alert('Success', 'OTP verified successfully', [
-      {
-        text: 'Continue',
-        onPress: () => navigation.navigate('JourneyGetStartScreen'),
-      },
-    ]);
-  } catch (error) {
-    Alert.alert(
-      'Error',
-      error.response?.data?.message || 'Verification failed'
-    );
-  }
-};
+      await AsyncStorage.multiSet([
+        ["token", token],
+        ["refreshToken", refreshToken],
+        ["user", JSON.stringify(User)],
+      ]);
+
+      // 🔍 VERIFY STORAGE IMMEDIATELY
+      const saved = await AsyncStorage.multiGet([
+        "token",
+        "refreshToken",
+        "user",
+      ]);
+
+      console.log("Saved auth data:", saved);
+
+      Alert.alert('Success', 'OTP verified successfully', [
+        {
+          text: 'Continue',
+          onPress: () => navigation.navigate('JourneyGetStartScreen'),
+        },
+      ]);
+    } catch (error) {
+      Alert.alert(
+        'Error',
+        error.response?.data?.message || 'Verification failed'
+      );
+    }
+  };
 
 
   return (

@@ -19,8 +19,9 @@ export default function MoreSection() {
   const [showLogout, setShowLogout] = React.useState(false);
 
   const handleLogout = async () => {
-    // await AsyncStorage.clear(); // or remove token only
-    console.log('clear all');
+   
+    await AsyncStorage.clear(); 
+    console.log('cleared all');
     setShowLogout(false);
 
     // navigation.dispatch(
