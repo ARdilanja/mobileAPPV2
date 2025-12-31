@@ -15,6 +15,7 @@ import { Fonts } from '../constants/fonts';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
+const scale = screenWidth / 390;
 const StartDayOne = () => {
   const navigation = useNavigation();
   return (

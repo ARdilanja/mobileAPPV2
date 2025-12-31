@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, View, Alert, StatusBar } from 'react-native';
+import { Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, View, Alert, StatusBar, Dimensions } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
 import OtpInput from '../../components/auth/OtpInput';
@@ -9,6 +9,9 @@ import { Fonts } from '../../constants/fonts';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+const screenWidth = Dimensions.get('window').width;
+const scale = screenWidth / 390
 const OtpVerification = ({ route }) => {
   const navigation = useNavigation()
 
