@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import {
   View, TextInput, StyleSheet, Dimensions,
   KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard,
-  StatusBar
+  StatusBar,
+  Text
 } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
@@ -14,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const screenWidth = Dimensions.get("window").width;
+const scale = screenWidth / 390;
 
 const EmailInput = () => {
   const navigation = useNavigation()
@@ -87,7 +89,7 @@ const EmailInput = () => {
       console.log('User', User)
       console.log('token', token)
       console.log('refreshToken', refreshToken)
-    
+
 
       // ✅ Store tokens (example – adapt to Redux / SecureStorage)
       await AsyncStorage.multiSet([
@@ -180,6 +182,9 @@ const EmailInput = () => {
                   value={password}
                   onChangeText={setPassword}
                 />
+                <Text
+                  style={styles.forgot}
+                >Forgot password?</Text>
               </View>
 
               {/* BOTTOM SECTION: Pushed to bottom by space-between */}
@@ -221,16 +226,24 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     color: '#242424',
     paddingLeft: 24,
-    fontSize: 18,
-    lineHeight: 28,
+    fontSize: 18 * scale,
+    lineHeight: 28 * scale,
     fontFamily: Fonts.Regular,
     elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    marginBottom: 16,
+    marginBottom: 16 * scale,
     shadowRadius: 8,
   },
+  forgot: {
+    width: screenWidth - 32,
+    marginHorizontal: 'auto',
+    textAlign: 'right',
+    color: '#235DFF', fontSize: 18 * scale,
+    lineHeight: 28 * scale,
+    fontFamily: Fonts.Regular,
+  }
 });
 
 export default EmailInput;

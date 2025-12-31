@@ -1,11 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet, StatusBar, Alert } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, Alert, Dimensions, TouchableOpacity , Image} from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
-import SocialButton from '../../components/auth/SocialButton';
+// import SocialButton from '../../components/auth/SocialButton';
 import Gradient from '../../constants/Gradient';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+
+const screenWidth = Dimensions.get("window").width;
+const scale = screenWidth / 390;
 
 const ChooseSignupMethod = () => {
   const navigation = useNavigation()
@@ -17,32 +21,29 @@ const ChooseSignupMethod = () => {
 
       // 2️⃣ Open Google popup
       const userInfo = await GoogleSignin.signIn();
+
       console.log('userInfo', userInfo)
 
       // 3️⃣ Extract ID token
-      const googleToken = userInfo.idToken;
-      console.log('googleToken', googleToken)
+      const idToken = userInfo.idToken;
+      console.log('idToken', idToken)
 
-      if (!googleToken) {
+      if (!idToken) {
         return Alert.alert("Error", "Google token not received");
       }
 
       // 4️⃣ Send token to backend using AXIOS
-      const response = await axios.post("http://192.168.0.18:8000/api/auth/google-login", {
-        token: googleToken,
+      const response = await axios.post("http://192.168.0.18:5000/api/auth/google-login", {
+        idToken,
       });
       console.log('response', response)
 
-      // 5️⃣ Backend response
       const { token, refreshToken, User } = response.data;
 
-      // 6️⃣ Store tokens (AsyncStorage / Redux)
       console.log("Logged in user:", User);
 
-      // Example:
-      // await AsyncStorage.setItem("token", token);
+     
 
-      // 7️⃣ Navigate
       navigation.replace("BottomDash");
 
     } catch (error) {
@@ -55,7 +56,7 @@ const ChooseSignupMethod = () => {
     }
   };
 
-  return (
+  return (   
     <Gradient>
       <StatusBar barStyle="dark-content" backgroundColor="transparent"
         translucent={true} />
@@ -121,16 +122,61 @@ const styles = StyleSheet.create({
 
   },
   footer: {
-    fontSize: 18,
-    lineHeight: 28,
+    fontSize: 18 * scale,
+    lineHeight: 28 * scale,
     fontFamily: Fonts.Regular,
     textAlign: 'center',
-    marginTop: 24,
+    marginTop: 24 * scale,
   },
   link: {
     color: '#0178FF',
     fontWeight: '500',
   },
+  socialbutton: {
+    backgroundColor: '#fff',
+    borderRadius: 48,
+    paddingVertical: 14,
+    alignItems: 'center',
+marginHorizontal: 'auto',
+    width: screenWidth - 32,
+    alignSelf: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+    marginTop: 16 * scale,
+  },
+
+  socialcontent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'left',
+    gap: 10 * scale,
+  },
+  socialtext: {
+    color: '#000',
+    fontSize: 18 * scale,
+    lineHeight: 28 * scale,
+    fontFamily: Fonts.Regular,
+  },
 });
 
 export default ChooseSignupMethod;
+const SocialButton = ({ text, onPress, style, icon, iconWidth = 22, }) => {
+  return (
+    <TouchableOpacity style={[styles.socialbutton, style]} onPress={onPress}>
+      <View style={styles.socialcontent}>
+        {icon && (
+          <Image
+            source={icon}
+            style={{ width: iconWidth, height: iconWidth }}
+          // resizeMode="contain"
+          />
+        )}
+        <Text style={styles.socialtext}>{text}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+

@@ -133,8 +133,8 @@ const styles = StyleSheet.create({
     color: '#0178FF',
     marginTop: 24,
     marginLeft: 16,
-    fontSize: 18,
-    lineHeight: 28,
+    fontSize: 18 * scale,
+    lineHeight: 28 * scale,
     fontFamily: Fonts.Regular,
   },
 });

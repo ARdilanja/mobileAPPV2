@@ -24,12 +24,12 @@ export default function MoreSection() {
     console.log('cleared all');
     setShowLogout(false);
 
-    // navigation.dispatch(
-    //   CommonActions.reset({
-    //     index: 0,
-    //     routes: [{ name: 'LoginScreen' }],
-    //   })
-    // );
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'SignIn' }],
+      })
+    );
   };
 
   return (

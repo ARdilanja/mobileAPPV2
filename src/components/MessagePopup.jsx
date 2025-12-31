@@ -90,6 +90,7 @@ import {
 import { Fonts } from '../constants/fonts';
 
 const screenWidth = Dimensions.get('window').width;
+const scale = screenWidth / 390;
 
 const MessagePopup = ({
   visible,
@@ -189,23 +190,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#DCFCE7',
   },
   icon: {
-    width: 24,
-    height: 24,
+    width: 24 * scale,
+    height: 24 * scale,
     marginRight: 16,
     marginLeft: 16,
   },
   title: {
-    fontSize: 18,
-    lineHeight: 24,
+    fontSize: 18 * scale,
+    lineHeight: 24 * scale,
     fontFamily: Fonts.Medium,
     color: '#000',
   },
   message: {
-    fontSize: 14,
-    lineHeight: 24,
+    fontSize: 14 * scale,
+    lineHeight: 24 * scale,
     fontFamily: Fonts.Regular,
     color: '#2A2A2A',
-    marginTop: 4,
+    marginTop: 4 * scale,
   },
 });
 
