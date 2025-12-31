@@ -19,54 +19,100 @@ const SignUp = () => {
 
 
     // Handle signup API call
+    // const handleSignUp = async () => {
+    //     if (!fullName || !phone || !email || !password) {
+    //         Alert.alert(
+    //             'Missing Details',
+    //             'Please fill all the fields'
+    //         );
+    //         return;
+    //     }
+    //     const payload = {
+    //         email: email,
+    //         firstName: fullName,
+    //         lastName: '',
+    //         password: password,
+    //         phone: phone,
+    //         recrootUserType: 'Candidate',
+    //         country: 'in',
+    //     };
+    //     try {
+    //         const response = await axios.post(
+    //             'https://api.arinnovate.io/auth/register',
+    //             payload
+    //         );
+    //         setSignupData(response.data)
+
+    //         Alert.alert(
+    //             'Success',
+    //             'Signup successful. Please verify OTP.',
+    //             [
+    //                 {
+    //                     text: 'OK',
+    //                     onPress: () =>
+    //                         navigation.navigate('OtpVerification', {
+    //                             email,
+    //                             phone,
+    //                             serverOtp: response.data.referral_code,
+    //                             otpType: 'email',
+    //                         }),
+    //                 },
+    //             ]
+    //         );
+    //     } catch (error) {
+    //         const errorMsg =
+    //             error.response?.data?.message ||
+    //             'Something went wrong. Please try again.';
+
+    //         Alert.alert('Signup Failed', errorMsg);
+    //     }
+    // };
     const handleSignUp = async () => {
         if (!fullName || !phone || !email || !password) {
-            Alert.alert(
-                'Missing Details',
-                'Please fill all the fields'
-            );
+            Alert.alert('Missing Details', 'Please fill all the fields');
             return;
         }
+
         const payload = {
-            email: email,
-            firstName: fullName,
-            lastName: '',
-            password: password,
-            phone: phone,
+            firstName:fullName,
+            lastName:'Test',
+            email,
+            phone,
+            password,
             recrootUserType: 'Candidate',
-            country: 'in',
+            countryDetails: {
+                country: 'India',
+                dialCode: '+91',
+            },
         };
+console.log('payload', payload)
         try {
-            const response = await axios.post(
-                'https://api.arinnovate.io/auth/register',
+            const res = await axios.post(
+                'http://192.168.0.18:8000/api/auth/register',
                 payload
             );
-            setSignupData(response.data)
 
-            Alert.alert(
-                'Success',
-                'Signup successful. Please verify OTP.',
-                [
-                    {
-                        text: 'OK',
-                        onPress: () =>
-                            navigation.navigate('OtpVerification', {
-                                email,
-                                phone,
-                                serverOtp: response.data.referral_code,
-                                otpType: 'email',
-                            }),
-                    },
-                ]
-            );
+           console.log('res signup', res)
+
+            Alert.alert('Success', 'OTP sent to your email', [
+                {
+                    text: 'OK',
+                    onPress: () =>
+                        navigation.navigate('OtpVerification', {
+                            email,
+                            userId: res.data.userID,
+                            serverOtp: res.data.referral_code,
+                        }),
+                },
+            ]);
         } catch (error) {
-            const errorMsg =
-                error.response?.data?.message ||
-                'Something went wrong. Please try again.';
-
-            Alert.alert('Signup Failed', errorMsg);
+            Alert.alert(
+                'Signup Failed',
+                error.response?.data?.message || 'Something went wrong'
+            );
         }
     };
+
 
     return (
         <Gradient>

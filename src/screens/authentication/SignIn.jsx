@@ -21,34 +21,46 @@ const SignIn = () => {
           showBack={false}
           showLogo={false}
         />
-
+<View style={{marginTop:15}}>
         {/* Google sign-in option */}
-        <SocialButton text="Sign in with Google" icon={require('../../assets/icons/google-logo.png')}
+        <SocialButton text="Sign in with Google" icon={require('../../assets/icons/google.png')}
           onPress={() => navigation.navigate('BottomDash')}
           iconWidth={24}
 
         />
 
-        {/* Email sign-in option */}
+        
+        {/* apple sign-in option */}
         <SocialButton
-          text="Sign in with Email"
-          iconWidth={16}
+          text="Sign in with apple"
+          iconWidth={24}
+          icon={require('../../assets/icons/apple.png')}
+          onPress={() => navigation.navigate('MobileInput')}
+        />
 
-          icon={require('../../assets/icons/envelop.png')}
+        {/* faceboook sign-in option */}
+        <SocialButton
+          text="Sign in with facebook"
+          iconWidth={24}
+
+          icon={require('../../assets/icons/facebook.png')}
           onPress={() => navigation.navigate('EmailInput')}
         />
 
-        {/* Mobile sign-in option */}
+        {/* Email sign-in option */}
         <SocialButton
-          text="Sign in with Mobile"
-          iconWidth={16}
-          icon={require('../../assets/icons/language.png')}
-          onPress={() => navigation.navigate('MobileInput')}
+          text="Sign in with email"
+          iconWidth={24}
+
+          icon={require('../../assets/icons/email.png')}
+          onPress={() => navigation.navigate('EmailInput')}
         />
+
+        </View>
         {/* Footer sign-up link */}
         <Text style={styles.footer}
         >
-          Don’t have an account? <Text style={styles.link} onPress={() => navigation.navigate('SignUp')}>Sign up</Text>
+          Don’t have an account? <Text style={styles.link} onPress={() => navigation.navigate('ChooseSignupMethod')}>Sign up</Text>
         </Text></View>
     </Gradient>
   );
@@ -65,7 +77,7 @@ const styles = StyleSheet.create({
     lineHeight: 28,
     fontFamily: Fonts.Regular,
     textAlign: 'center',
-    marginTop: 24,
+    marginTop: 32,
   },
   link: {
     color: '#0178FF',

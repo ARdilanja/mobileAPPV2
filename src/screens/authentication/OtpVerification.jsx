@@ -6,42 +6,54 @@ import OtpInput from '../../components/auth/OtpInput';
 import Gradient from '../../constants/Gradient';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
+import axios from 'axios';
 
 const OtpVerification = ({ route }) => {
   const navigation = useNavigation()
 
   const {
     email,
-    phone,
+    userId,
     serverOtp,
-    otpType,
   } = route.params;
-
+console.log('userId', userId)
+console.log('serverOtp', serverOtp)
   const [otp, setOtp] = useState('');
 
-  const contactText =
-    otpType === 'mobile'
-      ? phone
-      : email;
-
   // Handle OTP verification logic
-  const handleVerifyOtp = () => {
-    if (!otp || otp.length < 4) {
-      Alert.alert('Invalid OTP', 'Please enter a valid 4-digit OTP');
-      return;
-    }
+  const handleVerifyOtp = async () => {
+  if (!otp || otp.length < 4) {
+    Alert.alert('Invalid OTP', 'Please enter a valid 4-digit OTP');
+    return;
+  }
 
-    if (otp === serverOtp) {
-      Alert.alert('Success', 'OTP verified successfully', [
-        {
-          text: 'Continue',
-          onPress: () => navigation.navigate('JourneyGetStartScreen'),
-        },
-      ]);
-    } else {
-      Alert.alert('Error', 'Incorrect OTP. Please try again.');
-    }
-  };
+  // Step 1: Match OTP first
+  if (otp !== serverOtp) {
+    Alert.alert('Error', 'Incorrect OTP. Please try again.');
+    return;
+  }
+
+  try {
+    // Step 2: Call backend PUT API only after OTP match
+    await axios.put('http://192.168.0.18:8000/api/auth/verify-email', {
+      code: true,
+      id: userId, 
+    });
+
+    Alert.alert('Success', 'OTP verified successfully', [
+      {
+        text: 'Continue',
+        onPress: () => navigation.navigate('JourneyGetStartScreen'),
+      },
+    ]);
+  } catch (error) {
+    Alert.alert(
+      'Error',
+      error.response?.data?.message || 'Verification failed'
+    );
+  }
+};
+
 
   return (
     <Gradient>
@@ -63,7 +75,7 @@ const OtpVerification = ({ route }) => {
               <View style={styles.topSection}>
                 <AuthHeader
                   title="OTP Verification"
-                  subtitle={`Enter the 4-digit OTP sent to ${contactText}`}
+                  subtitle={`Enter the 4-digit OTP sent to ${email}`}
                   showBack={true}
                   showLogo={true}
                 />
