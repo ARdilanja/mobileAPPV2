@@ -10,6 +10,7 @@ import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
 import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
 import PracticeConversationScreen from '../../screens/practiceInterview/PracticeConversationScreen';
 import PracticeInterviewInfoScreen from '../../screens/practiceInterview/PracticeInterviewInfoScreen';
+import StartInterviewScreen from '../../screens/StartInterviewScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,6 +34,14 @@ const BottomNavigation = () => {
         }}
       />
 
+      <Tab.Screen
+        name="StartInterviewScreen"
+        component={StartInterviewScreen}
+       options={{
+    headerShown: false, // hide header
+    tabBarLabel: () => null, // hide the label if needed
+  }}
+      />
       <Tab.Screen
         name="StartInterview"
         component={EmployerInterviewScreen}
