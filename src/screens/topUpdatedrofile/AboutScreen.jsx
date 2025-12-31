@@ -37,7 +37,7 @@ export default function AboutScreen() {
 
         <View style={styles.divider} />
 
-        <TouchableOpacity style={styles.row}>
+        <TouchableOpacity style={styles.row}   onPress={() => navigation.navigate('OnboardingContainer')}>
           <Text style={styles.text}>Privacy policy</Text>
           <Image
             source={require('../../assets/images/Arrow_3.png')}

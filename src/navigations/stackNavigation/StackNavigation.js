@@ -52,6 +52,7 @@ import PricingScreen from '../../screens/PricingScreen';
 import PaymentStatusScreen from '../../screens/PaymentStatusScreen';
 import StartDayOne from '../../screens/StartDayOne';
 import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
+import OnboardingContainer from '../../screens/OnboardingScreen/OnboardingContainer';
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
 
@@ -260,7 +261,11 @@ const StackNavigation = () => {
         options={{ headerShown: true, headerTitle: 'Your Profile', headerTitleAlign: 'center' }}
       />
 
-
+ <Stack.Screen
+        name="OnboardingContainer"
+        component={OnboardingContainer}
+        options={{ headerShown: false, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
+      />
 
     </Stack.Navigator>
   );

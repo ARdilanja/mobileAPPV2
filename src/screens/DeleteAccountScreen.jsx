@@ -233,7 +233,7 @@ const DeleteAccountScreen = ({ navigation }) => {
             </Text>
             <Text style={styles.modalDesc}>
               You’re requesting to delete your account. Your account will be
-              permanently deleted in 24 hours.{' '}
+              permanently deleted in 24 hours.
             </Text>
 
             <TouchableOpacity
@@ -262,7 +262,7 @@ const DeleteAccountScreen = ({ navigation }) => {
               resizeMode="contain"
             />
             <Text style={styles.successText}>
-              Account deleted successfully.{' '}
+              Account deleted successfully.
             </Text>
             {/* <Text style={[styles.successText, { marginTop: 12, fontSize: 13, color: "#666" }]}>
                             You have 24 hours to log in and cancel.

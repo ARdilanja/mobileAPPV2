@@ -48,7 +48,7 @@ const StartDayOne = () => {
           {/* Text Content */}
           <View style={styles.textContainer}>
             <Text style={styles.title}>
-              Your confidence journey{' '}
+              Your confidence journey
               <Text style={styles.highlight}>starts today</Text>
             </Text>
           </View>
