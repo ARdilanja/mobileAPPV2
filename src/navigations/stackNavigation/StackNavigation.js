@@ -132,6 +132,12 @@ import NotificationsScreen from '../../screens/NotificationsScreen';
 import SubscriptionAgreementScreen from '../../screens/SubscriptionSection';
 import ChatOnboardingScreen from '../../screens/ChatScreen/ChatOnboardingScreen';
 import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
+import JDInputScreen from '../../screens/PracticeStartFlow/JDInputScreen';
+import PracticeRequiredSkills from '../../screens/PracticeStartFlow/PracticeRequiredSkills';
+import PracticeExpScreen from '../../screens/PracticeStartFlow/PracticeExpScreen';
+import PracticeInterviewStart from '../../screens/PracticeStartFlow/PracticeInterviewStart';
+
+
 import PracticeConversationScreen from '../../screens/practiceInterview/PracticeConversationScreen';
 import PracticeInterviewInfoScreen from '../../screens/practiceInterview/PracticeInterviewInfoScreen';
 import Home from '../../screens/Home';
@@ -266,28 +272,52 @@ const StackNavigation = () => {
       <Stack.Screen
         name="PracticeStartScreen"
         component={PracticeStartScreen}
-        options={{ headerShown: true, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+        // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
 
       />
       <Stack.Screen
+        name="JDInputScreen"
+        component={JDInputScreen}
+        // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+
+      />
+      <Stack.Screen
+        name="PracticeRequiredSkills"
+        component={PracticeRequiredSkills}
+        // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+      />
+
+      <Stack.Screen
+        name="PracticeExpScreen"
+        component={PracticeExpScreen}
+        // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+      />
+
+      <Stack.Screen
+        name="PracticeInterviewStart"
+        component={PracticeInterviewStart}
+        // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+      />
+      
+      <Stack.Screen
         name="PracticeConversationScreen"
         component={PracticeConversationScreen}
-        options={{
-          headerShown: true, headerStyle: {
-            backgroundColor: "#0178FF",
-          },
-          headerTintColor: '#F5F5F5'
-        }}
+        // options={{
+        //   headerShown: true, headerStyle: {
+        //     backgroundColor: "#0178FF",
+        //   },
+        //   headerTintColor: '#F5F5F5'
+        // }}
       />
       <Stack.Screen
         name="PracticeInterviewInfoScreen"
         component={PracticeInterviewInfoScreen}
-        options={{
-          headerShown: true, headerStyle: {
-            backgroundColor: "#0178FF",
-          },
-          headerTintColor: '#F5F5F5',
-        }}
+        // options={{
+        //   headerShown: true, headerStyle: {
+        //     backgroundColor: "#0178FF",
+        //   },
+        //   headerTintColor: '#F5F5F5',
+        // }}
       />
       <Stack.Screen
         name="InterviewScreen"

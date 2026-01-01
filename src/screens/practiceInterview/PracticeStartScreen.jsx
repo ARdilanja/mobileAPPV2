@@ -1,129 +1,4 @@
 
-
-// import React, { useState } from "react";
-// import {
-//     View,
-//     Text,
-//     StyleSheet,
-//     TouchableOpacity,
-//     Dimensions,
-// } from "react-native";
-
-// import ChoiceCard from "../../components/PracticeInterview/ChoiceCard";
-
-// const { width, height } = Dimensions.get("window");
-
-// export default function PracticeStartScreen({ navigation }) {
-//     const [selected, setSelected] = useState(null);
-
-//     const handleContinue = () => {
-//         navigation.navigate("PracticeConversationScreen", {
-//             startChoice: selected,
-//         });
-//     };
-
-//     return (
-//         <View style={styles.container}>
-//             {/* Centered Title */}
-//             <View style={styles.titleContainer}>
-//                 <Text style={styles.titleText}>
-//                     Hi James, how do you want{"\n"}to start?
-//                 </Text>
-//             </View>
-
-
-//             {/* Row 1: Two choices centered */}
-//             <View style={styles.row}>
-//                 <ChoiceCard
-//                     icon={require("../../assets/images/job_desc.png")}
-//                     text="Use job description"
-//                     active={selected?.id === "jd"}
-//                     onPress={() => setSelected({ id: "jd", label: "Use job description" })}
-//                 />
-//                 <ChoiceCard
-//                     icon={require("../../assets/images/choose_role.png")}
-//                     text="Choose role & skills"
-//                     active={selected?.id === "role"}
-//                     onPress={() => setSelected({ id: "role", label: "Choose role & skills" })}
-//                 />
-//             </View>
-
-//             {/* Row 2: Single choice centered */}
-//             <View style={styles.row}>
-//                 <ChoiceCard
-//                     icon={require("../../assets/images/upload.png")}
-//                     text="Upload job description document"
-//                     active={selected?.id === "upload"}
-//                     onPress={() => setSelected({ id: "upload", label: "Upload job description document" })}
-//                 />
-//             </View>
-
-//             <TouchableOpacity
-//                 style={[styles.button, !selected && { opacity: 0.5 }]}
-//                 disabled={!selected}
-//                 onPress={handleContinue}
-//             >
-//                 <Text style={styles.buttonText}>Continue</Text>
-//             </TouchableOpacity>
-//         </View>
-//     );
-// }
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         // paddingHorizontal: 20,
-//         backgroundColor: "#F5F5F5",
-//         // alignItems: "center",      // Centers content horizontally
-//         justifyContent: "center",  // Centers content vertically like your 2nd image
-//     },
-
-//     titleContainer: {
-//         width: 320,
-//         height: 64,
-//         marginLeft: 24,          // 👈 EXACT FIGMA LEFT
-//         justifyContent: "center",
-//         marginBottom:15
-//     },
-
-//     titleText: {
-//         fontSize: 24,
-//         fontWeight: "700",
-//         textAlign: "center",
-//         lineHeight: 32, // IMPORTANT for 2-line vertical balance
-//         color: "#2A2A2A",
-//         alignSelf: "center",
-//     },
-
-// row: {
-//     flexDirection: "row",
-//     flexWrap: "wrap",
-//     // justifyContent: "center",  // 👈 center the group
-
-//     gap: 8,                    // spacing between pills
-//     marginBottom: 12,
-// },
-
-//     button: {
-//         position: "absolute",
-//         bottom: 20,
-//         left: 20,
-//         right: 20,
-//         backgroundColor: "#0178FF",
-//         paddingVertical: 16,
-//         borderRadius: 48,
-//         alignItems: "center",
-//     },
-//     buttonText: {
-//         color: "#FFFFFF",
-//         fontSize: 18,
-//         fontWeight: "700",
-//     },
-// });
-
-
-
-
 import React, { useState } from "react";
 import {
     View,
@@ -131,23 +6,38 @@ import {
     StyleSheet,
     TouchableOpacity,
     StatusBar,
+    Dimensions,
 } from "react-native";
 
 import ChoiceCard from "../../components/PracticeInterview/ChoiceCard";
 import { Fonts } from "../../constants/fonts";
 
+const screenWidth = Dimensions.get('window').width;
+const scale = screenWidth / 390
 export default function PracticeStartScreen({ navigation }) {
     const [selected, setSelected] = useState(null);
 
-    const handleContinue = () => {
-        navigation.navigate("PracticeConversationScreen", {
-            startChoice: selected,
-        });
-    };
+    // const handleContinue = () => {
+    //     navigation.navigate("PracticeConversationScreen", {
+    //         startChoice: selected,
+    //     });
+    // };
+
+   const ROUTES = {
+  jd: "JDInputScreen",
+  role: "RoleSkillScreen",
+  upload: "UploadJDScreen",
+};
+
+const handleContinue = () => {
+  if (selected?.id) {
+    navigation.navigate(ROUTES[selected.id]);
+  }
+};
 
     return (
         <View style={styles.container}>
-        <StatusBar hidden />
+            <StatusBar hidden />
 
             {/* ===== CONTENT COLUMN ===== */}
             <View style={styles.contentWrapper}>
@@ -155,33 +45,48 @@ export default function PracticeStartScreen({ navigation }) {
                 {/* Title */}
                 <View style={styles.titleContainer}>
                     <Text style={styles.titleText}>
-                        Hi James, how do you want{"\n"}to start?
+                        Hi James, how do you want to start?
                     </Text>
                 </View>
 
-                {/* Row 1 */}
-                <View style={styles.row}>
-                    <ChoiceCard
+                <View style={styles.rowWrapper}>
+                    {/* Row 1 */}
+                    <View style={styles.row}>
+                        {/* <ChoiceCard
                         icon={require("../../assets/images/job_desc.png")}
                         text="Use job description"
                         active={selected?.id === "jd"}
                         onPress={() =>
                             setSelected({ id: "jd", label: "Use job description" })
                         }
-                    />
-                    <ChoiceCard
+                    /> */}
+                        <ChoiceCard
+                            icon={require("../../assets/images/job_desc.png")}
+                            text="Use job description"
+                            iconBg="#DDEAFF"
+                            active={selected?.id === "jd"}
+                            onPress={() => setSelected({ id: "jd" })}
+                        />
+                        {/* <ChoiceCard
                         icon={require("../../assets/images/choose_role.png")}
                         text="Choose role & skills"
                         active={selected?.id === "role"}
                         onPress={() =>
                             setSelected({ id: "role", label: "Choose role & skills" })
                         }
-                    />
-                </View>
+                    /> */}
+                        <ChoiceCard
+                            icon={require("../../assets/images/choose_role.png")}
+                            text="Choose role & skills"
+                            iconBg="#EBE6FF"
+                            active={selected?.id === "role"}
+                            onPress={() => setSelected({ id: "role" })}
+                        />
+                    </View>
 
-                {/* Row 2 */}
-                <View style={styles.row}>
-                    <ChoiceCard
+                    {/* Row 2 */}
+                    <View style={styles.row}>
+                        {/* <ChoiceCard
                         icon={require("../../assets/images/upload.png")}
                         text="Upload job description document"
                         active={selected?.id === "upload"}
@@ -191,7 +96,15 @@ export default function PracticeStartScreen({ navigation }) {
                                 label: "Upload job description document",
                             })
                         }
-                    />
+                    /> */}
+                        <ChoiceCard
+                            icon={require("../../assets/icons/clip-file.png")}
+                            text="Upload jd document"
+                            iconBg="#C6F6D5"
+                            active={selected?.id === "upload"}
+                            onPress={() => setSelected({ id: "upload" })}
+                        />
+                    </View>
                 </View>
 
             </View>
@@ -206,7 +119,7 @@ export default function PracticeStartScreen({ navigation }) {
                     !selected && styles.continueDisabled,
                 ]}
             >
-                <Text style={styles.continueText}>Continue</Text>
+                <Text style={styles.continueText}>Next</Text>
             </TouchableOpacity>
 
 
@@ -220,40 +133,48 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#F5F5F5",
-        justifyContent: "center",
+        marginTop: 16,
+        position: 'relative'
+        // justifyContent: "center",
     },
 
     /* SAME COLUMN FOR TITLE + CHOICES */
     contentWrapper: {
-        width: 320,              // 👈 FIGMA WIDTH
+        width: screenWidth - 32,              // 👈 FIGMA WIDTH
         alignSelf: "center",
+        flex: 1,              // ✅ gives height
+        position: "relative",
     },
 
     titleContainer: {
-        height: 64,
+        // height: 64,
         justifyContent: "center",
-        marginBottom: 16,
+        marginTop: 16,
     },
 
     titleText: {
-        fontSize: 24,
-        fontFamily:Fonts.Medium,
+        fontSize: 32 * scale,
+        fontFamily: Fonts.Medium,
         fontWeight: "500",
-        textAlign: "center",
-        lineHeight: 32,
+        textAlign: "Left",
+        lineHeight: 48 * scale,
         color: "#2A2A2A",
     },
-
+    rowWrapper: {
+        position: "absolute",
+        left: 0,
+        right: 0,
+        bottom: 128,
+    },
     row: {
         flexDirection: "row",
-        flexWrap: "wrap",
         gap: 12,
-        marginBottom: 12,
+        marginTop: 8,
     },
 
     continueButton: {
         position: "absolute",
-        bottom: 16,
+        bottom: 48,
         left: 16,
         right: 16,
         height: 56,
@@ -271,9 +192,9 @@ const styles = StyleSheet.create({
 
     continueText: {
         color: "#FFFFFF",
-        fontSize: 18,
-        fontWeight: "500",
-        lineHeight: 24,
+        fontSize: 18 * scale,
+        fontFamily: Fonts.Medium,
+        lineHeight: 24 * scale,
     },
 
 });

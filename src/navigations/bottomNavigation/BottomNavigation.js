@@ -89,7 +89,7 @@ const BottomNavigation = () => {
           headerTitleAlign:'center',
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="PracticeStartScreen"
         component={PracticeStartScreen}
         options={{
@@ -97,7 +97,7 @@ const BottomNavigation = () => {
           title: 'Practice',
           headerTitleAlign:'center',
         }}
-      />
+      /> */}
        <Tab.Screen
          name="ProfileTopScreen"
          component={ProfileTopScreen}
