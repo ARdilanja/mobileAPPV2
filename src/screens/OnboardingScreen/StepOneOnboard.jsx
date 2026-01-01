@@ -2,6 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import OnboardingProCards from '../../components/OnboardingContainer/OnboardingProCards';
+import { Fonts } from '../../constants/fonts';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -17,14 +18,14 @@ export default function StepOneOnboard({ value = [], onChange = () => {} }) {
   const OPTIONS = [
     {
       id: 1,
-      title: 'Presenting ideas',
+      title: 'Presenting \nideas',
       icon: require('../../assets/icons/person-presenting.png'),
       iconBgColor: '#DBE5FF',
       accentColor: '#235DFF',
     },
     {
       id: 2,
-      title: 'Facing interviews',
+      title: 'Facing \ninterviews',
       icon: require('../../assets/icons/online-interview.png'),
       iconBgColor: '#EBE6FF',
       accentColor: '#4A2AC9',
@@ -45,21 +46,21 @@ export default function StepOneOnboard({ value = [], onChange = () => {} }) {
     },
     {
       id: 5,
-      title: 'Team collaboration',
+      title: 'Talking in \nmanager 1-on-1s',
       icon: require('../../assets/icons/meeting.png'),
       iconBgColor: '#FFEDCF',
       accentColor: '#CC5803',
     },
     {
       id: 6,
-      title: 'Career growth',
+      title: 'Showing my work \n/ achievements',
       icon: require('../../assets/icons/membership.png'),
       iconBgColor: '#CAF0F8',
       accentColor: '#0077B6',
     },
     {
       id: 7,
-      title: 'Goal setting',
+      title: 'Asking for promotion or appraisal',
       icon: require('../../assets/icons/goals.png'),
       iconBgColor: '#FFEBE3',
       accentColor: '#BE3400',
@@ -100,6 +101,8 @@ const styles = StyleSheet.create({
     fontSize: 32 * scale,
     fontWeight: '500',
     marginBottom: 24 * scale,
+    fontFamily: Fonts.Medium,
+    lineHeight: 48,
   },
   grid: {
     flexDirection: 'row',

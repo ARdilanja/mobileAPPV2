@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,14 @@ import {
   TextInput,
   Pressable,
   Image,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
 } from 'react-native';
+
 import OnboardingProCards from '../../components/OnboardingContainer/OnboardingProCards';
+import { Fonts } from '../../constants/fonts';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -25,28 +31,34 @@ export default function StepTwoOnboard({ value = [], onChange = () => {} }) {
 
   const OPTIONS = [
     {
-      title: 'Individual contributor',
+      title: 'Being judged',
       iconBgColor: '#DBE5FF',
       accentColor: '#235DFF',
-      icon: require('../../assets/icons/meeting.png'),
+      icon: require('../../assets/icons/people-network-partner.png'),
     },
     {
-      title: 'Leading a team',
+      title: 'Confrontation',
       iconBgColor: '#EBE6FF',
       accentColor: '#4A2AC9',
-      icon: require('../../assets/icons/meeting.png'),
+      icon: require('../../assets/icons/boxing-glove.png'),
     },
     {
-      title: 'Cross-functional role',
+      title: 'Not sounding \nconfident',
       iconBgColor: '#D8F3DC',
       accentColor: '#009343',
-      icon: require('../../assets/icons/meeting.png'),
+      icon: require('../../assets/icons/queue-alt.png'),
     },
     {
-      title: 'Stakeholder-facing',
+      title: 'Forgetting what to \nsay',
       iconBgColor: '#FFDCE2',
       accentColor: '#800F2F',
-      icon: require('../../assets/icons/meeting.png'),
+      icon: require('../../assets/icons/introduction.png'),
+    },
+    {
+      title: 'Saying the wrong thing',
+      iconBgColor: '#FFEDCF',
+      accentColor: '#CC5803',
+      icon: require('../../assets/icons/document-circle-wrong.png'),
     },
   ];
 
@@ -54,7 +66,7 @@ export default function StepTwoOnboard({ value = [], onChange = () => {} }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>What’s your working situation like?</Text>
+      <Text style={styles.title}>What worries you the most?</Text>
 
       <View style={styles.grid}>
         {OPTIONS.map(opt => (
@@ -73,35 +85,34 @@ export default function StepTwoOnboard({ value = [], onChange = () => {} }) {
 
       {/* Input bar with Mic (left) + Send (right) */}
       <View style={styles.inputContainer}>
-        {/* Mic Icon - Left */}
-        <Image
-          source={require('../../assets/icons/circle-microphone.png')}
-          style={styles.micIcon}
-        />
-
         {/* Text Input */}
         <TextInput
           placeholder="Anything you want to add..."
-          placeholderTextColor="#999"
+          placeholderTextColor="#000"
           style={styles.textInput}
           value={extraText}
           onChangeText={setExtraText}
           multiline={false}
         />
-
+        <Image
+          source={require('../../assets/icons/circle-microphone.png')}
+          style={styles.micIcon}
+        />
         {/* Send Arrow Icon - Right */}
-        <Pressable onPress={() => {
-          // Optional: handle send (e.g., save text, clear input)
-          if (hasText) {
-            console.log('Sent:', extraText);
-            setExtraText('');
-          }
-        }}>
+        <Pressable
+          onPress={() => {
+            // Optional: handle send (e.g., save text, clear input)
+            if (hasText) {
+              console.log('Sent:', extraText);
+              setExtraText('');
+            }
+          }}
+        >
           <Image
             source={require('../../assets/icons/arrow-circle-up.png')} // Your right arrow in circle
             style={[
               styles.sendIcon,
-              hasText && styles.sendIconActive // Optional: color when active
+              hasText && styles.sendIconActive, // Optional: color when active
             ]}
           />
         </Pressable>
@@ -114,41 +125,44 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   title: {
     fontSize: 32 * scale,
-    fontWeight: '700',
+    fontWeight: '500',
     marginBottom: 24 * scale,
+    fontFamily: Fonts.Medium,
+    lineHeight: scale * 48,
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    rowGap: 16 * scale,
-    marginBottom: 32 * scale,
+    // rowGap: 16 * scale,
   },
 
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 56,
+    height: 56 * scale,
+    width: 358 * scale,
     backgroundColor: '#FFF',
     borderRadius: 28,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#fff',
     paddingHorizontal: 16,
-    marginHorizontal: 16,
-    marginTop: 'auto',    // Pushes to bottom of content
-    marginBottom: 20,
+    // marginHorizontal: 16,
+    margin: 'auto',
+    marginBottom: 5,
   },
 
   micIcon: {
     width: 24,
     height: 24,
-    tintColor: '#666',
     marginRight: 12,
   },
 
   textInput: {
     flex: 1,
-    fontSize: 16,
+    fontFamily: Fonts.Regular,
+    fontSize: 18 * scale,
+    fontWeight: 400,
     color: '#000',
     paddingVertical: 0,
   },
@@ -156,9 +170,5 @@ const styles = StyleSheet.create({
   sendIcon: {
     width: 28,
     height: 28,
-    tintColor: '#CCC', // Gray when empty
-  },
-  sendIconActive: {
-    tintColor: '#2563EB', // Blue when text typed (or your primary color)
   },
 });

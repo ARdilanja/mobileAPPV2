@@ -21,13 +21,13 @@ const { width, height } = Dimensions.get('window');
 const BASE_WIDTH = 390;
 const scale = width / BASE_WIDTH;
 
-const HERO_HEIGHT = Math.round(scale * 320);
+const HERO_HEIGHT = Math.round(scale * 330);
 
 const STREAK_WIDTH = Math.round(scale * 100);
-const STREAK_HEIGHT = Math.round(scale * 88);
+const STREAK_HEIGHT = Math.round(scale * 80);
 
-const JOURNEY_WIDTH = Math.round(scale * 244);
-const JOURNEY_HEIGHT = Math.round(scale * 88);
+const JOURNEY_WIDTH = Math.round(scale * 250);
+const JOURNEY_HEIGHT = Math.round(scale * 80);
 
 const DAY_SIZE = Math.round(scale * 42);
 
@@ -112,12 +112,12 @@ export default function Home() {
 
   return (
     <LinearGradient
-      colors={['#FFFFFF', '#F2F2F2']} 
+      colors={['#FFFFFF', '#F2F2F2']}
       start={{ x: 0, y: 0 }}
       end={{ x: 0, y: 1 }}
       style={styles.container}
     >
-    {/* <StatusBar  barStyle="light-content" backgroundColor="#48474784"  translucent={true}  /> */}
+      {/* <StatusBar  barStyle="light-content" backgroundColor="#48474784"  translucent={true}  /> */}
 
       <View style={{ flex: 1 }}>
         <View style={styles.heroWrapper}>
@@ -127,11 +127,11 @@ export default function Home() {
             resizeMode="cover"
           >
             <LinearGradient
-              colors={['rgba(255,255,255,0)', '#FFFFFF']}
+              colors={['rgba(255,255,255,0)', '#ffffff']}
               style={styles.gradient}
             />
           </ImageBackground>
-         {renderNotification()}
+          {renderNotification()}
         </View>
         <View>
           <ImageBackground
@@ -176,27 +176,30 @@ export default function Home() {
                 const isActive = day === 4;
 
                 return (
-                  <View
-                    key={day}
-                    style={[
-                      styles.dayItem,
-                      isActive && styles.activeDayBox,
-                      isRed && styles.redDayBox,
-                    ]}
-                  >
-                    <Image
-                      source={getDayIcon(day)}
-                      style={[styles.dayIcon, isRed && styles.redDayIcon]}
-                    />
-                    <Text
+                  <View key={day} style={styles.dayWrapper}>
+                    <View
+                      key={day}
                       style={[
-                        styles.dayText,
-                        isActive && styles.activeDayText,
-                        isRed && styles.redDayText,
+                        styles.dayItem,
+                        isActive && styles.activeDayBox,
+                        isRed && styles.redDayBox,
                       ]}
                     >
-                      Day {day}
-                    </Text>
+                      <Image
+                        source={getDayIcon(day)}
+                        style={[styles.dayIcon, isRed && styles.redDayIcon]}
+                      />
+                      <Text
+                        style={[
+                          styles.dayText,
+                          isActive && styles.activeDayText,
+                          isRed && styles.redDayText,
+                        ]}
+                      >
+                        Day {day}
+                      </Text>
+                    </View>
+                    {isActive && <View style={styles.activeBottomLine} />}
                   </View>
                 );
               })}
@@ -261,15 +264,10 @@ const styles = StyleSheet.create({
     flex: 1,
     // paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
-topBlackGradient: {
-    position: 'absolute',
-    top: 0,
-    width: '100%',
-    height: 120,
-  },
+
   heroWrapper: {
     position: 'relative',
-    paddingBottom: 80,
+    paddingBottom: 70,
   },
 
   hero: {
@@ -285,7 +283,7 @@ topBlackGradient: {
 
   streakBg: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 10,
     left: 16,
     width: STREAK_WIDTH,
     height: STREAK_HEIGHT,
@@ -314,21 +312,25 @@ topBlackGradient: {
 
   journeyCard: {
     position: 'absolute',
-    bottom: Math.round(scale * 0),
-    left: Math.round(scale * 130),
+    bottom: Math.round(scale * 10),
+    left: Math.round(scale * 125),
     width: JOURNEY_WIDTH,
     height: JOURNEY_HEIGHT,
+    // padding: Math.round(scale * 4),
+    paddingHorizontal: Math.round(scale * 5),
+    paddingVertical: Math.round(scale * 5),
     backgroundColor: '#FFFFFF',
-    padding: Math.round(scale * 10),
-    borderRadius: Math.round(scale * 8),
+    borderRadius: 8,
     elevation: 6,
+    overflow: 'hidden',
     overflow: 'hidden',
   },
 
   journeyHeader: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: Math.round(scale * 6),
+    marginBottom: 0 * scale,
   },
 
   journeyTitle: {
@@ -343,21 +345,19 @@ topBlackGradient: {
     lineHeight: 20,
     color: '#2D6BFF',
   },
-
   journeyRow: {
     flexDirection: 'row',
-    gap: Math.round(scale * 8),
     alignItems: 'center',
   },
 
   dayItem: {
     width: DAY_SIZE,
     height: DAY_SIZE,
-    borderRadius: Math.round(scale * 6),
+    borderRadius: 8,
     backgroundColor: '#F3F4F6',
     alignItems: 'center',
     justifyContent: 'center',
-    overflow: 'hidden',
+    marginRight: 3,
   },
 
   dayIcon: {
@@ -405,12 +405,14 @@ topBlackGradient: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginVertical: 1,
   },
 
   practiceLabel: {
     fontSize: 14 * scale,
     fontFamily: Fonts.Regular,
     height: PRACTICE_CARD_HEIGHT,
+    lineHeight: 20,
   },
 
   practiceValue: {
@@ -431,7 +433,6 @@ topBlackGradient: {
     justifyContent: 'space-between',
     overflow: 'hidden',
     elevation: 1,
-
   },
   confidenceCard1: {
     marginTop: Math.round(scale * 16),
@@ -444,15 +445,14 @@ topBlackGradient: {
     justifyContent: 'space-between',
     overflow: 'hidden',
     elevation: 1,
-
   },
 
   confidenceTitle: {
-    fontSize: 14 * scale,
+    fontSize: 15 * scale,
     fontFamily: Fonts.Regular,
     lineHeight: 20,
-    color:"#000000",
-    fontWeight:400
+    color: '#000000',
+    fontWeight: '400',
   },
 
   confidenceValue: {
@@ -481,8 +481,8 @@ topBlackGradient: {
 
   badge: {
     position: 'absolute',
-    right: 24,
-    width: 90,
+    right: 22,
+    width: 110,
     height: 86,
     resizeMode: 'contain',
   },
@@ -543,7 +543,7 @@ topBlackGradient: {
   tooltipBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#0178FF', 
+    backgroundColor: '#0178FF',
     paddingHorizontal: 12,
     height: 32,
     borderRadius: 16,
@@ -559,5 +559,16 @@ topBlackGradient: {
     width: 32,
     height: 32,
     resizeMode: 'contain',
+  },
+  dayWrapper: {
+    alignItems: 'center',
+  },
+
+  activeBottomLine: {
+    marginTop: 4,
+    width: 26 * scale,
+    height: 1,
+    borderRadius: 2,
+    backgroundColor: '#316BFF',
   },
 });

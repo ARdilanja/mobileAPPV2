@@ -46,14 +46,14 @@ export default ProgressBar;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginTop: 12 * scale,
+    marginBottom: 14 * scale,
     alignItems: 'center',
   },
   segmentWrapper: {
     flex: 1,
     height: 6 * scale,
     marginHorizontal: 4 * scale,
-    borderRadius: 4 * scale,
+    borderRadius: 24 * scale,
     overflow: 'hidden',
   },
   segment: {

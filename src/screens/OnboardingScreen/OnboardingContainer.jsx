@@ -18,6 +18,7 @@ import StepThreeOnboard from './StepThreeOnboard';
 import StepFourOnboard from './StepFourOnboard';
 import ProgressBar from '../../components/OnboardingContainer/ProgressBar';
 import Header from '../../components/Header';
+import { Fonts } from '../../constants/fonts';
 
 const TOTAL_STEPS = 4;
 const { width } = Dimensions.get('window');
@@ -65,7 +66,12 @@ export default function OnboardingContainer() {
         barStyle="dark-content"
       />
 
-      {step > 1 && <Header title="" onBack={goBack} />}
+      {step > 1 && (
+        <View style={styles.headerWrapper}>
+          <Header title="" />
+          <Pressable style={StyleSheet.absoluteFill} onPress={goBack} />
+        </View>
+      )}
 
       <KeyboardAvoidingView
         style={styles.keyboardView}
@@ -128,8 +134,13 @@ const styles = StyleSheet.create({
   },
   mainWrapper: {
     flex: 1,
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
   },
+  headerWrapper: {
+    marginTop: Platform.OS === 'ios' ? 44 : 24,
+    marginBottom: 8, // controls gap between header & content
+  },
+
   content: {
     flexGrow: 1,
     padding: 16,
@@ -139,7 +150,7 @@ const styles = StyleSheet.create({
     marginTop: 68 * scale,
   },
   footer: {
-    marginTop:2*scale,
+    marginTop: 1 * scale,
     paddingHorizontal: 16,
     paddingBottom: 16,
     backgroundColor: '#f5f5f5',
@@ -150,14 +161,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#2563EB',
     justifyContent: 'center',
     alignItems: 'center',
-    // marginBottom: 16,
+    marginBottom: 25,
   },
   disabled: {
     backgroundColor: '#A3A3A3',
   },
   btnText: {
     color: '#FFF',
-    fontSize: 16,
+    fontSize: 18 * scale,
     fontWeight: '600',
+    fontFamily: Fonts.Medium,
+    lineHeight: 24,
   },
 });

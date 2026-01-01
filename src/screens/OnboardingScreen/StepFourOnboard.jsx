@@ -2,41 +2,37 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import OnboardingProCards from '../../components/OnboardingContainer/OnboardingProCards';
+import { Fonts } from '../../constants/fonts';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 
 const OPTIONS = [
   {
-    title: 'Being judged',
-    icon: require('../../assets/icons/person-presenting.png'),
-    iconBgColor: '#FFDCE2',
-    accentColor: '#800F2F',
-  },
-  {
-    title: 'Confrontation',
-    icon: require('../../assets/icons/meeting.png'),
+    title: 'Individual contributor',
+    icon: require('../../assets/icons/Group (1).png'),
     iconBgColor: '#DBE5FF',
-    accentColor: '#235DFF',
+    // accentColor: '#235DFF',
   },
   {
-    title: 'Not sounding confident',
-    icon: require('../../assets/icons/coworking.png'),
+    title: 'Leading a \nteam',
+    icon: require('../../assets/icons/people-line.png'),
     iconBgColor: '#EBE6FF',
     accentColor: '#4A2AC9',
   },
   {
-    title: 'Forgetting what to say',
-    icon: require('../../assets/icons/goals.png'),
+    title: 'Cross-functional role',
+    icon: require('../../assets/icons/function-process.png'),
     iconBgColor: '#D8F3DC',
     accentColor: '#009343',
   },
   {
-    title: 'Saying the wrong thing',
-    icon: require('../../assets/icons/circle-xmark.png'),
-    iconBgColor: '#FFEDCF',
-    accentColor: '#CC5803',
+    title: 'Stakeholder-facing (clients / execs)',
+    icon: require('../../assets/icons/target-audience.png'),
+    iconBgColor: '#FFDCE2',
+    accentColor: '#800F2F',
   },
+  
 ];
 
 const StepFourOnboard = ({ value = '', onChange = () => {} }) => {
@@ -67,14 +63,17 @@ export default StepFourOnboard;
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 22 * scale,
-    fontWeight: '700',
+    fontSize: 32 * scale,
+    fontWeight: '500',
     marginBottom: 24 * scale,
+    fontFamily: Fonts.Medium,
+    lineHeight: scale * 48,
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    rowGap: 16 * scale,
+    // rowGap: 16 * scale,
   },
+
 });

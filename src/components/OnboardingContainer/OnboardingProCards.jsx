@@ -12,6 +12,14 @@ import { Fonts } from '../../constants/fonts';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
+const SCREEN_WIDTH = Dimensions.get('window').width;
+
+const H_PADDING = 16 * 2;
+const GAP = 12;
+
+const SMALL_CARD_WIDTH = (SCREEN_WIDTH - H_PADDING - GAP) / 2;
+
+const LARGE_CARD_WIDTH = SCREEN_WIDTH - H_PADDING;
 
 const OnboardingProCards = ({
   title,
@@ -31,7 +39,7 @@ const OnboardingProCards = ({
         style={[
           styles.card,
           isSmall ? styles.smallCard : styles.largeCard,
-          selected && { borderColor: accentColor },
+          // selected && { borderColor: accentColor },
         ]}
       >
         {icon && (
@@ -71,33 +79,32 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    width: scale * 173,
-    height: scale * 120,
+    height: 120,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#D9D9D9',
     padding: 12,
-    justifyContent: 'space-between',
     backgroundColor: '#FFF',
     position: 'relative',
   },
   smallCard: {
-    width: scale * 173,
-    height: scale * 120,
+    width: SMALL_CARD_WIDTH,
+    height: 110,
   },
 
-  /* Large Card */
   largeCard: {
-    width: scale * 358,
-    height: scale * 120,
+    width: LARGE_CARD_WIDTH,
+    height: 100,
   },
   iconBg: {
-    width: scale * 40,
-    height: scale * 40,
+    width: 40,
+    height: 40,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 8,
   },
+
   icon: {
     width: scale * 20,
     height: scale * 20,
@@ -107,6 +114,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontWeight: '400',
     color: '#000',
+    lineHeight: 24 * scale,
   },
   checkBg: {
     position: 'absolute',
@@ -120,8 +128,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   checkIcon: {
-    width: 10 * scale,
-    height: 10 * scale,
+    width: 12 * scale,
+    height: 12 * scale,
   },
 
   // Radio mode
