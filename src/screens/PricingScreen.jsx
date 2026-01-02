@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Dimensions,
   StatusBar,
-} from 'react-native';import { useNavigation } from '@react-navigation/native';
+} from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import PlanCard from '../components/PlanCard';
 import { Fonts } from '../constants/fonts';
@@ -20,9 +21,18 @@ export default function PricingScreen() {
   const [selectedPlan, setSelectedPlan] = useState('free');
   const navigation = useNavigation();
 
+  useFocusEffect(
+      useCallback(() => {
+        StatusBar.setBarStyle('dark-content');
+        StatusBar.setBackgroundColor('transparent');
+        StatusBar.setTranslucent(true);
+      }, []),
+    );
+  
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <StatusBar  />
+      {/* <StatusBar  /> */}
       <Header title="Pricing" />
 
       <Text style={styles.heading}>Pick Your Confidence Plan</Text>

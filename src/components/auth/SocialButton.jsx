@@ -1,18 +1,19 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, Dimensions, View , Image} from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, Dimensions, View, Image } from 'react-native';
 import { Fonts } from '../../constants/fonts';
 
 const screenWidth = Dimensions.get("window").width;
+const scale = screenWidth / 390;
 
-const AuthButton = ({ text, onPress, style, icon ,iconWidth = 22,}) => {
+const SocialButton = ({ text, onPress, style, icon, iconWidth = 22, }) => {
   return (
-   <TouchableOpacity style={[styles.socialbutton, style]} onPress={onPress}>
+    <TouchableOpacity style={[styles.socialbutton, style]} onPress={onPress}>
       <View style={styles.socialcontent}>
-         {icon && (
+        {icon && (
           <Image
             source={icon}
             style={{ width: iconWidth, height: iconWidth }}
-            // resizeMode="contain"
+          // resizeMode="contain"
           />
         )}
         <Text style={styles.socialtext}>{text}</Text>
@@ -26,31 +27,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 48,
     paddingVertical: 14,
-    // paddingHorizontal: 16,
+    paddingLeft: 24 * scale,
     width: screenWidth - 32,
-    marginHorizontal: 'auto',
+    alignSelf: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 4,
-    alignItems: 'center',
-    marginTop: 16,
+    marginTop: 16 * scale,
   },
-   
-   socialcontent: {
+
+  socialcontent: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 10, 
+    justifyContent: 'left',
+    gap: 50 * scale,
   },
   socialtext: {
     color: '#000',
-    fontSize: 18,
-    lineHeight:28,
-    fontWeight: '400',
-     fontFamily:Fonts.Regular,
+    fontSize: 18 * scale,
+    lineHeight: 28 * scale,
+    fontFamily: Fonts.Regular,
   },
 });
 
-export default AuthButton;
+export default SocialButton;

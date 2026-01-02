@@ -44,20 +44,27 @@
 // }
 
 // App.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import AppNavigation from './src/navigations/AppNavigation';
 import { store } from "./src/redux/store.jsx";
 import { Provider } from 'react-redux';
 
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
-
-
+console.log("GoogleSignin native module =>", GoogleSignin);
 export default function App() {
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: "672175532425-d5af6nvj3u5uhuls8vptspth5pgf5mdn.apps.googleusercontent.com", // 🔴 VERY IMPORTANT
+      offlineAccess: false,
+    });
+  }, []);
+
   return (
     <Provider store={store}>
       <StatusBar
-        translucent
+        translucent={false}
         backgroundColor="transparent"
         barStyle="dark-content"
       />
@@ -66,16 +73,3 @@ export default function App() {
   );
 }
 
-
-// import React from "react";
-// import { SafeAreaView, StatusBar } from "react-native";
-// import InterviewScreen from "./src/screens/InterviewScreen";
-
-// export default function App() {
-//     return (
-//         <SafeAreaView style={{ flex: 1 }}>
-//             <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-//             <InterviewScreen />
-//         </SafeAreaView>
-//     );
-// }

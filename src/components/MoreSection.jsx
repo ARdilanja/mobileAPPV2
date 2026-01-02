@@ -20,16 +20,17 @@ export default function MoreSection() {
   const [showLogout, setShowLogout] = React.useState(false);
 
   const handleLogout = async () => {
-    // await AsyncStorage.clear(); // or remove token only
-    console.log('clear all');
+   
+    await AsyncStorage.clear(); 
+    console.log('cleared all');
     setShowLogout(false);
 
-    // navigation.dispatch(
-    //   CommonActions.reset({
-    //     index: 0,
-    //     routes: [{ name: 'LoginScreen' }],
-    //   })
-    // );
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'SignIn' }],
+      })
+    );
   };
 
   return (
@@ -56,7 +57,7 @@ export default function MoreSection() {
         <MoreItem
           text="Invoice"
           icon={require('../assets/images/terms-check.png')}
-          onPress={() => navigation.navigate('StartInterviewScreen')}
+          onPress={() => navigation.navigate('SpeakInMeetingsScreen')}
         />
 
         <Divider />

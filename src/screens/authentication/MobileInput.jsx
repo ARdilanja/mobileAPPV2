@@ -78,7 +78,7 @@ const MobileInput = () => {
                     serverOtp: '2222',
                     otpType: 'mobile', // or 'mobile'
                   })}
-                  onFooterPress={() => navigation.navigate('SignUp')}
+                  onFooterPress={() => navigation.navigate('ChooseSignupMethod')}
                 />
               </View>
 

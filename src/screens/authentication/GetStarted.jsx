@@ -138,6 +138,7 @@ import { Fonts } from '../../constants/fonts';
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
+const scale = screenWidth / 390;
 
 const GetStartScreen = () => {
   const navigation = useNavigation()
@@ -232,15 +233,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   title: {
-    fontSize: 40,
+    fontSize: 40 * scale,
     color: '#2A2A2A',
-    lineHeight: 56,
+    lineHeight: 56 * scale,
     fontFamily: Fonts.Medium
   },
   highlight: {
     color: '#0178FF',
-    fontSize: 40,
-    lineHeight: 56,
+    fontSize: 40 * scale,
+    lineHeight: 56 * scale,
     fontFamily: Fonts.Medium
   },
   bottomSection: {

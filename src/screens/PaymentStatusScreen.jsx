@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { Fonts } from '../constants/fonts';
+import Header from '../components/Header';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -17,27 +18,28 @@ const failedImg = require('../assets/images/red_circle.png');
 const recrootLogo = require('../assets/images/recroot_img.png');
 
 export default function PaymentStatusScreen({
-  status = 'success', // 'success' | 'failed'
+  navigation,
+  status = 'success',
 }) {
   const isSuccess = status === 'success';
 
   return (
+
     <View style={styles.container}>
-      {/* STATUS ICON (ONLY FOR SUCCESS) */}
-      {isSuccess && (
-        <View
-          style={[
-            styles.iconWrapper,
-            isSuccess ? styles.successBorder : styles.failedBorder,
-          ]}
-        >
-          <Image
-            source={isSuccess ? successImg : failedImg}
-            style={styles.statusIcon}
-            resizeMode="contain"
-          />
-        </View>
-      )}
+      <Header title="Pricing" />
+
+      <View
+        style={[
+          styles.iconWrapper,
+          isSuccess ? styles.successBorder : styles.failedBorder,
+        ]}
+      >
+        <Image
+          source={isSuccess ? successImg : failedImg}
+          style={styles.statusIcon}
+          resizeMode="contain"
+        />
+      </View>
 
       {/* TITLE */}
       <Text style={styles.title}>
@@ -71,7 +73,15 @@ export default function PaymentStatusScreen({
         <Text style={styles.value}>December 30, 2025 at 01:00 PM IST</Text>
 
         {/* LINK */}
-        <Text style={styles.link}>View invoice ›</Text>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('InvoicePreviewScreen', {
+              status: isSuccess ? 'success' : 'failed',
+            })
+          }
+        >
+          <Text style={styles.link}>View invoice ›</Text>
+        </TouchableOpacity>
 
         {/* ACTION BUTTON */}
         <TouchableOpacity style={styles.button}>
@@ -89,7 +99,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F7F7F7',
     alignItems: 'center',
-    paddingTop: 90 * scale,
+    // paddingTop: 90 * scale,
   },
 
   iconWrapper: {
@@ -99,6 +109,7 @@ const styles = StyleSheet.create({
     borderWidth: 24 * scale,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 70
   },
 
   successBorder: {
@@ -123,7 +134,7 @@ const styles = StyleSheet.create({
   bottomSection: {
     position: 'absolute',
     bottom: 0,
-    top: 300,
+    top: 350,
     width: '100%',
     backgroundColor: '#FFFFFF',
     paddingHorizontal: 16 * scale,
@@ -140,7 +151,8 @@ const styles = StyleSheet.create({
 
   paidText: {
     fontSize: 18 * scale,
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.Medium,
+    fontWeight: 500,
     lineHeight: 24,
     marginRight: 8,
   },
@@ -161,12 +173,14 @@ const styles = StyleSheet.create({
     fontSize: 18 * scale,
     color: '#777777',
     fontFamily: Fonts.Regular,
+    fontWeight: 400,
     lineHeight: 24,
   },
 
   value: {
-    fontSize: 14 * scale,
+    fontSize: 18 * scale,
     fontFamily: Fonts.Medium,
+    fontWeight: 500,
     lineHeight: 24,
     marginTop: 4 * scale,
   },

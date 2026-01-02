@@ -1,47 +1,78 @@
 import React, { useState } from 'react';
-import { Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, View, Alert, StatusBar } from 'react-native';
+import { Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, View, Alert, StatusBar, Dimensions } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
 import OtpInput from '../../components/auth/OtpInput';
 import Gradient from '../../constants/Gradient';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+const screenWidth = Dimensions.get('window').width;
+const scale = screenWidth / 390
 const OtpVerification = ({ route }) => {
   const navigation = useNavigation()
 
   const {
     email,
-    phone,
+    userId,
     serverOtp,
-    otpType,
   } = route.params;
-
+  console.log('userId', userId)
+  console.log('serverOtp', serverOtp)
   const [otp, setOtp] = useState('');
 
-  const contactText =
-    otpType === 'mobile'
-      ? phone
-      : email;
-
   // Handle OTP verification logic
-  const handleVerifyOtp = () => {
+  const handleVerifyOtp = async () => {
     if (!otp || otp.length < 4) {
       Alert.alert('Invalid OTP', 'Please enter a valid 4-digit OTP');
       return;
     }
 
-    if (otp === serverOtp) {
+    // Step 1: Match OTP first
+    if (otp !== serverOtp) {
+      Alert.alert('Error', 'Incorrect OTP. Please try again.');
+      return;
+    }
+
+    try {
+      // Step 2: Call backend PUT API only after OTP match
+      const response = await axios.put(`http://192.168.0.18:5000/api/auth/verify-email/${userId}`, {
+        code: true,
+      });
+      const { User, token, refreshToken } = response.data;
+
+      await AsyncStorage.multiSet([
+        ["token", token],
+        ["refreshToken", refreshToken],
+        ["user", JSON.stringify(User)],
+      ]);
+
+      // 🔍 VERIFY STORAGE IMMEDIATELY
+      const saved = await AsyncStorage.multiGet([
+        "token",
+        "refreshToken",
+        "user",
+      ]);
+
+      console.log("Saved auth data:", saved);
+
       Alert.alert('Success', 'OTP verified successfully', [
         {
           text: 'Continue',
           onPress: () => navigation.navigate('JourneyGetStartScreen'),
         },
       ]);
-    } else {
-      Alert.alert('Error', 'Incorrect OTP. Please try again.');
+    } catch (error) {
+      Alert.alert(
+        'Error',
+        error.response?.data?.message || 'Verification failed'
+      );
     }
   };
+
 
   return (
     <Gradient>
@@ -63,7 +94,7 @@ const OtpVerification = ({ route }) => {
               <View style={styles.topSection}>
                 <AuthHeader
                   title="OTP Verification"
-                  subtitle={`Enter the 4-digit OTP sent to ${contactText}`}
+                  subtitle={`Enter the 4-digit OTP sent to ${email}`}
                   showBack={true}
                   showLogo={true}
                 />
@@ -105,8 +136,8 @@ const styles = StyleSheet.create({
     color: '#0178FF',
     marginTop: 24,
     marginLeft: 16,
-    fontSize: 18,
-    lineHeight: 28,
+    fontSize: 18 * scale,
+    lineHeight: 28 * scale,
     fontFamily: Fonts.Regular,
   },
 });

@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-    bottom: 24,
+    bottom: 30,
     alignSelf: 'center',
     width: width - 64,
     height: 48,

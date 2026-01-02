@@ -17,6 +17,7 @@ import { useCallback } from 'react';
 import { PRACTICE_QUESTIONS } from "./practiceConversationConfig";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { Fonts } from "../../constants/fonts";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const { width } = Dimensions.get("window");
 
@@ -84,143 +85,152 @@ export default function PracticeConversationScreen({ route, navigation }) {
         navigation.navigate("PracticeInterviewInfoScreen");
     };
 
-    useFocusEffect(
-        useCallback(() => {
-            StatusBar.setBarStyle('light-content');
-            StatusBar.setBackgroundColor('transparent');
-            StatusBar.setTranslucent(true);
-        }, []),
-    );
+    // useFocusEffect(
+    //     useCallback(() => {
+    //         StatusBar.setBarStyle('light-content');
+    //         StatusBar.setBackgroundColor('transparent');
+    //     }, []),
+    // );
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.safe}>
+            <View style={styles.container}>
 
-            {/* Chat history and current questions */}
-            <ScrollView
+                {/* Chat history and current questions */}
+                {/* <ScrollView
                 style={styles.chat}
-                contentContainerStyle={{ paddingBottom: 220 }}
+                // contentContainerStyle={{ paddingBottom: 220 }}
                 showsVerticalScrollIndicator={false}
-            >
-                {/* Previous answered questions */}
-                {history.map((item, index) => (
-                    <View key={index} style={styles.block}>
-                        <Text style={styles.questionText}>{item.question}</Text>
-                        <View style={styles.answerWrap}>
-                            {Array.isArray(item.answer) ? (
+            > */}
+
+                <ScrollView
+                    style={{ flex: 1 }}
+                    contentContainerStyle={{ paddingBottom: 16 }}
+                >
+                    {/* Previous answered questions */}
+                    {history.map((item, index) => (
+                        <View key={index} style={styles.block}>
+                            <Text style={styles.questionText}>{item.question}</Text>
+                            <View style={styles.answerWrap}>
+                                {Array.isArray(item.answer) ? (
+                                    <View style={styles.multiAnswerContainer}>
+                                        {item.answer.map((ans) => (
+                                            <View key={ans} style={styles.answerPill}>
+                                                <CustomCheckbox selected={true} isAnswerBubble={true} />
+                                                <Text style={styles.answerText}>{ans}</Text>
+                                            </View>
+                                        ))}
+                                    </View>
+                                ) : typeof item.answer === "object" ? (
+                                    <View style={styles.answerEditContainer}>
+                                        <View style={styles.answerPill}>
+                                            <Image
+                                                source={item.answer.icon}
+                                                style={[styles.answerIcon, { tintColor: "#FFFFFF" }]}
+                                            />
+                                            <Text style={styles.answerText}>{item.answer.label}</Text>
+                                        </View>
+                                        {index === 0 && (
+                                            <TouchableOpacity style={styles.editBelow}>
+                                                <Image source={EDIT_ICON} style={styles.editIcon} />
+                                            </TouchableOpacity>
+                                        )}
+                                    </View>
+                                ) : (
+                                    <View style={styles.answerPill}>
+                                        <Text style={styles.answerText}>{item.answer}</Text>
+                                    </View>
+                                )}
+                            </View>
+                        </View>
+                    ))}
+
+                    {/* Active question */}
+                    {currentQuestion && (
+                        <View style={styles.block}>
+                            <Text style={styles.questionText}>{currentQuestion.question}</Text>
+
+                            {/* Live preview for multi select answers */}
+                            {currentQuestion.type === "multi" && multiAnswers.length > 0 && (
                                 <View style={styles.multiAnswerContainer}>
-                                    {item.answer.map((ans) => (
+                                    {multiAnswers.map((ans) => (
                                         <View key={ans} style={styles.answerPill}>
                                             <CustomCheckbox selected={true} isAnswerBubble={true} />
                                             <Text style={styles.answerText}>{ans}</Text>
                                         </View>
                                     ))}
                                 </View>
-                            ) : typeof item.answer === "object" ? (
-                                <View style={styles.answerEditContainer}>
-                                    <View style={styles.answerPill}>
-                                        <Image
-                                            source={item.answer.icon}
-                                            style={[styles.answerIcon, { tintColor: "#FFFFFF" }]}
-                                        />
-                                        <Text style={styles.answerText}>{item.answer.label}</Text>
-                                    </View>
-                                    {index === 0 && (
-                                        <TouchableOpacity style={styles.editBelow}>
-                                            <Image source={EDIT_ICON} style={styles.editIcon} />
-                                        </TouchableOpacity>
-                                    )}
-                                </View>
-                            ) : (
-                                <View style={styles.answerPill}>
-                                    <Text style={styles.answerText}>{item.answer}</Text>
-                                </View>
                             )}
                         </View>
-                    </View>
-                ))}
+                    )}
+                </ScrollView>
 
-                {/* Active question */}
+                {/* Options for current question */}
                 {currentQuestion && (
-                    <View style={styles.block}>
-                        <Text style={styles.questionText}>{currentQuestion.question}</Text>
+                    <View style={styles.optionsArea}>
+                        <View style={[
+                            styles.optionsGrid,
+                            currentQuestion.type !== "multi" && { flexWrap: 'wrap', justifyContent: 'flex-start' }
+                        ]}>
+                            {currentQuestion.options.map((opt) => {
+                                const isMulti = currentQuestion.type === "multi";
+                                const isSelected = multiAnswers.includes(opt);
 
-                        {/* Live preview for multi select answers */}
-                        {currentQuestion.type === "multi" && multiAnswers.length > 0 && (
-                            <View style={styles.multiAnswerContainer}>
-                                {multiAnswers.map((ans) => (
-                                    <View key={ans} style={styles.answerPill}>
-                                        <CustomCheckbox selected={true} isAnswerBubble={true} />
-                                        <Text style={styles.answerText}>{ans}</Text>
-                                    </View>
-                                ))}
+                                return (
+                                    <TouchableOpacity
+                                        key={opt}
+                                        style={[
+                                            styles.optionChip,
+                                            isMulti ? { width: THREE_COL_WIDTH } : styles.singleOptionChip
+                                        ]}
+                                        onPress={() => handleOptionSelect(opt)}
+                                    >
+                                        {isMulti && <CustomCheckbox selected={isSelected} />}
+                                        <Text style={styles.optionText} numberOfLines={1}>{opt}</Text>
+                                    </TouchableOpacity>
+                                );
+                            })}
+                        </View>
+                    </View>
+                )}
+
+                {/* Bottom input or action button */}
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : undefined}
+                >
+                    <View style={styles.bottomWrapper}>
+                        {currentQuestion?.type === "multi" ? (
+                            multiAnswers.length > 0 ? (
+                                <TouchableOpacity style={styles.getStartedBtn} onPress={handleGetStarted}>
+                                    <Text style={styles.getStartedText}>Get Started</Text>
+                                </TouchableOpacity>
+                            ) : null
+                        ) : (
+                            <View style={styles.inputWrapper}>
+                                <TextInput
+                                    value={typedText}
+                                    onChangeText={setTypedText}
+                                    placeholder="Type here..."
+                                    style={styles.textInput}
+                                />
+                                <Image source={MIC_ICON} style={styles.icon} />
+                                <TouchableOpacity onPress={handleSendText}>
+                                    <Image source={SEND_ICON} style={styles.icon1} />
+                                </TouchableOpacity>
                             </View>
                         )}
                     </View>
-                )}
-            </ScrollView>
-
-            {/* Options for current question */}
-            {currentQuestion && (
-                <View style={styles.optionsArea}>
-                    <View style={[
-                        styles.optionsGrid,
-                        currentQuestion.type !== "multi" && { flexWrap: 'wrap', justifyContent: 'flex-start' }
-                    ]}>
-                        {currentQuestion.options.map((opt) => {
-                            const isMulti = currentQuestion.type === "multi";
-                            const isSelected = multiAnswers.includes(opt);
-
-                            return (
-                                <TouchableOpacity
-                                    key={opt}
-                                    style={[
-                                        styles.optionChip,
-                                        isMulti ? { width: THREE_COL_WIDTH } : styles.singleOptionChip
-                                    ]}
-                                    onPress={() => handleOptionSelect(opt)}
-                                >
-                                    {isMulti && <CustomCheckbox selected={isSelected} />}
-                                    <Text style={styles.optionText} numberOfLines={1}>{opt}</Text>
-                                </TouchableOpacity>
-                            );
-                        })}
-                    </View>
-                </View>
-            )}
-
-            {/* Bottom input or action button */}
-            <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-                keyboardVerticalOffset={80}
-            >
-                <View style={styles.bottomWrapper}>
-                    {currentQuestion?.type === "multi" ? (
-                        multiAnswers.length > 0 ? (
-                            <TouchableOpacity style={styles.getStartedBtn} onPress={handleGetStarted}>
-                                <Text style={styles.getStartedText}>Get Started</Text>
-                            </TouchableOpacity>
-                        ) : null
-                    ) : (
-                        <View style={styles.inputWrapper}>
-                            <TextInput
-                                value={typedText}
-                                onChangeText={setTypedText}
-                                placeholder="Type here..."
-                                style={styles.textInput}
-                            />
-                            <Image source={MIC_ICON} style={styles.icon} />
-                            <TouchableOpacity onPress={handleSendText}>
-                                <Image source={SEND_ICON} style={styles.icon1} />
-                            </TouchableOpacity>
-                        </View>
-                    )}
-                </View>
-            </KeyboardAvoidingView>
-        </View>
+                </KeyboardAvoidingView>
+            </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: "#F9FAFB" },
+    safe: {
+        flex: 1,
+        backgroundColor: '#F9FAFB',
+    },
+    container: { flex: 1, backgroundColor: "#F5F5F5",  },
     chat: { padding: width * 0.05 },
     block: { marginBottom: 24 },
     questionText: { fontSize: 14, fontWeight: "400", color: "#2A2A2A", marginBottom: 10, fontFamily: Fonts.Regular },
@@ -257,12 +267,17 @@ const styles = StyleSheet.create({
     editBelow: { marginTop: 4, alignSelf: 'flex-end' },
     editIcon: { width: 16, height: 16, tintColor: "#000000" },
 
+    // optionsArea: {
+    //     position: "absolute",
+    //     bottom: 90,
+    //     width: '100%',
+    //     paddingHorizontal: width * 0.05,
+    // },
     optionsArea: {
-        position: "absolute",
-        bottom: 90,
-        width: '100%',
         paddingHorizontal: width * 0.05,
+        paddingBottom: 8,
     },
+
     optionsGrid: {
         flexDirection: "row",
         flexWrap: "wrap",
@@ -272,7 +287,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: "#FFFFFF",
-        paddingVertical: 10,
+        paddingVertical: 8,
         paddingHorizontal: 10,
         borderRadius: 24,
         borderWidth: 1,
@@ -287,11 +302,18 @@ const styles = StyleSheet.create({
     },
     optionText: { fontSize: 14, fontWeight: "400", color: "#2A2A2A", fontFamily: Fonts.Regular },
 
+    // bottomWrapper: {
+    //     position: "absolute",
+    //     bottom: 20,
+    //     width: width * 0.9,
+    //     alignSelf: 'center',
+    // },
+
     bottomWrapper: {
-        position: "absolute",
-        bottom: 20,
-        width: width * 0.9,
-        alignSelf: 'center',
+        // REMOVE: position: "absolute", bottom: 20
+        paddingHorizontal: 20,
+        paddingBottom: 20, // Controlled spacing
+        backgroundColor: '#F9FAFB', // Match background to hide ScrollView overlap
     },
     inputWrapper: {
         flexDirection: "row",

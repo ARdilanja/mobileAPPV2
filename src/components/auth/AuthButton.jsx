@@ -84,6 +84,7 @@ import { TouchableOpacity, Text, StyleSheet, Dimensions, View } from 'react-nati
 import { Fonts } from '../../constants/fonts';
 
 const screenWidth = Dimensions.get("window").width;
+const scale = screenWidth / 390;
 
 const AuthButton = ({ text, onPress, onFooterPress, signupText = false, signinText = false }) => {
   return (
@@ -91,7 +92,7 @@ const AuthButton = ({ text, onPress, onFooterPress, signupText = false, signinTe
       <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text style={styles.text}>{text}</Text>
       </TouchableOpacity>
-      
+
       {signupText && (
         <Text style={styles.footer} onPress={onFooterPress}>
           Don’t have an account? <Text style={styles.link}>Sign up</Text>
@@ -120,9 +121,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 4,
   },
-  text: { color: '#fff', fontSize: 18, lineHeight:24, fontFamily:Fonts.Medium},
-  footer: { marginTop: 32, fontSize: 18,lineHeight:28, fontFamily:Fonts.Regular, color: '#2A2A2A', textAlign: 'center' },
-  link: { color: '#0178FF', fontFamily:Fonts.Regular},
+  text: { color: '#fff', fontSize: 18 * scale, lineHeight: 24 * scale, fontFamily: Fonts.Medium },
+  footer: { marginTop: 32, fontSize: 18 * scale, lineHeight: 28 * scale, fontFamily: Fonts.Regular, color: '#2A2A2A', textAlign: 'center' },
+  link: { color: '#0178FF', fontFamily: Fonts.Regular },
 });
 
 export default AuthButton;

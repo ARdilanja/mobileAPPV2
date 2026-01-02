@@ -1,10 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, Dimensions } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import SocialButton from '../../components/auth/SocialButton';
 import Gradient from '../../constants/Gradient';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
+
+const screenWidth = Dimensions.get("window").width;
+const scale = screenWidth / 390;
 
 const SignIn = () => {
   const navigation = useNavigation()
@@ -21,34 +24,46 @@ const SignIn = () => {
           showBack={false}
           showLogo={false}
         />
+        <View style={{ marginTop: 15 * scale }}>
+          {/* Google sign-in option */}
+          <SocialButton text="Sign in with Google" icon={require('../../assets/icons/google.png')}
+            onPress={() => navigation.navigate('BottomDash')}
+            iconWidth={24 * scale}
 
-        {/* Google sign-in option */}
-        <SocialButton text="Sign in with Google" icon={require('../../assets/icons/google-logo.png')}
-          onPress={() => navigation.navigate('BottomDash')}
-          iconWidth={24}
+          />
 
-        />
 
-        {/* Email sign-in option */}
-        <SocialButton
-          text="Sign in with Email"
-          iconWidth={16}
+          {/* apple sign-in option */}
+          <SocialButton
+            text="Sign in with apple"
+            iconWidth={24 * scale}
+            icon={require('../../assets/icons/apple.png')}
+            onPress={() => navigation.navigate('MobileInput')}
+          />
 
-          icon={require('../../assets/icons/envelop.png')}
-          onPress={() => navigation.navigate('EmailInput')}
-        />
+          {/* faceboook sign-in option */}
+          <SocialButton
+            text="Sign in with facebook"
+            iconWidth={24 * scale}
 
-        {/* Mobile sign-in option */}
-        <SocialButton
-          text="Sign in with Mobile"
-          iconWidth={16}
-          icon={require('../../assets/icons/language.png')}
-          onPress={() => navigation.navigate('MobileInput')}
-        />
+            icon={require('../../assets/icons/facebook.png')}
+            onPress={() => navigation.navigate('EmailInput')}
+          />
+
+          {/* Email sign-in option */}
+          <SocialButton
+            text="Sign in with email"
+            iconWidth={24 * scale}
+
+            icon={require('../../assets/icons/email.png')}
+            onPress={() => navigation.navigate('EmailInput')}
+          />
+
+        </View>
         {/* Footer sign-up link */}
         <Text style={styles.footer}
         >
-          Don’t have an account? <Text style={styles.link} onPress={() => navigation.navigate('SignUp')}>Sign up</Text>
+          Don’t have an account? <Text style={styles.link} onPress={() => navigation.navigate('ChooseSignupMethod')}>Sign up</Text>
         </Text></View>
     </Gradient>
   );
@@ -61,11 +76,11 @@ const styles = StyleSheet.create({
 
   },
   footer: {
-    fontSize: 18,
-    lineHeight: 28,
+    fontSize: 18 * scale,
+    lineHeight: 28 * scale,
     fontFamily: Fonts.Regular,
     textAlign: 'center',
-    marginTop: 24,
+    marginTop: 32 * scale,
   },
   link: {
     color: '#0178FF',

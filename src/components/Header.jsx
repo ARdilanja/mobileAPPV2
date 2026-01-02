@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     // paddingHorizontal: 16,
-    marginTop:25,
+    marginTop:30,
   },
 
   backBtn: {

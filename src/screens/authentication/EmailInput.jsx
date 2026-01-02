@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import {
   View, TextInput, StyleSheet, Dimensions,
   KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard,
-  StatusBar
+  StatusBar,
+  Text
 } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
@@ -12,22 +13,54 @@ import MessagePopup from '../../components/MessagePopup';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const screenWidth = Dimensions.get("window").width;
+const scale = screenWidth / 390;
 
 const EmailInput = () => {
   const navigation = useNavigation()
 
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
   const [popupType, setPopupType] = useState('info');
 
-  const showPopup = (message, type = 'info') => {
+  const showPopup = (message, type = 'error') => {
     setPopupMessage(message);
     setPopupType(type);
     setPopupVisible(true);
   };
+
+  // const handleNext = async () => {
+  //   if (!email.trim()) {
+  //     showPopup('Please enter your email', 'error');
+  //     return;
+  //   }
+
+  //   try {
+  //     // console.log('first', API_BASE,"checkUser")
+  //     const response = await axios.post(`https://api.arinnovate.io/api/checkUser`, { email });
+
+  //     const user = response.data.updatedUser || response.data.existingUser;
+
+  //     if (!user) {
+  //       showPopup('User not found. Please sign up.', 'error');
+  //       navigation.navigate('ChooseSignupMethod');
+  //       return;
+  //     }
+
+  //     // ✅ Navigate to password screen
+  //     navigation.navigate('Password', { email });
+
+  //   } catch (error) {
+  //     showPopup(
+  //       error?.response?.data?.message || 'Something went wrong',
+  //       'error'
+  //     );
+  //   }
+  // };
 
   const handleNext = async () => {
     if (!email.trim()) {
@@ -35,28 +68,73 @@ const EmailInput = () => {
       return;
     }
 
+    if (!password.trim()) {
+      showPopup('Please enter your password', 'error');
+      return;
+    }
+
     try {
-      // console.log('first', API_BASE,"checkUser")
-      const response = await axios.post(`https://api.arinnovate.io/api/checkUser`, { email });
+      const response = await axios.post(
+        'http://192.168.0.18:5000/api/auth/login-password',
+        {
+          email,
+          password,
+        }
+      );
 
-      const user = response.data.updatedUser || response.data.existingUser;
+      console.log('response', response)
+      console.log('email', email)
+      console.log('password', password)
+      const { User, token, refreshToken } = response.data;
+      console.log('User', User)
+      console.log('token', token)
+      console.log('refreshToken', refreshToken)
 
-      if (!user) {
-        showPopup('User not found. Please sign up.', 'error');
-        navigation.navigate('SignUp');
-        return;
-      }
 
-      // ✅ Navigate to password screen
-      navigation.navigate('Password', { email });
+      // ✅ Store tokens (example – adapt to Redux / SecureStorage)
+      await AsyncStorage.multiSet([
+        ["token", token],
+        ["refreshToken", refreshToken],
+        ["user", JSON.stringify(User)],
+      ]);
+
+      // 🔍 VERIFY STORAGE IMMEDIATELY
+      const saved = await AsyncStorage.multiGet([
+        "token",
+        "refreshToken",
+        "user",
+      ]);
+
+      console.log("Saved auth data:", saved);
+
+
+      showPopup('Login successful', 'success');
+
+      // ✅ Navigate to dashboard
+      setTimeout(() => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'BottomDash' }], // change to your main screen
+        });
+      }, 500);
 
     } catch (error) {
       showPopup(
-        error?.response?.data?.message || 'Something went wrong',
+        error?.response?.data?.message || 'Invalid email or password',
         'error'
       );
+
+      // 🔁 Google-only account
+      if (
+        error?.response?.data?.message?.includes('Google')
+      ) {
+        setTimeout(() => {
+          navigation.navigate('ChooseSignupMethod');
+        }, 800);
+      }
     }
   };
+
   return (
 
     <Gradient>
@@ -66,7 +144,7 @@ const EmailInput = () => {
         visible={popupVisible}
         message={popupMessage}
         type={popupType}
-        onClose={() => setPopupVisible(false)}
+        onHide={() => setPopupVisible(false)}
       />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -97,6 +175,16 @@ const EmailInput = () => {
                   value={email}
                   onChangeText={setEmail}
                 />
+                <TextInput
+                  placeholderTextColor="#242424"
+                  placeholder="Password"
+                  style={styles.input}
+                  value={password}
+                  onChangeText={setPassword}
+                />
+                <Text
+                  style={styles.forgot}
+                >Forgot password?</Text>
               </View>
 
               {/* BOTTOM SECTION: Pushed to bottom by space-between */}
@@ -105,7 +193,7 @@ const EmailInput = () => {
                   text="Next"
                   signupText={true}
                   onPress={handleNext}
-                  onFooterPress={() => navigation.navigate('SignUp')}
+                  onFooterPress={() => navigation.navigate('ChooseSignupMethod')}
                 />
               </View>
 
@@ -138,15 +226,24 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     color: '#242424',
     paddingLeft: 24,
-    fontSize: 18,
-    lineHeight: 28,
+    fontSize: 18 * scale,
+    lineHeight: 28 * scale,
     fontFamily: Fonts.Regular,
     elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
+    marginBottom: 16 * scale,
     shadowRadius: 8,
   },
+  forgot: {
+    width: screenWidth - 32,
+    marginHorizontal: 'auto',
+    textAlign: 'right',
+    color: '#235DFF', fontSize: 18 * scale,
+    lineHeight: 28 * scale,
+    fontFamily: Fonts.Regular,
+  }
 });
 
 export default EmailInput;

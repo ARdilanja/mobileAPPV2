@@ -16,6 +16,8 @@ import { Fonts } from '../../constants/fonts';
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
+const scale = screenWidth / 390;
+
 const JourneyGetStartScreen = () => {
   const navigation = useNavigation()
   return (
@@ -111,10 +113,10 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 39,
+    fontSize: 40 * scale,
     fontFamily: Fonts.Medium,
     color: 'rgba(42, 42, 42, 1)',
-    lineHeight: 56,
+    lineHeight: 56 * scale,
   },
 
   highlight: {

@@ -1,4 +1,3 @@
-
 // src/navigations/stackNavigation/StackNavigation.js
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -19,6 +18,7 @@ import Dashboard from '../../screens/Dashboard';
 import LiveRoomScreen from '../../screens/LiveRoomScreen';
 import MicCheckScreen from '../../screens/MicCheckScreen';
 import CameraCheckScreen from '../../screens/CameraCheckScreen';
+import SpeakInMeetingsScreen from '../../screens/SpeakMeeting.jsx';
 import InterviewScreen from '../../screens/InterviewScreen';
 import CreateRoomScreen from '../../screens/CreateRoomScreen';
 import VerificationScreen from '../../screens/auth/VerificationScreen';
@@ -26,6 +26,7 @@ import TermsOfServiceScreen from '../../screens/TermsOfServiceScreen';
 import SettingsSecurityScreen from '../../screens/SettingsSecurityScreen';
 import SignIn from '../../screens/authentication/SignIn';
 import SignUp from '../../screens/authentication/SignUp';
+import ChooseSignupMethod from '../../screens/authentication/ChooseSignupMethod';
 import EmailInput from '../../screens/authentication/EmailInput';
 import Password from '../../screens/authentication/Password';
 import MobileInput from '../../screens/authentication/MobileInput';
@@ -36,10 +37,15 @@ import JourneyGetStartScreen from '../../screens/authentication/JourneyGetStart'
 import NotificationsScreen from '../../screens/NotificationsScreen';
 import SubscriptionAgreementScreen from '../../screens/SubscriptionSection';
 import ChatOnboardingScreen from '../../screens/ChatScreen/ChatOnboardingScreen';
-import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
+// import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
 import PracticeConversationScreen from '../../screens/practiceInterview/PracticeConversationScreen';
 import PracticeInterviewInfoScreen from '../../screens/practiceInterview/PracticeInterviewInfoScreen';
 import Home from '../../screens/Home';
+import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
+import JDInputScreen from '../../screens/PracticeStartFlow/JDInputScreen';
+import PracticeRequiredSkills from '../../screens/PracticeStartFlow/PracticeRequiredSkills';
+import PracticeExpScreen from '../../screens/PracticeStartFlow/PracticeExpScreen';
+import PracticeInterviewStart from '../../screens/PracticeStartFlow/PracticeInterviewStart';
 // import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
 import AboutScreen from '../../screens/topUpdatedrofile/AboutScreen';
 import TermsScreen from '../../screens/topUpdatedrofile/TermsScreen';
@@ -52,6 +58,7 @@ import PricingScreen from '../../screens/PricingScreen';
 import PaymentStatusScreen from '../../screens/PaymentStatusScreen';
 import StartDayOne from '../../screens/StartDayOne';
 import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
+import InvoicePreviewScreen from '../../screens/InvoicePreviewScreen';
 import OnboardingContainer from '../../screens/OnboardingScreen/OnboardingContainer';
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
@@ -60,7 +67,7 @@ const Stack = createNativeStackNavigator();
 
 const StackNavigation = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="LoginLoaderPage">
+    <Stack.Navigator screenOptions={{ headerShown: false, headerTopInsetEnabled: false, }} initialRouteName="LoginLoaderPage">
 
       {/* 1️⃣ Loader (Initial Screen) */}
       <Stack.Screen
@@ -76,6 +83,7 @@ const StackNavigation = () => {
       <Stack.Screen name="GetStarted" component={GetStarted} />
       <Stack.Screen name="CreatePassword" component={CreatePassword} />
       <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="ChooseSignupMethod" component={ChooseSignupMethod} />
       <Stack.Screen name="NotificationScreen" component={NotificationsScreen} />
       <Stack.Screen name="JourneyGetStartScreen" component={JourneyGetStartScreen} />
       <Stack.Screen name="SubscriptionAgreement" component={SubscriptionAgreementScreen} />
@@ -104,12 +112,12 @@ const StackNavigation = () => {
       <Stack.Screen
         name="DeleteAccountScreen"
         component={DeleteAccountScreen}
-        options={{ headerShown: true, headerTitle: 'Delete Account', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'Delete Account', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="TermsofServiceScreen"
         component={TermsOfServiceScreen}
-        options={{ headerShown: true, headerTitle: 'Terms of Service', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'Terms of Service', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="SettingsSecurityScreen"
@@ -164,6 +172,11 @@ const StackNavigation = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="SpeakInMeetingsScreen"
+        component={SpeakInMeetingsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="LiveRoomScreen"
         component={LiveRoomScreen}
         options={{ headerShown: false }}
@@ -205,7 +218,32 @@ const StackNavigation = () => {
           },
           headerTintColor: '#F5F5F5',
         }}
-      /> */}
+      />  */}
+
+
+      <Stack.Screen
+        name="JDInputScreen"
+        component={JDInputScreen}
+      // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+
+      />
+      <Stack.Screen
+        name="PracticeRequiredSkills"
+        component={PracticeRequiredSkills}
+      // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+      />
+
+      <Stack.Screen
+        name="PracticeExpScreen"
+        component={PracticeExpScreen}
+      // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+      />
+
+      <Stack.Screen
+        name="PracticeInterviewStart"
+        component={PracticeInterviewStart}
+      // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+      />
       <Stack.Screen
         name="InterviewScreen"
         component={InterviewScreen}
@@ -253,15 +291,20 @@ const StackNavigation = () => {
       <Stack.Screen
         name="PaymentStatusScreen"
         component={PaymentStatusScreen}
-        options={{ headerShown: true, headerTitle: 'PaymentStatusScreen', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'PaymentStatusScreen', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="UpdateProfileScreen"
         component={UpdateProfileScreen}
         options={{ headerShown: true, headerTitle: 'Your Profile', headerTitleAlign: 'center' }}
       />
+      <Stack.Screen
+        name="InvoicePreviewScreen"
+        component={InvoicePreviewScreen}
+        options={{ headerShown: false, headerTitle: 'Your Profile', headerTitleAlign: 'center' }}
+      />
 
- <Stack.Screen
+      <Stack.Screen
         name="OnboardingContainer"
         component={OnboardingContainer}
         options={{ headerShown: false, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
