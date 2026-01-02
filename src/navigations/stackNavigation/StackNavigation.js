@@ -37,10 +37,15 @@ import JourneyGetStartScreen from '../../screens/authentication/JourneyGetStart'
 import NotificationsScreen from '../../screens/NotificationsScreen';
 import SubscriptionAgreementScreen from '../../screens/SubscriptionSection';
 import ChatOnboardingScreen from '../../screens/ChatScreen/ChatOnboardingScreen';
-import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
+// import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
 import PracticeConversationScreen from '../../screens/practiceInterview/PracticeConversationScreen';
 import PracticeInterviewInfoScreen from '../../screens/practiceInterview/PracticeInterviewInfoScreen';
 import Home from '../../screens/Home';
+import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartScreen';
+import JDInputScreen from '../../screens/PracticeStartFlow/JDInputScreen';
+import PracticeRequiredSkills from '../../screens/PracticeStartFlow/PracticeRequiredSkills';
+import PracticeExpScreen from '../../screens/PracticeStartFlow/PracticeExpScreen';
+import PracticeInterviewStart from '../../screens/PracticeStartFlow/PracticeInterviewStart';
 // import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
 import AboutScreen from '../../screens/topUpdatedrofile/AboutScreen';
 import TermsScreen from '../../screens/topUpdatedrofile/TermsScreen';
@@ -214,6 +219,31 @@ const StackNavigation = () => {
           headerTintColor: '#F5F5F5',
         }}
       />  */}
+
+
+      <Stack.Screen
+        name="JDInputScreen"
+        component={JDInputScreen}
+      // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+
+      />
+      <Stack.Screen
+        name="PracticeRequiredSkills"
+        component={PracticeRequiredSkills}
+      // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+      />
+
+      <Stack.Screen
+        name="PracticeExpScreen"
+        component={PracticeExpScreen}
+      // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+      />
+
+      <Stack.Screen
+        name="PracticeInterviewStart"
+        component={PracticeInterviewStart}
+      // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
+      />
       <Stack.Screen
         name="InterviewScreen"
         component={InterviewScreen}
@@ -274,7 +304,7 @@ const StackNavigation = () => {
         options={{ headerShown: false, headerTitle: 'Your Profile', headerTitleAlign: 'center' }}
       />
 
- <Stack.Screen
+      <Stack.Screen
         name="OnboardingContainer"
         component={OnboardingContainer}
         options={{ headerShown: false, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
