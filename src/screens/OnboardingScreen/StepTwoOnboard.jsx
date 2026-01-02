@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,27 +7,19 @@ import {
   TextInput,
   Pressable,
   Image,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
 } from 'react-native';
 
 import OnboardingProCards from '../../components/OnboardingContainer/OnboardingProCards';
 import { Fonts } from '../../constants/fonts';
+import { useAudioRecorder } from '../../hooks/useAudioRecorder';
+import { transcribeWithDeepgram } from '../../utils/deepgram';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 
 export default function StepTwoOnboard({ value = [], onChange = () => {} }) {
   const [extraText, setExtraText] = useState('');
-
-  const toggle = title => {
-    const nextValue = value.includes(title)
-      ? value.filter(i => i !== title)
-      : [...value, title];
-    onChange(nextValue);
-  };
+  const { startRecording, stopRecording, recording } = useAudioRecorder();
 
   const OPTIONS = [
     {
@@ -62,6 +54,25 @@ export default function StepTwoOnboard({ value = [], onChange = () => {} }) {
     },
   ];
 
+  const toggle = title => {
+    const nextValue = value.includes(title)
+      ? value.filter(i => i !== title)
+      : [...value, title];
+    onChange(nextValue);
+  };
+
+  const handleMicPress = async () => {
+    if (!recording) {
+      await startRecording();
+    } else {
+      const filePath = await stopRecording();
+      const text = await transcribeWithDeepgram(filePath);
+      if (text) {
+        setExtraText(prev => (prev ? prev + ' ' + text : text));
+      }
+    }
+  };
+
   const hasText = extraText.trim().length > 0;
 
   return (
@@ -83,36 +94,40 @@ export default function StepTwoOnboard({ value = [], onChange = () => {} }) {
         ))}
       </View>
 
-      {/* Input bar with Mic (left) + Send (right) */}
+      {/* Input Bar */}
       <View style={styles.inputContainer}>
-        {/* Text Input */}
         <TextInput
           placeholder="Anything you want to add..."
-          placeholderTextColor="#000"
+          placeholderTextColor="#9CA3AF"
           style={styles.textInput}
           value={extraText}
           onChangeText={setExtraText}
-          multiline={false}
         />
-        <Image
-          source={require('../../assets/icons/circle-microphone.png')}
-          style={styles.micIcon}
-        />
-        {/* Send Arrow Icon - Right */}
+
+        {/* Mic */}
+        <Pressable onPress={handleMicPress}>
+          <Image
+            source={require('../../assets/icons/circle-microphone.png')}
+            style={[
+              styles.micIcon,
+              recording && { tintColor: '#EF4444' }, // red when recording
+            ]}
+          />
+        </Pressable>
+
+        {/* Send Arrow */}
         <Pressable
+          disabled={!hasText}
           onPress={() => {
-            // Optional: handle send (e.g., save text, clear input)
-            if (hasText) {
-              console.log('Sent:', extraText);
-              setExtraText('');
-            }
+            console.log('Sent:', extraText);
+            setExtraText('');
           }}
         >
           <Image
-            source={require('../../assets/icons/arrow-circle-up.png')} // Your right arrow in circle
+            source={require('../../assets/icons/arrow-circle-up.png')}
             style={[
               styles.sendIcon,
-              hasText && styles.sendIconActive, // Optional: color when active
+              hasText ? styles.sendActive : styles.sendDisabled,
             ]}
           />
         </Pressable>
@@ -123,6 +138,7 @@ export default function StepTwoOnboard({ value = [], onChange = () => {} }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+
   title: {
     fontSize: 32 * scale,
     fontWeight: '500',
@@ -130,11 +146,12 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Medium,
     lineHeight: scale * 48,
   },
+
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    // rowGap: 16 * scale,
+    marginTop: 17 * scale,
   },
 
   inputContainer: {
@@ -144,12 +161,19 @@ const styles = StyleSheet.create({
     width: 358 * scale,
     backgroundColor: '#FFF',
     borderRadius: 28,
-    borderWidth: 1,
-    borderColor: '#fff',
     paddingHorizontal: 16,
-    // marginHorizontal: 16,
     margin: 'auto',
     marginBottom: 5,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+  },
+
+  textInput: {
+    flex: 1,
+    fontFamily: Fonts.Regular,
+    fontSize: 18 * scale,
+    color: '#000',
+    paddingVertical: 0,
   },
 
   micIcon: {
@@ -158,17 +182,16 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
 
-  textInput: {
-    flex: 1,
-    fontFamily: Fonts.Regular,
-    fontSize: 18 * scale,
-    fontWeight: 400,
-    color: '#000',
-    paddingVertical: 0,
-  },
-
   sendIcon: {
     width: 28,
     height: 28,
+  },
+
+  sendActive: {
+    tintColor: '#2563EB', // 🔵 BLUE when active
+  },
+
+  sendDisabled: {
+    tintColor: '#9CA3AF', // ⚪ Grey when disabled
   },
 });
