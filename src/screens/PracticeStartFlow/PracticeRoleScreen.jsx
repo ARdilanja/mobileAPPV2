@@ -13,52 +13,54 @@ import PracticeTitle from './PracticeTitle';
 import { Fonts } from '../../constants/fonts';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../../components/Header';
-import { useDispatch, useSelector } from 'react-redux';
-import { setExperience } from '../../redux/slices/jdSlice';
 import { getNextScreen } from "../../utils/PracticeHelper.js";
+import { useDispatch, useSelector } from 'react-redux';
+import { setJobRole } from '../../redux/slices/jdSlice';
 
 const screenWidth = Dimensions.get('window').width;
 const scale = screenWidth / 390;
 
-const experienceOptions = [
-  'Student',
-  'Fresher',
-  '1 - 3 years',
-  '3 - 5 years',
-  '5+ years',
+const roleOptions = [
+  'react native developer',
+  'UI Designer',
+  'Java developer',
+  'UI Developer',
+  'Full stack developer',
 ];
 
-const PracticeExpScreen = () => {
+const PracticeRoleScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const { role, skills } = useSelector(
+  const { skills, experience } = useSelector(
     state => state.jobDesc
   );
 
-  const [experienceInput, setExperienceInput] = useState('');
+  const [roleInput, setRoleInput] = useState('');
 
-  const isEnabled = experienceInput.trim().length > 0;
+  const isEnabled = roleInput.trim().length > 0;
 
   const handleChipPress = (value) => {
-    setExperienceInput(value);
+    setRoleInput(value);
   };
 
   const handleInputChange = (text) => {
-    setExperienceInput(text.trim());
+    setRoleInput(text.trim());
   };
 
   const handleSubmit = () => {
-    dispatch(setExperience(experienceInput));
+  // Save role to redux
+  dispatch(setJobRole(roleInput));
 
-    const nextScreen = getNextScreen({
-      role,
-      skills,
-      experience: experienceInput,
-    });
+  const nextScreen = getNextScreen({
+    role: roleInput,
+    skills,
+    experience,
+  });
 
-    navigation.navigate(nextScreen);
-  };
+  navigation.navigate(nextScreen);
+};
+
 
   return (
     <View style={styles.container}>
@@ -69,7 +71,7 @@ const PracticeExpScreen = () => {
       <View style={{ flex: 1 }} />
 
       <PracticeTitle
-        title="The experience level isn’t mentioned. What should this role target?"
+        title="The role isn’t mentioned. What role should this interview target?"
       />
 
       <View style={{ flex: 1 }} />
@@ -77,8 +79,8 @@ const PracticeExpScreen = () => {
       {/* Chips */}
       <View style={styles.chipsContainer}>
         <View style={styles.chipsWrapper}>
-          {experienceOptions.map(item => {
-            const selected = experienceInput === item;
+          {roleOptions.map(item => {
+            const selected = roleInput === item;
 
             return (
               <TouchableOpacity
@@ -108,7 +110,7 @@ const PracticeExpScreen = () => {
         <View style={styles.chatCard}>
           <TextInput
             placeholder="Type here..."
-            value={experienceInput}
+            value={roleInput}
             onChangeText={handleInputChange}
             style={styles.chatInput}
             placeholderTextColor="#2A2A2A"
@@ -144,7 +146,7 @@ const PracticeExpScreen = () => {
   );
 };
 
-export default PracticeExpScreen;
+export default PracticeRoleScreen;
 
 
 const styles = StyleSheet.create({

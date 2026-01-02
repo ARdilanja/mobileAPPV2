@@ -45,6 +45,7 @@ import PracticeStartScreen from '../../screens/practiceInterview/PracticeStartSc
 import JDInputScreen from '../../screens/PracticeStartFlow/JDInputScreen';
 import PracticeRequiredSkills from '../../screens/PracticeStartFlow/PracticeRequiredSkills';
 import PracticeExpScreen from '../../screens/PracticeStartFlow/PracticeExpScreen';
+import PracticeRoleScreen from '../../screens/PracticeStartFlow/PracticeRoleScreen';
 import PracticeInterviewStart from '../../screens/PracticeStartFlow/PracticeInterviewStart';
 // import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
 import AboutScreen from '../../screens/topUpdatedrofile/AboutScreen';
@@ -226,6 +227,11 @@ const StackNavigation = () => {
         component={JDInputScreen}
       // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
 
+      />
+      <Stack.Screen
+        name="PracticeRoleScreen"
+        component={PracticeRoleScreen}
+      // options={{ headerShown: false, headerTitle: 'Practice Interview', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="PracticeRequiredSkills"
