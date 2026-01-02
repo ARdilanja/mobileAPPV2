@@ -11,6 +11,7 @@ import {
 import PracticeTitle from './PracticeTitle';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
+import Header from '../../components/Header';
 
 const screenWidth = Dimensions.get("window").width;
 const scale = screenWidth / 390;
@@ -24,14 +25,18 @@ const JDInputScreen = () => {
   };
 
   return (
+    <>
+
     <View style={styles.container}>
+      
+                <Header title="Practice interviews" showNotification={true}/>
 
       {/* Top Spacer */}
       <View style={{ flex: 1 }} />
 
       {/* Center Title */}
       <PracticeTitle
-        title="To start your practice interviews, please provide the job info."
+        title="Copy paste the job description, or just enter the job role and experience."
       />
 
       {/* Middle Spacer */}
@@ -92,7 +97,7 @@ const JDInputScreen = () => {
 
       </View>
     </View>
-
+</>
   );
 };
 

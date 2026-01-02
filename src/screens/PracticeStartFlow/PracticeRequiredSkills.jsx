@@ -7,10 +7,12 @@ import {
     TouchableOpacity,
     Dimensions,
     Image,
+    StatusBar,
 } from 'react-native';
 import PracticeTitle from './PracticeTitle';
 import { Fonts } from '../../constants/fonts';
 import { useNavigation } from '@react-navigation/native';
+import Header from '../../components/Header';
 
 const screenWidth = Dimensions.get('window').width;
 const scale = screenWidth / 390;
@@ -79,13 +81,17 @@ const PracticeRequiredSkills = () => {
 
     return (
         <View style={styles.container}>
+             {/* <StatusBar
+                barStyle="dark-content" 
+              /> */}
+                <Header title="Practice interviews" showNotification={true}/>
 
             {/* Top Spacer */}
             <View style={{ flex: 1 }} />
 
             {/* Center Title */}
             <PracticeTitle
-                title="Thanks! For this role, what skills are required? (any 5)"
+                title="The JD doesn’t list the needed skills. Choose the skills needed for this role."
             />
             <View style={{ flex: 1 }} />
             <View style={styles.chipsContainer}>

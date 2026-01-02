@@ -7,10 +7,12 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  StatusBar,
 } from 'react-native';
 import PracticeTitle from './PracticeTitle';
 import { Fonts } from '../../constants/fonts';
 import { useNavigation } from '@react-navigation/native';
+import Header from '../../components/Header';
 
 const screenWidth = Dimensions.get('window').width;
 const scale = screenWidth / 390;
@@ -50,13 +52,17 @@ const PracticeExpScreen = () => {
 
   return (
     <View style={styles.container}>
+       {/* <StatusBar
+          barStyle="dark-content" 
+        /> */}
+                <Header title="Practice interviews" showNotification={true}/>
 
       {/* Top Spacer */}
       <View style={{ flex: 1 }} />
 
       {/* Title */}
       <PracticeTitle
-        title="Got it! What experience level should this target?"
+        title="The experience level isn’t mentioned. What should this role target?"
       />
 
       <View style={{ flex: 1 }} />
