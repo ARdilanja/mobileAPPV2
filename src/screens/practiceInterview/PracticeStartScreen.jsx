@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
     View,
@@ -5,79 +6,87 @@ import {
     StyleSheet,
     TouchableOpacity,
     StatusBar,
+    Dimensions,
 } from "react-native";
-import { useFocusEffect } from '@react-navigation/native';
-import { useCallback } from 'react';
 
 import ChoiceCard from "../../components/PracticeInterview/ChoiceCard";
 import { Fonts } from "../../constants/fonts";
 
-/* Practice interview start screen */
+const screenWidth = Dimensions.get('window').width;
+const scale = screenWidth / 390
 export default function PracticeStartScreen({ navigation }) {
-
-    /* Holds selected start option */
     const [selected, setSelected] = useState(null);
 
-    /* Navigate to next screen with selected option */
-    const handleContinue = () => {
-        navigation.navigate("PracticeConversationScreen", {
-            startChoice: selected,
-        });
-    };
+    // const handleContinue = () => {
+    //     navigation.navigate("PracticeConversationScreen", {
+    //         startChoice: selected,
+    //     });
+    // };
 
-    useFocusEffect(
-        useCallback(() => {
-            StatusBar.setBarStyle('light-content');
-            StatusBar.setBackgroundColor('transparent');
-            StatusBar.setTranslucent(true);
-        }, []),
-    );
+   const ROUTES = {
+  jd: "JDInputScreen",
+  role: "RoleSkillScreen",
+  upload: "UploadJDScreen",
+};
 
-    /* Screen UI */
+const handleContinue = () => {
+  if (selected?.id) {
+    navigation.navigate(ROUTES[selected.id]);
+  }
+};
+
     return (
         <View style={styles.container}>
-            {/* Main content */}
+            <StatusBar hidden />
+
+            {/* ===== CONTENT COLUMN ===== */}
             <View style={styles.contentWrapper}>
 
                 {/* Title */}
                 <View style={styles.titleContainer}>
                     <Text style={styles.titleText}>
-                        Hi James, how do you want{"\n"}to start?
+                        Hi James, how do you want to start?
                     </Text>
                 </View>
 
-                {/* First row options */}
-                <View style={styles.twoColRow}>
-                    <ChoiceCard
+                <View style={styles.rowWrapper}>
+                    {/* Row 1 */}
+                    <View style={styles.row}>
+                        {/* <ChoiceCard
                         icon={require("../../assets/images/job_desc.png")}
                         text="Use job description"
                         active={selected?.id === "jd"}
                         onPress={() =>
-                            setSelected({
-                                id: "jd",
-                                label: "Use job description",
-                                icon: require("../../assets/images/job_desc.png"),
-                            })
+                            setSelected({ id: "jd", label: "Use job description" })
                         }
-                    />
-
-                    <ChoiceCard
+                    /> */}
+                        <ChoiceCard
+                            icon={require("../../assets/images/job_desc.png")}
+                            text="Use job description"
+                            iconBg="#DDEAFF"
+                            active={selected?.id === "jd"}
+                            onPress={() => setSelected({ id: "jd" })}
+                        />
+                        {/* <ChoiceCard
                         icon={require("../../assets/images/choose_role.png")}
                         text="Choose role & skills"
                         active={selected?.id === "role"}
                         onPress={() =>
-                            setSelected({
-                                id: "role",
-                                label: "Choose role & skills",
-                                icon: require("../../assets/images/choose_role.png"),
-                            })
+                            setSelected({ id: "role", label: "Choose role & skills" })
                         }
-                    />
-                </View>
+                    /> */}
+                        <ChoiceCard
+                            icon={require("../../assets/images/choose_role.png")}
+                            text="Choose role & skills"
+                            iconBg="#EBE6FF"
+                            active={selected?.id === "role"}
+                            onPress={() => setSelected({ id: "role" })}
+                        />
+                    </View>
 
-                {/* Second row option */}
-                <View style={styles.singleRow}>
-                    <ChoiceCard
+                    {/* Row 2 */}
+                    <View style={styles.row}>
+                        {/* <ChoiceCard
                         icon={require("../../assets/images/upload.png")}
                         text="Upload job description document"
                         active={selected?.id === "upload"}
@@ -85,16 +94,22 @@ export default function PracticeStartScreen({ navigation }) {
                             setSelected({
                                 id: "upload",
                                 label: "Upload job description document",
-                                icon: require("../../assets/images/upload.png"),
                             })
                         }
-                        full
-                    />
+                    /> */}
+                        <ChoiceCard
+                            icon={require("../../assets/icons/clip-file.png")}
+                            text="Upload jd document"
+                            iconBg="#C6F6D5"
+                            active={selected?.id === "upload"}
+                            onPress={() => setSelected({ id: "upload" })}
+                        />
+                    </View>
                 </View>
 
             </View>
 
-            {/* Continue button */}
+            {/* Continue Button */}
             <TouchableOpacity
                 disabled={!selected}
                 onPress={handleContinue}
@@ -104,58 +119,62 @@ export default function PracticeStartScreen({ navigation }) {
                     !selected && styles.continueDisabled,
                 ]}
             >
-                <Text style={styles.continueText}>Continue</Text>
+                <Text style={styles.continueText}>Next</Text>
             </TouchableOpacity>
+
+
+
 
         </View>
     );
 }
 
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#F5F5F5",
-        justifyContent: "center",
+        marginTop: 16,
+        position: 'relative'
+        // justifyContent: "center",
     },
 
     /* SAME COLUMN FOR TITLE + CHOICES */
     contentWrapper: {
-        width: "90%",
-        maxWidth: 360,
+        width: screenWidth - 32,              // 👈 FIGMA WIDTH
         alignSelf: "center",
+        flex: 1,              // ✅ gives height
+        position: "relative",
     },
 
     titleContainer: {
-        height: 64,
+        // height: 64,
         justifyContent: "center",
-        marginBottom: 16,
+        marginTop: 16,
     },
 
     titleText: {
-        fontSize: 24,
+        fontSize: 32 * scale,
         fontFamily: Fonts.Medium,
         fontWeight: "500",
-        textAlign: "center",
-        lineHeight: 32,
+        textAlign: "Left",
+        lineHeight: 48 * scale,
         color: "#2A2A2A",
     },
-
-
-    twoColRow: {
+    rowWrapper: {
+        position: "absolute",
+        left: 0,
+        right: 0,
+        bottom: 128,
+    },
+    row: {
         flexDirection: "row",
-        justifyContent: "space-between",
-        marginBottom: 12,
+        gap: 12,
+        marginTop: 8,
     },
-
-    singleRow: {
-        alignItems: "flex-start",
-    },
-
 
     continueButton: {
         position: "absolute",
-        bottom: 16,
+        bottom: 48,
         left: 16,
         right: 16,
         height: 56,
@@ -173,15 +192,9 @@ const styles = StyleSheet.create({
 
     continueText: {
         color: "#FFFFFF",
-        fontSize: 18,
+        fontSize: 18 * scale,
         fontFamily: Fonts.Medium,
-        fontWeight: "500",
-        lineHeight: 24,
+        lineHeight: 24 * scale,
     },
 
 });
-
-
-
-
-

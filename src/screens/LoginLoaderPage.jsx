@@ -44,6 +44,7 @@ export default function LoginLoaderPage() {
         console.log('token is valid')
         return navigation.reset({
           index: 0,
+          // routes: [{ name: "JDInputScreen" }],
           routes: [{ name: "BottomDash" }],
         });
       }
@@ -55,6 +56,7 @@ export default function LoginLoaderPage() {
         return navigation.reset({
           index: 0,
           routes: [{ name: "BottomDash" }],
+          // routes: [{ name: "JDInputScreen" }],
         });
       }
 

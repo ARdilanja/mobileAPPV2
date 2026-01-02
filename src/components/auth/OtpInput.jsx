@@ -1,7 +1,9 @@
 import React, { useRef } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, Dimensions } from 'react-native';
 import { Fonts } from '../../constants/fonts';
 
+const screenWidth = Dimensions.get('window').width;
+const scale = screenWidth / 390
 const OtpInput = ({ length = 4 , value, onChange }) => {
    const inputs = useRef([]);
 
@@ -66,8 +68,8 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     textAlign: 'center',
     backgroundColor:'#fff',
-    fontSize: 18,
-    lineHeight: 28,
+    fontSize: 18 * scale,
+    lineHeight: 28 * scale,
     fontFamily: Fonts.Regular,
     color: '#242424',
   },

@@ -11,9 +11,11 @@ import Gradient from '../constants/Gradient';
 import AuthButton from '../components/auth/AuthButton';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import { Fonts } from '../constants/fonts';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
+const scale = screenWidth / 390;
 const StartDayOne = () => {
   const navigation = useNavigation();
   return (
@@ -88,9 +90,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   skip: {
-    lineHeight: 24,
-    fontSize: 18,
-    fontWeight: 500,
+    lineHeight: 24 * scale,
+    fontSize: 18 * scale,
+    fontFamily:Fonts.Medium,
     textAlign: 'right',
     marginRight: 16,
     paddingTop: 12,
@@ -122,10 +124,10 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 40,
-    fontWeight: '700',
+    fontSize: 40 * scale,
+    fontFamily:Fonts.Bold,
     color: 'rgba(42, 42, 42, 1)',
-    lineHeight: 56,
+    lineHeight: 56 * scale,
   },
 
   highlight: {
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     justifyContent: 'space-between',
-    paddingBottom: 30,
+    paddingBottom: 30 * scale,
   },
   button: {
     width: screenWidth - 32,
@@ -149,15 +151,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 4,
   },
-  text: { color: '#fff', fontSize: 24, fontWeight: '500' },
+  text: { color: '#fff', fontSize: 24 * scale, fontFamily:Fonts.Medium},
   footer: {
     marginTop: 15,
-    fontSize: 16,
+    fontSize: 16 * scale,
     color: '#2A2A2A',
     textAlign: 'center',
   },
   link: {
-    color: '#1a73e8', fontWeight: '600', position: 'absolute',
+    color: '#1a73e8', fontFamily:Fonts.SemiBold, position: 'absolute',
     textDecorationStyle: 'solid',
     bottom: 70,
     textDecorationLine: 'underline'

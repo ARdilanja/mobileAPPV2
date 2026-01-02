@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
 const screenWidth = Dimensions.get("window").width;
+const scale = screenWidth / 390;
 
 const SignUp = () => {
     const navigation = useNavigation()
@@ -88,7 +89,7 @@ const SignUp = () => {
 console.log('payload', payload)
         try {
             const res = await axios.post(
-                'http://192.168.0.18:8000/api/auth/register',
+                'http://192.168.0.18:5000/api/auth/register',
                 payload
             );
 
@@ -224,10 +225,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     countryCodeBox: {
-        marginRight: 8,
+        marginRight: 8 * scale,
     },
     countryCodeText: {
-        fontSize: 18,
+        fontSize: 18 * scale,
         lineHeight: 28,
         fontFamily: Fonts.Regular,
         color: '#242424',
@@ -247,11 +248,11 @@ const styles = StyleSheet.create({
 
         elevation: 4,
 
-        fontSize: 16,
-        lineHeight: 28,
+        fontSize: 18 * scale,
+        lineHeight: 28 * scale,
         fontFamily: Fonts.Regular,
         color: '#242424',
-        paddingLeft: 24,
+        paddingLeft: 24 * scale,
     },
     content: {
         flexDirection: 'row',

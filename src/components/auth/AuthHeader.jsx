@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
+
+ const screenWidth = Dimensions.get("window").width;
+const scale = screenWidth / 390;
 
 const AuthHeader = ({
   title,
@@ -13,6 +16,7 @@ const AuthHeader = ({
   onBackPress,
 }) => {
   const navigation = useNavigation();
+ 
 
   const handleBack = () => {
     if (onBackPress) {
@@ -97,15 +101,15 @@ const styles = StyleSheet.create({
     paddingTop: 16,
   },
   title: {
-    fontSize: 40,
-    lineHeight: 56,
+    fontSize: 40 * scale,
+    lineHeight: 56 * scale,
     fontWeight: '500',
     fontFamily: Fonts.Medium,
     color: '#000',
   },
   subtitle: {
-    fontSize: 14,
-    lineHeight: 24,
+    fontSize: 14 * scale,
+    lineHeight: 24 * scale,
     fontFamily: Fonts.Regular, color: '#2A2A2A',
     marginTop: 4,
   },
