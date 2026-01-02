@@ -126,7 +126,7 @@ const showPopup = (message, type = 'info') => {
           </TouchableOpacity>
 
           <Text style={styles.signupText}>
-            Don't have an Account?{' '}
+            Don't have an Account?
             <Text onPress={() => navigation.navigate('Signup')}>
               Sign up here
             </Text>
