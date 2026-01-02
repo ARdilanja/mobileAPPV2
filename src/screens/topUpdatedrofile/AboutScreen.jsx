@@ -20,7 +20,7 @@ export default function AboutScreen() {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#F6F6F6" />
+      {/* <StatusBar backgroundColor="#F6F6F6" /> */}
       <Header title="About" />
 
       <View style={styles.card}>

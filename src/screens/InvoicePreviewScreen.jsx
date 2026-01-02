@@ -23,7 +23,7 @@ const failedIcon = require('../assets/images/IP_Payment_failure.png');
 export default function InvoicePreviewScreen({
     status = 'success', // 'success' | 'failure'
 }) {
-    const isSuccess = status === 'failure';
+    const isSuccess = status === 'success';
 
     return (
         <View style={styles.container}>

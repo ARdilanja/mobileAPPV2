@@ -16,7 +16,7 @@ const Tab = createBottomTabNavigator();
 
 const BottomNavigation = () => {
   return (
-    <Tab.Navigator tabBar={props => <CustomTabBar {...props} />}>
+    <Tab.Navigator screenOptions={{ headerShown: false }} tabBar={props => <CustomTabBar {...props} />}>
 
       <Tab.Screen
         name="Bottom"
@@ -35,49 +35,10 @@ const BottomNavigation = () => {
       />
 
       <Tab.Screen
-        name="StartInterviewScreen"
-        component={StartInterviewScreen}
-       options={{
-    headerShown: false, // hide header
-    tabBarLabel: () => null, // hide the label if needed
-  }}
-      />
-      <Tab.Screen
-        name="StartInterview"
-        component={EmployerInterviewScreen}
-        options={{
-          headerTitle: 'Start Interview',
-          headerTitleAlign: 'center',
-          headerShown: true, headerStyle: {
-            backgroundColor: "#0178FF",
-          },
-          headerTintColor: '#F5F5F5'
-        }}
-      />
-      {/* <Tab.Screen
         name="Practice"
-        component={PracticeStack}
-        options={{
-
-          headerShown: false,
-
-        }}
-      // options={{
-      //   headerTitle: 'Start Practice',
-      //   headerTitleAlign: 'center',
-      //   headerShown: true,
-      //   headerStyle: {
-      //     backgroundColor: "#0178FF",
-      //   },
-      //   headerTintColor: '#F5F5F5'
-      // }}
-      /> */}
-
-      <Tab.Screen
-        name="PracticeStartScreen"
         component={PracticeStartScreen}
         options={{
-          headerTitle: 'Practice',
+          headerTitle: 'Start Practice',
           headerTitleAlign: 'center',
           headerShown: true,
           headerStyle: {
@@ -113,8 +74,28 @@ const BottomNavigation = () => {
           headerTintColor: '#F5F5F5'
         }}
       />
+
       <Tab.Screen
-        name="ProfileTopScreen"
+        name="Action"
+        component={EmployerInterviewScreen}
+        options={{
+          headerTitle: 'Start Interview',
+          headerTitleAlign: 'center',
+          headerShown: true, headerStyle: {
+            backgroundColor: "#0178FF",
+          },
+          headerTintColor: '#F5F5F5'
+        }}
+      />
+      <Tab.Screen
+        name="StartInterviewScreen"
+        component={StartInterviewScreen}
+        options={{
+          headerShown: false
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
         component={ProfileTopScreen}
         options={{
           headerShown: false
@@ -125,3 +106,33 @@ const BottomNavigation = () => {
 };
 
 export default BottomNavigation;
+
+
+
+
+
+// // src/navigations/bottomNavigation/BottomNavigation.js
+// import React from 'react';
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// import CustomTabBar from '../../components/CustomTabBar';
+
+// import HomeStack from '../stacks/HomeStack';
+// import PracticeStack from '../stacks/PracticeStack';
+// import ActionStack from '../stacks/ActionStack';
+// import ProfileStack from '../stacks/ProfileStack';
+
+// const Tab = createBottomTabNavigator();
+
+// export default function BottomNavigation() {
+//   return (
+//     <Tab.Navigator
+//       screenOptions={{ headerShown: false }}
+//       tabBar={props => <CustomTabBar {...props} />}
+//     >
+//       <Tab.Screen name="Bottom" component={HomeStack} />
+//       <Tab.Screen name="Practice" component={PracticeStack} />
+//       <Tab.Screen name="Action" component={ActionStack} />
+//       <Tab.Screen name="Profile" component={ProfileStack} />
+//     </Tab.Navigator>
+//   );
+// }

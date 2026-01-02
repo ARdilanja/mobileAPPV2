@@ -18,6 +18,7 @@ import Dashboard from '../../screens/Dashboard';
 import LiveRoomScreen from '../../screens/LiveRoomScreen';
 import MicCheckScreen from '../../screens/MicCheckScreen';
 import CameraCheckScreen from '../../screens/CameraCheckScreen';
+import SpeakInMeetingsScreen from '../../screens/SpeakMeeting.jsx';
 import InterviewScreen from '../../screens/InterviewScreen';
 import CreateRoomScreen from '../../screens/CreateRoomScreen';
 import VerificationScreen from '../../screens/auth/VerificationScreen';
@@ -60,7 +61,7 @@ const Stack = createNativeStackNavigator();
 
 const StackNavigation = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="LoginLoaderPage">
+    <Stack.Navigator screenOptions={{ headerShown: false, headerTopInsetEnabled: false, }} initialRouteName="LoginLoaderPage">
 
       {/* 1️⃣ Loader (Initial Screen) */}
       <Stack.Screen
@@ -162,6 +163,11 @@ const StackNavigation = () => {
       <Stack.Screen
         name="CameraCheckScreen"
         component={CameraCheckScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SpeakInMeetingsScreen"
+        component={SpeakInMeetingsScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

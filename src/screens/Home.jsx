@@ -246,7 +246,7 @@ export default function Home() {
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.startPracticeButton}
-          onPress={() => navigation.navigate('PracticeStartScreen')}
+          onPress={() => navigation.navigate('Practice')}
         >
           <Text style={styles.startPracticeText}>Start Practice</Text>
         </TouchableOpacity>
@@ -542,9 +542,9 @@ topBlackGradient: {
   // },
 
   tooltipBox: {
-    flexDirection: 'row',
+    flexDirection: 'row', // ✅ text + icon in one line
     alignItems: 'center',
-    backgroundColor: '#0178FF', 
+    backgroundColor: '#0178FF', // ✅ default blue
     paddingHorizontal: 12,
     height: 32,
     borderRadius: 16,

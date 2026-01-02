@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Generate the random room id before enter room
 
@@ -16,37 +17,44 @@ export default function CreateRoomScreen({ navigation }) {
     const [roomName, setRoomName] = useState("");
 
     // take generated id
-    
+
     useEffect(() => {
         setRoomName(generateSimpleId());
     }, []);
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.label}>Interview Code</Text>
-            <Text style={styles.code}>{roomName}</Text>
+        <SafeAreaView style={styles.safe}>
+            <View style={styles.container}>
+                <Text style={styles.label}>Interview Code</Text>
+                <Text style={styles.code}>{roomName}</Text>
 
-            <Pressable
-                style={styles.btn}
-                onPress={() =>
-                    navigation.replace("MicCheckScreen", {
-                        roomName,
-                        // for sme
-                        interviewId: "67ee0d4febee98e48a182378",
-                        cid: "67ee0d4febee98e48a182376",
-                        // interviewId: "67ece15eedd3f67bc790bb00",
-                        // cid: "67ece15dedd3f67bc790baf6",
-                    })
-                }
-            >
-                <Text style={styles.btnText}>Continue</Text>
-            </Pressable>
-        </View>
+                <Pressable
+                    style={styles.btn}
+                    onPress={() =>
+                        navigation.navigate("MicCheckScreen", {
+                            roomName,
+                            // for sme
+                            interviewId: "67ee0d4febee98e48a182378",
+                            cid: "67ee0d4febee98e48a182376",
+                            // interviewId: "67ece15eedd3f67bc790bb00",
+                            // cid: "67ece15dedd3f67bc790baf6",
+                        })
+                    }
+                >
+                    <Text style={styles.btnText}>Continue</Text>
+                </Pressable>
+            </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, justifyContent: "center", alignItems: "center" },
+    safe: {
+        flex: 1,
+        backgroundColor: "#F5F5F5",
+    },
+
+    container: { flex: 1, justifyContent: "center", alignItems: "center", },
     label: { fontSize: 16, marginBottom: 8 },
     code: { fontSize: 22, fontWeight: "bold", marginBottom: 20 },
     btn: {

@@ -4,34 +4,41 @@ import { Fonts } from "../constants/fonts";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const TAB_ICONS = {
-  Bottom: require('../assets/images/Home.png'),
-  StartInterview: require('../assets/images/StartInterview.png'),
-  Practice: require('../assets/images/CompletedInterview.png'),
-  ProfileTopScreen: require('../assets/images/MyProfile.png'),
+  Bottom: require('../assets/images/Bottom_Home.png'),
+  Practice: require('../assets/images/Bottom_Practice.png'),
+  Action: require('../assets/images/Bottom_Action.png'),
+  Profile: require('../assets/images/Bottom_Profile.png'),
 };
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
-   const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets();
   // Filter the routes to include only "Bottom" and "StartInterview"
   const filteredRoutes = state.routes.filter(
-    route => route.name === 'Bottom' || route.name === 'StartInterview' || route.name === 'Practice' || route.name === 'ProfileTopScreen',
+    route => route.name === 'Bottom' || route.name === 'Practice' || route.name === 'Action' || route.name === 'Profile',
   );
 
   return (
-     <View style={[
-      styles.tabBar, 
-      { paddingBottom: insets.bottom > 0 ? insets.bottom : 10, height: 60 + (insets.bottom > 0 ? insets.bottom : 5) }
-    ]}>
+    //  <View style={[
+    //   styles.tabBar, 
+    //   { paddingBottom: insets.bottom > 0 ? insets.bottom : 10, height: 60 + (insets.bottom > 0 ? insets.bottom : 5) }
+    // ]}>
+
+    <View
+      style={[
+        styles.tabBar,
+        { paddingBottom: Math.max(insets.bottom, 8) }
+      ]}
+    >
       {filteredRoutes.map((route, index) => {
         const { options } = descriptors[route.key];
-        
+
         // Determine the label
         const label =
           typeof options.tabBarLabel === 'string'
             ? options.tabBarLabel
             : options.title !== undefined
-            ? options.title
-            : route.name;
+              ? options.title
+              : route.name;
 
         // Check if this specific tab is currently active
         // We compare the current active index from 'state' with the route's key
@@ -82,10 +89,11 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
             <Text
               style={{
                 color: isFocused ? '#0069FF' : '#525252', // Yellow : White
-                fontSize: 8, // Replaced getResponsiveFontSize
+                fontSize: 10, // Replaced getResponsiveFontSize
                 fontWeight: '400', // Replaced Fonts.Medium
                 marginTop: 4,
-                fontFamily:Fonts.Regular
+                lineHeight:14,
+                fontFamily: Fonts.Regular
               }}
             >
               {label}
@@ -108,23 +116,21 @@ const styles = StyleSheet.create({
   // },
 
 
-  tabBar: {
-    flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
-    elevation: 8, // Add a small shadow for production look
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  tab: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+ tabBar: {
+  flexDirection: 'row',
+  backgroundColor: '#FFFFFF',
+  paddingTop: 5,       // ✅ gives top breathing space
+},
+
+tab: {
+  flex: 1,
+  alignItems: 'center',
+  paddingVertical: 3,  // ✅ THIS is what you want
+},
   iconContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+
   },
   icon: {
     width: 24,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import BoostOfferCard from '../../components/BoostOfferCard';
 import MoreSection from '../../components/MoreSection';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
 import Header from '../../components/Header';
 
@@ -20,6 +20,15 @@ const scale = width / 390;
 
 export default function ProfileTopScreen() {
   const navigation = useNavigation()
+
+  useFocusEffect(
+      useCallback(() => {
+        StatusBar.setBarStyle('dark-content');
+        StatusBar.setBackgroundColor('transparent');
+        StatusBar.setTranslucent(true);
+      }, []),
+    );
+  
   return (
     <View style={styles.wrapper}>
     <StatusBar  barStyle="dark-content" backgroundColor="#F6F6F6" />
@@ -70,7 +79,7 @@ export default function ProfileTopScreen() {
               <Text style={styles.renewText}>Renews 31/12/2025</Text>
             </View>
 
-            <TouchableOpacity activeOpacity={0.7}>
+            <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('PricingScreen')}>
               <Image
                 source={require('../../assets/images/Arrow-icon.png')}
                 style={styles.arrowIcon}

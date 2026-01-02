@@ -43,7 +43,7 @@ const ChooseSignupMethod = () => {
       // await AsyncStorage.setItem("token", token);
 
       // 7️⃣ Navigate
-      navigation.replace("BottomDash");
+      navigation.replace("MainTabs");
 
     } catch (error) {
       console.error("Google Login Error:", error);
