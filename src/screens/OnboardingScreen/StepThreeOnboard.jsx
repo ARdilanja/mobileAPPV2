@@ -67,6 +67,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     // rowGap: 16 * scale,
-    marginTop: 17 * scale,
+    marginTop: 12 * scale,
   },
 });
