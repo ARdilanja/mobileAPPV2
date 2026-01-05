@@ -1,163 +1,169 @@
 import React, { useEffect, useState } from 'react';
 import {
-    View,
-    Text,
-    TextInput,
-    StyleSheet,
-    TouchableOpacity,
-    Dimensions,
-    Image,
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+  StatusBar,
 } from 'react-native';
 import PracticeTitle from './PracticeTitle';
 import { Fonts } from '../../constants/fonts';
 import { useNavigation } from '@react-navigation/native';
+import Header from '../../components/Header';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSkills } from '../../redux/slices/jdSlice';
+import { getNextScreen } from "../../utils/PracticeHelper.js";
 
 const screenWidth = Dimensions.get('window').width;
 const scale = screenWidth / 390;
 
 const suggestedSkills = [
-    'java', 'php', 'c++', 'css', 'html', 'javascript', 'python', 'react',
-    'nodejs', 'express', 'mongodb', 'sql', 'typescript', 'angular', 'vue',
-    'docker', 'kubernetes', 'aws', 'git', 'sass', 'less', 'ruby', 'rails',
-    'go', 'swift', 'flutter', 'dart', 'c#', 'unity', 'firebase', 'graphql',
-    'rest', 'linux', 'bash', 'html5', 'css3', 'reactnative', 'nextjs', 'nestjs',
-    'redux', 'mobx', 'webpack', 'babel', 'jest', 'cypress', 'selenium', 'jira', 'figma', 'photoshop'
+  'java','php','c++','css','html','javascript','python','react',
+  'nodejs','express','mongodb','sql','typescript','angular','vue',
+  'docker','kubernetes','aws','git','sass','less','ruby','rails',
+  'go','swift','flutter','dart','c#','unity','firebase','graphql',
+  'rest','linux','bash','html5','css3','reactnative','nextjs',
+  'nestjs','redux','mobx','webpack','babel','jest','cypress',
+  'selenium','jira','figma','photoshop'
 ];
 
 const PracticeRequiredSkills = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-    const [skills, setSkills] = useState([]);
-    const [skillInput, setSkillInput] = useState('');
-    const [visibleChips, setVisibleChips] = useState([]);
+  const { role, experience } = useSelector(
+    state => state.jobDesc
+  );
 
-    const isEnabled = skills.length === 5;
+  const [skills, setLocalSkills] = useState([]);
+  const [skillInput, setSkillInput] = useState('');
+  const [visibleChips, setVisibleChips] = useState([]);
 
-    // Initialize visibleChips with first 5 skills not selected
-    useEffect(() => {
-        setVisibleChips(suggestedSkills.slice(0, 5));
-    }, []);
+  const isEnabled = skills.length === 5;
 
-    const handleChipPress = (skill) => {
-        if (skills.includes(skill)) return;
-        if (skills.length >= 5) return;
+  useEffect(() => {
+    setVisibleChips(suggestedSkills.slice(0, 5));
+  }, []);
 
-        const updatedSkills = [...skills, skill];
-        setSkills(updatedSkills);
-        setSkillInput(updatedSkills.join(', '));
+  const handleChipPress = (skill) => {
+    if (skills.includes(skill) || skills.length >= 5) return;
 
-        // Remove selected skill from visibleChips
-        const newVisibleChips = visibleChips.filter(s => s !== skill);
+    const updated = [...skills, skill];
+    setLocalSkills(updated);
+    setSkillInput(updated.join(', '));
 
-        // Find next skill from suggestedSkills that's not selected and not visible
-        const remainingSkills = suggestedSkills.filter(s => !updatedSkills.includes(s) && !newVisibleChips.includes(s));
-
-        if (remainingSkills.length > 0) {
-            newVisibleChips.push(remainingSkills[0]); // add the next skill
-        }
-
-        setVisibleChips(newVisibleChips);
-    };
-
-    const handleInputChange = (text) => {
-        setSkillInput(text);
-
-        const parsedSkills = text
-            .split(',')
-            .map(s => s.trim().toLowerCase())
-            .filter(Boolean);
-
-        const uniqueSkills = [...new Set(parsedSkills)].slice(0, 5);
-
-        setSkills(uniqueSkills);
-    };
-
-    const handleSubmit = () => {
-        console.log('Selected & Entered Skills:', skills);
-        navigation.navigate('PracticeExpScreen');
-    };
-
-    return (
-        <View style={styles.container}>
-
-            {/* Top Spacer */}
-            <View style={{ flex: 1 }} />
-
-            {/* Center Title */}
-            <PracticeTitle
-                title="Thanks! For this role, what skills are required? (any 5)"
-            />
-            <View style={{ flex: 1 }} />
-            <View style={styles.chipsContainer}>
-                <View style={styles.chipsWrapper}>
-                    {visibleChips.map(skill => {
-                        const selected = skills.includes(skill);
-                        return (
-                            <TouchableOpacity
-                                key={skill}
-                                onPress={() => handleChipPress(skill)}
-                                style={[
-                                    styles.chip,
-                                    selected && styles.chipSelected,
-                                ]}
-                            >
-                                <Text
-                                    style={[
-                                        styles.chipText,
-                                        selected && styles.chipTextSelected,
-                                    ]}
-                                >
-                                    {skill}
-                                </Text>
-                            </TouchableOpacity>
-                        );
-                    })}
-                </View>
-
-            </View>
-
-
-
-            {/* Bottom Section */}
-            <View style={styles.bottomWrapper}>
-
-                {/* Input Card */}
-                <View style={styles.chatCard}>
-                    <TextInput
-                        placeholder="For example java, html, c++"
-                        value={skillInput}
-                        onChangeText={handleInputChange}
-                        style={styles.chatInput}
-                        placeholderTextColor="#2A2A2A"
-                    />
-
-                    <View style={styles.divider} />
-
-                    <View style={styles.chatActions}>
-                        <TouchableOpacity>
-                            <Image
-                                source={require('../../assets/icons/circle-microphone.png')}
-                                style={styles.chatIcon}
-                            />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity disabled={!isEnabled}
-                            onPress={handleSubmit}>
-                            <Image
-                                source={
-                                    isEnabled
-                                        ? require('../../assets/icons/arrow-circle-up-active.png')
-                                        : require('../../assets/icons/arrow-circle-up.png')
-                                }
-                                style={styles.chatIcon}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-            </View>
-        </View>
+    const filtered = visibleChips.filter(s => s !== skill);
+    const remaining = suggestedSkills.find(
+      s => !updated.includes(s) && !filtered.includes(s)
     );
+
+    if (remaining) filtered.push(remaining);
+    setVisibleChips(filtered);
+  };
+
+  const handleInputChange = (text) => {
+    setSkillInput(text);
+
+    const parsed = [...new Set(
+      text
+        .split(',')
+        .map(s => s.trim().toLowerCase())
+        .filter(Boolean)
+    )].slice(0, 5);
+
+    setLocalSkills(parsed);
+  };
+
+  const handleSubmit = () => {
+    dispatch(setSkills(skills));
+
+    const nextScreen = getNextScreen({
+      role,
+      skills,
+      experience,
+    });
+
+    navigation.navigate(nextScreen);
+  };
+
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      <Header title="Practice interviews" showNotification />
+
+      <View style={{ flex: 1 }} />
+
+      <PracticeTitle
+        title="The JD doesn’t list the needed skills. Choose the skills needed for this role."
+      />
+
+      <View style={{ flex: 1 }} />
+
+      <View style={styles.chipsContainer}>
+        <View style={styles.chipsWrapper}>
+          {visibleChips.map(skill => (
+            <TouchableOpacity
+              key={skill}
+              onPress={() => handleChipPress(skill)}
+              style={[
+                styles.chip,
+                skills.includes(skill) && styles.chipSelected,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.chipText,
+                  skills.includes(skill) && styles.chipTextSelected,
+                ]}
+              >
+                {skill}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+
+      <View style={styles.bottomWrapper}>
+        <View style={styles.chatCard}>
+          <TextInput
+            placeholder="For example java, html, c++"
+            value={skillInput}
+            onChangeText={handleInputChange}
+            style={styles.chatInput}
+            placeholderTextColor="#2A2A2A"
+          />
+
+          <View style={styles.divider} />
+
+          <View style={styles.chatActions}>
+            <TouchableOpacity>
+              <Image
+                source={require('../../assets/icons/circle-microphone.png')}
+                style={styles.chatIcon}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              disabled={!isEnabled}
+              onPress={handleSubmit}
+            >
+              <Image
+                source={
+                  isEnabled
+                    ? require('../../assets/icons/arrow-circle-up-active.png')
+                    : require('../../assets/icons/arrow-circle-up.png')
+                }
+                style={styles.chatIcon}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
 };
 
 export default PracticeRequiredSkills;

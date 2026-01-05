@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import PracticeTitle from './PracticeTitle';
 import { Fonts } from "../../constants/fonts";
+import Header from "../../components/Header";
 
 const screenWidth = Dimensions.get("window").width;
 const scale = screenWidth / 390;
@@ -16,6 +17,10 @@ const scale = screenWidth / 390;
 export default function PracticeInterviewStart({ navigation }) {
     return (
         <View style={styles.container}>
+            <StatusBar
+                barStyle="dark-content"
+            />
+            <Header title="Practice interviews" showNotification={true} />
 
             {/* Content */}
             <View style={styles.content}>
@@ -25,7 +30,7 @@ export default function PracticeInterviewStart({ navigation }) {
 
                 <TouchableOpacity
                     style={styles.startButton}
-                    onPress={() => alert("Start Interview pressed")}
+                    onPress={() => navigation.navigate("BottomDash")}
                 >
                     <Text style={styles.startButtonText}>Start Interview</Text>
                 </TouchableOpacity>
@@ -38,7 +43,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#f9f9f9",
-        paddingTop: StatusBar.currentHeight || 20,
+        // paddingTop: StatusBar.currentHeight || 20,
     },
     header: {
         flexDirection: "row",

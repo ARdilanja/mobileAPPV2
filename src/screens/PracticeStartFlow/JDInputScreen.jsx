@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   TextInput,
@@ -7,92 +7,165 @@ import {
   Text,
   Dimensions,
   Image,
+  StatusBar,
 } from 'react-native';
 import PracticeTitle from './PracticeTitle';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
+import Header from '../../components/Header';
+import { useDispatch, useSelector } from 'react-redux';
+import { extractSkillsFromJD, clearJdData } from '../../redux/slices/jdSlice';
+import { getNextScreen } from "../../utils/PracticeHelper.js";
+import { useCallback } from 'react';
 
 const screenWidth = Dimensions.get("window").width;
 const scale = screenWidth / 390;
 
 const JDInputScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(clearJdData());
+      setJobDesc('');
+      setHasSubmittedJD(false); // 👈 reset
+    }, [dispatch])
+  );
+
+
+  const { loading, jobRole, experience, skills, error } = useSelector(
+    (state) => state.jobDesc
+  );
+
   const [jobDesc, setJobDesc] = useState('');
+  const [hasSubmittedJD, setHasSubmittedJD] = useState(false);
+
 
   const handleNext = () => {
-    navigation.navigate('PracticeRequiredSkills', { jobDesc });
+    if (!jobDesc.trim() || loading) return;
+    setHasSubmittedJD(true);
+    dispatch(extractSkillsFromJD(jobDesc));
+  };
+
+
+  // This effect handles navigation based on missing items
+  useEffect(() => {
+    if (!hasSubmittedJD || loading) return;
+
+    const hasAnyData =
+      (jobRole && jobRole.trim() !== '') ||
+      (Array.isArray(skills) && skills.length > 0) ||
+      (experience && experience.trim() !== '');
+
+    if (!hasAnyData) {
+     
+      return;
+    }
+
+    const nextScreen = getNextScreen({
+      role: jobRole,
+      skills,
+      experience,
+    });
+
+    navigation.navigate(nextScreen);
+  }, [hasSubmittedJD, loading, jobRole, skills, experience]);
+
+
+  useEffect(() => {
+    if (error) {
+      alert(error);
+    }
+  }, [error]);
+
+  const handleClear = () => {
+    dispatch(clearJdData());
+    setJobDesc('');
   };
 
   return (
-    <View style={styles.container}>
+    <>
 
-      {/* Top Spacer */}
-      <View style={{ flex: 1 }} />
+      <View style={styles.container}>
+        <StatusBar
+          barStyle="dark-content"
+        />
+        <Header title="Practice interviews" showNotification={true} />
 
-      {/* Center Title */}
-      <PracticeTitle
-        title="To start your practice interviews, please provide the job info."
-      />
+        {/* Top Spacer */}
+        <View style={{ flex: 1 }} />
 
-      {/* Middle Spacer */}
-      <View style={{ flex: 1 }} />
+        {/* Center Title */}
+        <PracticeTitle
+          title="Copy paste the job description, or just enter the job role and experience."
+        />
 
-      {/* Bottom Section */}
-      <View style={styles.bottomWrapper}>
+        {/* Middle Spacer */}
+        <View style={{ flex: 1 }} />
 
-        {/* Info Banner */}
-        {jobDesc.trim().length === 0 && (
-          <View style={styles.infoBox}>
-            <Image
-              source={require('../../assets/icons/warning-icon.png')}
-              style={styles.infoIcon}
+        {/* Bottom Section */}
+        <View style={styles.bottomWrapper}>
+
+          {/* Info Banner */}
+          {hasSubmittedJD && !loading && !jobRole && skills.length === 0 && !experience && (
+            <View style={styles.infoBox}>
+              <Image
+                source={require('../../assets/icons/warning-icon.png')}
+                style={styles.infoIcon}
+              />
+              <Text style={styles.infoText}>
+                The job description seems unrelated. Please check or edit.
+              </Text>
+            </View>
+          )}
+          {/* {hasSubmittedJD && !loading && !jobRole && skills.length === 0 && !experience && (
+  <Text style={{ color: 'red', marginTop: 8 }}>
+    ⚠ The job description seems unrelated. Please check or edit.
+  </Text>
+)} */}
+
+
+          {/* Chat Input Card */}
+          <View style={styles.chatCard}>
+            <TextInput
+              placeholder="Type here..."
+              value={jobDesc}
+              onChangeText={setJobDesc}
+              multiline
+              style={styles.chatInput}
+              placeholderTextColor="#9CA3AF"
             />
-            <Text style={styles.infoText}>
-              You can copy paste the full job description, or just enter the job role.
-            </Text>
+
+            <View style={styles.divider} />
+
+            <View style={styles.chatActions}>
+              <TouchableOpacity>
+                <Image
+                  source={require('../../assets/icons/circle-microphone.png')}
+                  style={styles.chatIcon}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={handleNext}
+                disabled={jobDesc.trim().length === 0 || loading}
+              >
+                <Image
+                  source={
+                    jobDesc.trim().length === 0 || loading
+                      ? require('../../assets/icons/arrow-circle-up.png')
+                      : require('../../assets/icons/arrow-circle-up-active.png')
+                  }
+                  style={styles.chatIcon}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-        )}
 
-        {/* Chat Input Card */}
-        <View style={styles.chatCard}>
-          <TextInput
-            placeholder="Type here..."
-            value={jobDesc}
-            onChangeText={setJobDesc}
-            multiline
-            style={styles.chatInput}
-            placeholderTextColor="#9CA3AF"
-          />
-
-          <View style={styles.divider} />
-
-          <View style={styles.chatActions}>
-            <TouchableOpacity>
-              <Image
-                source={require('../../assets/icons/circle-microphone.png')}
-                style={styles.chatIcon}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={handleNext}
-              disabled={jobDesc.trim().length === 0}
-            >
-              <Image
-                source={
-                  jobDesc.trim().length === 0
-                    ? require('../../assets/icons/arrow-circle-up.png')
-                    : require('../../assets/icons/arrow-circle-up-active.png')
-                }
-                style={styles.chatIcon}
-              />
-            </TouchableOpacity>
-          </View>
         </View>
-
       </View>
-    </View>
-
+    </>
   );
 };
 
@@ -155,9 +228,9 @@ const styles = StyleSheet.create({
     borderColor: '#D9D9D9',
     borderRadius: 12,
     paddingHorizontal: 16,
-    paddingBottom:16,
-    paddingTop:10,
-    backgroundColor: '#ff',
+    paddingBottom: 16,
+    paddingTop: 10,
+    backgroundColor: '#fff',
   },
 
   chatInput: {
@@ -167,7 +240,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: '#111827',
     textAlignVertical: 'top',
-    margin:0
+    margin: 0
     // marginTop:16
   },
 

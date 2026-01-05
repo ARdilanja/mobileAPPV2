@@ -38,15 +38,15 @@ const BottomNavigation = () => {
       <Tab.Screen
         name="Practice"
         component={JDInputScreen}
-        options={{
-          headerTitle: 'Start Practice',
-          headerTitleAlign: 'center',
-          headerShown: true,
-          headerStyle: {
-            backgroundColor: "#0178FF",
-          },
-          headerTintColor: '#F5F5F5'
-        }}
+        // options={{
+        //   headerTitle: 'Start Practice',
+        //   headerTitleAlign: 'center',
+        //   headerShown: true,
+        //   headerStyle: {
+        //     backgroundColor: "#0178FF",
+        //   },
+        //   headerTintColor: '#F5F5F5'
+        // }}
       />
       <Tab.Screen
         name="PracticeConversationScreen"
