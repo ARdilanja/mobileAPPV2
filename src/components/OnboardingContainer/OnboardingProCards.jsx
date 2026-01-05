@@ -39,7 +39,7 @@ const OnboardingProCards = ({
         style={[
           styles.card,
           isSmall ? styles.smallCard : styles.largeCard,
-          // selected && { borderColor: accentColor },
+          selected && { borderColor: accentColor },
         ]}
       >
         {icon && (
@@ -115,6 +115,8 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#000',
     lineHeight: 24 * scale,
+    display:"flex",
+    alignItems:"baseline"
   },
   checkBg: {
     position: 'absolute',

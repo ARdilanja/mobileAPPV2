@@ -10,7 +10,7 @@ const scale = width / 390;
 const OPTIONS = [
   {
     title: 'Junior',
-    icon: require('../../assets/icons/Group (1).png'),
+    icon: require('../../assets/icons/Junior.png'),
     iconBgColor: '#DBE5FF',
     accentColor: '#235DFF',
   },
@@ -41,7 +41,7 @@ const StepThreeOnboard = ({ value = '', onChange = () => {} }) => {
             icon={opt.icon}
             iconBgColor={opt.iconBgColor}
             accentColor={opt.accentColor}
-            mode="radio" 
+            mode="radio"
             selectionType="single"
             selected={value === opt.title}
             onPress={() => onChange(opt.title)}
@@ -67,5 +67,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     // rowGap: 16 * scale,
+    marginTop: 12 * scale,
   },
 });

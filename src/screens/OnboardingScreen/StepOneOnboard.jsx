@@ -8,10 +8,13 @@ const { width } = Dimensions.get('window');
 const scale = width / 390;
 
 export default function StepOneOnboard({ value = [], onChange = () => {} }) {
-  const toggle = id => {
-    const nextValue = value.includes(id)
-      ? value.filter(i => i !== id)
-      : [...value, id];
+  const toggle = option => {
+    const cleanTitle = option.title.replace(/\s*\n\s*/g, ' ').trim();
+
+    const nextValue = value.includes(cleanTitle)
+      ? value.filter(v => v !== cleanTitle)
+      : [...value, cleanTitle];
+
     onChange(nextValue);
   };
 
@@ -86,8 +89,10 @@ export default function StepOneOnboard({ value = [], onChange = () => {} }) {
               accentColor={opt.accentColor}
               mode="card"
               variant={isLastCard ? 'large' : 'small'}
-              selected={value.includes(opt.id)}
-              onPress={() => toggle(opt.id)}
+              selected={value.includes(
+                opt.title.replace(/\s*\n\s*/g, ' ').trim(),
+              )}
+              onPress={() => toggle(opt)}
             />
           );
         })}
@@ -100,7 +105,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32 * scale,
     fontWeight: '500',
-    marginBottom: 24 * scale,
+    marginBottom: 10 * scale,
     fontFamily: Fonts.Medium,
     lineHeight: 48,
   },

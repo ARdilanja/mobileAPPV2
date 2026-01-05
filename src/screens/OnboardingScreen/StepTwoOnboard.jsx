@@ -15,13 +15,64 @@ import {
 
 import OnboardingProCards from '../../components/OnboardingContainer/OnboardingProCards';
 import { Fonts } from '../../constants/fonts';
+import { useAudioRecorder } from "../../hooks/useAudioRecorder";
+import { transcribeWithDeepgram } from "../../utils/deepgram";
+
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 
-export default function StepTwoOnboard({ value = [], onChange = () => {} }) {
+export default function StepTwoOnboard({ value = [], onChange = () => { } }) {
   const [extraText, setExtraText] = useState('');
+  const [recording, setRecording] = useState(false);
 
+  const { startRecording, stopRecording } = useAudioRecorder();
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const showSub = Keyboard.addListener('keyboardDidShow', () =>
+      setKeyboardVisible(true)
+    );
+    const hideSub = Keyboard.addListener('keyboardDidHide', () =>
+      setKeyboardVisible(false)
+    );
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
+
+  const handleMicPress = async () => {
+    if (!recording) {
+      console.log('🎙️ Recording started');
+      await startRecording();
+      setRecording(true);
+    } else {
+      const path = await stopRecording();
+      setRecording(false);
+
+      console.log('🎙️ Recording stopped. File:', path);
+
+      if (path) {
+        const text = await transcribeWithDeepgram(path);
+        console.log('📝 Transcribed text:', text);
+
+        setExtraText(prev => (prev ? prev + ' ' + text : text));
+      }
+    }
+  };
+
+  const handleSend = () => {
+    if (!inputText.trim()) return;
+
+    setMessages(prev => [
+      ...prev,
+      { id: Date.now(), text: inputText }
+    ]);
+
+    setInputText('');
+  };
   const toggle = title => {
     const nextValue = value.includes(title)
       ? value.filter(i => i !== title)
@@ -65,59 +116,129 @@ export default function StepTwoOnboard({ value = [], onChange = () => {} }) {
   const hasText = extraText.trim().length > 0;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>What worries you the most?</Text>
+    // <View style={styles.container}>
+    //   <Text style={styles.title}>What worries you the most?</Text>
 
-      <View style={styles.grid}>
-        {OPTIONS.map(opt => (
-          <OnboardingProCards
-            key={opt.title}
-            title={opt.title}
-            icon={opt.icon}
-            iconBgColor={opt.iconBgColor}
-            accentColor={opt.accentColor}
-            mode="card"
-            selected={value.includes(opt.title)}
-            onPress={() => toggle(opt.title)}
-          />
-        ))}
-      </View>
+    //   <View style={styles.grid}>
+    //     {OPTIONS.map(opt => (
+    //       <OnboardingProCards
+    //         key={opt.title}
+    //         title={opt.title}
+    //         icon={opt.icon}
+    //         iconBgColor={opt.iconBgColor}
+    //         accentColor={opt.accentColor}
+    //         mode="card"
+    //         selected={value.includes(opt.title)}
+    //         onPress={() => toggle(opt.title)}
+    //       />
+    //     ))}
+    //   </View>
 
-      {/* Input bar with Mic (left) + Send (right) */}
-      <View style={styles.inputContainer}>
-        {/* Text Input */}
+    //   {/* Input bar with Mic (left) + Send (right) */}
+    //   <View style={styles.inputContainer}>
+    //     {/* Text Input */}
+    //     <TextInput
+    //       placeholder="Anything you want to add..."
+    //       placeholderTextColor="#000"
+    //       style={styles.textInput}
+    //       value={extraText}
+    //       onChangeText={setExtraText}
+    //       multiline={false}
+    //     />
+    //     <Pressable onPress={handleMicPress}>
+    //       <Image
+    //         source={require("../../assets/icons/circle-microphone.png")}
+    //         style={[
+    //           styles.micIcon,
+    //           recording && { tintColor: "#235DFF" },
+    //         ]}
+    //       />
+    //     </Pressable>
+
+    //     {/* SEND */}
+    //     <Pressable
+    //       disabled={!hasText}
+    //       onPress={() => {
+    //         console.log("Sent:", extraText);
+    //         setExtraText("");
+    //       }}
+    //     >
+    //       <Image
+    //         source={require("../../assets/icons/arrow-circle-up.png")}
+    //         style={[
+    //           styles.sendIcon,
+    //           hasText && { tintColor: "#235DFF" },
+    //         ]}
+    //       />
+    //     </Pressable>
+    //   </View>
+    // </View>
+    <View style={{ flex: 1 }}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 90 }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <Text style={styles.title}>What worries you the most?</Text>
+
+        <View style={styles.grid}>
+          {OPTIONS.map(opt => (
+            <OnboardingProCards
+              key={opt.title}
+              title={opt.title}
+              icon={opt.icon}
+              iconBgColor={opt.iconBgColor}
+              accentColor={opt.accentColor}
+              selected={value.includes(opt.title)}
+              onPress={() => toggle(opt.title)}
+            />
+          ))}
+        </View>
+      </ScrollView>
+
+      {/* INPUT BAR – FIXED */}
+      <View style={[styles.inputContainer, styles.fixedInput]}>
         <TextInput
           placeholder="Anything you want to add..."
           placeholderTextColor="#000"
           style={styles.textInput}
           value={extraText}
-          onChangeText={setExtraText}
-          multiline={false}
+          onChangeText={(text) => {
+            setExtraText(text);
+            console.log('⌨️ Typing:', text);
+          }}
         />
-        <Image
-          source={require('../../assets/icons/circle-microphone.png')}
-          style={styles.micIcon}
-        />
-        {/* Send Arrow Icon - Right */}
+
+
+        <Pressable onPress={handleMicPress}>
+          <Image
+            source={require("../../assets/icons/circle-microphone.png")}
+            style={[
+              styles.micIcon,
+              recording && { tintColor: "#235DFF" },
+            ]}
+          />
+        </Pressable>
+
         <Pressable
+          disabled={!hasText}
           onPress={() => {
-            // Optional: handle send (e.g., save text, clear input)
-            if (hasText) {
-              console.log('Sent:', extraText);
-              setExtraText('');
-            }
+            console.log('📨 Sent text:', extraText);
+            setExtraText('');
+            Keyboard.dismiss();
           }}
         >
+
           <Image
-            source={require('../../assets/icons/arrow-circle-up.png')} // Your right arrow in circle
+            source={require("../../assets/icons/arrow-circle-up.png")}
             style={[
               styles.sendIcon,
-              hasText && styles.sendIconActive, // Optional: color when active
+              hasText && { tintColor: "#235DFF" },
             ]}
           />
         </Pressable>
       </View>
     </View>
+
   );
 }
 
@@ -135,6 +256,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     // rowGap: 16 * scale,
+    marginTop: 12 * scale,
   },
 
   inputContainer: {
@@ -171,4 +293,10 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
   },
+  fixedInput: {
+    position: 'absolute',
+    bottom: 0,
+    alignSelf: 'center',
+  },
+
 });
