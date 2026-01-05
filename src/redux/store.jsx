@@ -7,6 +7,6 @@ export const store = configureStore({
     reducer: {
         interview: interviewReducer,
         auth: authReducer,
-         jobDesc: JobDescReducer,
+        jobDesc: JobDescReducer,
     },
 });
