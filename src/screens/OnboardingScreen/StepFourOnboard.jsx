@@ -34,7 +34,7 @@ const OPTIONS = [
   },
 ];
 
-const StepFourOnboard = ({ value = '', onChange = () => {} }) => {
+const StepFourOnboard = ({ value = '', onChange = () => { } }) => {
   return (
     <View>
       <Text style={styles.title}>What worries you the most?</Text>
@@ -72,7 +72,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    // rowGap: 16 * scale,
-    marginTop: 12 * scale,
+    gap: 12 * scale,
+    rowGap: 8 * scale,
+    marginTop:10
+
   },
 });

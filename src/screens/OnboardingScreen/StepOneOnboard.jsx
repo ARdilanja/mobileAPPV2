@@ -21,14 +21,14 @@ export default function StepOneOnboard({ value = [], onChange = () => {} }) {
   const OPTIONS = [
     {
       id: 1,
-      title: 'Presenting \nideas',
+      title: 'Presenting ideas',
       icon: require('../../assets/icons/person-presenting.png'),
       iconBgColor: '#DBE5FF',
       accentColor: '#235DFF',
     },
     {
       id: 2,
-      title: 'Facing \ninterviews',
+      title: 'Facing interviews',
       icon: require('../../assets/icons/online-interview.png'),
       iconBgColor: '#EBE6FF',
       accentColor: '#4A2AC9',
@@ -49,14 +49,14 @@ export default function StepOneOnboard({ value = [], onChange = () => {} }) {
     },
     {
       id: 5,
-      title: 'Talking in \nmanager 1-on-1s',
+      title: 'Talking in manager 1-on-1s',
       icon: require('../../assets/icons/meeting.png'),
       iconBgColor: '#FFEDCF',
       accentColor: '#CC5803',
     },
     {
       id: 6,
-      title: 'Showing my work \n/ achievements',
+      title: 'Showing my work / achievements',
       icon: require('../../assets/icons/membership.png'),
       iconBgColor: '#CAF0F8',
       accentColor: '#0077B6',
@@ -104,7 +104,6 @@ export default function StepOneOnboard({ value = [], onChange = () => {} }) {
 const styles = StyleSheet.create({
   title: {
     fontSize: 32 * scale,
-    fontWeight: '500',
     marginBottom: 10 * scale,
     fontFamily: Fonts.Medium,
     lineHeight: 48,
@@ -112,7 +111,8 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    // rowGap: 16 * scale,
+    // justifyContent: 'space-between',
+    gap:12 * scale,
+    rowGap: 8 * scale,
   },
 });

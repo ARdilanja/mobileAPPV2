@@ -12,14 +12,14 @@ import { Fonts } from '../../constants/fonts';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
-const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const H_PADDING = 16 * 2;
 const GAP = 12;
 
-const SMALL_CARD_WIDTH = (SCREEN_WIDTH - H_PADDING - GAP) / 2;
+const SMALL_CARD_WIDTH = (width - H_PADDING - GAP) / 2;
 
-const LARGE_CARD_WIDTH = SCREEN_WIDTH - H_PADDING;
+const LARGE_CARD_WIDTH = width - H_PADDING;
+
 
 const OnboardingProCards = ({
   title,
@@ -48,7 +48,10 @@ const OnboardingProCards = ({
           </View>
         )}
 
-        <Text style={styles.title}>{title}</Text>
+        <View style={styles.titleWrapper}>
+          <Text style={styles.title}
+          >{title}</Text>
+        </View>
 
         {/* Selection indicator */}
         {selected && (
@@ -74,27 +77,30 @@ const OnboardingProCards = ({
 export default OnboardingProCards;
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 8 * scale,
-  },
-
   card: {
-    height: 120,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#D9D9D9',
-    padding: 12,
+    paddingBottom: 12,
+    paddingLeft: 12,
+    paddingTop: 12,
+    paddingRight: 8,
     backgroundColor: '#FFF',
     position: 'relative',
   },
   smallCard: {
     width: SMALL_CARD_WIDTH,
-    height: 110,
+    paddingBottom: 12 * scale,
+    paddingLeft: 12 * scale,
+    paddingTop: 12 * scale,
+    paddingRight: 8 * scale,
+    position: 'relative',
+    // height: 110,
   },
 
   largeCard: {
     width: LARGE_CARD_WIDTH,
-    height: 100,
+    // height: 100,
   },
   iconBg: {
     width: 40,
@@ -109,15 +115,23 @@ const styles = StyleSheet.create({
     width: scale * 20,
     height: scale * 20,
   },
+  titleWrapper: {
+    justifyContent: 'flex-start',
+    includeFontPadding: false,   // 🔥 FIX ANDROID EXTRA SPACE
+    textAlignVertical: 'top',
+    paddingLeft: 4,
+  },
+
   title: {
     fontSize: scale * 18,
-    fontFamily: Fonts.Regular,
-    fontWeight: '400',
-    color: '#000',
     lineHeight: 24 * scale,
-    display:"flex",
-    alignItems:"baseline"
+    fontFamily: Fonts.Regular,
+    color: '#000',
+
+    // lineHeight: scale * 19,      // 🔥 MUST be close to fontSize
+    // includeFontPadding: false,   // 🔥 Android only
   },
+
   checkBg: {
     position: 'absolute',
     top: 8 * scale,
@@ -132,6 +146,7 @@ const styles = StyleSheet.create({
   checkIcon: {
     width: 12 * scale,
     height: 12 * scale,
+    padding: 2 * scale,
   },
 
   // Radio mode
@@ -158,12 +173,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
   },
-  radioTitle: {
-    fontSize: 18 * scale,
-    fontWeight: '500',
-    color: '#000',
-    flex: 1,
-  },
+  // radioTitle: {
+  //   fontSize: 18 * scale,
+  //   fontWeight: '500',
+  //   color: '#000',
+  //   flex: 1,
+  // },
   radioSelected: {
     position: 'absolute',
     top: 8,
