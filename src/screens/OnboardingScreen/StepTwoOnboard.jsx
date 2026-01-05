@@ -21,13 +21,50 @@ import { transcribeWithDeepgram } from "../../utils/deepgram";
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
-
+const OPTIONS = [
+  {
+    title: 'Being judged',
+    iconBgColor: '#DBE5FF',
+    accentColor: '#235DFF',
+    icon: require('../../assets/icons/people-network-partner.png'),
+  },
+  {
+    title: 'Confrontation',
+    iconBgColor: '#EBE6FF',
+    accentColor: '#4A2AC9',
+    icon: require('../../assets/icons/boxing-glove.png'),
+  },
+  {
+    title: 'Not sounding confident',
+    iconBgColor: '#D8F3DC',
+    accentColor: '#009343',
+    icon: require('../../assets/icons/queue-alt.png'),
+  },
+  {
+    title: 'Forgetting what to say',
+    iconBgColor: '#FFDCE2',
+    accentColor: '#800F2F',
+    icon: require('../../assets/icons/introduction.png'),
+  },
+  {
+    title: 'Saying the wrong thing',
+    iconBgColor: '#FFEDCF',
+    accentColor: '#CC5803',
+    icon: require('../../assets/icons/document-circle-wrong.png'),
+  },
+];
 export default function StepTwoOnboard({ value = [], onChange = () => { } }) {
   const [extraText, setExtraText] = useState('');
   const [recording, setRecording] = useState(false);
 
   const { startRecording, stopRecording } = useAudioRecorder();
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  // const [customOptions, setCustomOptions] = useState([]);
+  const PREDEFINED_TITLES = OPTIONS.map(opt => opt.title);
+
+  const customOptions = Array.isArray(value)
+    ? value.filter(item => !PREDEFINED_TITLES.includes(item))
+    : [];
 
   useEffect(() => {
     const showSub = Keyboard.addListener('keyboardDidShow', () =>
@@ -56,7 +93,7 @@ export default function StepTwoOnboard({ value = [], onChange = () => { } }) {
 
       if (path) {
         const text = await transcribeWithDeepgram(path);
-        console.log('📝 Transcribed text:', text);
+        console.log('Transcribed text:', text);
 
         setExtraText(prev => (prev ? prev + ' ' + text : text));
       }
@@ -64,54 +101,25 @@ export default function StepTwoOnboard({ value = [], onChange = () => { } }) {
   };
 
   const handleSend = () => {
-    if (!inputText.trim()) return;
+    const text = extraText.trim();
+    if (!text) return;
 
-    setMessages(prev => [
-      ...prev,
-      { id: Date.now(), text: inputText }
-    ]);
+    if (!value.includes(text)) {
+      onChange([...value, text]); 
+    }
 
-    setInputText('');
+    setExtraText('');
+    Keyboard.dismiss();
   };
+
+
   const toggle = title => {
     const nextValue = value.includes(title)
       ? value.filter(i => i !== title)
       : [...value, title];
-    onChange(nextValue);
-  };
 
-  const OPTIONS = [
-    {
-      title: 'Being judged',
-      iconBgColor: '#DBE5FF',
-      accentColor: '#235DFF',
-      icon: require('../../assets/icons/people-network-partner.png'),
-    },
-    {
-      title: 'Confrontation',
-      iconBgColor: '#EBE6FF',
-      accentColor: '#4A2AC9',
-      icon: require('../../assets/icons/boxing-glove.png'),
-    },
-    {
-      title: 'Not sounding \nconfident',
-      iconBgColor: '#D8F3DC',
-      accentColor: '#009343',
-      icon: require('../../assets/icons/queue-alt.png'),
-    },
-    {
-      title: 'Forgetting what to \nsay',
-      iconBgColor: '#FFDCE2',
-      accentColor: '#800F2F',
-      icon: require('../../assets/icons/introduction.png'),
-    },
-    {
-      title: 'Saying the wrong thing',
-      iconBgColor: '#FFEDCF',
-      accentColor: '#CC5803',
-      icon: require('../../assets/icons/document-circle-wrong.png'),
-    },
-  ];
+    onChange(nextValue); // Redux update
+  };
 
   const hasText = extraText.trim().length > 0;
 
@@ -180,6 +188,7 @@ export default function StepTwoOnboard({ value = [], onChange = () => { } }) {
       >
         <Text style={styles.title}>What worries you the most?</Text>
 
+        {/* PREDEFINED */}
         <View style={styles.grid}>
           {OPTIONS.map(opt => (
             <OnboardingProCards
@@ -193,6 +202,24 @@ export default function StepTwoOnboard({ value = [], onChange = () => { } }) {
             />
           ))}
         </View>
+
+        {/* CUSTOM TEXT CARDS */}
+        {customOptions.length > 0 && (
+          <View style={[styles.grid, { marginTop: 16 }]}>
+            {customOptions.map(text => (
+              <OnboardingProCards
+                key={text}
+                title={text}
+                selected={value.includes(text)}
+                onPress={() => toggle(text)}
+                variant="large"
+                accentColor="#235DFF"
+              />
+            ))}
+          </View>
+        )}
+
+
       </ScrollView>
 
       {/* INPUT BAR – FIXED */}
@@ -219,15 +246,7 @@ export default function StepTwoOnboard({ value = [], onChange = () => { } }) {
           />
         </Pressable>
 
-        <Pressable
-          disabled={!hasText}
-          onPress={() => {
-            console.log('📨 Sent text:', extraText);
-            setExtraText('');
-            Keyboard.dismiss();
-          }}
-        >
-
+        <Pressable disabled={!hasText} onPress={handleSend}>
           <Image
             source={require("../../assets/icons/arrow-circle-up.png")}
             style={[
@@ -236,6 +255,7 @@ export default function StepTwoOnboard({ value = [], onChange = () => { } }) {
             ]}
           />
         </Pressable>
+
       </View>
     </View>
 
@@ -255,8 +275,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    // rowGap: 16 * scale,
-    marginTop: 12 * scale,
+    gap: 12 * scale,
+    rowGap: 8 * scale,
+    marginTop:10
   },
 
   inputContainer: {

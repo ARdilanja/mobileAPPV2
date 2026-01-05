@@ -28,7 +28,7 @@ const OPTIONS = [
   },
 ];
 
-const StepThreeOnboard = ({ value = '', onChange = () => {} }) => {
+const StepThreeOnboard = ({ value = '', onChange = () => { } }) => {
   return (
     <View>
       <Text style={styles.title}>How nwould you describe your level?</Text>
@@ -66,7 +66,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    // rowGap: 16 * scale,
-    marginTop: 12 * scale,
+    gap: 12 * scale,
+    rowGap: 8 * scale,
+    marginTop:10
+
   },
 });
