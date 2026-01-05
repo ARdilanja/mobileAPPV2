@@ -306,7 +306,7 @@ const CustomDrawerContent = () => {
                     // danger
                     onPress={() => navigation.navigate('DeleteAccountScreen')}
                 />
-                 <FooterItem
+                <FooterItem
                     label="Profile"
                     onPress={() => navigation.navigate('ProfileTopScreen')}
                 />

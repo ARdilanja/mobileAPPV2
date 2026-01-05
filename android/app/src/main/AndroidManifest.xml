@@ -8,10 +8,21 @@ package="com.recroot_app">
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_DOCUMENTS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     
     <!-- OPTIONAL BUT RECOMMENDED FOR BLUETOOTH HEADSETS -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+
+    <!-- IMPORTANT: Add this block for Android 11+ -->
+    <queries>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+    </queries>
 
     <application
       android:name=".MainApplication"
@@ -21,6 +32,7 @@ package="com.recroot_app">
       android:allowBackup="false"
       android:theme="@style/AppTheme"
       android:usesCleartextTraffic="true"
+      android:requestLegacyExternalStorage="true"
       android:networkSecurityConfig="@xml/network_security_config"
       android:supportsRtl="true">
       <service

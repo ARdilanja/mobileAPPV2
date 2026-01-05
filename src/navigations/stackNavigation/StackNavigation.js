@@ -296,7 +296,7 @@ const StackNavigation = () => {
       <Stack.Screen
         name="UpdateProfileScreen"
         component={UpdateProfileScreen}
-        options={{ headerShown: true, headerTitle: 'Your Profile', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'Your Profile', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="InvoicePreviewScreen"
