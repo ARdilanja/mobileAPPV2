@@ -30,6 +30,7 @@ const OnboardingProCards = ({
   accentColor = '#235DFF',
   selectionType = 'multi', // 'multi' | 'single'
   variant = 'small',
+  rightElement, 
 }) => {
   const isSmall = variant === 'small';
 
@@ -52,7 +53,11 @@ const OnboardingProCards = ({
           <Text style={styles.title}
           >{title}</Text>
         </View>
-
+ {rightElement && (
+          <View style={styles.rightElement}>
+            {rightElement}
+          </View>
+        )}
         {/* Selection indicator */}
         {selected && (
           <View
@@ -77,7 +82,7 @@ const OnboardingProCards = ({
 export default OnboardingProCards;
 
 const styles = StyleSheet.create({
-  card: {
+ card: {
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#D9D9D9',
@@ -88,20 +93,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     position: 'relative',
   },
+
   smallCard: {
     width: SMALL_CARD_WIDTH,
-    paddingBottom: 12 * scale,
-    paddingLeft: 12 * scale,
-    paddingTop: 12 * scale,
-    paddingRight: 8 * scale,
-    position: 'relative',
-    // height: 110,
   },
 
   largeCard: {
     width: LARGE_CARD_WIDTH,
-    // height: 100,
   },
+
   iconBg: {
     width: 40,
     height: 40,
@@ -115,10 +115,8 @@ const styles = StyleSheet.create({
     width: scale * 20,
     height: scale * 20,
   },
+
   titleWrapper: {
-    justifyContent: 'flex-start',
-    includeFontPadding: false,   // 🔥 FIX ANDROID EXTRA SPACE
-    textAlignVertical: 'top',
     paddingLeft: 4,
   },
 
@@ -127,65 +125,27 @@ const styles = StyleSheet.create({
     lineHeight: 24 * scale,
     fontFamily: Fonts.Regular,
     color: '#000',
-
-    // lineHeight: scale * 19,      // 🔥 MUST be close to fontSize
-    // includeFontPadding: false,   // 🔥 Android only
   },
 
-  checkBg: {
+  /* 🔥 PLAY ICON POSITION */
+  rightElement: {
     position: 'absolute',
-    top: 8 * scale,
-    right: 8 * scale,
-    width: 16 * scale,
-    height: 16 * scale,
-    borderRadius: 4 * scale,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
+    bottom: 10,
+    right: 10,
   },
+
   checkIcon: {
     width: 12 * scale,
     height: 12 * scale,
-    padding: 2 * scale,
   },
 
-  // Radio mode
-  radioRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-  },
-  radioOuter: {
-    width: 16 * scale,
-    height: 16 * scale,
-    borderRadius: 16 * scale,
-    borderWidth: 2,
-    borderColor: '#D9D9D9',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16 * scale,
-  },
-  radioInnerBg: {
-    width: 16 * scale,
-    height: 16 * scale,
-    borderRadius: 16 * scale,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-  },
-  // radioTitle: {
-  //   fontSize: 18 * scale,
-  //   fontWeight: '500',
-  //   color: '#000',
-  //   flex: 1,
-  // },
   radioSelected: {
     position: 'absolute',
     top: 8,
     right: 8,
     width: 18,
     height: 18,
-    borderRadius: 18, // 🔵 ROUND
+    borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
   },

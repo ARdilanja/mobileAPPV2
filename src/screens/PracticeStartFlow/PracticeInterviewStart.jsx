@@ -25,7 +25,7 @@ export default function PracticeInterviewStart({ navigation }) {
 
                 <TouchableOpacity
                     style={styles.startButton}
-                    onPress={() => alert("Start Interview pressed")}
+                    onPress={() => navigation.navigate('CreateRoomScreen')}
                 >
                     <Text style={styles.startButtonText}>Start Interview</Text>
                 </TouchableOpacity>

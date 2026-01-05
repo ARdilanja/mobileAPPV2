@@ -31,7 +31,7 @@ export default function CreateRoomScreen({ navigation }) {
                 <Pressable
                     style={styles.btn}
                     onPress={() =>
-                        navigation.navigate("MicCheckScreen", {
+                        navigation.navigate("MicCameraCheckScreen", {
                             roomName,
                             // for sme
                             interviewId: "67ee0d4febee98e48a182378",

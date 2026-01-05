@@ -47,8 +47,8 @@ const StepFourOnboard = ({ value = '', onChange = () => { } }) => {
             icon={opt.icon}
             iconBgColor={opt.iconBgColor}
             accentColor={opt.accentColor}
-            mode="card" // ✅ CARD UI
-            selectionType="single" // ✅ RADIO BEHAVIOR
+            mode="card" 
+            selectionType="single" 
             selected={value === opt.title}
             onPress={() => onChange(opt.title)}
           />

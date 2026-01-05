@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import StepOneOnboard from './StepOneOnboard';
 import StepTwoOnboard from './StepTwoOnboard';
@@ -32,6 +32,7 @@ const { width } = Dimensions.get('window');
 const scale = width / 390;
 
 export default function OnboardingContainer() {
+  const navigation = useNavigation();
   const [step, setStep] = useState(1);
 
   // const [stepOneValue, setStepOneValue] = useState([]);
@@ -62,8 +63,12 @@ export default function OnboardingContainer() {
         stepThree,
         stepFour,
       });
+
+      // ✅ Navigate only on last step
+      navigation.navigate('CreateRoomScreen');
     }
   };
+
 
   const goBack = () => {
     if (step > 1) setStep(step - 1);
