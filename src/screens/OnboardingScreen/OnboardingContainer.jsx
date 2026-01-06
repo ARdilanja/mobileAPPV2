@@ -45,13 +45,27 @@ export default function OnboardingContainer() {
     state => state.onboarding,
   );
 
-  const canGoNext = () => {
-    if (step === 1) return stepOne.length > 0;
-    if (step === 2) return stepTwo.length > 0;
-    if (step === 3) return stepThree !== '';
-    if (step === 4) return stepFour !== '';
-    return false;
-  };
+const canGoNext = () => {
+  if (step === 1) return stepOne.length > 0;
+
+  if (step === 2) {
+    return stepTwo.some(item => {
+      // Option cards (strings)
+      if (typeof item === 'string') return true;
+
+      // Text / Audio cards
+      if (typeof item === 'object') return item.selected === true;
+
+      return false;
+    });
+  }
+
+  if (step === 3) return stepThree !== '';
+  if (step === 4) return stepFour !== '';
+
+  return false;
+};
+
 
   const goNext = () => {
     if (step < TOTAL_STEPS) {

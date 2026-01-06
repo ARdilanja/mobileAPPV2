@@ -1,4 +1,3 @@
-// components/OnboardingContainer/OnboardingProCards.jsx
 import React from 'react';
 import {
   View,
@@ -17,9 +16,7 @@ const H_PADDING = 16 * 2;
 const GAP = 12;
 
 const SMALL_CARD_WIDTH = (width - H_PADDING - GAP) / 2;
-
 const LARGE_CARD_WIDTH = width - H_PADDING;
-
 
 const OnboardingProCards = ({
   title,
@@ -30,7 +27,7 @@ const OnboardingProCards = ({
   accentColor = '#235DFF',
   selectionType = 'multi', // 'multi' | 'single'
   variant = 'small',
-  rightElement, 
+  rightElement,
 }) => {
   const isSmall = variant === 'small';
 
@@ -50,15 +47,13 @@ const OnboardingProCards = ({
         )}
 
         <View style={styles.titleWrapper}>
-          <Text style={styles.title}
-          >{title}</Text>
+          <Text style={styles.title}>{title}</Text>
         </View>
- {rightElement && (
-          <View style={styles.rightElement}>
-            {rightElement}
-          </View>
+
+        {rightElement && (
+          <View style={styles.rightElement}>{rightElement}</View>
         )}
-        {/* Selection indicator */}
+
         {selected && (
           <View
             style={[
@@ -82,24 +77,27 @@ const OnboardingProCards = ({
 export default OnboardingProCards;
 
 const styles = StyleSheet.create({
- card: {
-    borderRadius: 12,
+  card: {
+   borderRadius: 12,
     borderWidth: 1,
     borderColor: '#D9D9D9',
-    paddingBottom: 12,
+    // paddingBottom: 12,
     paddingLeft: 12,
     paddingTop: 12,
-    paddingRight: 8,
     backgroundColor: '#FFF',
     position: 'relative',
+    // minHeight: 120 * scale,
+
   },
 
   smallCard: {
     width: SMALL_CARD_WIDTH,
+    minHeight: 120 * scale,
   },
 
   largeCard: {
     width: LARGE_CARD_WIDTH,
+    minHeight: 100 * scale,
   },
 
   iconBg: {
@@ -108,7 +106,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 8,
+    // marginBottom: 8,
+    // marginLeft: 12 * scale,
+    // marginTop: 12 * scale,
   },
 
   icon: {
@@ -117,7 +117,10 @@ const styles = StyleSheet.create({
   },
 
   titleWrapper: {
-    paddingLeft: 4,
+    // paddingLeft: 15 * scale,
+    // paddingRight: 3 * scale,
+    minHeight: 48 * scale,
+    justifyContent: 'center',
   },
 
   title: {
@@ -127,7 +130,6 @@ const styles = StyleSheet.create({
     color: '#000',
   },
 
-  /* 🔥 PLAY ICON POSITION */
   rightElement: {
     position: 'absolute',
     bottom: 10,
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
   radioSelected: {
     position: 'absolute',
     top: 8,
-    right: 8,
+    right: 12 * scale,
     width: 18,
     height: 18,
     borderRadius: 18,
@@ -153,7 +155,7 @@ const styles = StyleSheet.create({
   checkSelected: {
     position: 'absolute',
     top: 8,
-    right: 8,
+    right:12 * scale,
     width: 18,
     height: 18,
     borderRadius: 4,

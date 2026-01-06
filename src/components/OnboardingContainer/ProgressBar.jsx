@@ -63,17 +63,17 @@ const styles = StyleSheet.create({
     marginBottom: 14 * scale,
     alignItems: 'center',
   },
-segmentWrapper: {
-  flex: 1,
-  height: 6 * scale,
-  borderRadius: 24 * scale,
-  overflow: 'hidden',
-},
-segment: {
-  flex: 1,
-  height: 6 * scale,
-  borderRadius: 4 * scale,
-},
+  segmentWrapper: {
+    flex: 1,
+    height: 6 * scale,
+    borderRadius: 24 * scale,
+    overflow: 'hidden',
+  },
+  segment: {
+    flex: 1,
+    height: 6 * scale,
+    borderRadius: 4 * scale,
+  },
 
   gray: {
     backgroundColor: '#E6E6E6',
@@ -89,7 +89,7 @@ segment: {
     left: 0,
     top: 0,
     bottom: 0,
-    width: '50%',
+    width: '42%',
     borderRadius: 4 * scale,
   },
   blueFill: {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     View,
     Text,
@@ -9,10 +9,44 @@ import {
 import Gradient from "../constants/Gradient";
 import Header from "../components/Header";
 import { Fonts } from "../constants/fonts";
+import { useNavigation } from "@react-navigation/native";
+import { fetchLiveKitToken } from "../services/livekit";
 
 const { width, height } = Dimensions.get("window");
 
-export default function SpeakInMeetingsScreen({ navigation }) {
+export default function SpeakInMeetingsScreen({ route }) {
+
+    const handleStartConversation = async () => {
+        try {
+            const token = await fetchLiveKitToken({
+                roomName,
+                interviewId,
+                cid,
+                identity: `user-${Date.now()}`,
+            });
+
+            navigation.navigate("LiveRoomScreen", {
+                roomName,
+                interviewId,
+                cid,
+                token,
+            });
+        } catch (err) {
+            console.error("Failed to fetch LiveKit token:", err);
+        }
+    };
+
+    const navigation = useNavigation();
+    const { roomName, interviewId, cid } = route.params || {};
+    useEffect(() => {
+        console.log("SpeakInMeetings params:", {
+            roomName,
+            interviewId,
+            cid,
+        });
+    }, []);
+
+
     return (
         <Gradient>
             {/* HEADER */}
@@ -32,11 +66,10 @@ export default function SpeakInMeetingsScreen({ navigation }) {
 
             {/* BOTTOM BUTTON */}
             <View style={styles.bottom}>
-                <Pressable
-                    style={styles.primaryButton}
-                >
+                <Pressable style={styles.primaryButton} onPress={handleStartConversation}>
                     <Text style={styles.buttonText}>Start conversation</Text>
                 </Pressable>
+
             </View>
         </Gradient>
     );
@@ -63,7 +96,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 18,
         fontFamily: Fonts.Medium,
-        fontWeight:500,
+        fontWeight: 500,
         color: "#000",
         marginBottom: 12,
     },
@@ -71,7 +104,7 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 14,
         fontFamily: Fonts.Regular,
-        fontWeight:400,
+        fontWeight: 400,
         fontFamily: Fonts.Regular,
         color: "#000",
         textAlign: "center",
@@ -100,7 +133,7 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 18,
         fontFamily: Fonts.Medium,
-        fontWeight:500,
+        fontWeight: 500,
         color: "#FFFFFF",
     },
 });
