@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import StepOneOnboard from './StepOneOnboard';
 import StepTwoOnboard from './StepTwoOnboard';
@@ -19,30 +19,70 @@ import StepFourOnboard from './StepFourOnboard';
 import ProgressBar from '../../components/OnboardingContainer/ProgressBar';
 import Header from '../../components/Header';
 import { Fonts } from '../../constants/fonts';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  setStepOne,
+  setStepTwo,
+  setStepThree,
+  setStepFour,
+} from '../../redux/slices/onboardingSlice';
 
 const TOTAL_STEPS = 4;
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 
 export default function OnboardingContainer() {
+  const navigation = useNavigation();
   const [step, setStep] = useState(1);
 
-  const [stepOneValue, setStepOneValue] = useState([]);
-  const [stepTwoValue, setStepTwoValue] = useState([]);
-  const [stepThreeValue, setStepThreeValue] = useState('');
-  const [stepFourValue, setStepFourValue] = useState('');
+  // const [stepOneValue, setStepOneValue] = useState([]);
+  // const [stepTwoValue, setStepTwoValue] = useState([]);
+  // const [stepThreeValue, setStepThreeValue] = useState('');
+  // const [stepFourValue, setStepFourValue] = useState('');
+  const dispatch = useDispatch();
 
-  const canGoNext = () => {
-    if (step === 1) return stepOneValue.length > 0;
-    if (step === 2) return stepTwoValue.length > 0;
-    if (step === 3) return stepThreeValue !== '';
-    if (step === 4) return stepFourValue !== '';
-    return false;
-  };
+  const { stepOne, stepTwo, stepThree, stepFour } = useSelector(
+    state => state.onboarding,
+  );
+
+const canGoNext = () => {
+  if (step === 1) return stepOne.length > 0;
+
+  if (step === 2) {
+    return stepTwo.some(item => {
+      // Option cards (strings)
+      if (typeof item === 'string') return true;
+
+      // Text / Audio cards
+      if (typeof item === 'object') return item.selected === true;
+
+      return false;
+    });
+  }
+
+  if (step === 3) return stepThree !== '';
+  if (step === 4) return stepFour !== '';
+
+  return false;
+};
+
 
   const goNext = () => {
-    if (step < TOTAL_STEPS) setStep(step + 1);
+    if (step < TOTAL_STEPS) {
+      setStep(step + 1);
+    } else {
+      console.log('ONBOARDING DATA FROM REDUX:', {
+        stepOne,
+        stepTwo,
+        stepThree,
+        stepFour,
+      });
+
+      // ✅ Navigate only on last step
+      navigation.navigate('CreateRoomScreen');
+    }
   };
+
 
   const goBack = () => {
     if (step > 1) setStep(step - 1);
@@ -57,6 +97,16 @@ export default function OnboardingContainer() {
       }
     }, []),
   );
+  const cleanText = value =>
+    typeof value === 'string' ? value.replace(/\s*\n\s*/g, ' ').trim() : value;
+  const cleanedData = {
+    stepOne,
+    stepTwo: stepTwo.map(cleanText),
+    stepThree: cleanText(stepThree),
+    stepFour: cleanText(stepFour),
+  };
+
+  console.log('✅ CLEAN ONBOARDING DATA:', cleanedData);
 
   return (
     <View style={styles.container}>
@@ -83,21 +133,30 @@ export default function OnboardingContainer() {
           {/* Scrollable content */}
           <View style={[styles.content, step === 1 && styles.contentNoHeader]}>
             {step === 1 && (
-              <StepOneOnboard value={stepOneValue} onChange={setStepOneValue} />
-            )}
-            {step === 2 && (
-              <StepTwoOnboard value={stepTwoValue} onChange={setStepTwoValue} />
-            )}
-            {step === 3 && (
-              <StepThreeOnboard
-                value={stepThreeValue}
-                onChange={setStepThreeValue}
+              <StepOneOnboard
+                value={stepOne}
+                onChange={v => dispatch(setStepOne(v))}
               />
             )}
+
+            {step === 2 && (
+              <StepTwoOnboard
+                value={stepTwo}
+                onChange={v => dispatch(setStepTwo(v))}
+              />
+            )}
+
+            {step === 3 && (
+              <StepThreeOnboard
+                value={stepThree}
+                onChange={v => dispatch(setStepThree(v))}
+              />
+            )}
+
             {step === 4 && (
               <StepFourOnboard
-                value={stepFourValue}
-                onChange={setStepFourValue}
+                value={stepFour}
+                onChange={v => dispatch(setStepFour(v))}
               />
             )}
           </View>
@@ -110,7 +169,9 @@ export default function OnboardingContainer() {
               style={[styles.button, !canGoNext() && styles.disabled]}
             >
               <Text style={styles.btnText}>
-                {step === TOTAL_STEPS ? 'Finish' : 'Next'}
+                {step === TOTAL_STEPS
+                  ? 'Start your first trial session'
+                  : 'Next'}
               </Text>
             </Pressable>
             <ProgressBar
@@ -137,8 +198,8 @@ const styles = StyleSheet.create({
     // justifyContent: 'space-between',
   },
   headerWrapper: {
-    marginTop: Platform.OS === 'ios' ? 44 : 24,
-    marginBottom: 8, // controls gap between header & content
+    marginTop: Platform.OS === 'ios' ? 40 : 1,
+    // marginBottom: 10, // controls gap between header & content
   },
 
   content: {
@@ -147,7 +208,7 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   contentNoHeader: {
-    marginTop: 68 * scale,
+    marginTop: 65 * scale,
   },
   footer: {
     marginTop: 1 * scale,
@@ -161,7 +222,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2563EB',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 25,
+    marginBottom: 16 * scale,
   },
   disabled: {
     backgroundColor: '#A3A3A3',
@@ -169,7 +230,7 @@ const styles = StyleSheet.create({
   btnText: {
     color: '#FFF',
     fontSize: 18 * scale,
-    fontWeight: '600',
+    fontWeight: '500',
     fontFamily: Fonts.Medium,
     lineHeight: 24,
   },

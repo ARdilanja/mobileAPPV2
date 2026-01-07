@@ -1,4 +1,3 @@
-// components/OnboardingContainer/OnboardingProCards.jsx
 import React from 'react';
 import {
   View,
@@ -12,14 +11,12 @@ import { Fonts } from '../../constants/fonts';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
-const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const H_PADDING = 16 * 2;
 const GAP = 12;
 
-const SMALL_CARD_WIDTH = (SCREEN_WIDTH - H_PADDING - GAP) / 2;
-
-const LARGE_CARD_WIDTH = SCREEN_WIDTH - H_PADDING;
+const SMALL_CARD_WIDTH = (width - H_PADDING - GAP) / 2;
+const LARGE_CARD_WIDTH = width - H_PADDING;
 
 const OnboardingProCards = ({
   title,
@@ -30,6 +27,7 @@ const OnboardingProCards = ({
   accentColor = '#235DFF',
   selectionType = 'multi', // 'multi' | 'single'
   variant = 'small',
+  rightElement,
 }) => {
   const isSmall = variant === 'small';
 
@@ -39,7 +37,7 @@ const OnboardingProCards = ({
         style={[
           styles.card,
           isSmall ? styles.smallCard : styles.largeCard,
-          // selected && { borderColor: accentColor },
+          selected && { borderColor: accentColor },
         ]}
       >
         {icon && (
@@ -48,9 +46,14 @@ const OnboardingProCards = ({
           </View>
         )}
 
-        <Text style={styles.title}>{title}</Text>
+        <View style={styles.titleWrapper}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
 
-        {/* Selection indicator */}
+        {rightElement && (
+          <View style={styles.rightElement}>{rightElement}</View>
+        )}
+
         {selected && (
           <View
             style={[
@@ -74,101 +77,77 @@ const OnboardingProCards = ({
 export default OnboardingProCards;
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 8 * scale,
-  },
-
   card: {
-    height: 120,
-    borderRadius: 12,
+   borderRadius: 12,
     borderWidth: 1,
     borderColor: '#D9D9D9',
-    padding: 12,
+    // paddingBottom: 12,
+    paddingLeft: 12,
+    paddingTop: 12,
     backgroundColor: '#FFF',
     position: 'relative',
+    // minHeight: 120 * scale,
+
   },
+
   smallCard: {
     width: SMALL_CARD_WIDTH,
-    height: 110,
+    minHeight: 120 * scale,
   },
 
   largeCard: {
     width: LARGE_CARD_WIDTH,
-    height: 100,
+    minHeight: 100 * scale,
   },
+
   iconBg: {
     width: 40,
     height: 40,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 8,
+    // marginBottom: 8,
+    // marginLeft: 12 * scale,
+    // marginTop: 12 * scale,
   },
 
   icon: {
     width: scale * 20,
     height: scale * 20,
   },
+
+  titleWrapper: {
+    // paddingLeft: 15 * scale,
+    // paddingRight: 3 * scale,
+    minHeight: 48 * scale,
+    justifyContent: 'center',
+  },
+
   title: {
     fontSize: scale * 18,
-    fontFamily: Fonts.Regular,
-    fontWeight: '400',
-    color: '#000',
     lineHeight: 24 * scale,
+    fontFamily: Fonts.Regular,
+    color: '#000',
   },
-  checkBg: {
+
+  rightElement: {
     position: 'absolute',
-    top: 8 * scale,
-    right: 8 * scale,
-    width: 16 * scale,
-    height: 16 * scale,
-    borderRadius: 4 * scale,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
+    bottom: 10,
+    right: 10,
   },
+
   checkIcon: {
     width: 12 * scale,
     height: 12 * scale,
   },
 
-  // Radio mode
-  radioRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-  },
-  radioOuter: {
-    width: 16 * scale,
-    height: 16 * scale,
-    borderRadius: 16 * scale,
-    borderWidth: 2,
-    borderColor: '#D9D9D9',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16 * scale,
-  },
-  radioInnerBg: {
-    width: 16 * scale,
-    height: 16 * scale,
-    borderRadius: 16 * scale,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-  },
-  radioTitle: {
-    fontSize: 18 * scale,
-    fontWeight: '500',
-    color: '#000',
-    flex: 1,
-  },
   radioSelected: {
     position: 'absolute',
     top: 8,
-    right: 8,
+    right: 12 * scale,
     width: 18,
     height: 18,
-    borderRadius: 18, // 🔵 ROUND
+    borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -176,7 +155,7 @@ const styles = StyleSheet.create({
   checkSelected: {
     position: 'absolute',
     top: 8,
-    right: 8,
+    right:12 * scale,
     width: 18,
     height: 18,
     borderRadius: 4,
