@@ -30,6 +30,8 @@ import ChooseSignupMethod from '../../screens/authentication/ChooseSignupMethod'
 import EmailInput from '../../screens/authentication/EmailInput';
 import Password from '../../screens/authentication/Password';
 import MobileInput from '../../screens/authentication/MobileInput';
+import ForgotPasswordScreen from '../../screens/authentication/ForgotPasswordScreen.jsx';
+import ResetPassword from '../../screens/authentication/ResetPassword.jsx';
 import OtpVerification from '../../screens/authentication/OtpVerification';
 import GetStarted from '../../screens/authentication/GetStarted';
 import CreatePassword from '../../screens/authentication/CreatePassword';
@@ -84,6 +86,9 @@ const StackNavigation = () => {
       <Stack.Screen name="GetStarted" component={GetStarted} />
       <Stack.Screen name="CreatePassword" component={CreatePassword} />
       <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
+      <Stack.Screen name="ResetPassword" component={ResetPassword}
+      />
       <Stack.Screen name="ChooseSignupMethod" component={ChooseSignupMethod} />
       <Stack.Screen name="NotificationScreen" component={NotificationsScreen} />
       <Stack.Screen name="JourneyGetStartScreen" component={JourneyGetStartScreen} />

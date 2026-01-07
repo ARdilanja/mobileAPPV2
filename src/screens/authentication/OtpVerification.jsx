@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE } from '../../config/api';
 
 
 const screenWidth = Dimensions.get('window').width;
@@ -18,10 +19,8 @@ const OtpVerification = ({ route }) => {
   const {
     email,
     userId,
-    serverOtp,
   } = route.params;
   console.log('userId', userId)
-  console.log('serverOtp', serverOtp)
   const [otp, setOtp] = useState('');
 
   // Handle OTP verification logic
@@ -31,15 +30,21 @@ const OtpVerification = ({ route }) => {
       return;
     }
 
-    // Step 1: Match OTP first
-    if (otp !== serverOtp) {
-      Alert.alert('Error', 'Incorrect OTP. Please try again.');
+    // for forgot password
+
+    if (route.params.isForgotPassword) {
+      await axios.post(`${API_BASE}/auth/forgot-password/verify-otp`, {
+        userId,
+        otp,
+      });
+
+      navigation.navigate("ResetPassword", { email });
       return;
     }
 
     try {
       // Step 2: Call backend PUT API only after OTP match
-      const response = await axios.put(`http://192.168.0.18:5000/api/auth/verify-email/${userId}`, {
+      const response = await axios.put(`http://192.168.0.7:3000/api/auth/verify-email/${userId}`, {
         code: true,
       });
       const { User, token, refreshToken } = response.data;

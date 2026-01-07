@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {
   View, TextInput, StyleSheet, Dimensions,
   KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard,
-  StatusBar,
+  StatusBar, TouchableOpacity,
   Text
 } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
@@ -33,35 +33,6 @@ const EmailInput = () => {
     setPopupType(type);
     setPopupVisible(true);
   };
-
-  // const handleNext = async () => {
-  //   if (!email.trim()) {
-  //     showPopup('Please enter your email', 'error');
-  //     return;
-  //   }
-
-  //   try {
-  //     // console.log('first', API_BASE,"checkUser")
-  //     const response = await axios.post(`https://api.arinnovate.io/api/checkUser`, { email });
-
-  //     const user = response.data.updatedUser || response.data.existingUser;
-
-  //     if (!user) {
-  //       showPopup('User not found. Please sign up.', 'error');
-  //       navigation.navigate('ChooseSignupMethod');
-  //       return;
-  //     }
-
-  //     // ✅ Navigate to password screen
-  //     navigation.navigate('Password', { email });
-
-  //   } catch (error) {
-  //     showPopup(
-  //       error?.response?.data?.message || 'Something went wrong',
-  //       'error'
-  //     );
-  //   }
-  // };
 
   const handleNext = async () => {
     if (!email.trim()) {
@@ -183,9 +154,14 @@ const EmailInput = () => {
                   value={password}
                   onChangeText={setPassword}
                 />
-                <Text
-                  style={styles.forgot}
-                >Forgot password?</Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ForgotPasswordScreen')}
+                >
+                  <Text style={styles.forgot}>
+                    Forgot password?
+                  </Text>
+                </TouchableOpacity>
+
               </View>
 
               {/* BOTTOM SECTION: Pushed to bottom by space-between */}

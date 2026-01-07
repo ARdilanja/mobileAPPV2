@@ -75,8 +75,8 @@ const SignUp = () => {
         }
 
         const payload = {
-            firstName:fullName,
-            lastName:'Test',
+            firstName: fullName,
+            lastName: 'Test',
             email,
             phone,
             password,
@@ -86,14 +86,14 @@ const SignUp = () => {
                 dialCode: '+91',
             },
         };
-console.log('payload', payload)
+        console.log('payload', payload)
         try {
             const res = await axios.post(
-                'http://192.168.0.18:5000/api/auth/register',
+                'http://192.168.0.7:3000/api/auth/register',
                 payload
             );
 
-           console.log('res signup', res)
+            console.log('res signup', res)
 
             Alert.alert('Success', 'OTP sent to your email', [
                 {
