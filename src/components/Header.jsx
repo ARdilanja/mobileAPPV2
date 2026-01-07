@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     // height: 56,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 8,
+    marginVertical: 8,
   },
 
   leftBtn: {
