@@ -14,11 +14,12 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE } from '../../config/api';
+import { getFCMToken } from '../../services/notificationService';
 const screenWidth = Dimensions.get("window").width;
 const scale = screenWidth / 390;
-
 const EmailInput = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation()    
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -74,11 +75,15 @@ const EmailInput = () => {
     }
 
     try {
+      //  const fcmToken = await messaging().getToken();
+      const fcmToken = await getFCMToken();
       const response = await axios.post(
-        'http://192.168.0.18:5000/api/auth/login-password',
+      //  `${API_BASE}/auth/login-password`,
+       `http://192.168.0.13:5000/api/auth/login-password`,
         {
           email,
           password,
+          fcmToken: fcmToken,
         }
       );
 

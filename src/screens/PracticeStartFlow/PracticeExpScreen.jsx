@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -8,10 +8,11 @@ import {
   Dimensions,
   Image,
   StatusBar,
+  ImageBackground,
 } from 'react-native';
 import PracticeTitle from './PracticeTitle';
 import { Fonts } from '../../constants/fonts';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Header from '../../components/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { setExperience } from '../../redux/slices/jdSlice';
@@ -59,10 +60,21 @@ const PracticeExpScreen = () => {
 
     navigation.navigate(nextScreen);
   };
-
+ useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBackgroundColor('#F9FAFB');
+      StatusBar.setTranslucent(false);
+    }, []),
+  );
+  
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
+       <ImageBackground
+  source={require('../../assets/images/Chat-bg.png')} // 👈 your bg image
+  resizeMode="repeat"
+  style={styles.container}
+>
       <Header title="Practice interviews" showNotification />
 
       {/* Top Spacer */}
@@ -140,6 +152,7 @@ const PracticeExpScreen = () => {
           </View>
         </View>
       </View>
+     </ImageBackground>
     </View>
   );
 };
@@ -167,6 +180,8 @@ const styles = StyleSheet.create({
   chip: {
     borderWidth: 1,
     borderColor: '#D9D9D9',
+        backgroundColor:'#FFFFFF',
+
     borderRadius: 24,
     paddingHorizontal: 16,
     paddingVertical: 8,

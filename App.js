@@ -49,7 +49,8 @@ import { StatusBar } from 'react-native';
 import AppNavigation from './src/navigations/AppNavigation';
 import { store } from "./src/redux/store.jsx";
 import { Provider } from 'react-redux';
-
+import messaging from '@react-native-firebase/messaging';
+import { getFCMToken, listenToNotifications, requestNotificationPermission, setupNotificationChannel } from './src/services/notificationService';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 console.log("GoogleSignin native module =>", GoogleSignin);
@@ -60,7 +61,16 @@ export default function App() {
       offlineAccess: false,
     });
   }, []);
+ useEffect(() => {
+    requestNotificationPermission();
+    getFCMToken();
+    setupNotificationChannel()
+  }, []);
+  useEffect(() => {
+   const unsubscribe = listenToNotifications();
 
+  return () => unsubscribe();
+}, []);
   return (
     <Provider store={store}>
       <StatusBar

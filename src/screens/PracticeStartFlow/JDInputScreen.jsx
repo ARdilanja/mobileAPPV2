@@ -8,6 +8,7 @@ import {
   Dimensions,
   Image,
   StatusBar,
+  ImageBackground,
 } from 'react-native';
 import PracticeTitle from './PracticeTitle';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -83,14 +84,23 @@ const JDInputScreen = () => {
     dispatch(clearJdData());
     setJobDesc('');
   };
-
+ useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBackgroundColor('#F9FAFB');
+      StatusBar.setTranslucent(false);
+    }, []),
+  );
   return (
     <>
 
       <View style={styles.container}>
-        <StatusBar
-          barStyle="dark-content"
-        />
+      <ImageBackground
+  source={require('../../assets/images/Chat-bg.png')} // 👈 your bg image
+  resizeMode="repeat"
+  style={styles.container}
+>
+        
         <Header title="Practice interviews" showNotification={true} />
 
         {/* Top Spacer */}
@@ -164,6 +174,7 @@ const JDInputScreen = () => {
           </View>
 
         </View>
+        </ImageBackground>
       </View>
     </>
   );
