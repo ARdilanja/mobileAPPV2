@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     Text,
@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import Header from '../components/Header';
 import { Fonts } from '../constants/fonts';
+import axios from 'axios';
+import { API_BASE } from '../config/api';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -21,9 +23,42 @@ const successIcon = require('../assets/images/IP_Payment_success.png');
 const failedIcon = require('../assets/images/IP_Payment_failure.png');
 
 export default function InvoicePreviewScreen({
-    status = 'success', // 'success' | 'failure'
+    route,
 }) {
-    const isSuccess = status === 'success';
+    const {
+        status = 'success',
+        planAmount = 0,
+        tax = 0,
+        grandTotal = 0,
+        transactionId,
+        amountPaid = 0,
+        dateTime = 'N/A',
+    } = route?.params || {};
+
+
+    const [invoice, setInvoice] = useState(null);
+    console.log('invoice', invoice)
+    const paymentStatus = invoice?.status?.toLowerCase()?.trim();
+    console.log('paymentStatus', paymentStatus)
+    const isSuccess = paymentStatus === 'success';
+
+    useEffect(() => {
+        const fetchInvoice = async () => {
+            try {
+                const res = await axios.get(
+                    `${API_BASE}/stripe/payment/${transactionId}`
+                );
+                console.log('res', res)
+                setInvoice(res.data.data);
+            } catch (error) {
+                console.log("Invoice fetch failed");
+            }
+        };
+
+        if (transactionId) {
+            fetchInvoice();
+        }
+    }, [transactionId]);
 
     return (
         <View style={styles.container}>
@@ -41,15 +76,16 @@ export default function InvoicePreviewScreen({
                 {/* Divider after header */}
                 <Divider />
 
-                <Row label="Pro plan" value="₹ 1000" />
-                <Row label="Tax" value="₹ 180" />
+                <Row label="Pro plan" value={`₹ ${invoice?.amount || 0}`} />
+                <Row label="Tax" value={`₹ 0`} />
+
 
                 {/* Divider after Tax */}
                 <Divider />
 
                 <Row
                     label="Grand total"
-                    value="₹ 1180"
+                    value={`₹ ${invoice?.amount || 0}`}
                     labelStyle={{ fontFamily: Fonts.SemiBold }}
                     valueStyle={{ fontFamily: Fonts.SemiBold }}
                 />
@@ -66,7 +102,7 @@ export default function InvoicePreviewScreen({
 
                 <Row
                     label="Paid"
-                    value="₹ 980"
+                    value={`₹ ${invoice?.amount || 0}`}
                     labelStyle={{ fontFamily: Fonts.SemiBold }}
                     valueStyle={{ fontFamily: Fonts.SemiBold }}
                 />
@@ -89,7 +125,7 @@ export default function InvoicePreviewScreen({
                             <Text style={styles.infoValue}>Paid via:</Text>
 
                             <Text style={styles.methodValue}>
-                                {isSuccess ? 'UPI' : 'Payment failed'}
+                                {invoice?.paymentMethod || '—'}
                             </Text>
 
                             <Image
@@ -110,8 +146,11 @@ export default function InvoicePreviewScreen({
                     <View style={styles.infoText}>
                         <Text style={styles.infoLabel}>Payment date</Text>
                         <Text style={styles.infoValue}>
-                            December 25, 2025 at 07:26 AM
+                            {invoice?.paidAt
+                                ? new Date(invoice.paidAt).toLocaleString()
+                                : 'N/A'}
                         </Text>
+
                     </View>
                 </View>
             </View>
@@ -238,7 +277,7 @@ const styles = StyleSheet.create({
     infoValue: {
         fontSize: 14 * scale,
         fontFamily: Fonts.Medium,
-        fontWeight:500,
+        fontWeight: 500,
         marginTop: 8,
     },
 
@@ -251,12 +290,12 @@ const styles = StyleSheet.create({
         fontSize: 14 * scale,
         fontFamily: Fonts.SemiBold,   // bold
         color: '#111827',
-        marginTop:8
+        marginTop: 8
     },
     statusIcon: {
         width: 16,
         height: 16,
-        marginTop:8
+        marginTop: 8
     },
 
     button: {
@@ -273,6 +312,6 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 18 * scale,
         fontFamily: Fonts.Medium,
-        fontWeight:500
+        fontWeight: 500
     },
 });

@@ -49,8 +49,9 @@ import { StatusBar } from 'react-native';
 import AppNavigation from './src/navigations/AppNavigation';
 import { store } from "./src/redux/store.jsx";
 import { Provider } from 'react-redux';
-
+import { StripeProvider } from '@stripe/stripe-react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { STRIPE_PUBLISHABLE_KEY } from './src/config/api.jsx';
 
 console.log("GoogleSignin native module =>", GoogleSignin);
 export default function App() {
@@ -63,12 +64,14 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <StatusBar
-        translucent={false}
-        backgroundColor="transparent"
-        barStyle="dark-content"
-      />
-      <AppNavigation />
+      <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY}>
+        <StatusBar
+          translucent={false}
+          backgroundColor="transparent"
+          barStyle="dark-content"
+        />
+        <AppNavigation />
+      </StripeProvider>
     </Provider>
   );
 }
