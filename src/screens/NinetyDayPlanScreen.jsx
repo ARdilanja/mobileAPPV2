@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import { Fonts } from '../constants/fonts';
 import ReminderModal from '../components/ReminderModal'
+import PhaseModal from '../components/PhaseModal'
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 
@@ -222,6 +223,8 @@ export default function NinetyDayPlanScreen() {
 
             <PhaseModal
                 visible={showPhaseModal}
+                phases={PHASES}
+                selectedPhase={phase}
                 onClose={() => setShowPhaseModal(false)}
                 onSelect={p => {
                     setPhase(p);
@@ -296,53 +299,11 @@ function DayCard({ data }) {
                     </View>
                 </View>
 
-                <View style={styles.horizontalLine} />
+                {data.day !== 7 && <View style={styles.horizontalLine} />}
             </View>
         </View>
     );
 }
-
-function PhaseModal({ visible, onClose, onSelect }) {
-    return (
-        <Modal visible={visible} transparent animationType="fade">
-            <View style={styles.modalOverlay}>
-                <View style={styles.phaseModal}>
-                    {PHASES.map(p => (
-                        <Pressable
-                            key={p.key}
-                            onPress={() => onSelect(p)}
-                            style={styles.phaseItem}
-                        >
-                            <Text style={styles.phaseItemText}>{p.title}</Text>
-                        </Pressable>
-                    ))}
-                </View>
-            </View>
-        </Modal>
-    );
-}
-
-// function ReminderModal({ visible, onClose, onSuccess }) {
-//   return (
-//     <Modal visible={visible} transparent animationType="slide">
-//       <View style={styles.reminderOverlay}>
-//         <View style={styles.reminderSheet}>
-
-//           <TimerSettingSheet
-//             onConfirm={(time) => {
-//               console.log('Selected Time:', time);
-//               onClose();
-//               setTimeout(onSuccess, 200);
-//             }}
-//           />
-
-//         </View>
-//       </View>
-
-//       <View style={styles.timerHandle} />
-//     </Modal>
-//   );
-// }
 
 function ReminderSuccessModal({ visible, onClose }) {
     return (
@@ -453,7 +414,7 @@ const styles = StyleSheet.create({
     verticalTimeline: {
         position: 'absolute',
         top: 200 * scale,
-        bottom: 90 * scale,
+        bottom: 81 * scale,
         left: 96 * scale,
         width: 2 * scale,
         backgroundColor: '#D9D9D9',
@@ -561,12 +522,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.3)',
         justifyContent: 'center',
-        padding: 16,
-    },
-
-    phaseModal: {
-        backgroundColor: '#FFF',
-        borderRadius: 24,
         padding: 16,
     },
 
