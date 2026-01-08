@@ -104,7 +104,7 @@ export default function StepOneOnboard({ value = [], onChange = () => { } }) {
 const styles = StyleSheet.create({
   title: {
     fontSize: 32 * scale,
-    marginBottom: 4 * scale,
+    marginBottom: 10 * scale,
     fontFamily: Fonts.Medium,
     lineHeight: 48,
   },
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     // justifyContent: 'space-between',
-    gap: 12 * scale,
+    gap: 10 * scale,
     rowGap: 8 * scale,
       // marginTop:5
   },
