@@ -27,7 +27,7 @@ const GRAND_TOTAL = PLAN_AMOUNT + TAX_AMOUNT;
 const PAID_AMOUNT = GRAND_TOTAL;
 
 export default function PricingScreen() {
-  const [selectedPlan, setSelectedPlan] = useState('free');
+  const [selectedPlan, setSelectedPlan] = useState('pro');
   const [ready, setReady] = useState(false);
   const [paymentInfo, setPaymentInfo] = useState(null);
 
@@ -163,7 +163,7 @@ export default function PricingScreen() {
           <PlanCard
             title={plan.name}
             price={`$${plan.price.usd}/yearly`}
-            current={plan.planKey === "free"}
+            current={plan.planKey === "pro"}
             active={selectedPlan === plan.planKey}
             features={plan.features}
           />

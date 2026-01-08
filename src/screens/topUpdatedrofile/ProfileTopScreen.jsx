@@ -252,10 +252,21 @@ export default function ProfileTopScreen() {
   const navigation = useNavigation();
 
   // 2. DEFINE STATES
+
+  // const [userData, setUserData] = useState({
+  //   name: "Loading...",
+  //   email: "",
+  //   profileImage: null
+  // });
+
   const [userData, setUserData] = useState({
     name: "Loading...",
     email: "",
-    profileImage: null
+    profileImage: null,
+    planId: "FREE",
+    planName: "Free Plan",
+    endDate: null,
+    renewDate: null,
   });
 
   // 3. FETCH DATA ON FOCUS
@@ -274,10 +285,20 @@ export default function ProfileTopScreen() {
           const response = await getUserProfile(token);
           const user = response.user;
 
+          // setUserData({
+          //   name: user.firstName || "User",
+          //   email: user.email || "",
+          //   profileImage: user.profpicFileLocation?.photo || null
+          // });
+
           setUserData({
             name: user.firstName || "User",
             email: user.email || "",
-            profileImage: user.profpicFileLocation?.photo || null
+            profileImage: user.profpicFileLocation?.photo || null,
+            planId: user.subscription?.planId || "FREE",
+            planName: user.subscription?.planName || "Free Plan",
+            endDate: user.subscription?.endDate || null,
+            renewDate: user.subscription?.renewDate || null,
           });
         } catch (err) {
           console.error("Profile Top Screen Fetch Error:", err);
@@ -339,12 +360,30 @@ export default function ProfileTopScreen() {
                   start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                   style={styles.premiumIcon}
                 />
-                <Text style={styles.premiumText}>Premium plan</Text>
+                {/* <Text style={styles.premiumText}>Premium plan</Text> */}
+                <Text style={styles.premiumText}>{userData.planName}</Text>
+
               </View>
 
-              <View style={styles.renewBadge}>
-                <Text style={styles.renewText}>Renews 31/12/2025</Text>
-              </View>
+              {/* FREE PLAN */}
+              {userData.planId === "FREE" && userData.endDate && (
+                <View style={styles.renewBadge}>
+                  <Text style={styles.renewText}>
+                    Ends on {new Date(userData.endDate).toLocaleDateString()}
+                  </Text>
+                </View>
+              )}
+
+              {/* PRO PLAN */}
+              {userData.planId !== "FREE" && userData.renewDate && (
+                <View style={styles.renewBadge}>
+                  <Text style={styles.renewText}>
+                    Renews {new Date(userData.renewDate).toLocaleDateString()}
+                  </Text>
+                </View>
+              )}
+
+
 
               <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('PricingScreen')}>
                 <Image
