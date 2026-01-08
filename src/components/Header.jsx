@@ -154,10 +154,10 @@ const Header = ({
 export default Header;
 const styles = StyleSheet.create({
   container: {
-    height: 56,
+    // height: 56,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginVertical: 8,
   },
 
   leftBtn: {

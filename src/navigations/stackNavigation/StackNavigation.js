@@ -13,6 +13,7 @@ import EditProfileScreen from '../../screens/EditProfileScreen';
 import EmployerInterviewScreen from '../../screens/EmployerInterviewScreen';
 import CompletedInterviewsScreen from '../../screens/CompletedInterviewsScreen';
 import FeedbackScreen from '../../screens/FeedbackScreen';
+import SessionFeedbackScreen from '../../screens/SessionFeedbackScreen';
 import DrawerHeader from '../../components/DrawerHeader';
 import Dashboard from '../../screens/Dashboard';
 import LiveRoomScreen from '../../screens/LiveRoomScreen';
@@ -63,6 +64,7 @@ import StartDayOne from '../../screens/StartDayOne';
 import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
 import InvoicePreviewScreen from '../../screens/InvoicePreviewScreen';
 import OnboardingContainer from '../../screens/OnboardingScreen/OnboardingContainer';
+import MicCameraCheckScreen  from '../../screens/MicCameraCheckScreen .jsx';
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
 
@@ -133,7 +135,12 @@ const StackNavigation = () => {
       <Stack.Screen
         name="FeedbackScreen"
         component={FeedbackScreen}
-        options={{ headerShown: true, headerTitle: 'Recroot', headerTitleAlign: 'center' }}
+        
+      />
+      <Stack.Screen
+        name="SessionFeedbackScreen"
+        component={SessionFeedbackScreen}
+        
       />
       <Stack.Screen
         name="EditProfileScreen"
@@ -318,6 +325,11 @@ const StackNavigation = () => {
       <Stack.Screen
         name="OnboardingContainer"
         component={OnboardingContainer}
+        options={{ headerShown: false, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="MicCameraCheckScreen"
+        component={MicCameraCheckScreen}
         options={{ headerShown: false, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
       />
 
