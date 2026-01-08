@@ -47,8 +47,8 @@ const StepFourOnboard = ({ value = '', onChange = () => { } }) => {
             icon={opt.icon}
             iconBgColor={opt.iconBgColor}
             accentColor={opt.accentColor}
-            mode="card" // ✅ CARD UI
-            selectionType="single" // ✅ RADIO BEHAVIOR
+            mode="card" 
+            selectionType="single" 
             selected={value === opt.title}
             onPress={() => onChange(opt.title)}
           />
@@ -72,9 +72,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    gap: 12 * scale,
+   gap: 10 * scale,
     rowGap: 8 * scale,
-    marginTop:10
+    marginTop:10*scale,
 
   },
 });

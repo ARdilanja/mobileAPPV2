@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,10 +8,11 @@ import {
   Dimensions,
   Image,
   StatusBar,
+  ImageBackground,
 } from 'react-native';
 import PracticeTitle from './PracticeTitle';
 import { Fonts } from '../../constants/fonts';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Header from '../../components/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSkills } from '../../redux/slices/jdSlice';
@@ -21,13 +22,13 @@ const screenWidth = Dimensions.get('window').width;
 const scale = screenWidth / 390;
 
 const suggestedSkills = [
-  'java','php','c++','css','html','javascript','python','react',
-  'nodejs','express','mongodb','sql','typescript','angular','vue',
-  'docker','kubernetes','aws','git','sass','less','ruby','rails',
-  'go','swift','flutter','dart','c#','unity','firebase','graphql',
-  'rest','linux','bash','html5','css3','reactnative','nextjs',
-  'nestjs','redux','mobx','webpack','babel','jest','cypress',
-  'selenium','jira','figma','photoshop'
+  'java', 'php', 'c++', 'css', 'html', 'javascript', 'python', 'react',
+  'nodejs', 'express', 'mongodb', 'sql', 'typescript', 'angular', 'vue',
+  'docker', 'kubernetes', 'aws', 'git', 'sass', 'less', 'ruby', 'rails',
+  'go', 'swift', 'flutter', 'dart', 'c#', 'unity', 'firebase', 'graphql',
+  'rest', 'linux', 'bash', 'html5', 'css3', 'reactnative', 'nextjs',
+  'nestjs', 'redux', 'mobx', 'webpack', 'babel', 'jest', 'cypress',
+  'selenium', 'jira', 'figma', 'photoshop'
 ];
 
 const PracticeRequiredSkills = () => {
@@ -88,80 +89,91 @@ const PracticeRequiredSkills = () => {
 
     navigation.navigate(nextScreen);
   };
-
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBackgroundColor('#F9FAFB');
+      StatusBar.setTranslucent(false);
+    }, []),
+  );
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
-      <Header title="Practice interviews" showNotification />
+      <ImageBackground
+        source={require('../../assets/images/Chat-bg.png')} // 👈 your bg image
+        resizeMode="repeat"
+        style={styles.container}
+      >
+        <Header title="Practice interviews" showNotification />
 
-      <View style={{ flex: 1 }} />
+        <View style={{ flex: 1 }} />
 
-      <PracticeTitle
-        title="The JD doesn’t list the needed skills. Choose the skills needed for this role."
-      />
+        <PracticeTitle
+          title="The JD doesn’t list the needed skills. Choose the skills needed for this role."
+        />
 
-      <View style={{ flex: 1 }} />
+        <View style={{ flex: 1 }} />
 
-      <View style={styles.chipsContainer}>
-        <View style={styles.chipsWrapper}>
-          {visibleChips.map(skill => (
-            <TouchableOpacity
-              key={skill}
-              onPress={() => handleChipPress(skill)}
-              style={[
-                styles.chip,
-                skills.includes(skill) && styles.chipSelected,
-              ]}
-            >
-              <Text
+        <View style={styles.chipsContainer}>
+          <View style={styles.chipsWrapper}>
+            {visibleChips.map(skill => (
+              <TouchableOpacity
+                key={skill}
+                onPress={() => handleChipPress(skill)}
                 style={[
-                  styles.chipText,
-                  skills.includes(skill) && styles.chipTextSelected,
+                  styles.chip,
+                  skills.includes(skill) && styles.chipSelected,
                 ]}
               >
-                {skill}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View>
-
-      <View style={styles.bottomWrapper}>
-        <View style={styles.chatCard}>
-          <TextInput
-            placeholder="For example java, html, c++"
-            value={skillInput}
-            onChangeText={handleInputChange}
-            style={styles.chatInput}
-            placeholderTextColor="#2A2A2A"
-          />
-
-          <View style={styles.divider} />
-
-          <View style={styles.chatActions}>
-            <TouchableOpacity>
-              <Image
-                source={require('../../assets/icons/circle-microphone.png')}
-                style={styles.chatIcon}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              disabled={!isEnabled}
-              onPress={handleSubmit}
-            >
-              <Image
-                source={
-                  isEnabled
-                    ? require('../../assets/icons/arrow-circle-up-active.png')
-                    : require('../../assets/icons/arrow-circle-up.png')
-                }
-                style={styles.chatIcon}
-              />
-            </TouchableOpacity>
+                <Text
+                  style={[
+                    styles.chipText,
+                    skills.includes(skill) && styles.chipTextSelected,
+                  ]}
+                >
+                  {skill}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
-      </View>
+
+        <View style={styles.bottomWrapper}>
+          <View style={styles.chatCard}>
+            <TextInput
+              placeholder="For example java, html, c++"
+              value={skillInput}
+              onChangeText={handleInputChange}
+              style={styles.chatInput}
+              placeholderTextColor="#2A2A2A"
+            />
+
+            <View style={styles.divider} />
+
+            <View style={styles.chatActions}>
+              <TouchableOpacity>
+                <Image
+                  source={require('../../assets/icons/circle-microphone.png')}
+                  style={styles.chatIcon}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                disabled={!isEnabled}
+                onPress={handleSubmit}
+              >
+                <Image
+                  source={
+                    isEnabled
+                      ? require('../../assets/icons/arrow-circle-up-active.png')
+                      : require('../../assets/icons/arrow-circle-up.png')
+                  }
+                  style={styles.chatIcon}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -170,83 +182,85 @@ export default PracticeRequiredSkills;
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F9FAFB',
-    },
-    chipsContainer: {
-        paddingHorizontal: 16,
-        marginBottom: 16, // 👈 exact gap above bottom wrapper
-    },
-    chipsWrapper: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 12,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#F9FAFB',
+  },
+  chipsContainer: {
+    paddingHorizontal: 16,
+    marginBottom: 16, // 👈 exact gap above bottom wrapper
+  },
+  chipsWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
 
-    chip: {
-        borderWidth: 1,
-        borderColor: '#D9D9D9',
-        borderRadius: 24,
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-    },
+  chip: {
+    borderWidth: 1,
+    borderColor: '#D9D9D9',
+    backgroundColor: '#FFFFFF',
 
-    chipText: {
-        fontSize: 18 * scale,
-        lineHeight: 28 * scale,
-        fontFamily: Fonts.Regular,
-        color: '#2A2A2A',
-    },
+    borderRadius: 24,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
 
-    bottomWrapper: {
-        paddingHorizontal: 16,
-        backgroundColor: '#fff',
-        paddingBottom: 18,
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
-        paddingTop: 16,
-    },
-    chipSelected: {
-        backgroundColor: '#235DFF',
-        borderColor: '#235DFF',
-    },
+  chipText: {
+    fontSize: 18 * scale,
+    lineHeight: 28 * scale,
+    fontFamily: Fonts.Regular,
+    color: '#2A2A2A',
+  },
 
-    chipTextSelected: {
-        color: '#FFFFFF',
-    },
-    chatCard: {
-        borderWidth: 1,
-        borderColor: '#D9D9D9',
-        borderRadius: 12,
-        paddingHorizontal: 16,
-        paddingBottom: 16,
-        paddingTop: 10,
-        backgroundColor: '#fff',
-    },
+  bottomWrapper: {
+    paddingHorizontal: 16,
+    backgroundColor: '#fff',
+    paddingBottom: 18,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    paddingTop: 16,
+  },
+  chipSelected: {
+    backgroundColor: '#235DFF',
+    borderColor: '#235DFF',
+  },
 
-    chatInput: {
-        fontSize: 18 * scale,
-        lineHeight: 28 * scale,
-        fontFamily: Fonts.Regular,
-        color: '#2A2A2A',
-        paddingBottom: 12,
-    },
+  chipTextSelected: {
+    color: '#FFFFFF',
+  },
+  chatCard: {
+    borderWidth: 1,
+    borderColor: '#D9D9D9',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    paddingTop: 10,
+    backgroundColor: '#fff',
+  },
 
-    divider: {
-        height: 1,
-        backgroundColor: '#D9D9D9',
-        marginBottom: 12,
-    },
+  chatInput: {
+    fontSize: 18 * scale,
+    lineHeight: 28 * scale,
+    fontFamily: Fonts.Regular,
+    color: '#2A2A2A',
+    paddingBottom: 12,
+  },
 
-    chatActions: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
+  divider: {
+    height: 1,
+    backgroundColor: '#D9D9D9',
+    marginBottom: 12,
+  },
 
-    chatIcon: {
-        width: 28,
-        height: 28,
-        marginLeft: 12,
-    },
+  chatActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+
+  chatIcon: {
+    width: 28,
+    height: 28,
+    marginLeft: 12,
+  },
 });

@@ -13,6 +13,7 @@ import EditProfileScreen from '../../screens/EditProfileScreen';
 import EmployerInterviewScreen from '../../screens/EmployerInterviewScreen';
 import CompletedInterviewsScreen from '../../screens/CompletedInterviewsScreen';
 import FeedbackScreen from '../../screens/FeedbackScreen';
+import SessionFeedbackScreen from '../../screens/SessionFeedbackScreen';
 import DrawerHeader from '../../components/DrawerHeader';
 import Dashboard from '../../screens/Dashboard';
 import LiveRoomScreen from '../../screens/LiveRoomScreen';
@@ -30,6 +31,8 @@ import ChooseSignupMethod from '../../screens/authentication/ChooseSignupMethod'
 import EmailInput from '../../screens/authentication/EmailInput';
 import Password from '../../screens/authentication/Password';
 import MobileInput from '../../screens/authentication/MobileInput';
+import ForgotPasswordScreen from '../../screens/authentication/ForgotPasswordScreen.jsx';
+import ResetPassword from '../../screens/authentication/ResetPassword.jsx';
 import OtpVerification from '../../screens/authentication/OtpVerification';
 import GetStarted from '../../screens/authentication/GetStarted';
 import CreatePassword from '../../screens/authentication/CreatePassword';
@@ -61,6 +64,8 @@ import StartDayOne from '../../screens/StartDayOne';
 import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
 import InvoicePreviewScreen from '../../screens/InvoicePreviewScreen';
 import OnboardingContainer from '../../screens/OnboardingScreen/OnboardingContainer';
+import MicCameraCheckScreen  from '../../screens/MicCameraCheckScreen';
+import NinetyDayPlanScreen  from '../../screens/NinetyDayPlanScreen';
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
 
@@ -84,6 +89,9 @@ const StackNavigation = () => {
       <Stack.Screen name="GetStarted" component={GetStarted} />
       <Stack.Screen name="CreatePassword" component={CreatePassword} />
       <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
+      <Stack.Screen name="ResetPassword" component={ResetPassword}
+      />
       <Stack.Screen name="ChooseSignupMethod" component={ChooseSignupMethod} />
       <Stack.Screen name="NotificationScreen" component={NotificationsScreen} />
       <Stack.Screen name="JourneyGetStartScreen" component={JourneyGetStartScreen} />
@@ -128,7 +136,12 @@ const StackNavigation = () => {
       <Stack.Screen
         name="FeedbackScreen"
         component={FeedbackScreen}
-        options={{ headerShown: true, headerTitle: 'Recroot', headerTitleAlign: 'center' }}
+        
+      />
+      <Stack.Screen
+        name="SessionFeedbackScreen"
+        component={SessionFeedbackScreen}
+        
       />
       <Stack.Screen
         name="EditProfileScreen"
@@ -314,6 +327,16 @@ const StackNavigation = () => {
         name="OnboardingContainer"
         component={OnboardingContainer}
         options={{ headerShown: false, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="MicCameraCheckScreen"
+        component={MicCameraCheckScreen}
+        options={{ headerShown: false, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="NinetyDayPlanScreen"
+        component={NinetyDayPlanScreen}
+        options={{ headerShown: false, headerTitle: 'Your 90-day plan', headerTitleAlign: 'center' }}
       />
 
     </Stack.Navigator>

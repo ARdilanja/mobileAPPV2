@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
     View,
     Text,
@@ -6,20 +6,31 @@ import {
     TouchableOpacity,
     Dimensions,
     StatusBar,
+    ImageBackground,
 } from "react-native";
 import PracticeTitle from './PracticeTitle';
 import { Fonts } from "../../constants/fonts";
 import Header from "../../components/Header";
+import { useFocusEffect } from "@react-navigation/native";
 
 const screenWidth = Dimensions.get("window").width;
 const scale = screenWidth / 390;
 
 export default function PracticeInterviewStart({ navigation }) {
+     useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBackgroundColor('#F9FAFB');
+      StatusBar.setTranslucent(false);
+    }, []),
+  );
     return (
         <View style={styles.container}>
-            <StatusBar
-                barStyle="dark-content"
-            />
+             <ImageBackground
+  source={require('../../assets/images/Chat-bg.png')} // 👈 your bg image
+  resizeMode="repeat"
+  style={styles.container}
+>
             <Header title="Practice interviews" showNotification={true} />
 
             {/* Content */}
@@ -30,11 +41,12 @@ export default function PracticeInterviewStart({ navigation }) {
 
                 <TouchableOpacity
                     style={styles.startButton}
-                    onPress={() => navigation.navigate("BottomDash")}
+                    onPress={() => navigation.navigate('CreateRoomScreen')}
                 >
                     <Text style={styles.startButtonText}>Start Interview</Text>
                 </TouchableOpacity>
             </View>
+            </ImageBackground>
         </View>
     );
 }

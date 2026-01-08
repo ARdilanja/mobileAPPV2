@@ -7,7 +7,7 @@ import { Fonts } from '../../constants/fonts';
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 
-export default function StepOneOnboard({ value = [], onChange = () => {} }) {
+export default function StepOneOnboard({ value = [], onChange = () => { } }) {
   const toggle = option => {
     const cleanTitle = option.title.replace(/\s*\n\s*/g, ' ').trim();
 
@@ -21,14 +21,14 @@ export default function StepOneOnboard({ value = [], onChange = () => {} }) {
   const OPTIONS = [
     {
       id: 1,
-      title: 'Presenting ideas',
+      title: 'Presenting \nideas',
       icon: require('../../assets/icons/person-presenting.png'),
       iconBgColor: '#DBE5FF',
       accentColor: '#235DFF',
     },
     {
       id: 2,
-      title: 'Facing interviews',
+      title: 'Facing \ninterviews',
       icon: require('../../assets/icons/online-interview.png'),
       iconBgColor: '#EBE6FF',
       accentColor: '#4A2AC9',
@@ -49,14 +49,14 @@ export default function StepOneOnboard({ value = [], onChange = () => {} }) {
     },
     {
       id: 5,
-      title: 'Talking in manager 1-on-1s',
+      title: 'Talking in \nmanager 1-on-1s',
       icon: require('../../assets/icons/meeting.png'),
       iconBgColor: '#FFEDCF',
       accentColor: '#CC5803',
     },
     {
       id: 6,
-      title: 'Showing my work / achievements',
+      title: 'Showing my work \n/ achievements',
       icon: require('../../assets/icons/membership.png'),
       iconBgColor: '#CAF0F8',
       accentColor: '#0077B6',
@@ -112,7 +112,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     // justifyContent: 'space-between',
-    gap:12 * scale,
+    gap: 10 * scale,
     rowGap: 8 * scale,
+      // marginTop:5
   },
 });

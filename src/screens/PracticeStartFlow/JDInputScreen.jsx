@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   TextInput,
@@ -8,6 +8,7 @@ import {
   Dimensions,
   Image,
   StatusBar,
+  ImageBackground,
 } from 'react-native';
 import PracticeTitle from './PracticeTitle';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -17,6 +18,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { extractSkillsFromJD, clearJdData } from '../../redux/slices/jdSlice';
 import { getNextScreen } from "../../utils/PracticeHelper.js";
 import { useCallback } from 'react';
+import { useAudioRecorder } from '../../hooks/useAudioRecorder';
+import Sound from 'react-native-sound';
 
 const screenWidth = Dimensions.get("window").width;
 const scale = screenWidth / 390;
@@ -25,6 +28,12 @@ const JDInputScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const { startRecording, stopRecording } = useAudioRecorder();
+
+  const [recording, setRecording] = useState(false);
+  const [audioUri, setAudioUri] = useState(null);
+  const [playing, setPlaying] = useState(false);
+  const soundRef = useRef(null);
   useFocusEffect(
     useCallback(() => {
       dispatch(clearJdData());
@@ -48,7 +57,37 @@ const JDInputScreen = () => {
     dispatch(extractSkillsFromJD(jobDesc));
   };
 
+  const handleMicPress = async () => {
+    if (!recording) {
+      await startRecording();
+      setRecording(true);
+    } else {
+      const path = await stopRecording();
+      setRecording(false);
 
+      if (path) {
+        setAudioUri(path); // 👈 show audio UI
+      }
+    }
+  };
+  const togglePlay = () => {
+    if (playing) {
+      soundRef.current?.stop();
+      soundRef.current?.release();
+      setPlaying(false);
+      return;
+    }
+    const sound = new Sound(audioUri, null, err => {
+      if (err) return;
+      soundRef.current = sound;
+      setPlaying(true);
+
+      sound.play(() => {
+        sound.release();
+        setPlaying(false);
+      });
+    });
+  };
   // This effect handles navigation based on missing items
   useEffect(() => {
     if (!hasSubmittedJD || loading) return;
@@ -59,7 +98,7 @@ const JDInputScreen = () => {
       (experience && experience.trim() !== '');
 
     if (!hasAnyData) {
-     
+
       return;
     }
 
@@ -83,87 +122,135 @@ const JDInputScreen = () => {
     dispatch(clearJdData());
     setJobDesc('');
   };
-
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBackgroundColor('#F9FAFB');
+      StatusBar.setTranslucent(false);
+    }, []),
+  );
   return (
     <>
 
       <View style={styles.container}>
-        <StatusBar
-          barStyle="dark-content"
-        />
-        <Header title="Practice interviews" showNotification={true} />
+        <ImageBackground
+          source={require('../../assets/images/Chat-bg.png')} // 👈 your bg image
+          resizeMode="repeat"
+          style={styles.container}
+        >
 
-        {/* Top Spacer */}
-        <View style={{ flex: 1 }} />
+          <Header title="Practice interviews" showNotification={true} />
 
-        {/* Center Title */}
-        <PracticeTitle
-          title="Copy paste the job description, or just enter the job role and experience."
-        />
+          {/* Top Spacer */}
+          <View style={{ flex: 1 }} />
 
-        {/* Middle Spacer */}
-        <View style={{ flex: 1 }} />
+          {/* Center Title */}
+          <PracticeTitle
+            title="Copy paste the job description, or just enter the job role and experience."
+          />
 
-        {/* Bottom Section */}
-        <View style={styles.bottomWrapper}>
+          {/* Middle Spacer */}
+          <View style={{ flex: 1 }} />
 
-          {/* Info Banner */}
-          {hasSubmittedJD && !loading && !jobRole && skills.length === 0 && !experience && (
-            <View style={styles.infoBox}>
-              <Image
-                source={require('../../assets/icons/warning-icon.png')}
-                style={styles.infoIcon}
-              />
-              <Text style={styles.infoText}>
-                The job description seems unrelated. Please check or edit.
-              </Text>
-            </View>
-          )}
-          {/* {hasSubmittedJD && !loading && !jobRole && skills.length === 0 && !experience && (
+          {/* Bottom Section */}
+          <View style={styles.bottomWrapper}>
+
+            {/* Info Banner */}
+            {hasSubmittedJD && !loading && !jobRole && skills.length === 0 && !experience && (
+              <View style={styles.infoBox}>
+                <Image
+                  source={require('../../assets/icons/warning-icon.png')}
+                  style={styles.infoIcon}
+                />
+                <Text style={styles.infoText}>
+                  The job description seems unrelated. Please check or edit.
+                </Text>
+              </View>
+            )}
+            {/* {hasSubmittedJD && !loading && !jobRole && skills.length === 0 && !experience && (
   <Text style={{ color: 'red', marginTop: 8 }}>
     ⚠ The job description seems unrelated. Please check or edit.
   </Text>
 )} */}
 
 
-          {/* Chat Input Card */}
-          <View style={styles.chatCard}>
-            <TextInput
-              placeholder="Type here..."
-              value={jobDesc}
-              onChangeText={setJobDesc}
-              multiline
-              style={styles.chatInput}
-              placeholderTextColor="#9CA3AF"
-            />
+            {/* Chat Input Card */}
+            <View style={styles.chatCard}>
+              {audioUri ? (
+                <View>
+                  <View style={styles.audioRow}>
+                    <Text style={styles.audioTime}>00:05</Text>
 
-            <View style={styles.divider} />
 
-            <View style={styles.chatActions}>
-              <TouchableOpacity>
-                <Image
-                  source={require('../../assets/icons/circle-microphone.png')}
-                  style={styles.chatIcon}
-                />
-              </TouchableOpacity>
 
-              <TouchableOpacity
-                onPress={handleNext}
-                disabled={jobDesc.trim().length === 0 || loading}
-              >
-                <Image
-                  source={
-                    jobDesc.trim().length === 0 || loading
-                      ? require('../../assets/icons/arrow-circle-up.png')
-                      : require('../../assets/icons/arrow-circle-up-active.png')
-                  }
-                  style={styles.chatIcon}
-                />
-              </TouchableOpacity>
+                    <TouchableOpacity onPress={togglePlay}>
+                      <Image
+                        source={require('../../assets/icons/play.png')}
+                        style={styles.chatIcon}
+                      />
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={styles.divider} />
+
+                  <View style={styles.chatActions}>
+                    <TouchableOpacity onPress={() => setAudioUri(null)}>
+                      <Image
+                        source={require('../../assets/icons/trash-red.png')}
+                        style={styles.chatIcon}
+                      />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={handleNext}>
+                      <Image
+                        source={require('../../assets/icons/arrow-circle-up-active.png')}
+                        style={styles.chatIcon}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                /* ✍️ TEXT MODE */
+                <>
+                  <TextInput
+                    placeholder="Type here..."
+                    value={jobDesc}
+                    onChangeText={setJobDesc}
+                    multiline
+                    style={styles.chatInput}
+                    placeholderTextColor="#9CA3AF"
+                  />
+
+                  <View style={styles.divider} />
+
+                  <View style={styles.chatActions}>
+                    <TouchableOpacity onPress={handleMicPress}>
+                      <Image
+                        source={require('../../assets/icons/circle-microphone.png')}
+                        style={styles.chatIcon}
+                      />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={handleNext}
+                      disabled={jobDesc.trim().length === 0 || loading}
+                    >
+                      <Image
+                        source={
+                          jobDesc.trim().length === 0 || loading
+                            ? require('../../assets/icons/arrow-circle-up.png')
+                            : require('../../assets/icons/arrow-circle-up-active.png')
+                        }
+                        style={styles.chatIcon}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
             </View>
-          </View>
 
-        </View>
+          </View>
+        </ImageBackground>
       </View>
     </>
   );

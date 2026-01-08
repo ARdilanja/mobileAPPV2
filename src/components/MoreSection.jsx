@@ -42,7 +42,7 @@ export default function MoreSection() {
         <MoreItem
           text="Send feedback"
           icon={require('../assets/images/feedback-alt.png')}
-          onPress={() => navigation.navigate('ProfileFeedbackSummar')}
+          onPress={() => navigation.navigate('FeedbackScreen')}
         />
 
         <Divider />
