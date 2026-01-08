@@ -64,7 +64,8 @@ import StartDayOne from '../../screens/StartDayOne';
 import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
 import InvoicePreviewScreen from '../../screens/InvoicePreviewScreen';
 import OnboardingContainer from '../../screens/OnboardingScreen/OnboardingContainer';
-import MicCameraCheckScreen  from '../../screens/MicCameraCheckScreen .jsx';
+import MicCameraCheckScreen  from '../../screens/MicCameraCheckScreen';
+import NinetyDayPlanScreen  from '../../screens/NinetyDayPlanScreen';
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
 
@@ -331,6 +332,11 @@ const StackNavigation = () => {
         name="MicCameraCheckScreen"
         component={MicCameraCheckScreen}
         options={{ headerShown: false, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="NinetyDayPlanScreen"
+        component={NinetyDayPlanScreen}
+        options={{ headerShown: false, headerTitle: 'Your 90-day plan', headerTitleAlign: 'center' }}
       />
 
     </Stack.Navigator>

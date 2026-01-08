@@ -72,9 +72,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    gap: 12 * scale,
+   gap: 10 * scale,
     rowGap: 8 * scale,
-    marginTop:10
+    marginTop:10*scale,
 
   },
 });
