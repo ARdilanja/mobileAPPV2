@@ -139,7 +139,11 @@ export default function FeedbackScreen() {
 
         {/* Button */}
         <View style={styles.bottomButtonWrapper}>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("SessionFeedbackScreen")}>
+          <TouchableOpacity 
+          style={styles.button} 
+          // onPress={() => navigation.navigate("SessionFeedbackScreen")}
+          onPress={() => navigation.navigate("FewQuickDetails")}
+          >
             <Text style={styles.buttonText}>Create 90 day plan</Text>
           </TouchableOpacity>
         </View>
