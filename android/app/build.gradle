@@ -79,12 +79,15 @@ android {
 
     namespace "com.recroot_app"
     defaultConfig {
-        applicationId "com.recroot_app"
+        applicationId "com.recrootapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+
+    
     }
+   
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -117,3 +120,4 @@ dependencies {
         implementation jscFlavor
     }
 }
+apply plugin: "com.google.gms.google-services"
