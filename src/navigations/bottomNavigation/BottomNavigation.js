@@ -13,6 +13,7 @@ import PracticeInterviewInfoScreen from '../../screens/practiceInterview/Practic
 import StartInterviewScreen from '../../screens/StartInterviewScreen';
 import JDInputScreen from '../../screens/PracticeStartFlow/JDInputScreen';
 import SpeakingInPracticeScreen from '../../screens/SpeakingInPracticeScreen';
+import StartPracticeChatScreen from '../../screens/actionchatflow/StartPracticeChatScreen';
 
 const Tab = createBottomTabNavigator();
 

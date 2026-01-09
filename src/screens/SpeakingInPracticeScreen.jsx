@@ -7,7 +7,8 @@ import {
   Dimensions,
   Pressable,
   ScrollView,
-  StatusBar, Image
+  StatusBar, Image,
+  Platform
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Fonts } from '../constants/fonts';
@@ -15,6 +16,8 @@ import DayCompleScrolComponent from '../components/invitedInterview/DayCompleScr
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
+const STATUS_BAR_HEIGHT =
+  Platform.OS === 'android' ? StatusBar.currentHeight || 0 : 0;
 
 export default function SpeakingInPracticeScreen() {
   useFocusEffect(
@@ -26,36 +29,47 @@ export default function SpeakingInPracticeScreen() {
   );
 
   return (
-    <LinearGradient
-      colors={[
-        '#EBE6FF',
-        'rgba(235, 230, 255, 0)',
-        '#FFFFFF',
-      ]}
-      locations={[0, 0.5, 1]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 0, y: 1 }}
-      style={{ flex: 1 }}
-    >
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <Text style={styles.todayText}>Today’s session</Text>
-        <Text style={styles.title}>Speaking up in meetings</Text>
-        <Text style={styles.week}>Week 1</Text>
 
-        {/* ✅ Reused Component */}
-        <DayCompleScrolComponent style={styles.dayScrollpart} totalDays={9} activeDay={4} />
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
 
-        <Pressable style={styles.primaryBtn}>
-          <Text style={styles.primaryBtnText}>Start today’s session</Text>
-        </Pressable>
+      {/* TOP GRADIENT – EXTENDS INTO STATUS BAR */}
+      <View style={styles.topGradientWrapper}>
+        <LinearGradient
+          colors={['#FFFFFF', '#EBE6FF']}
+          locations={[0, 1]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          // style={styles.gradient}
+          style={styles.topGradient}
+        >
+          <View style={styles.topContent}>
+            <Text style={styles.todayText}>Today’s session</Text>
+            <Text style={styles.title}>Speak first in today’s standup</Text>
+            <Text style={styles.week}>Week 1</Text>
 
-        <Pressable style={styles.secondaryBtn}>
-          <Text style={styles.secondaryBtnText}>View full plan</Text>
-        </Pressable>
+            <DayCompleScrolComponent
+              style={styles.dayScrollpart}
+              totalDays={9}
+              activeDay={4}
+            />
 
-        {/* SESSION CARD */}
-        <View style={styles.sessionCard}>
-          {/* LEFT CONTENT */}
+            <Pressable style={styles.primaryBtn}>
+              <Text style={styles.primaryBtnText}>
+                Start today’s session
+              </Text>
+            </Pressable>
+
+            <Pressable style={styles.secondaryBtn}>
+              <Text style={styles.secondaryBtnText}>
+                View full plan
+              </Text>
+            </Pressable>
+          </View>
+        </LinearGradient>
+      </View>
+
+      {/* SESSION CARD */}
+      {/* <View style={styles.sessionCard}>
           <View>
             <Text style={styles.sessionLabel}>Session 1</Text>
             <Text style={styles.sessionTitle}>Speak in Meetings</Text>
@@ -80,14 +94,11 @@ export default function SpeakingInPracticeScreen() {
 
           </View>
 
-          {/* RIGHT SIDE */}
           <View style={styles.rightWrap}>
-            {/* Arrow Icon */}
             <Image
               source={require('../assets/images/angle-small.png')}
               style={styles.arrowIcon}
             />
-            {/* Greeting Image */}
             <View style={styles.greetingPart}>
               <View style={styles.pointsRow}>
                 <Text style={styles.streakNumber}>23</Text>
@@ -102,8 +113,27 @@ export default function SpeakingInPracticeScreen() {
 
 
           </View>
-        </View>
+        </View> */}
+      <View style={{ paddingHorizontal: 16 * scale }}>
+        <View style={styles.sessionCard}>
+          <View style={styles.sessionLeft}>
+            <Text style={styles.sessGreenLabel}>Last session feedback</Text>
+            <Text style={styles.sessGreenTitle}>
+              Speak first in today’s standup
+            </Text>
 
+            {/* View Feedback Button - Bottom Left */}
+            <Pressable style={styles.fedbackBtn}>
+              <Text style={styles.fedbackBtnText}>
+                View feedback
+              </Text>
+              <Image
+                source={require('../assets/images/angle-small.png')}
+                style={styles.whitearrowIcon}
+              />
+            </Pressable>
+          </View>
+        </View>
 
         <View style={styles.lineWrapper}>
           <Text style={styles.startPracticeTitle}>Start an Ad-hoc Practice</Text>
@@ -119,7 +149,7 @@ export default function SpeakingInPracticeScreen() {
               <Text style={styles.practiceTextActive}>Speak in Meetings</Text>
 
               <LinearGradient
-                colors={['#4A2AC9', 'rgba(245,245,245,0)',]}
+                colors={['#235DFF', 'rgba(245,245,245,0)',]}
 
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1 }}
@@ -138,17 +168,31 @@ export default function SpeakingInPracticeScreen() {
         <Pressable style={styles.practiceBtn}>
           <Text style={styles.practiceBtnText}>Start practice</Text>
         </Pressable>
-      </ScrollView>
-    </LinearGradient>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16 * scale,
-    marginTop: 40 * scale,
+    backgroundColor: '#FFFFFF',
+  },
 
+  topGradientWrapper: {
+    height: 362 * scale + STATUS_BAR_HEIGHT,
+    marginTop: -STATUS_BAR_HEIGHT,
+    borderBottomLeftRadius: 16 * scale,
+    borderBottomRightRadius: 16 * scale,
+    overflow: 'hidden',
+  },
+
+  topGradient: {
+    flex: 1,
+  },
+  topContent: {
+    marginTop: STATUS_BAR_HEIGHT + 40 * scale,
+    paddingHorizontal: 16 * scale, // ✅ move padding here
   },
 
   todayText: {
@@ -223,14 +267,54 @@ const styles = StyleSheet.create({
   /* Session Card */
   sessionCard: {
     marginTop: 24 * scale,
-    height: 120 * scale,
+    height: 140 * scale,
     borderRadius: 16 * scale,
-    backgroundColor: '#E1D9FF',
-    padding: 16 * scale,
+    backgroundColor: '#E2F6E5',
+    padding: 12 * scale,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  sessGreenLabel: {
+    fontFamily: Fonts.Regular,
+    fontSize: 14 * scale,
+    lineHeight: 20 * scale,
+    color: "#009343"
+  },
+  sessionLeft: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
 
+  fedbackBtn: {
+    width: 169 * scale,
+    height: 40 * scale,
+    borderRadius: 8 * scale,
+    paddingVertical: 8 * scale,
+    marginVertical: 16 * scale,
+    paddingHorizontal: 12 * scale,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#009343',
+    justifyContent: "space-between"
+  },
+
+  fedbackBtnText: {
+    fontFamily: Fonts.Medium,
+    fontSize: 18 * scale,
+    lineHeight: 24 * scale,
+    color: "#fff",
+  },
+  whitearrowIcon: {
+    tintColor: "#FFF",
+    width: 20 * scale,
+    height: 20 * scale,
+  },
+  sessGreenTitle: {
+    fontFamily: Fonts.Medium,
+    fontSize: 18 * scale,
+    lineHeight: 24 * scale,
+    marginTop: 12 * scale
+  },
   sessionLabel: {
     fontSize: 14 * scale,
     fontFamily: Fonts.Regular,
@@ -403,7 +487,7 @@ const styles = StyleSheet.create({
     // marginBottom: 32 * scale,
     height: 56 * scale,
     borderRadius: 48 * scale,
-    backgroundColor: '#4A2AC9',
+    backgroundColor: '#235DFF',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 40 * scale,

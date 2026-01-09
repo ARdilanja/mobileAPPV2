@@ -66,6 +66,7 @@ import CongratsScreen  from '../../screens/Rewards/CongratsScreen';
 import BadgesEarnedScreen  from '../../screens/Rewards/BadgesEarnedScreen';
 import RewardUnlockedScreen  from '../../screens/Rewards/RewardUnlockedScreen';
 import SpeakingInPracticeScreen  from '../../screens/SpeakingInPracticeScreen';
+import StartPracticeChatScreen  from '../../screens/actionchatflow/StartPracticeChatScreen';
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
 
@@ -157,11 +158,11 @@ const StackNavigation = () => {
         component={CompletedInterviewsScreen}
 
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Home"
         component={Home}
         options={{ headerShown: false }}
-      /> */}
+      />
       <Stack.Screen
         name="CreateRoomScreen"
         component={CreateRoomScreen}
@@ -343,6 +344,11 @@ const StackNavigation = () => {
       <Stack.Screen
         name="SpeakingInPracticeScreen"
         component={SpeakingInPracticeScreen}
+        options={{ headerShown: false, headerTitle: ' ', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="StartPracticeChatScreen"
+        component={StartPracticeChatScreen}
         options={{ headerShown: false, headerTitle: ' ', headerTitleAlign: 'center' }}
       />
 
