@@ -60,7 +60,8 @@ export default function App() {
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: "672175532425-d5af6nvj3u5uhuls8vptspth5pgf5mdn.apps.googleusercontent.com", // 🔴 VERY IMPORTANT
-      offlineAccess: false,
+      offlineAccess: true,
+      forceCodeForRefreshToken: true, 
     });
   }, []);
   useEffect(() => {
