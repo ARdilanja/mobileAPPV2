@@ -64,7 +64,7 @@ export default function Home() {
   //  STATUS BAR RESET WHEN SCREEN IS FOCUSED
   useFocusEffect(
     useCallback(() => {
-      StatusBar.setBarStyle('light-content');
+      StatusBar.setBarStyle('dark-content');
       StatusBar.setBackgroundColor('transparent');
       StatusBar.setTranslucent(true);
     }, []),

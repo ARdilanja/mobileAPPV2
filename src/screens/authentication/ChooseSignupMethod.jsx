@@ -33,7 +33,7 @@ const ChooseSignupMethod = () => {
       }
 
       // 4️⃣ Send token to backend using AXIOS
-      const response = await axios.post("http://192.168.0.6:3000/api/auth/google-login", {
+      const response = await axios.post("http://192.168.0.5:3000/api/auth/google-login", {
         idToken,
       });
       console.log('response', response)
