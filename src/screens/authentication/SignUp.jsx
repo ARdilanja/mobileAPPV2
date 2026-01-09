@@ -89,7 +89,7 @@ const SignUp = () => {
         console.log('payload', payload)
         try {
             const res = await axios.post(
-                'http://192.168.0.5:3000/api/auth/register',
+                'http://192.168.0.4:3000/api/auth/register',
                 payload
             );
 
