@@ -275,7 +275,7 @@ export default function ProfileTopScreen() {
       // StatusBar settings
       StatusBar.setBarStyle('dark-content');
       StatusBar.setBackgroundColor('transparent');
-      StatusBar.setTranslucent(true);
+      StatusBar.setTranslucent(false);
 
       const fetchProfile = async () => {
         try {

@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "836429784338",
-    "project_id": "recrootapp-3485d",
-    "storage_bucket": "recrootapp-3485d.firebasestorage.app"
+    "project_number": "283074857122",
+    "project_id": "recroot-dev",
+    "storage_bucket": "recroot-dev.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:836429784338:android:f2316b3b878632587e7fcb",
+        "mobilesdk_app_id": "1:283074857122:android:42f145390aef5e300c6ffb",
         "android_client_info": {
           "package_name": "com.recrootapp"
         }
@@ -15,26 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBxukhPSAPYaznV5UIdJWxWdZxsHxiP0ck"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:836429784338:android:2e45c21f313274a87e7fcb",
-        "android_client_info": {
-          "package_name": "com.recrootapp"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBxukhPSAPYaznV5UIdJWxWdZxsHxiP0ck"
+          "current_key": "AIzaSyDNtPWr-43IQU447CQ5cRWy5M4aq3jfx4c"
         }
       ],
       "services": {
