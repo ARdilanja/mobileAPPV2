@@ -185,7 +185,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18 * scale,
     lineHeight: 24 * scale,
-    color: '#000',
+    color: '#000000',
+    fontWeight: 500,
     fontFamily: Fonts.Medium,
     textAlign: 'center',
   },

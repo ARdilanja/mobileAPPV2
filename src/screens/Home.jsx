@@ -248,7 +248,7 @@ export default function Home() {
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.startPracticeButton}
-          onPress={() => navigation.navigate('PracticeStartScreen')}
+          onPress={() => navigation.navigate('NinetyDayPlanScreen')}
         >
           <Text style={styles.startPracticeText}>Start Practice</Text>
         </TouchableOpacity>

@@ -31,6 +31,8 @@ import ChooseSignupMethod from '../../screens/authentication/ChooseSignupMethod'
 import EmailInput from '../../screens/authentication/EmailInput';
 import Password from '../../screens/authentication/Password';
 import MobileInput from '../../screens/authentication/MobileInput';
+import ForgotPasswordScreen from '../../screens/authentication/ForgotPasswordScreen.jsx';
+import ResetPassword from '../../screens/authentication/ResetPassword.jsx';
 import OtpVerification from '../../screens/authentication/OtpVerification';
 import GetStarted from '../../screens/authentication/GetStarted';
 import CreatePassword from '../../screens/authentication/CreatePassword';
@@ -64,6 +66,7 @@ import InvoicePreviewScreen from '../../screens/InvoicePreviewScreen';
 import OnboardingContainer from '../../screens/OnboardingScreen/OnboardingContainer';
 import FewQuickDetails from '../../screens/OnboardingProcessTwo/FewQuickDetails';
 import MicCameraCheckScreen  from '../../screens/MicCameraCheckScreen .jsx';
+import NinetyDayPlanScreen  from '../../screens/NinetyDayPlanScreen';
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
 
@@ -87,6 +90,9 @@ const StackNavigation = () => {
       <Stack.Screen name="GetStarted" component={GetStarted} />
       <Stack.Screen name="CreatePassword" component={CreatePassword} />
       <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
+      <Stack.Screen name="ResetPassword" component={ResetPassword}
+      />
       <Stack.Screen name="ChooseSignupMethod" component={ChooseSignupMethod} />
       <Stack.Screen name="NotificationScreen" component={NotificationsScreen} />
       <Stack.Screen name="JourneyGetStartScreen" component={JourneyGetStartScreen} />
@@ -310,7 +316,7 @@ const StackNavigation = () => {
       <Stack.Screen
         name="UpdateProfileScreen"
         component={UpdateProfileScreen}
-        options={{ headerShown: true, headerTitle: 'Your Profile', headerTitleAlign: 'center' }}
+        options={{ headerShown: false, headerTitle: 'Your Profile', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="InvoicePreviewScreen"
@@ -332,6 +338,11 @@ const StackNavigation = () => {
         name="MicCameraCheckScreen"
         component={MicCameraCheckScreen}
         options={{ headerShown: false, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="NinetyDayPlanScreen"
+        component={NinetyDayPlanScreen}
+        options={{ headerShown: false, headerTitle: 'Your 90-day plan', headerTitleAlign: 'center' }}
       />
 
     </Stack.Navigator>

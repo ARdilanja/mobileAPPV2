@@ -9,7 +9,7 @@ export const extractSkillsFromJD = createAsyncThunk(
   async (jobDescription, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `http://192.168.0.13:5000/api/jobDesc/extract-skills`,
+        `http://192.168.0.6:3000/api/jobDesc/extract-skills`,
         { jobDescription }
       );
       console.log('response.data', response.data)

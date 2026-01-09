@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {
   View, TextInput, StyleSheet, Dimensions,
   KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard,
-  StatusBar,
+  StatusBar, TouchableOpacity,
   Text
 } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
@@ -15,11 +15,11 @@ import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE } from '../../config/api';
-import { getFCMToken } from '../../services/notificationService';
 const screenWidth = Dimensions.get("window").width;
 const scale = screenWidth / 390;
+
 const EmailInput = () => {
-  const navigation = useNavigation()    
+  const navigation = useNavigation()
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,35 +34,6 @@ const EmailInput = () => {
     setPopupVisible(true);
   };
 
-  // const handleNext = async () => {
-  //   if (!email.trim()) {
-  //     showPopup('Please enter your email', 'error');
-  //     return;
-  //   }
-
-  //   try {
-  //     // console.log('first', API_BASE,"checkUser")
-  //     const response = await axios.post(`https://api.arinnovate.io/api/checkUser`, { email });
-
-  //     const user = response.data.updatedUser || response.data.existingUser;
-
-  //     if (!user) {
-  //       showPopup('User not found. Please sign up.', 'error');
-  //       navigation.navigate('ChooseSignupMethod');
-  //       return;
-  //     }
-
-  //     // ✅ Navigate to password screen
-  //     navigation.navigate('Password', { email });
-
-  //   } catch (error) {
-  //     showPopup(
-  //       error?.response?.data?.message || 'Something went wrong',
-  //       'error'
-  //     );
-  //   }
-  // };
-
   const handleNext = async () => {
     if (!email.trim()) {
       showPopup('Please enter your email', 'error');
@@ -75,15 +46,11 @@ const EmailInput = () => {
     }
 
     try {
-      //  const fcmToken = await messaging().getToken();
-      const fcmToken = await getFCMToken();
       const response = await axios.post(
-      //  `${API_BASE}/auth/login-password`,
-       `http://192.168.0.13:5000/api/auth/login-password`,
+        `${API_BASE}/auth/login-password`,
         {
           email,
           password,
-          fcmToken: fcmToken,
         }
       );
 
@@ -187,9 +154,14 @@ const EmailInput = () => {
                   value={password}
                   onChangeText={setPassword}
                 />
-                <Text
-                  style={styles.forgot}
-                >Forgot password?</Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ForgotPasswordScreen')}
+                >
+                  <Text style={styles.forgot}>
+                    Forgot password?
+                  </Text>
+                </TouchableOpacity>
+
               </View>
 
               {/* BOTTOM SECTION: Pushed to bottom by space-between */}

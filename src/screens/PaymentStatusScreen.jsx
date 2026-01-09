@@ -17,14 +17,22 @@ const successImg = require('../assets/images/green_success.png');
 const failedImg = require('../assets/images/red_circle.png');
 const recrootLogo = require('../assets/images/recroot_img.png');
 
-export default function PaymentStatusScreen({
-  navigation,
-  status = 'success',
-}) {
+export default function PaymentStatusScreen({ route, navigation }) {
+  // ✅ READ VALUES FROM ROUTE PARAMS
+  const {
+    status = 'failed',
+    transactionId = 'N/A',
+    dateTime = 'N/A',
+    planAmount = 0,
+    tax = 0,
+    grandTotal = 0,
+    amountPaid = 0,
+  } = route?.params || {};
+
+
   const isSuccess = status === 'success';
 
   return (
-
     <View style={styles.container}>
       <Header title="Pricing" />
 
@@ -64,19 +72,29 @@ export default function PaymentStatusScreen({
 
         {/* TRANSACTION ID */}
         <Text style={styles.label}>Transaction id</Text>
-        <Text style={styles.value}>89632533963253</Text>
+        <Text style={styles.value}>
+          {transactionId && transactionId !== '' ? transactionId : 'N/A'}
+        </Text>
 
         {/* DATE */}
         <Text style={[styles.label, { marginTop: 12 * scale }]}>
           Date & Time
         </Text>
-        <Text style={styles.value}>December 30, 2025 at 01:00 PM IST</Text>
+        <Text style={styles.value}>
+          {dateTime && dateTime !== '' ? dateTime : 'N/A'}
+        </Text>
 
-        {/* LINK */}
+        {/* ✅ PASS STATUS TO INVOICE */}
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('InvoicePreviewScreen', {
-              status: isSuccess ? 'success' : 'failed',
+              status: isSuccess ? 'success' : 'failure',
+              planAmount,
+              transactionId,
+              tax,
+              grandTotal,
+              amountPaid,
+              dateTime,
             })
           }
         >
@@ -84,7 +102,16 @@ export default function PaymentStatusScreen({
         </TouchableOpacity>
 
         {/* ACTION BUTTON */}
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            if (isSuccess) {
+              navigation.navigate('Home');
+            } else {
+              navigation.goBack();
+            }
+          }}
+        >
           <Text style={styles.buttonText}>
             {isSuccess ? 'Home' : 'Retry payment'}
           </Text>
@@ -93,7 +120,6 @@ export default function PaymentStatusScreen({
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
