@@ -24,7 +24,7 @@ const minutes = Array.from({ length: 60 }, (_, i) =>
 );
 const ampmList = ['AM', 'PM'];
 
-export default function ReminderModal({ visible, onClose, onConfirm }) {
+export default function ReminderModal({ visible, onClose, onSuccess, }) {
   const [hour, setHour] = useState('10');
   const [minute, setMinute] = useState('00');
   const [ampm, setAmPm] = useState('AM');
@@ -94,12 +94,15 @@ export default function ReminderModal({ visible, onClose, onConfirm }) {
           <Pressable
             style={styles.button}
             onPress={() => {
-              onConfirm?.(`${hour}:${minute} ${ampm}`);
               onClose();
+              setTimeout(() => {
+                onSuccess?.();
+              }, 200);
             }}
           >
             <Text style={styles.buttonText}>Set reminder</Text>
           </Pressable>
+
 
         </View>
       </View>
@@ -168,12 +171,14 @@ const styles = StyleSheet.create({
   },
 
   sheet: {
-    height: 484,
+    height: 484 * scale,
     backgroundColor: '#FFF',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    paddingHorizontal: 16,
+    borderTopLeftRadius: 24 * scale,
+    borderTopRightRadius: 24 * scale,
+    paddingHorizontal: 16 * scale,
+    // paddingBottom: 100*scale,   
   },
+
 
   skip: {
     position: 'absolute',
@@ -216,14 +221,14 @@ const styles = StyleSheet.create({
   },
 
   timerWrapper: {
-    marginTop: 24 * scale,
+    marginTop: 16 * scale,
   },
 
   timerTitle: {
     fontSize: 18 * scale,
     fontFamily: Fonts.Medium,
     // textAlign: 'center',
-    marginBottom: 12 * scale,
+    marginBottom: 24 * scale,
   },
 
   wheelContainer: {
@@ -253,22 +258,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-itemText: {
-  fontSize: 32 *scale,
-  lineHeight: ITEM_HEIGHT,      // ✅ KEY FIX
-  fontFamily: Fonts.Medium,
-  lineHeight:48*scale,
-  color: '#666666',
-  textAlignVertical: 'center',
-},
+  itemText: {
+    fontSize: 32 * scale,
+    lineHeight: ITEM_HEIGHT,      
+    fontFamily: Fonts.Medium,
+    lineHeight: 48 * scale,
+    color: '#666666',
+    textAlignVertical: 'center',
+    marginBottom:16*scale
+  },
 
-activeItemText: {
- fontSize: 32 *scale,
-  lineHeight: ITEM_HEIGHT,      // ✅ KEY FIX
-  fontFamily: Fonts.Medium,
-  lineHeight:48*scale,
-  color:"#000"           // ✅ emphasis without movement
-},
+  activeItemText: {
+    fontSize: 32 * scale,
+    lineHeight: ITEM_HEIGHT,      
+    fontFamily: Fonts.Medium,
+    lineHeight: 48 * scale,
+    color: "#000",
+    marginBottom:16*scale
+               
+  },
 
 
   colon: {
@@ -278,10 +286,10 @@ activeItemText: {
 
   button: {
     position: 'absolute',
-    bottom: 40,
-    left: 16,
-    right: 16,
-    height: 56,
+    bottom: 24 * scale,
+    left: 16 * scale,
+    right: 16 * scale,
+    height: 56 * scale,
     backgroundColor: 'rgba(35,93,255,1)',
     borderRadius: 48,
     justifyContent: 'center',
@@ -290,7 +298,8 @@ activeItemText: {
 
   buttonText: {
     color: '#FFF',
-    fontSize: 16,
+    fontSize: 18 * scale,
     fontFamily: Fonts.Medium,
+    lineHeight: 24 * scale,
   },
 });

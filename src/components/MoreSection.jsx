@@ -58,7 +58,7 @@ export default function MoreSection() {
         <MoreItem
           text="Invoice"
           icon={require('../assets/images/terms-check.png')}
-          onPress={() => navigation.navigate('SpeakInMeetingsScreen')}
+          onPress={() => navigation.navigate('CongratsScreen')}
         />
 
         <Divider />
