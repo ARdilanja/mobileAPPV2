@@ -19,6 +19,8 @@ const OtpVerification = ({ route }) => {
   const {
     email,
     userId,
+    isForgotPassword,
+    serverOtp
   } = route.params;
   console.log('userId', userId)
   const [otp, setOtp] = useState('');
@@ -32,7 +34,7 @@ const OtpVerification = ({ route }) => {
 
     // for forgot password
 
-    if (route.params.isForgotPassword) {
+    if (isForgotPassword) {
       await axios.post(`${API_BASE}/auth/forgot-password/verify-otp`, {
         userId,
         otp,
@@ -43,8 +45,12 @@ const OtpVerification = ({ route }) => {
     }
 
     try {
+       if (otp !== String(serverOtp)) {
+    Alert.alert('Wrong OTP', 'Invalid OTP. Please try again.');
+    return;
+  }
       // Step 2: Call backend PUT API only after OTP match
-      const response = await axios.put(`http://192.168.0.6:3000/api/auth/verify-email/${userId}`, {
+      const response = await axios.put(`${API_BASE}/auth/verify-email/${userId}`, {
         code: true,
       });
       const { User, token, refreshToken } = response.data;
@@ -64,7 +70,7 @@ const OtpVerification = ({ route }) => {
 
       console.log("Saved auth data:", saved);
 
-      Alert.alert('Success', 'OTP verified successfully', [
+      Alert.alert('Success', 'Email verified successfully', [
         {
           text: 'Continue',
           onPress: () => navigation.navigate('JourneyGetStartScreen'),

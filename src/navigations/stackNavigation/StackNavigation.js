@@ -65,7 +65,7 @@ import ProfileTopScreen from '../../screens/topUpdatedrofile/ProfileTopScreen';
 import InvoicePreviewScreen from '../../screens/InvoicePreviewScreen';
 import OnboardingContainer from '../../screens/OnboardingScreen/OnboardingContainer';
 import FewQuickDetails from '../../screens/OnboardingProcessTwo/FewQuickDetails';
-import MicCameraCheckScreen  from '../../screens/MicCameraCheckScreen .jsx';
+import MicCameraCheckScreen  from '../../screens/MicCameraCheckScreen.jsx';
 import NinetyDayPlanScreen  from '../../screens/NinetyDayPlanScreen';
 import CongratsScreen  from '../../screens/Rewards/CongratsScreen';
 import BadgesEarnedScreen  from '../../screens/Rewards/BadgesEarnedScreen';
