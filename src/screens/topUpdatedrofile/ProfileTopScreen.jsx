@@ -223,7 +223,7 @@
 
 
 
-import React, { useCallback, useState } from 'react'; // Added useState
+import React, { useCallback, useEffect, useState } from 'react'; // Added useState
 import {
   View,
   Text,
@@ -275,8 +275,12 @@ export default function ProfileTopScreen() {
       // StatusBar settings
       StatusBar.setBarStyle('dark-content');
       StatusBar.setBackgroundColor('transparent');
-      StatusBar.setTranslucent(true);
-
+      StatusBar.setTranslucent(false);
+ } )
+  );
+useEffect(() => {
+  fetchProfile()
+}, [])
       const fetchProfile = async () => {
         try {
           const token = await AsyncStorage.getItem("token");
@@ -305,10 +309,7 @@ export default function ProfileTopScreen() {
         }
       };
 
-      fetchProfile();
-    }, [])
-  );
-
+    
   return (
     <View style={styles.wrapper}>
       {/* <StatusBar barStyle="dark-content" backgroundColor="#F6F6F6" /> */}

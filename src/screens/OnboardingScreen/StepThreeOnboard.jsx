@@ -31,7 +31,7 @@ const OPTIONS = [
 const StepThreeOnboard = ({ value = '', onChange = () => { } }) => {
   return (
     <View>
-      <Text style={styles.title}>How nwould you describe your level?</Text>
+      <Text style={styles.title}>How would you describe your level?</Text>
 
       <View style={styles.grid}>
         {OPTIONS.map(opt => (
