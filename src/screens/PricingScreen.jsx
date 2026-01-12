@@ -58,7 +58,7 @@ export default function PricingScreen() {
     useCallback(() => {
       StatusBar.setBarStyle('dark-content');
       StatusBar.setBackgroundColor('transparent');
-      StatusBar.setTranslucent(true);
+      StatusBar.setTranslucent(false);
 
       fetchPaymentPlans();
     }, []),
