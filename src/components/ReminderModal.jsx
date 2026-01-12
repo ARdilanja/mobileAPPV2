@@ -34,6 +34,15 @@ export default function ReminderModal({ visible, onClose, onConfirm }) {
     setter(list[index]);
   };
 
+  const to24HourFormat = (hour, minute, ampm) => {
+  let h = parseInt(hour, 10);
+
+  if (ampm === 'PM' && h !== 12) h += 12;
+  if (ampm === 'AM' && h === 12) h = 0;
+
+  return `${String(h).padStart(2, '0')}:${minute}`;
+};
+
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.overlay}>
@@ -93,10 +102,17 @@ export default function ReminderModal({ visible, onClose, onConfirm }) {
           {/* Button */}
           <Pressable
             style={styles.button}
-            onPress={() => {
-              onConfirm?.(`${hour}:${minute} ${ampm}`);
-              onClose();
-            }}
+           onPress={() => {
+  const time24 = to24HourFormat(hour, minute, ampm);
+
+  onConfirm?.({
+    time: time24,                // "11:00"
+    displayTime: `${hour}:${minute} ${ampm}` // optional
+  });
+
+  onClose();
+}}
+
           >
             <Text style={styles.buttonText}>Set reminder</Text>
           </Pressable>
@@ -119,15 +135,16 @@ function Wheel({
   const scrollRef = useRef(null);
   const padding = ITEM_HEIGHT * Math.floor(visibleItems / 2);
 
-  useEffect(() => {
-    const index = data.indexOf(selectedValue);
-    if (index !== -1 && scrollRef.current) {
-      scrollRef.current.scrollTo({
-        y: index * ITEM_HEIGHT,
-        animated: false,
-      });
-    }
-  }, [selectedValue]);
+useEffect(() => {
+  const index = data.indexOf(selectedValue);
+  if (index !== -1 && scrollRef.current) {
+    scrollRef.current.scrollTo({
+      y: index * ITEM_HEIGHT,
+      animated: false,
+    });
+  }
+}, [selectedValue, data]);
+
 
   return (
     <ScrollView
@@ -253,22 +270,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-itemText: {
-  fontSize: 32 *scale,
-  lineHeight: ITEM_HEIGHT,      // ✅ KEY FIX
-  fontFamily: Fonts.Medium,
-  lineHeight:48*scale,
-  color: '#666666',
-  textAlignVertical: 'center',
-},
+  itemText: {
+    fontSize: 32 * scale,
+    lineHeight: ITEM_HEIGHT,      // ✅ KEY FIX
+    fontFamily: Fonts.Medium,
+    // lineHeight: 48 * scale,
+    color: '#666666',
+    textAlignVertical: 'center',
+  },
 
-activeItemText: {
- fontSize: 32 *scale,
-  lineHeight: ITEM_HEIGHT,      // ✅ KEY FIX
-  fontFamily: Fonts.Medium,
-  lineHeight:48*scale,
-  color:"#000"           // ✅ emphasis without movement
-},
+  activeItemText: {
+    fontSize: 32 * scale,
+    lineHeight: ITEM_HEIGHT,      // ✅ KEY FIX
+    fontFamily: Fonts.Medium,
+    // lineHeight: 48 * scale,
+    color: "#000"           // ✅ emphasis without movement
+  },
 
 
   colon: {

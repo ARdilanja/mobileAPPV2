@@ -15,6 +15,9 @@ import {
 } from 'react-native';
 import { Fonts } from '../constants/fonts';
 import ReminderModal from '../components/ReminderModal'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { API_BASE } from '../config/api';
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 
@@ -131,6 +134,32 @@ export default function NinetyDayPlanScreen() {
     const TOTAL_TAB_WIDTH = WEEK_TAB_WIDTH + WEEK_TAB_MARGIN * 2;
     const ACTIVE_BAR_WIDTH = 60;
 
+    const createReminder = async (time) => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+
+            const res = await axios.post(
+                `${API_BASE}/notifications/create`,
+                {
+                    time, // "11:00"
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            console.log('Reminder created:', res.data);
+            setShowReminderSuccess(true);
+
+        } catch (err) {
+            console.log('Create reminder error:', err.response?.data || err.message);
+        }
+    };
+
+
     return (
         <View style={styles.container}>
             <Text style={styles.headerTitle}>Your 90-day plan</Text>
@@ -231,8 +260,13 @@ export default function NinetyDayPlanScreen() {
             <ReminderModal
                 visible={showReminder}
                 onClose={() => setShowReminder(false)}
-                onSuccess={() => setShowReminderSuccess(true)}
+                onConfirm={({ time }) => {
+                    setShowReminder(false);
+                    createReminder(time);
+                }}
             />
+
+
 
             <ReminderSuccessModal
                 visible={showReminderSuccess}
