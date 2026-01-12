@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextInput, StyleSheet, Dimensions, View, Image, ScrollView, Alert, Text, StatusBar } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 import AuthButton from '../../components/auth/AuthButton';
@@ -7,6 +7,10 @@ import { KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } fr
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
+import { API_BASE } from '../../config/api';
+import MessagePopup from '../../components/MessagePopup';
+import { validatePassword, validateEmail } from '../../utils/ValidationHelper'
+import  {getDeviceCountry} from '../../utils/getDeviceCountry'
 const screenWidth = Dimensions.get("window").width;
 const scale = screenWidth / 390;
 
@@ -17,8 +21,26 @@ const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [signupData, setSignupData] = useState(null)
+    const [errors, setErrors] = useState({});
+    const [popupVisible, setPopupVisible] = useState(false);
+    const [popupMessage, setPopupMessage] = useState('');
+    const [popupType, setPopupType] = useState('info');
 
-
+    const [country, setCountry] = useState({
+        code: "IN",
+        dialCode: "+91",
+        flag: "🇮🇳",
+    });
+    const showPopup = (message, type = 'info') => {
+        setPopupMessage(message);
+        setPopupType(type);
+        setPopupVisible(true);
+    };
+    useEffect(() => {
+        const deviceCountry = getDeviceCountry();
+        console.log("🌍 Device locale detected:", deviceCountry);
+        setCountry(deviceCountry);
+    }, []);
     // Handle signup API call
     // const handleSignUp = async () => {
     //     if (!fullName || !phone || !email || !password) {
@@ -69,10 +91,37 @@ const SignUp = () => {
     //     }
     // };
     const handleSignUp = async () => {
-        if (!fullName || !phone || !email || !password) {
-            Alert.alert('Missing Details', 'Please fill all the fields');
+        let newErrors = {};
+
+        if (!fullName.trim()) {
+            newErrors.fullName = 'Full name is required';
+        }
+
+        if (!phone.trim()) {
+            newErrors.phone = 'Phone number is required';
+        }
+
+        if (!email.trim()) {
+            newErrors.email = 'Email address is required.';
+        } else if (!validateEmail(email)) {
+            newErrors.email = 'Please enter a valid email address.';
+        }
+
+        if (!password.trim()) {
+            newErrors.password = 'Password is required';
+        } else {
+            const passwordError = validatePassword(password);
+            if (passwordError) {
+                newErrors.password = passwordError;
+            }
+        }
+
+        setErrors(newErrors);
+        if (Object.keys(newErrors).length > 0) {
+            Alert.alert('Validation Error', Object.values(newErrors)[0]);
             return;
         }
+
 
         const payload = {
             firstName: fullName,
@@ -81,132 +130,194 @@ const SignUp = () => {
             phone,
             password,
             recrootUserType: 'Candidate',
-            countryDetails: {
-                country: 'India',
-                dialCode: '+91',
-            },
+             countryDetails: {
+    country: country.code,
+    dialCode: country.dialCode,
+  },
         };
         console.log('payload', payload)
         try {
             const res = await axios.post(
-                'http://192.168.0.4:3000/api/auth/register',
+                `${API_BASE}/auth/register`,
                 payload
             );
 
             console.log('res signup', res)
 
-            Alert.alert('Success', 'OTP sent to your email', [
-                {
-                    text: 'OK',
-                    onPress: () =>
-                        navigation.navigate('OtpVerification', {
-                            email,
-                            userId: res.data.userID,
-                            serverOtp: res.data.referral_code,
-                        }),
-                },
-            ]);
+            // ✅ Success popup
+            Alert.alert(
+                'Success',
+                'Account created successfully',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => {
+                            navigation.navigate('OtpVerification', {
+                                email,
+                                userId: res.data.userID,
+                                serverOtp: res.data.referral_code,
+                            });
+                        },
+                    },
+                ]
+            );
         } catch (error) {
             Alert.alert(
                 'Signup Failed',
-                error.response?.data?.message || 'Something went wrong'
+                error.response?.data?.message || 'Signup failed. Please try again.'
             );
         }
     };
 
 
     return (
-        <Gradient>
-            <StatusBar barStyle="dark-content" backgroundColor="transparent"
-                translucent={true} />
-            <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-                style={{ flex: 1 }}
-            >
-                <ScrollView
-                    contentContainerStyle={styles.scrollContainer}
-                    showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps="handled"
+        <View style={{ flex: 1 }}>
+            <MessagePopup
+                visible={popupVisible}
+                message={popupMessage}
+                type={popupType}
+                onClose={() => setPopupVisible(false)}
+            />
+
+            <Gradient>
+                <StatusBar barStyle="dark-content" backgroundColor="transparent"
+                    translucent={true} />
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={{ flex: 1 }}
                 >
-                    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                        <View style={{ flex: 1 }}>
+                    <ScrollView
+                        contentContainerStyle={styles.scrollContainer}
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="handled"
+                    >
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                            <View style={{ flex: 1 }}>
 
-                            {/* Signup form section */}
-                            <View style={styles.topSection}>
+                                {/* Signup form section */}
+                                <View style={styles.topSection}>
 
-                                <AuthHeader title="Sign up"
-                                    subtitle="Sign up and own your career journey"
-                                    showBack={true}
-                                    showLogo={true}
-                                />
-
-                                {/* Full name input */}
-                                <TextInput
-                                    placeholderTextColor="#242424"
-                                    placeholderT="#242424"
-                                    placeholder="Full Name"
-                                    value={fullName}
-                                    onChangeText={setFullName}
-                                    style={styles.input}
-                                />
-
-                                {/* Mobile number input with country code */}
-                                <View style={styles.content}>
-                                    <Image
-                                        source={require('../../assets/images/india-flag.png')}
-                                        style={styles.flag}
-                                        resizeMode="contain"
+                                    <AuthHeader title="Sign up"
+                                        subtitle="Sign up and own your career journey"
+                                        showBack={true}
+                                        showLogo={true}
                                     />
 
-                                    <View style={styles.countryCodeBox}>
-                                        <Text style={styles.countryCodeText}>+91</Text>
+                                    {/* Full name input */}
+                                    <View style={{ marginBottom: 16 }}>
+                                        <TextInput
+                                            placeholderTextColor="#242424"
+                                            placeholderT="#242424"
+                                            placeholder="Full Name"
+                                            value={fullName}
+                                            onChangeText={(text) => {
+                                                setFullName(text);
+                                                setErrors(prev => ({ ...prev, fullName: null }));
+                                            }}
+                                            style={styles.input}
+                                        />
+                                        {errors.fullName && <Text style={styles.error}>{errors.fullName}</Text>}
+                                    </View>
+                                    {/* Mobile number input with country code */}
+                                    <View style={{ marginBottom: 16 }}>
+                                        {/* <View style={styles.content}>
+                                            <Image
+                                                source={require('../../assets/images/india-flag.png')}
+                                                style={styles.flag}
+                                                resizeMode="contain"
+                                            />
+
+                                            <View style={styles.countryCodeBox}>
+                                                <Text style={styles.countryCodeText}>+91</Text>
+                                            </View>
+
+                                            <TextInput
+                                                style={styles.mob_input}
+                                                keyboardType="phone-pad"
+                                                maxLength={10}
+                                                value={phone}
+                                                onChangeText={(text) => {
+                                                    const clean = text.replace(/[^0-9]/g, '');
+                                                    setPhone(clean);
+                                                    setErrors(prev => ({ ...prev, phone: null }));
+                                                }}
+                                                placeholderTextColor="#9CA3AF"
+                                            />
+                                        </View> */}
+                                        <View style={styles.content}>
+  <Text style={styles.flagEmoji}>{country.flag}</Text>
+
+  <View style={styles.countryCodeBox}>
+    <Text style={styles.countryCodeText}>{country.dialCode}</Text>
+  </View>
+
+  <TextInput
+    style={styles.mob_input}
+    keyboardType="phone-pad"
+    maxLength={15}
+    value={phone}
+    // onChangeText={(text) => {
+    //   const clean = text.replace(/[^0-9]/g, "");
+    //   setPhone(clean);
+    //   setErrors(prev => ({ ...prev, phone: null }));
+    // }}
+    onChangeText={(text) => {
+  const clean = text.replace(/[^0-9]/g, "");
+  setPhone(clean);
+
+  console.log("📞 Phone typed:", clean);
+  console.log("📞 Country code:", country.dialCode);
+
+  setErrors(prev => ({ ...prev, phone: null }));
+}}
+    placeholder="Phone number"
+    placeholderTextColor="#9CA3AF"
+  />
+</View>
+
+                                        {errors.phone && <Text style={styles.error}>{errors.phone}</Text>}
                                     </View>
 
-                                    <TextInput
-                                        style={styles.mob_input}
-                                        keyboardType="phone-pad"
-                                        maxLength={10}
-                                        value={phone}
-                                        onChangeText={(text) =>
-                                            setPhone(text.replace(/[^0-9]/g, ''))
-                                        }
-                                        placeholderTextColor="#9CA3AF"
+                                    {/* Email input */}
+                                    <View style={{ marginBottom: 16 }}><TextInput
+                                        placeholderTextColor="#242424"
+                                        placeholderT="#242424"
+                                        placeholder="Email id"
+                                        style={styles.input}
+                                        value={email}
+                                        onChangeText={(text) => {
+                                            setEmail(text);
+                                            setErrors(prev => ({ ...prev, email: null }));
+                                        }}
+                                        keyboardType="email-address"
                                     />
+                                        {errors.email && <Text style={styles.error}>{errors.email}</Text>}
+                                    </View>
+                                    {/* Password input */}
+                                    <View style={{ marginBottom: 16 }}><TextInput
+                                        placeholderTextColor="#242424"
+                                        placeholderT="#242424"
+                                        placeholder="Password"
+                                        style={styles.input}
+                                        value={password}
+                                        onChangeText={(text) => {
+                                            setPassword(text);
+                                            setErrors(prev => ({ ...prev, password: null }));
+                                        }}
+                                    // secureTextEntry
+                                    />
+                                        {errors.password && <Text style={styles.error}>{errors.password}</Text>}
+                                    </View> </View>
+                                {/* Bottom signup action section */}
+                                <View style={styles.bottomSection}>
+
+                                    <AuthButton text="Sign up" signinText={true} onPress={handleSignUp} onFooterPress={() => navigation.navigate('SignIn')} />
                                 </View>
-
-                                {/* Email input */}
-                                <TextInput
-                                    placeholderTextColor="#242424"
-                                    placeholderT="#242424"
-                                    placeholder="Email id"
-                                    style={styles.input}
-                                    value={email}
-                                    onChangeText={setEmail}
-                                    keyboardType="email-address"
-                                />
-
-
-                                {/* Password input */}
-                                <TextInput
-                                    placeholderTextColor="#242424"
-                                    placeholderT="#242424"
-                                    placeholder="Password"
-                                    style={styles.input}
-                                    value={password}
-                                    onChangeText={setPassword}
-                                // secureTextEntry
-                                />
                             </View>
-                            {/* Bottom signup action section */}
-                            <View style={styles.bottomSection}>
-
-                                <AuthButton text="Sign up" signinText={true} onPress={handleSignUp} onFooterPress={() => navigation.navigate('SignIn')} />
-                            </View>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </ScrollView>
-            </KeyboardAvoidingView>
-        </Gradient>
+                        </TouchableWithoutFeedback>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </Gradient></View>
     );
 };
 
@@ -233,10 +344,18 @@ const styles = StyleSheet.create({
         fontFamily: Fonts.Regular,
         color: '#242424',
     },
+    error: {
+        color: 'red',
+        fontSize: 14,
+        marginLeft: 24,
+        // marginBottom: 8,
+        fontFamily: Fonts.Regular,
+    },
+
     input: {
         width: screenWidth - 32,
         marginHorizontal: 'auto',
-        marginBottom: 16,
+        // marginBottom: 16,
         borderWidth: 1,
         borderColor: 'white',
         backgroundColor: '#fff',
@@ -262,7 +381,7 @@ const styles = StyleSheet.create({
         borderColor: '#D1D5DB',
         width: screenWidth - 32,
         marginHorizontal: 'auto',
-        marginBottom: 16,
+        // marginBottom: 16,
         borderRadius: 48,
         paddingHorizontal: 16,
         // paddingVertical: 10,
@@ -279,6 +398,10 @@ const styles = StyleSheet.create({
         height: 18,
         marginRight: 12,
     },
+    flagEmoji: {
+  fontSize: 22,
+  marginRight: 8,
+},
     mob_input: {
         flex: 1,
         lineHeight: 28,

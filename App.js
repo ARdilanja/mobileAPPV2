@@ -55,12 +55,20 @@ import {  listenToNotifications, requestNotificationPermission, setupNotificatio
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { STRIPE_PUBLISHABLE_KEY } from './src/config/api.jsx';
 
+import { initAIVoice } from './src/utils/aiVoice';
+
 console.log("GoogleSignin native module =>", GoogleSignin);
 export default function App() {
+
+   useEffect(() => {
+    initAIVoice(); // ✅ Google AI voice init
+  }, []);
+
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: "672175532425-d5af6nvj3u5uhuls8vptspth5pgf5mdn.apps.googleusercontent.com", // 🔴 VERY IMPORTANT
-      offlineAccess: false,
+      webClientId: "836429784338-ip12kfe22koc19s8ee2qa3c64qflfeoc.apps.googleusercontent.com", // 🔴 VERY IMPORTANT
+      offlineAccess: true,
+      forceCodeForRefreshToken: true, 
     });
   }, []);
   useEffect(() => {

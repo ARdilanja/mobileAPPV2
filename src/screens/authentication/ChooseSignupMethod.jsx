@@ -6,6 +6,7 @@ import Gradient from '../../constants/Gradient';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import axios from 'axios';
 
 
 const screenWidth = Dimensions.get("window").width;
@@ -14,48 +15,110 @@ const scale = screenWidth / 390;
 const ChooseSignupMethod = () => {
   const navigation = useNavigation()
 
-  const handleGoogleSignup = async () => {
+  // const handleGoogleSignup = async () => {
+  //   try {
+  //     // 1️⃣ Check Play Services
+  //     await GoogleSignin.hasPlayServices();
+
+  //     // 2️⃣ Open Google popup
+  //     const userInfo = await GoogleSignin.signIn();
+      
+  //     console.log('userInfo', userInfo)
+
+  //     // 3️⃣ Extract ID token
+  //     const idToken = userInfo.data.idToken;
+  //     console.log('idToken', idToken)
+
+  //     if (!idToken) {
+  //       return Alert.alert("Error", "Google token not received");
+  //     }
+
+  //     // 4️⃣ Send token to backend using AXIOS
+  //     const response = await axios.post("http://192.168.0.5:3000/api/auth/google-login", {
+  //       idToken,
+  //     });
+  //     console.log('response', response)
+
+  //     const { token, refreshToken, User } = response.data;
+
+  //     console.log("Logged in user:", User);
+
+     
+
+  //     navigation.replace("BottomDash");
+
+  //   } catch (error) {
+  //     console.error("Google Login Error:", error);
+
+  //     Alert.alert(
+  //       "Login Failed",
+  //       error?.response?.data?.message || "Google login failed"
+  //     ); 
+  //   }
+  // };
+
+
+const handleGoogleSignup = async () => {
     try {
       // 1️⃣ Check Play Services
       await GoogleSignin.hasPlayServices();
 
-      // 2️⃣ Open Google popup
+      // 2️⃣ Force sign out first to ensure clean state
+      // Try to get current user to check if signed in
+      try {
+        const currentUser = await GoogleSignin.getCurrentUser();
+        if (currentUser) {
+          // User is signed in, sign them out
+          await GoogleSignin.signOut();
+        }
+      } catch (error) {
+        // If getCurrentUser fails, user is not signed in
+        console.log('No current user found');
+      }
+
+      // 3️⃣ Open Google popup
       const userInfo = await GoogleSignin.signIn();
 
-      console.log('userInfo', userInfo)
+      console.log('userInfo', userInfo);
 
-      // 3️⃣ Extract ID token
-      const idToken = userInfo.idToken;
-      console.log('idToken', idToken)
+      // 4️⃣ Extract ID token
+      const idToken = userInfo.data.idToken; // Note: it's userInfo.idToken, not userInfo.data.idToken
+      console.log('idToken', idToken);
 
       if (!idToken) {
         return Alert.alert("Error", "Google token not received");
       }
 
-      // 4️⃣ Send token to backend using AXIOS
-      const response = await axios.post("http://192.168.0.4:3000/api/auth/google-login", {
+      // 5️⃣ Send token to backend using AXIOS
+      const response = await axios.post("http://192.168.0.5:3000/api/auth/google-login", {
         idToken,
       });
-      console.log('response', response)
+      console.log('response', response);
 
       const { token, refreshToken, User } = response.data;
 
       console.log("Logged in user:", User);
-
-     
 
       navigation.replace("BottomDash");
 
     } catch (error) {
       console.error("Google Login Error:", error);
 
-      Alert.alert(
-        "Login Failed",
-        error?.response?.data?.message || "Google login failed"
-      ); 
+      // Handle specific Google Signin errors
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        Alert.alert("Cancelled", "Login was cancelled");
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        Alert.alert("In Progress", "Another sign-in is in progress");
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        Alert.alert("Play Services", "Google Play Services not available");
+      } else {
+        Alert.alert(
+          "Login Failed",
+          error?.response?.data?.message || error.message || "Google login failed"
+        );
+      }
     }
   };
-
   return (   
     <Gradient>
       <StatusBar barStyle="dark-content" backgroundColor="transparent"

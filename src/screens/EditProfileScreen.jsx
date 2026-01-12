@@ -997,7 +997,7 @@ const uploadProfileImage = async () => {
 
   try {
     const response = await fetch(
-      `http://192.168.0.8:5000/api/user/upload-profile-image/${userId}`,
+      `${API_BASE}/user/upload-profile-image/${userId}`,
       {
         method: "POST", // Make sure backend and frontend are both POST
         body: formData,
