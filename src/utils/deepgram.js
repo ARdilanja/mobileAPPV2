@@ -24,8 +24,13 @@ export async function transcribeWithDeepgram(filePath) {
   );
 
   const data = await response.json();
-
-  return (
-    data?.results?.channels?.[0]?.alternatives?.[0]?.transcript || ""
-  );
+ const alt = data?.results?.channels?.[0]?.alternatives?.[0];
+  return {
+ transcript: alt?.transcript?.trim() || "",
+      confidence: alt?.confidence || 0,
+      duration: data?.metadata?.duration || 0,
+  }
+    
+    // data?.results?.channels?.[0]?.alternatives?.[0]?.transcript || ""
+  
 }
