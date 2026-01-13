@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import {
   View,
@@ -24,7 +24,7 @@ export default function SpeakingInPracticeScreen() {
       StatusBar.setTranslucent(true);
     }, []),
   );
-
+  const navigation = useNavigation();
   return (
     <LinearGradient
       colors={[
@@ -45,7 +45,8 @@ export default function SpeakingInPracticeScreen() {
         {/* ✅ Reused Component */}
         <DayCompleScrolComponent style={styles.dayScrollpart} totalDays={9} activeDay={4} />
 
-        <Pressable style={styles.primaryBtn}>
+        <Pressable style={styles.primaryBtn}
+        >
           <Text style={styles.primaryBtnText}>Start today’s session</Text>
         </Pressable>
 
@@ -135,7 +136,9 @@ export default function SpeakingInPracticeScreen() {
         </View>
 
 
-        <Pressable style={styles.practiceBtn}>
+        <Pressable style={styles.practiceBtn} onPress={() => {
+          navigation.navigate('PopupDummyScreen');
+        }}>
           <Text style={styles.practiceBtnText}>Start practice</Text>
         </Pressable>
       </ScrollView>

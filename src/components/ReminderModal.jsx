@@ -35,13 +35,13 @@ export default function ReminderModal({ visible, onClose, onConfirm }) {
   };
 
   const to24HourFormat = (hour, minute, ampm) => {
-  let h = parseInt(hour, 10);
+    let h = parseInt(hour, 10);
 
-  if (ampm === 'PM' && h !== 12) h += 12;
-  if (ampm === 'AM' && h === 12) h = 0;
+    if (ampm === 'PM' && h !== 12) h += 12;
+    if (ampm === 'AM' && h === 12) h = 0;
 
-  return `${String(h).padStart(2, '0')}:${minute}`;
-};
+    return `${String(h).padStart(2, '0')}:${minute}`;
+  };
 
   return (
     <Modal visible={visible} transparent animationType="slide">
@@ -102,16 +102,16 @@ export default function ReminderModal({ visible, onClose, onConfirm }) {
           {/* Button */}
           <Pressable
             style={styles.button}
-           onPress={() => {
-  const time24 = to24HourFormat(hour, minute, ampm);
+            onPress={() => {
+              const time24 = to24HourFormat(hour, minute, ampm);
 
-  onConfirm?.({
-    time: time24,                // "11:00"
-    displayTime: `${hour}:${minute} ${ampm}` // optional
-  });
+              onConfirm?.({
+                time: time24,                // "11:00"
+                displayTime: `${hour}:${minute} ${ampm}` // optional
+              });
 
-  onClose();
-}}
+              onClose();
+            }}
 
           >
             <Text style={styles.buttonText}>Set reminder</Text>
@@ -135,15 +135,15 @@ function Wheel({
   const scrollRef = useRef(null);
   const padding = ITEM_HEIGHT * Math.floor(visibleItems / 2);
 
-useEffect(() => {
-  const index = data.indexOf(selectedValue);
-  if (index !== -1 && scrollRef.current) {
-    scrollRef.current.scrollTo({
-      y: index * ITEM_HEIGHT,
-      animated: false,
-    });
-  }
-}, [selectedValue, data]);
+  useEffect(() => {
+    const index = data.indexOf(selectedValue);
+    if (index !== -1 && scrollRef.current) {
+      scrollRef.current.scrollTo({
+        y: index * ITEM_HEIGHT,
+        animated: false,
+      });
+    }
+  }, [selectedValue, data]);
 
 
   return (

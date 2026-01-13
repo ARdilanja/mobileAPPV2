@@ -71,6 +71,7 @@ import CongratsScreen  from '../../screens/Rewards/CongratsScreen';
 import BadgesEarnedScreen  from '../../screens/Rewards/BadgesEarnedScreen';
 import RewardUnlockedScreen  from '../../screens/Rewards/RewardUnlockedScreen';
 import SpeakingInPracticeScreen  from '../../screens/SpeakingInPracticeScreen';
+import PopupDummyScreen  from '../../screens/PopupDummyScreen';
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
 
@@ -366,6 +367,11 @@ const StackNavigation = () => {
       <Stack.Screen
         name="SpeakingInPracticeScreen"
         component={SpeakingInPracticeScreen}
+        options={{ headerShown: false, headerTitle: ' ', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="PopupDummyScreen"
+        component={PopupDummyScreen}
         options={{ headerShown: false, headerTitle: ' ', headerTitleAlign: 'center' }}
       />
 
