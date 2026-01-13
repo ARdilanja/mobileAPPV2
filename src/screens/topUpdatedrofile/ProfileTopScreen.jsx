@@ -296,7 +296,7 @@ useEffect(() => {
           // });
 
           setUserData({
-            name: user.firstName || "User",
+            name: user.fullName || user.firstName || "User",
             email: user.email || "",
             profileImage: user.profpicFileLocation?.photo || null,
             planId: user.subscription?.planId || "FREE",

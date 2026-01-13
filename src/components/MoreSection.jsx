@@ -27,6 +27,7 @@ export default function MoreSection() {
         const isSignedIn = await GoogleSignin.isSignedIn();
 
         if (isSignedIn) {
+          await GoogleSignin.revokeAccess();
           await GoogleSignin.signOut();
         }
       }
@@ -48,6 +49,9 @@ export default function MoreSection() {
       Alert.alert('Logout failed', 'Something went wrong during logout.');
     }
   };
+
+
+
 
   return (
     <View style={styles.container}>

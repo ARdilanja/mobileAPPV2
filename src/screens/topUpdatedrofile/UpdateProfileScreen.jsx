@@ -43,7 +43,7 @@ export default function UpdateProfileScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
 
-  const [firstName, setFirstName] = useState("");
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState(""); // Added Email
   const [mobile, setMobile] = useState("");
   const [userId, setUserId] = useState(null);
@@ -61,7 +61,7 @@ export default function UpdateProfileScreen() {
 
         console.log("👤 [UI] User loaded:", user._id);
         setUserId(user._id);
-        setFirstName(user.firstName || "");
+        setFullName(user.fullName || user.firstName || "");
         setMobile(user.phone || "");
 
         setEmail(user.email || ""); // Set Email
@@ -222,8 +222,8 @@ export default function UpdateProfileScreen() {
           {/* Name Field */}
           <View style={styles.card}>
             <TextInput
-              value={firstName}
-              onChangeText={setFirstName}
+              value={fullName}
+              onChangeText={setFullName}
               placeholder="Name"
               style={styles.value}
             />

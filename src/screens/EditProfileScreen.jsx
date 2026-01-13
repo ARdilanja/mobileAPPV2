@@ -896,6 +896,7 @@ const UPLOAD_PROFILE_IMAGE_API =
   'https://api.arinnovate.io/api/candidate/upload-profile-image';
 const EditProfileScreen = () => {
   const [firstName, setFirstName] = useState('');
+  const [fullName, setFullName] = useState('');
   const [lastName, setLastName] = useState('');
   const [jobTitle, setJobTitle] = useState('');
   const [email, setEmail] = useState('');
@@ -922,8 +923,7 @@ const EditProfileScreen = () => {
       if (json?.success && json?.User) {
         const user = json.User;
 
-        setFirstName(user.firstName || '');
-        setLastName(user.lastName || '');
+        setFullName(user.fullName || user.firstName || '');
         setEmail(user.email || '');
         setUserId(user._id || '');
 
@@ -1134,20 +1134,20 @@ const updateProfile = async () => {
           <Text style={styles.label}>First name</Text>
           <TextInput
             style={styles.input}
-            value={firstName}
-            onChangeText={setFirstName}
-            placeholder="Enter first name"
+            value={fullName}
+            onChangeText={setFullName}
+            placeholder="Enter full name"
             placeholderTextColor="#999"
           />
 
-          <Text style={styles.label}>Last name</Text>
+          {/* <Text style={styles.label}>Last name</Text>
           <TextInput
             style={styles.input}
             value={lastName}
             onChangeText={setLastName}
             placeholder="Enter last name"
             placeholderTextColor="#999"
-          />
+          /> */}
 
           <Text style={styles.label}>Job Title</Text>
           <TextInput

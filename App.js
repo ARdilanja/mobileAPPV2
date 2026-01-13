@@ -47,33 +47,24 @@
 import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import AppNavigation from './src/navigations/AppNavigation';
-import { store } from "./src/redux/store.jsx";
 import { Provider } from 'react-redux';
+import { store } from './src/redux/store.jsx';
 import { StripeProvider } from '@stripe/stripe-react-native';
-import messaging from '@react-native-firebase/messaging';
-import { getFCMToken, listenToNotifications, requestNotificationPermission, setupNotificationChannel } from './src/services/notificationService';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { STRIPE_PUBLISHABLE_KEY } from './src/config/api.jsx';
+import {  listenToNotifications, requestNotificationPermission, setupNotificationChannel } from './src/services/notificationService';
 
-import { initAIVoice } from './src/utils/aiVoice';
-
-console.log("GoogleSignin native module =>", GoogleSignin);
 export default function App() {
-
-   useEffect(() => {
-    initAIVoice(); // ✅ Google AI voice init
-  }, []);
-
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: "836429784338-ip12kfe22koc19s8ee2qa3c64qflfeoc.apps.googleusercontent.com", // 🔴 VERY IMPORTANT
+      webClientId: '283074857122-ha8cn3g0mh8ik14fu0avit9jl3cqgvlu.apps.googleusercontent.com',
       offlineAccess: true,
-      forceCodeForRefreshToken: true, 
+      forceCodeForRefreshToken: true,
     });
   }, []);
-  useEffect(() => {
+ useEffect(() => {
     requestNotificationPermission();
-    getFCMToken();
+    // getFCMToken();
     setupNotificationChannel()
   }, []);
   useEffect(() => {
@@ -84,14 +75,9 @@ export default function App() {
   return (
     <Provider store={store}>
       <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY}>
-        <StatusBar
-          translucent={false}
-          backgroundColor="transparent"
-          barStyle="dark-content"
-        />
+        <StatusBar barStyle="dark-content" />
         <AppNavigation />
       </StripeProvider>
     </Provider>
   );
 }
-

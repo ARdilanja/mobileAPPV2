@@ -6,7 +6,7 @@
 // src/config/api.js
 
 // export const API_BASE = "http://192.168.0.8:5000";
-export const API_BASE = "http://192.168.0.13:3000/api";
+export const API_BASE = "http://192.168.0.5:3000/api";
 export const IMAGE_UPLOAD_BASE = "http://10.107.89.251:3000/api";
 // export const API_BASE = "http://192.168.0.9:5000";
 export const LIVEKIT_URL = "wss://teststream-lepxfkhc.livekit.cloud";
