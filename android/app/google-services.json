@@ -7,31 +7,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:836429784338:android:f2316b3b878632587e7fcb",
-        "android_client_info": {
-          "package_name": "com.recrootapp"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBxukhPSAPYaznV5UIdJWxWdZxsHxiP0ck"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:836429784338:android:2e45c21f313274a87e7fcb",
         "android_client_info": {
           "package_name": "com.recrootapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "836429784338-9g650au0cdrp0o5ocnkvpiq8e54v9kg5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.recrootapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "836429784338-ip12kfe22koc19s8ee2qa3c64qflfeoc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBxukhPSAPYaznV5UIdJWxWdZxsHxiP0ck"
@@ -39,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836429784338-ip12kfe22koc19s8ee2qa3c64qflfeoc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

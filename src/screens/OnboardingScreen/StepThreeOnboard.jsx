@@ -31,7 +31,7 @@ const OPTIONS = [
 const StepThreeOnboard = ({ value = '', onChange = () => { } }) => {
   return (
     <View>
-      <Text style={styles.title}>How nwould you describe your level?</Text>
+      <Text style={styles.title}>How would you describe your level?</Text>
 
       <View style={styles.grid}>
         {OPTIONS.map(opt => (
@@ -57,10 +57,10 @@ export default StepThreeOnboard;
 const styles = StyleSheet.create({
   title: {
     fontSize: 32 * scale,
-    fontWeight: '500',
     marginBottom: 24 * scale,
     fontFamily: Fonts.Medium,
     lineHeight: scale * 48,
+    width:358
   },
   grid: {
     flexDirection: 'row',

@@ -66,6 +66,11 @@ import InvoicePreviewScreen from '../../screens/InvoicePreviewScreen';
 import OnboardingContainer from '../../screens/OnboardingScreen/OnboardingContainer';
 import MicCameraCheckScreen  from '../../screens/MicCameraCheckScreen';
 import NinetyDayPlanScreen  from '../../screens/NinetyDayPlanScreen';
+import FewQuickDetails from '../../screens/OnboardingProcessTwo/FewQuickDetails';
+import CongratsScreen  from '../../screens/Rewards/CongratsScreen';
+import BadgesEarnedScreen  from '../../screens/Rewards/BadgesEarnedScreen';
+import RewardUnlockedScreen  from '../../screens/Rewards/RewardUnlockedScreen';
+import SpeakingInPracticeScreen  from '../../screens/SpeakingInPracticeScreen';
 
 // import MyProfile from '../../screens/BottomScreens/MyProfile';
 
@@ -329,6 +334,11 @@ const StackNavigation = () => {
         options={{ headerShown: false, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
+        name="FewQuickDetails"
+        component={FewQuickDetails}
+        // options={{ headerShown: false, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
         name="MicCameraCheckScreen"
         component={MicCameraCheckScreen}
         options={{ headerShown: false, headerTitle: 'Pricing', headerTitleAlign: 'center' }}
@@ -337,6 +347,26 @@ const StackNavigation = () => {
         name="NinetyDayPlanScreen"
         component={NinetyDayPlanScreen}
         options={{ headerShown: false, headerTitle: 'Your 90-day plan', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="CongratsScreen"
+        component={CongratsScreen}
+        options={{ headerShown: false, headerTitle: ' ', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="BadgesEarnedScreen"
+        component={BadgesEarnedScreen}
+        options={{ headerShown: false, headerTitle: ' ', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="RewardUnlockedScreen"
+        component={RewardUnlockedScreen}
+        options={{ headerShown: false, headerTitle: ' ', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="SpeakingInPracticeScreen"
+        component={SpeakingInPracticeScreen}
+        options={{ headerShown: false, headerTitle: ' ', headerTitleAlign: 'center' }}
       />
 
     </Stack.Navigator>

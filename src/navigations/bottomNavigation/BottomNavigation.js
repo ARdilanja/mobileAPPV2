@@ -12,6 +12,7 @@ import PracticeConversationScreen from '../../screens/practiceInterview/Practice
 import PracticeInterviewInfoScreen from '../../screens/practiceInterview/PracticeInterviewInfoScreen';
 import StartInterviewScreen from '../../screens/StartInterviewScreen';
 import JDInputScreen from '../../screens/PracticeStartFlow/JDInputScreen';
+import SpeakingInPracticeScreen from '../../screens/SpeakingInPracticeScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -98,6 +99,13 @@ const BottomNavigation = () => {
       <Tab.Screen
         name="Profile"
         component={ProfileTopScreen}
+        options={{
+          headerShown: false
+        }}
+      />
+      <Tab.Screen
+        name="SpeakingInPracticeScreen"
+        component={SpeakingInPracticeScreen}
         options={{
           headerShown: false
         }}

@@ -13,12 +13,15 @@ import {
 import { useFocusEffect } from "@react-navigation/native";
 import Header from "../components/Header";
 import { Fonts } from "../constants/fonts";
+import { useAudioRecorder } from "../hooks/useAudioRecorder";
+import { transcribeWithDeepgram } from "../utils/deepgram";
 
 const screenWidth = Dimensions.get("window").width;
 const scale = screenWidth / 390;
 
 export default function SessionFeedbackScreen() {
   const flatListRef = useRef(null);
+  const { startRecording, stopRecording } = useAudioRecorder();
 
  const initialMessages = [
   {
@@ -47,7 +50,7 @@ export default function SessionFeedbackScreen() {
 
   const [messages, setMessages] = useState(initialMessages);
   const [showAction, setShowAction] = useState(true);
-
+const [recording, setRecording] = useState(false);
   useFocusEffect(
     useCallback(() => {
       StatusBar.setBarStyle("dark-content");
@@ -55,6 +58,36 @@ export default function SessionFeedbackScreen() {
       StatusBar.setTranslucent(false);
     }, [])
   );
+const handleMicPress = async () => {
+  if (!recording) {
+    await startRecording();
+    setRecording(true);
+    console.log("🎤 Recording started");
+  } else {
+    const path = await stopRecording();
+    setRecording(false);
+
+    console.log("🛑 Recording stopped. File path:", path);
+
+    if (!path) return;
+
+    const transcript = await transcribeWithDeepgram(path);
+
+    // 🔥 CONSOLE OUTPUT
+    console.log("🎙️ Deepgram Transcript:", transcript);
+
+    setMessages(prev => [
+      ...prev,
+      {
+        id: Date.now().toString(),
+        type: "user",
+        text: transcript || "Voice message",
+        audioUri: path,
+        avatar: require("../assets/images/profile-rounded-user.png"),
+      },
+    ]);
+  }
+};
 
  const handleNextFeedback = () => {
   setMessages((prev) => [
@@ -149,7 +182,7 @@ export default function SessionFeedbackScreen() {
         )}
 
         {/* Mic Button (UI only) */}
-      <View style={styles.micWrapper}>
+      <TouchableOpacity style={styles.micWrapper} onPress={handleMicPress}>
   <View style={styles.micCircle}>
     <ImageBackground
       source={require("../assets/images/Micscreen_button.png")}
@@ -163,7 +196,8 @@ export default function SessionFeedbackScreen() {
       />
     </ImageBackground>
   </View>
-</View>
+</TouchableOpacity>
+
 
 
       </ImageBackground>
@@ -211,22 +245,22 @@ avatar: {
 },
 
 messageBubble: {
-  maxWidth: screenWidth  - 32 -48 -12, // 🔥 CRITICAL
+  maxWidth: screenWidth  - 42 -48 -12, // 🔥 CRITICAL
   padding: 12,
-  borderRadius: 14,
+  borderRadius: 24,
 },
 
 
 systemBubble: {
   backgroundColor: "#fff",
   marginLeft:12,
-  borderTopLeftRadius: 4,
+  borderBottomLeftRadius: 4,
 },
 
 userBubble: {
   backgroundColor: "#2563EB",
   marginRight:12,
-  borderTopRightRadius: 4,
+  borderBottomRightRadius: 4,
 },
 
 messageText: {
@@ -262,23 +296,35 @@ userText: {
   alignSelf: "center",
 },
 
-micCircle: {
-  width: 120,
-  height: 120,
-  justifyContent: "center",
-  alignItems: "center",
-},
 
 micBg: {
-  width: 120,
-  height: 120,
+  width: 180,
+  height: 180,
   justifyContent: "center",
   alignItems: "center",
 },
 
 micImage: {
-  width: 32,
-  height: 32,
+  width: 48,
+  height: 48,
+},
+voiceCard: {
+  backgroundColor: '#F6F7FB',
+  padding: 12,
+  borderRadius: 10,
+  marginBottom: 12,
+},
+
+playBtn: {
+  color: '#235DFF',
+  fontFamily: Fonts.SemiBold,
+},
+
+transcriptText: {
+  marginTop: 6,
+  color: '#333',
+  fontFamily: Fonts.Regular,
+  fontSize: 14,
 },
 
 

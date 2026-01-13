@@ -11,6 +11,7 @@ import {
   Modal,
   StatusBar,
 } from 'react-native';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -19,19 +20,38 @@ export default function MoreSection() {
   const navigation = useNavigation();
   const [showLogout, setShowLogout] = React.useState(false);
 
-  const handleLogout = async () => {
-   
-    await AsyncStorage.clear(); 
-    console.log('cleared all');
-    setShowLogout(false);
+   const handleLogout = async () => {
+    try {
+      // ✅ SAFETY CHECK: GoogleSignin exists
+      if (GoogleSignin && GoogleSignin.isSignedIn) {
+        const isSignedIn = await GoogleSignin.isSignedIn();
 
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'SignIn' }],
-      })
-    );
+        if (isSignedIn) {
+          await GoogleSignin.revokeAccess();
+          await GoogleSignin.signOut();
+        }
+      }
+
+      // Clear all stored data
+      await AsyncStorage.clear();
+      console.log('cleared all');
+
+      setShowLogout(false);
+
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'SignIn' }],
+        })
+      );
+    } catch (error) {
+      console.log('Logout Error:', error);
+      Alert.alert('Logout failed', 'Something went wrong during logout.');
+    }
   };
+
+
+
 
   return (
     <View style={styles.container}>
@@ -42,6 +62,7 @@ export default function MoreSection() {
         <MoreItem
           text="Send feedback"
           icon={require('../assets/images/feedback-alt.png')}
+          // onPress={() => navigation.navigate('ProfileFeedbackSummar')}
           onPress={() => navigation.navigate('FeedbackScreen')}
         />
 
@@ -57,7 +78,7 @@ export default function MoreSection() {
         <MoreItem
           text="Invoice"
           icon={require('../assets/images/terms-check.png')}
-          onPress={() => navigation.navigate('SpeakInMeetingsScreen')}
+          onPress={() => navigation.navigate('CongratsScreen')}
         />
 
         <Divider />

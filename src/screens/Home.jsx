@@ -37,10 +37,18 @@ const CONFIDENCE_HEIGHT = Math.round(scale * 90);
 const HORIZONTAL_GUTTER = Math.round(scale * 16);
 
 const getDayIcon = day => {
-  if (day < 3) return require('../assets/images/finish_task.png');
-  if (day === 3) return require('../assets/images/red-cross.png');
-  if (day === 4) return require('../assets/images/round_day1.png');
-  return require('../assets/images/snooze.png');
+  switch (day) {
+    case 1:
+      return require('../assets/images/finish_task.png');   // Day 1
+    case 2:
+      return require('../assets/images/daytwo-circle.png');          // 🔥 Day 2 (NEW)
+    case 3:
+      return require('../assets/images/daytwo-circle.png');          // 🔥 Day 3 (NEW)
+    case 4:
+      return require('../assets/images/snooze.png');    // Active day
+    default:
+      return require('../assets/images/snooze.png');        // Future days
+  }
 };
 
 export default function Home() {
@@ -64,7 +72,7 @@ export default function Home() {
   //  STATUS BAR RESET WHEN SCREEN IS FOCUSED
   useFocusEffect(
     useCallback(() => {
-      StatusBar.setBarStyle('light-content');
+      StatusBar.setBarStyle('dark-content');
       StatusBar.setBackgroundColor('transparent');
       StatusBar.setTranslucent(true);
     }, []),
@@ -150,7 +158,7 @@ export default function Home() {
               <Text style={styles.journeyTitle}>Journey</Text>
               <MaskedView
                 maskElement={
-                  <Text style={styles.journeyCount}>5 days continuous</Text>
+                  <Text style={styles.journeyCount}> Day 1 Completed</Text>
                 }
               >
                 <LinearGradient
@@ -172,8 +180,8 @@ export default function Home() {
             >
               {Array.from({ length: 10 }).map((_, index) => {
                 const day = index + 1;
-                const isRed = day === 3;
-                const isActive = day === 4;
+                const isGreen = day === 1;
+                const isActive = null;
 
                 return (
                   <View key={day} style={styles.dayWrapper}>
@@ -182,18 +190,18 @@ export default function Home() {
                       style={[
                         styles.dayItem,
                         isActive && styles.activeDayBox,
-                        isRed && styles.redDayBox,
+                        isGreen && styles.redDayBox,
                       ]}
                     >
                       <Image
                         source={getDayIcon(day)}
-                        style={[styles.dayIcon, isRed && styles.redDayIcon]}
+                        style={[styles.dayIcon]}
                       />
                       <Text
                         style={[
                           styles.dayText,
                           isActive && styles.activeDayText,
-                          isRed && styles.redDayText,
+                          // isRed && styles.redDayText,
                         ]}
                       >
                         Day {day}
@@ -378,7 +386,7 @@ const styles = StyleSheet.create({
   },
 
   redDayBox: {
-    backgroundColor: '#FFECEC',
+    backgroundColor: '#E7FDEA',
   },
 
   dayText: {

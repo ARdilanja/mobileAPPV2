@@ -37,7 +37,11 @@ const OPTIONS = [
 const StepFourOnboard = ({ value = '', onChange = () => { } }) => {
   return (
     <View>
-      <Text style={styles.title}>What worries you the most?</Text>
+      {/* <Text style={styles.title}>One last thing.</Text> */}
+      <Text style={styles.title}>
+        What’s your working situation like?
+      </Text>
+
 
       <View style={styles.grid}>
         {OPTIONS.map(opt => (
@@ -47,8 +51,8 @@ const StepFourOnboard = ({ value = '', onChange = () => { } }) => {
             icon={opt.icon}
             iconBgColor={opt.iconBgColor}
             accentColor={opt.accentColor}
-            mode="card" 
-            selectionType="single" 
+            mode="card"
+            selectionType="single"
             selected={value === opt.title}
             onPress={() => onChange(opt.title)}
           />
@@ -72,9 +76,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-   gap: 10 * scale,
+    gap: 10 * scale,
     rowGap: 8 * scale,
-    marginTop:10*scale,
+    marginTop: 10 * scale,
 
   },
 });

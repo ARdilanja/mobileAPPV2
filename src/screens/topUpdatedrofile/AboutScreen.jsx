@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F6F6F6',
     paddingHorizontal: width * 0.04, // responsive margin
-    paddingTop: height * 0.02,
+    // paddingTop: height * 0.02,
   },
 
   card: {
