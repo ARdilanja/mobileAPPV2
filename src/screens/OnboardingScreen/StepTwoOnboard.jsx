@@ -470,10 +470,10 @@ const styles = StyleSheet.create({
   },
 leftDeleteIcon: {
   position: 'absolute',
-  bottom: 0,                    // keep anchor
-  left: 10,                     // keep anchor
+  top: 0,                    // keep anchor
+  right: 0,                     // keep anchor
   transform: [
-    { translateX: -110 },         // 🔥 move LEFT near icon
+    // { translateX: -110 },         // 🔥 move LEFT near icon
     { translateY: -70 },          // 🔥 move UP near icon
   ],
   zIndex: 50,

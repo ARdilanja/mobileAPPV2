@@ -389,7 +389,7 @@ export default function OnboardingContainer() {
       StatusBar.setBarStyle('dark-content');
       if (Platform.OS === 'android') {
         StatusBar.setBackgroundColor('transparent');
-        StatusBar.setTranslucent(true);
+        StatusBar.setTranslucent(false);
       }
     }, [])
   );
