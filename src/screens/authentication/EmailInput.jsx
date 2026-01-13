@@ -12,9 +12,12 @@ import Gradient from '../../constants/Gradient';
 import MessagePopup from '../../components/MessagePopup';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { saveFcmTokenToBackend } from '../../services/notificationService';
+
 import { Fonts } from '../../constants/fonts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE } from '../../config/api';
+import { getFCMToken } from '../../services/notificationService';
 const screenWidth = Dimensions.get("window").width;
 const scale = screenWidth / 390;
 
@@ -46,11 +49,14 @@ const EmailInput = () => {
     }
 
     try {
+      const fcmToken = await getFCMToken();
       const response = await axios.post(
         `${API_BASE}/auth/login-password`,
         {
           email,
           password,
+          fcmToken: fcmToken,
+
         }
       );
 
@@ -58,6 +64,9 @@ const EmailInput = () => {
       console.log('email', email)
       console.log('password', password)
       const { User, token, refreshToken } = response.data;
+      // 🔔 SAVE FCM TOKEN AFTER LOGIN
+      await saveFcmTokenToBackend(token);
+
       console.log('User', User)
       console.log('token', token)
       console.log('refreshToken', refreshToken)

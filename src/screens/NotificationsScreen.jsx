@@ -1,8 +1,10 @@
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, StyleSheet, FlatList, Dimensions, StatusBar } from 'react-native';
 import NotificationItem from '../components/NotificationItem';
 import { Fonts } from '../constants/fonts';
+import Header from '../components/Header';
+import { useFocusEffect } from '@react-navigation/native';
 
 const screenHeight = Dimensions.get("window").height;
 
@@ -23,6 +25,14 @@ const NotificationsScreen = () => {
     ],
   ];
 
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBackgroundColor('transparent');
+      StatusBar.setTranslucent(false);
+    }, []),
+  );
+
   const renderItem = ({ item, index }) => {
     if (item.type === 'header') {
       return <Text style={styles.sectionTitle}>{item.title}</Text>;
@@ -33,9 +43,6 @@ const NotificationsScreen = () => {
 
     return (
       <View>
-        <StatusBar barStyle="dark-content" backgroundColor="transparent"
-          translucent={true} />
-
         <NotificationItem
           item={item}
           isLast={isLastInSection}
@@ -45,12 +52,15 @@ const NotificationsScreen = () => {
 
 
   return (
-    <FlatList
-      data={data}
-      keyExtractor={(_, index) => index.toString()}
-      renderItem={renderItem}
-      contentContainerStyle={styles.container}
-    />
+    <View>
+      <Header title="Notification" />
+      <FlatList
+        data={data}
+        keyExtractor={(_, index) => index.toString()}
+        renderItem={renderItem}
+        contentContainerStyle={styles.container}
+      />
+    </View>
   );
 };
 
