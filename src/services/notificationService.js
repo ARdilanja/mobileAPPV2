@@ -150,6 +150,7 @@ export async function displaySystemNotification(title, body) {
     android: {
       channelId: 'default',
       importance: AndroidImportance.HIGH,
+      smallIcon: 'ic_notification',
       sound: 'default',
       pressAction: { id: 'default' },
     },
