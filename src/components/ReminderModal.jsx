@@ -24,7 +24,7 @@ const minutes = Array.from({ length: 60 }, (_, i) =>
 );
 const ampmList = ['AM', 'PM'];
 
-export default function ReminderModal({ visible, onClose, onSuccess, }) {
+export default function ReminderModal({ visible, onClose, onConfirm }) {
   const [hour, setHour] = useState('10');
   const [minute, setMinute] = useState('00');
   const [ampm, setAmPm] = useState('AM');
@@ -33,6 +33,15 @@ export default function ReminderModal({ visible, onClose, onSuccess, }) {
     const index = Math.round(e.nativeEvent.contentOffset.y / ITEM_HEIGHT);
     setter(list[index]);
   };
+
+  const to24HourFormat = (hour, minute, ampm) => {
+  let h = parseInt(hour, 10);
+
+  if (ampm === 'PM' && h !== 12) h += 12;
+  if (ampm === 'AM' && h === 12) h = 0;
+
+  return `${String(h).padStart(2, '0')}:${minute}`;
+};
 
   return (
     <Modal visible={visible} transparent animationType="slide">
@@ -93,16 +102,20 @@ export default function ReminderModal({ visible, onClose, onSuccess, }) {
           {/* Button */}
           <Pressable
             style={styles.button}
-            onPress={() => {
-              onClose();
-              setTimeout(() => {
-                onSuccess?.();
-              }, 200);
-            }}
+           onPress={() => {
+  const time24 = to24HourFormat(hour, minute, ampm);
+
+  onConfirm?.({
+    time: time24,                // "11:00"
+    displayTime: `${hour}:${minute} ${ampm}` // optional
+  });
+
+  onClose();
+}}
+
           >
             <Text style={styles.buttonText}>Set reminder</Text>
           </Pressable>
-
 
         </View>
       </View>
@@ -122,15 +135,16 @@ function Wheel({
   const scrollRef = useRef(null);
   const padding = ITEM_HEIGHT * Math.floor(visibleItems / 2);
 
-  useEffect(() => {
-    const index = data.indexOf(selectedValue);
-    if (index !== -1 && scrollRef.current) {
-      scrollRef.current.scrollTo({
-        y: index * ITEM_HEIGHT,
-        animated: false,
-      });
-    }
-  }, [selectedValue]);
+useEffect(() => {
+  const index = data.indexOf(selectedValue);
+  if (index !== -1 && scrollRef.current) {
+    scrollRef.current.scrollTo({
+      y: index * ITEM_HEIGHT,
+      animated: false,
+    });
+  }
+}, [selectedValue, data]);
+
 
   return (
     <ScrollView
@@ -171,14 +185,12 @@ const styles = StyleSheet.create({
   },
 
   sheet: {
-    height: 484 * scale,
+    height: 484,
     backgroundColor: '#FFF',
-    borderTopLeftRadius: 24 * scale,
-    borderTopRightRadius: 24 * scale,
-    paddingHorizontal: 16 * scale,
-    // paddingBottom: 100*scale,   
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    paddingHorizontal: 16,
   },
-
 
   skip: {
     position: 'absolute',
@@ -221,14 +233,14 @@ const styles = StyleSheet.create({
   },
 
   timerWrapper: {
-    marginTop: 16 * scale,
+    marginTop: 24 * scale,
   },
 
   timerTitle: {
     fontSize: 18 * scale,
     fontFamily: Fonts.Medium,
     // textAlign: 'center',
-    marginBottom: 24 * scale,
+    marginBottom: 12 * scale,
   },
 
   wheelContainer: {
@@ -260,22 +272,19 @@ const styles = StyleSheet.create({
 
   itemText: {
     fontSize: 32 * scale,
-    lineHeight: ITEM_HEIGHT,      
+    lineHeight: ITEM_HEIGHT,      // ✅ KEY FIX
     fontFamily: Fonts.Medium,
-    lineHeight: 48 * scale,
+    // lineHeight: 48 * scale,
     color: '#666666',
     textAlignVertical: 'center',
-    marginBottom:16*scale
   },
 
   activeItemText: {
     fontSize: 32 * scale,
-    lineHeight: ITEM_HEIGHT,      
+    lineHeight: ITEM_HEIGHT,      // ✅ KEY FIX
     fontFamily: Fonts.Medium,
-    lineHeight: 48 * scale,
-    color: "#000",
-    marginBottom:16*scale
-               
+    // lineHeight: 48 * scale,
+    color: "#000"           // ✅ emphasis without movement
   },
 
 
@@ -286,10 +295,10 @@ const styles = StyleSheet.create({
 
   button: {
     position: 'absolute',
-    bottom: 24 * scale,
-    left: 16 * scale,
-    right: 16 * scale,
-    height: 56 * scale,
+    bottom: 40,
+    left: 16,
+    right: 16,
+    height: 56,
     backgroundColor: 'rgba(35,93,255,1)',
     borderRadius: 48,
     justifyContent: 'center',
@@ -298,8 +307,7 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: '#FFF',
-    fontSize: 18 * scale,
+    fontSize: 16,
     fontFamily: Fonts.Medium,
-    lineHeight: 24 * scale,
   },
 });
