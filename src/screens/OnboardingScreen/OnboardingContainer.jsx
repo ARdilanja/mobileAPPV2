@@ -329,7 +329,7 @@ export default function OnboardingContainer() {
 
     if (step === 1) {
       speak(
-        "Before we start, we just want to understand what’s going on for you at work. What’s your biggest challenge at work right now?"
+        "Before we start, we just want to understand what’s going on for you at work,so we can personalise this for you. What’s your biggest challenge at work right now?"
       );
     }
 
@@ -389,7 +389,7 @@ export default function OnboardingContainer() {
       StatusBar.setBarStyle('dark-content');
       if (Platform.OS === 'android') {
         StatusBar.setBackgroundColor('transparent');
-        StatusBar.setTranslucent(true);
+        StatusBar.setTranslucent(false);
       }
     }, [])
   );

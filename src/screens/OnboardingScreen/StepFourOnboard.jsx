@@ -37,9 +37,9 @@ const OPTIONS = [
 const StepFourOnboard = ({ value = '', onChange = () => { } }) => {
   return (
     <View>
-      <Text style={styles.title}>One last thing.</Text>
-      <Text style={styles.subtitle}>
-        What’s your working situation like right now?
+      {/* <Text style={styles.title}>One last thing.</Text> */}
+      <Text style={styles.title}>
+        What’s your working situation like?
       </Text>
 
 

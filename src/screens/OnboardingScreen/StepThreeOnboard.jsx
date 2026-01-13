@@ -57,10 +57,10 @@ export default StepThreeOnboard;
 const styles = StyleSheet.create({
   title: {
     fontSize: 32 * scale,
-    fontWeight: '500',
     marginBottom: 24 * scale,
     fontFamily: Fonts.Medium,
     lineHeight: scale * 48,
+    width:358
   },
   grid: {
     flexDirection: 'row',
