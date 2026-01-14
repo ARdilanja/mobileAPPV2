@@ -15,7 +15,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Fonts } from '../constants/fonts';
-import planData from '../content/plan30.json'
+
 const { width, height } = Dimensions.get('window');
 
 const BASE_WIDTH = 390;
@@ -35,32 +35,6 @@ const PRACTICE_CARD_HEIGHT = Math.round(scale * 40);
 
 const CONFIDENCE_HEIGHT = Math.round(scale * 90);
 const HORIZONTAL_GUTTER = Math.round(scale * 16);
-
-const JOURNEY_STATUS = {
-  completed: {
-    bg: '#E7FDEA',
-    text: '#1E9E62',
-    icon: require('../assets/images/finish_task.png'),
-  },
-  missed: {
-    bg: '#F0F0F0',
-    text: '#8B8B8B',
-    icon: require('../assets/images/cross-mark.png'),
-    tint: '#8B8B8B',
-  },
-  active: {
-    bg: '#EEF4FF',
-    text: '#2D6BFF',
-    icon: require('../assets/images/active-circle.png'),
-    border: '#2D6BFF',
-  },
-  upcoming: {
-    bg: '#F3F4F6',
-    text: '#999',
-    icon: require('../assets/images/snooze.png'),
-  },
-};
-
 
 const getDayIcon = day => {
   switch (day) {
@@ -82,17 +56,8 @@ export default function Home() {
 
   // Notification state
   const [notificationState, setNotificationState] = useState('active');
-  const [selectedDay, setSelectedDay] = useState(null);
-  const journeyDays = planData.days.slice(0, 10);
   // 'default' | 'tooltip' | 'active'
-  const currentDay =
-    journeyDays.find(d => d.status === 'active') ||
-    journeyDays.find(d => d.status === 'missed') ||
-    journeyDays[journeyDays.length - 1];
 
-  useEffect(() => {
-    setSelectedDay(currentDay);
-  }, []);
   // AUTO SET NOTIFICATION (API / unread logic)
   useEffect(() => {
     const unreadCount = 1; // <-- replace with API value
@@ -191,31 +156,18 @@ export default function Home() {
           <View style={styles.journeyCard}>
             <View style={styles.journeyHeader}>
               <Text style={styles.journeyTitle}>Journey</Text>
-              {/* <MaskedView
-                maskElement={
-                  <Text style={styles.journeyCount}>
-                    Day {selectedDay?.dayNumber} {selectedDay?.status}
-                  </Text>
-                }
-              > */}
               <MaskedView
-                style={styles.journeyMask}
                 maskElement={
-                  <View style={styles.journeyMask}>
-                    <Text style={styles.journeyCount}>
-                      Day {selectedDay?.dayNumber} {selectedDay?.status}
-                    </Text>
-                  </View>
+                  <Text style={styles.journeyCount}> Day 1 Completed</Text>
                 }
               >
-
                 <LinearGradient
                   colors={['#0178FF', '#740CE3']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}
                 >
                   <Text style={[styles.journeyCount, { opacity: 0 }]}>
-                    Day 99 completed
+                    5 days continuous
                   </Text>
                 </LinearGradient>
               </MaskedView>
@@ -226,7 +178,7 @@ export default function Home() {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.journeyRow}
             >
-              {/* {Array.from({ length: 10 }).map((_, index) => {
+              {Array.from({ length: 10 }).map((_, index) => {
                 const day = index + 1;
                 const isGreen = day === 1;
                 const isActive = null;
@@ -258,45 +210,7 @@ export default function Home() {
                     {isActive && <View style={styles.activeBottomLine} />}
                   </View>
                 );
-              })} */}
-              {journeyDays.map(day => {
-                const style = JOURNEY_STATUS[day.status];
-                const isSelected = selectedDay?.dayNumber === day.dayNumber;
-
-                return (
-                  <TouchableOpacity
-                    key={day.dayNumber}
-                    style={styles.dayWrapper}
-                    onPress={() => setSelectedDay(day)}
-                    activeOpacity={0.8}
-                  >
-                    <View
-                      style={[
-                        styles.dayItem,
-                        { backgroundColor: style.bg },
-                        day.status === 'active' && {
-                          borderWidth: 1.5,
-                          borderColor: style.border,
-                        },
-                      ]}
-                    >
-                      <Image
-                        source={style.icon}
-                        style={[
-                          styles.dayIcon,
-                          style.tint && { tintColor: style.tint },   // 👈 auto-apply tint if exists
-                        ]}
-                      />
-                      <Text style={[styles.dayText, { color: style.text }]}>
-                        Day {day.dayNumber}
-                      </Text>
-                    </View>
-
-                    {day.status === 'active' && <View style={styles.activeBottomLine} />}
-                  </TouchableOpacity>
-                );
               })}
-
             </ScrollView>
           </View>
         </View>
@@ -432,10 +346,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontFamily: Fonts.Regular,
   },
-  journeyMask: {
-    width: 140 * scale,   // lock width so text never shifts
-    alignItems: 'flex-end',
-  },
+
   journeyCount: {
     fontSize: 14 * scale,
     fontFamily: Fonts.Medium,

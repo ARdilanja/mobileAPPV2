@@ -1,4 +1,4 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import {
   View,
@@ -12,12 +12,11 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { Fonts } from '../constants/fonts';
 import DayCompleScrolComponent from '../components/invitedInterview/DayCompleScrolComponent';
-import planData from '../content/plan30.json'
+
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 
 export default function SpeakingInPracticeScreen() {
-  const navigation = useNavigation();
   useFocusEffect(
     useCallback(() => {
       StatusBar.setBarStyle('dark-content');
@@ -25,7 +24,7 @@ export default function SpeakingInPracticeScreen() {
       StatusBar.setTranslucent(true);
     }, []),
   );
-  const todayPlan = planData.days.find(d => d.status === 'active');
+
   return (
     <LinearGradient
       colors={[
@@ -40,29 +39,17 @@ export default function SpeakingInPracticeScreen() {
     >
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Text style={styles.todayText}>Today’s session</Text>
-        <Text style={styles.title}>
-          {todayPlan?.title || "Today's session"}
-        </Text>
+        <Text style={styles.title}>Speaking up in meetings</Text>
         <Text style={styles.week}>Week 1</Text>
 
         {/* ✅ Reused Component */}
-        <DayCompleScrolComponent
-          days={planData.days.map(d => ({
-            day: d.dayNumber,
-            status: d.status
-          }))}
-        />
-
-
+        <DayCompleScrolComponent style={styles.dayScrollpart} totalDays={9} activeDay={4} />
 
         <Pressable style={styles.primaryBtn}>
           <Text style={styles.primaryBtnText}>Start today’s session</Text>
         </Pressable>
 
-        <Pressable
-          style={styles.secondaryBtn}
-          onPress={() => navigation.navigate('NinetyDayPlanScreen')}
-        >
+        <Pressable style={styles.secondaryBtn}>
           <Text style={styles.secondaryBtnText}>View full plan</Text>
         </Pressable>
 

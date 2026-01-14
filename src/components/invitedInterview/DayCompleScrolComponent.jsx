@@ -13,127 +13,55 @@ const { width } = Dimensions.get('window');
 const scale = width / 390;
 const DAY_SIZE = Math.round(scale * 42);
 
-// /* SIMPLIFIED ICON LOGIC */
-// const getDayIcon = day => {
-//     if (day === 1) return require('../../assets/images/finish_task.png');
-//     if (day === 2 || day === 3)
-//         return require('../../assets/images/day_pending.png');
-//     return require('../../assets/images/snooze.png');
-// };
-const JOURNEY_STATUS = {
-  completed: {
-    bg: '#E7FDEA',
-    text: '#1E9E62',
-    icon: require('../../assets/images/finish_task.png'),
-  },
-  missed: {
-    bg: '#F0F0F0',
-    text: '#8B8B8B',
-    icon: require('../../assets/images/cross-mark.png'),
-    tint: '#8B8B8B',
-  },
-  active: {
-    bg: '#EEF4FF',
-    text: '#2D6BFF',
-    icon: require('../../assets/images/active-circle.png'),
-    border: '#2D6BFF',
-  },
-  upcoming: {
-    bg: '#FFFFFF',
-    text: '#8E8E93',
-    icon: require('../../assets/images/snooze.png'),
-  },
+/* SIMPLIFIED ICON LOGIC */
+const getDayIcon = day => {
+    if (day === 1) return require('../../assets/images/finish_task.png');
+    if (day === 2 || day === 3)
+        return require('../../assets/images/day_pending.png');
+    return require('../../assets/images/snooze.png');
 };
 
-// const DayCompleScrolComponent = ({ totalDays = 9 }) => {
-//     return (
-//         <ScrollView
-//             horizontal
-//             showsHorizontalScrollIndicator={false}
-//             contentContainerStyle={styles.row}
-//         >
-//             {Array.from({ length: totalDays }).map((_, index) => {
-//                 const day = index + 1;
-//                 const isCompleted = day === 1;
+const DayCompleScrolComponent = ({ totalDays = 9 }) => {
+    return (
+        <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.row}
+        >
+            {Array.from({ length: totalDays }).map((_, index) => {
+                const day = index + 1;
+                const isCompleted = day === 1;
 
-//                 return (
-//                     <View key={day} style={styles.dayWrapper}>
-//                         <View
-//                             style={[
-//                                 styles.dayItem,
-//                                 isCompleted && styles.completedDayBox,
-//                             ]}
-//                         >
-//                             <Image
-//                                 source={getDayIcon(day)}
-//                                 style={[
-//                                     styles.dayIcon,
-//                                     isCompleted && styles.completedIcon,
-//                                 ]}
-//                             />
+                return (
+                    <View key={day} style={styles.dayWrapper}>
+                        <View
+                            style={[
+                                styles.dayItem,
+                                isCompleted && styles.completedDayBox,
+                            ]}
+                        >
+                            <Image
+                                source={getDayIcon(day)}
+                                style={[
+                                    styles.dayIcon,
+                                    isCompleted && styles.completedIcon,
+                                ]}
+                            />
 
-//                             <Text
-//                                 style={[
-//                                     styles.dayText,
-//                                     isCompleted && styles.completedDayText,
-//                                 ]}
-//                             >
-//                                 Day {day}
-//                             </Text>
-//                         </View>
-//                     </View>
-//                 );
-//             })}
-//         </ScrollView>
-//     );
-// };
-const DayCompleScrolComponent = ({ days = [] }) => {
-  return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.row}
-    >
-      {days.map(item => {
-        const style = JOURNEY_STATUS[item.status] || JOURNEY_STATUS.upcoming;
-
-        return (
-          <View key={item.day} style={styles.dayWrapper}>
-            <View
-              style={[
-                styles.dayItem,
-                { backgroundColor: style.bg },
-                style.border && {
-                  borderWidth: 1.5,
-                  borderColor: style.border,
-                },
-              ]}
-            >
-              <Image
-                source={style.icon}
-                style={[
-                  styles.dayIcon,
-                  style.tint && { tintColor: style.tint }, // 👈 gray cross mark
-                ]}
-              />
-
-              <Text
-                style={[
-                  styles.dayText,
-                  { color: style.text },
-                  item.status === 'missed' && {
-                    textDecorationLine: 'line-through',
-                  },
-                ]}
-              >
-                Day {item.day}
-              </Text>
-            </View>
-          </View>
-        );
-      })}
-    </ScrollView>
-  );
+                            <Text
+                                style={[
+                                    styles.dayText,
+                                    isCompleted && styles.completedDayText,
+                                ]}
+                            >
+                                Day {day}
+                            </Text>
+                        </View>
+                    </View>
+                );
+            })}
+        </ScrollView>
+    );
 };
 
 export default DayCompleScrolComponent;
@@ -150,10 +78,9 @@ const styles = StyleSheet.create({
     },
 
     dayItem: {
-        minWidth: DAY_SIZE,
+        width: DAY_SIZE,
         height: 48 * scale,
-        paddingHorizontal:3,
-        // borderRadius: 8 *scale,
+        borderRadius: 8 *scale,
         backgroundColor: 'transparent',
         alignItems: 'center',
         justifyContent: 'center',
