@@ -1,0 +1,189 @@
+{
+  "_id": "plan_30_days_sample",
+  "userId": "user_12345",
+  "phase": 1,
+  "totalDays": 30,
+  "startDate": "2026-01-09T00:00:00.000Z",
+  "days": [
+    {
+      "dayNumber": 1,
+      "date": "2026-01-09",
+      "title": "Saying No: boundaries",
+      "status": "completed"
+    },
+    {
+      "dayNumber": 2,
+      "date": "2026-01-10",
+      "title": "Presenting Ideas: explaining decisions",
+      "status": "completed"
+    },
+    {
+      "dayNumber": 3,
+      "date": "2026-01-11",
+      "title": "Clear communication",
+      "status": "missed"
+    },
+    {
+      "dayNumber": 4,
+      "date": "2026-01-12",
+      "title": "Active listening",
+      "status": "missed"
+    },
+    {
+      "dayNumber": 5,
+      "date": "2026-01-13",
+      "title": "Handling objections",
+      "status": "active"
+    },
+    {
+      "dayNumber": 6,
+      "date": "2026-01-14",
+      "title": "Confidence building",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 7,
+      "date": "2026-01-15",
+      "title": "Self reflection",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 8,
+      "date": "2026-01-16",
+      "title": "Goal setting",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 9,
+      "date": "2026-01-17",
+      "title": "Time management",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 10,
+      "date": "2026-01-18",
+      "title": "Handling feedback",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 11,
+      "date": "2026-01-19",
+      "title": "Conflict resolution",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 12,
+      "date": "2026-01-20",
+      "title": "Public speaking basics",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 13,
+      "date": "2026-01-21",
+      "title": "Storytelling skills",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 14,
+      "date": "2026-01-22",
+      "title": "Persuasion techniques",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 15,
+      "date": "2026-01-23",
+      "title": "Negotiation basics",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 16,
+      "date": "2026-01-24",
+      "title": "Emotional intelligence",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 17,
+      "date": "2026-01-25",
+      "title": "Building rapport",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 18,
+      "date": "2026-01-26",
+      "title": "Leadership mindset",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 19,
+      "date": "2026-01-27",
+      "title": "Decision making",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 20,
+      "date": "2026-01-28",
+      "title": "Stress management",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 21,
+      "date": "2026-01-29",
+      "title": "Adaptability",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 22,
+      "date": "2026-01-30",
+      "title": "Creative thinking",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 23,
+      "date": "2026-01-31",
+      "title": "Problem solving",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 24,
+      "date": "2026-02-01",
+      "title": "Professional etiquette",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 25,
+      "date": "2026-02-02",
+      "title": "Personal branding",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 26,
+      "date": "2026-02-03",
+      "title": "Networking skills",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 27,
+      "date": "2026-02-04",
+      "title": "Career planning",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 28,
+      "date": "2026-02-05",
+      "title": "Work-life balance",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 29,
+      "date": "2026-02-06",
+      "title": "Long-term vision",
+      "status": "upcoming"
+    },
+    {
+      "dayNumber": 30,
+      "date": "2026-02-07",
+      "title": "Final reflection",
+      "status": "upcoming"
+    }
+  ]
+}
