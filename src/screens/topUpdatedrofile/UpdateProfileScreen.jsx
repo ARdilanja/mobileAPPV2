@@ -29,7 +29,7 @@ import {
 } from "../../services/userService";
 
 import { uploadImageToS3 } from "../../services/s3Upload";
-import { API_BASE } from "../../config/api";
+import { API_BASE } from '@env';
 
 const { width, height: screenHeight } = Dimensions.get("window");
 const scale = width / 390;

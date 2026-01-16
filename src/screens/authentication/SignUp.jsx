@@ -7,6 +7,11 @@ import { KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } fr
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
+import { API_BASE } from '@env';
+
+
+
+
 const screenWidth = Dimensions.get("window").width;
 const scale = screenWidth / 390;
 
@@ -89,9 +94,10 @@ const SignUp = () => {
         console.log('payload', payload)
         try {
             const res = await axios.post(
-                'http://192.168.0.4:3000/api/auth/register',
+                `${API_BASE}/auth/register`,
                 payload
             );
+
 
             console.log('res signup', res)
 

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import API_BASE from '../../config/api'
+import { API_BASE } from '@env';
 // change to your local IP for real device
 
 // 🔹 Async thunk (API call)
@@ -9,12 +9,12 @@ export const extractSkillsFromJD = createAsyncThunk(
   async (jobDescription, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `http://192.168.0.4:3000/api/jobDesc/extract-skills`,
+        `${API_BASE}/jobDesc/extract-skills`,
         { jobDescription }
       );
       console.log('response.data', response.data)
 
-      return response.data.data; 
+      return response.data.data;
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || 'Job Description request failed'
@@ -32,7 +32,7 @@ const jdSlice = createSlice({
     loading: false,
     error: null,
   },
-   reducers: {
+  reducers: {
     clearJdData: (state) => {
       state.jobRole = null;
       state.skills = [];

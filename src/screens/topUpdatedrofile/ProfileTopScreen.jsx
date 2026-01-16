@@ -223,7 +223,7 @@
 
 
 
-import React, { useCallback, useState } from 'react'; // Added useState
+import React, { useCallback, useEffect, useState } from 'react'; // Added useState
 import {
   View,
   Text,
@@ -243,7 +243,7 @@ import Header from '../../components/Header';
 // 1. IMPORT NECESSARY SERVICES
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getUserProfile } from "../../services/userService";
-import { API_BASE } from "../../config/api";
+import { API_BASE } from '@env';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -308,6 +308,10 @@ export default function ProfileTopScreen() {
       fetchProfile();
     }, [])
   );
+
+   useEffect(() => {
+    console.log("ENV CHECK =>", API_BASE);
+  }, []);
 
   return (
     <View style={styles.wrapper}>

@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import Api from '../../services/authApi';
-import { API_BASE } from '../../config/api';
+import { API_BASE } from '@env';
 import axios from 'axios';
 
 export const registerUser = createAsyncThunk(

@@ -208,7 +208,7 @@ import MessagePopup from "../../components/MessagePopup";
 import { Fonts } from "../../constants/fonts";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_BASE } from "../../config/api";
+import { API_BASE } from '@env';
 
 const { width } = Dimensions.get("window");
 const scale = width / 390;

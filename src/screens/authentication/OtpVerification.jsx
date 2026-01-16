@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { API_BASE } from '../../config/api';
+import { API_BASE } from '@env';
 
 
 const screenWidth = Dimensions.get('window').width;
@@ -44,9 +44,12 @@ const OtpVerification = ({ route }) => {
 
     try {
       // Step 2: Call backend PUT API only after OTP match
-      const response = await axios.put(`http://192.168.0.4:3000/api/auth/verify-email/${userId}`, {
-        code: true,
-      });
+      const response = await axios.put(
+        `${API_BASE}/auth/verify-email/${userId}`,
+        {
+          code: true,
+        }
+      );
       const { User, token, refreshToken } = response.data;
 
       await AsyncStorage.multiSet([

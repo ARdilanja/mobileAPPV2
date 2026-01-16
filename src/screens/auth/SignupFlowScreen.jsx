@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, verifyOtp } from '../../redux/slices/authSlice';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import { API_BASE } from '../../config/api';
+import { API_BASE } from '@env';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 

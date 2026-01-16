@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import MessagePopup from '../../components/MessagePopup';
 import { Fonts } from '../../constants/fonts';
-import { API_BASE } from '../../config/api';
+import { API_BASE } from '@env';
 import axios from 'axios';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');

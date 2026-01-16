@@ -16,7 +16,7 @@ import { saveFcmTokenToBackend } from '../../services/notificationService';
 
 import { Fonts } from '../../constants/fonts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { API_BASE } from '../../config/api';
+import { API_BASE } from '@env';
 import { getFCMToken } from '../../services/notificationService';
 const screenWidth = Dimensions.get("window").width;
 const scale = screenWidth / 390;
@@ -70,6 +70,8 @@ const EmailInput = () => {
       console.log('User', User)
       console.log('token', token)
       console.log('refreshToken', refreshToken)
+
+
 
 
       // ✅ Store tokens (example – adapt to Redux / SecureStorage)
