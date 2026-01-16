@@ -3,7 +3,7 @@ import { View, FlatList , Text, TouchableOpacity } from 'react-native';
 import InterviewCard from './InterviewCard';
 import MobileUnsupportedModal from './MobileUnsupportedModal';
 import infosys from '../../assets/images/infosys.jpg'
-import { API_BASE_URL } from '../../config/api';
+import { API_BASE_URL } from '@env';
 const EmployerInterviewList = ({ onShowUnsupported , interviews=[]}) => {
   console.log('interviews', interviews)
   // const data = [

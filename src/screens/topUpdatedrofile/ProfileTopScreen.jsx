@@ -243,7 +243,7 @@ import Header from '../../components/Header';
 // 1. IMPORT NECESSARY SERVICES
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getUserProfile } from "../../services/userService";
-import { API_BASE } from "../../config/api";
+import { API_BASE } from '@env';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;

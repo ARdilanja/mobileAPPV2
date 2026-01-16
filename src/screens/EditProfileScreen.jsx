@@ -878,7 +878,10 @@ import {
 import { Fonts } from '../constants/fonts';
 import RemovePhotoModal from '../components/RemovePhotoModal';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { API_BASE, IMAGE_UPLOAD_BASE } from '../config/api';
+// import { API_BASE, IMAGE_UPLOAD_BASE } from '../config/api';
+
+import { API_BASE } from '@env';
+
 
 const cameraIcon = require('../assets/images/camera.png');
 const galleryIcon = require('../assets/images/gallery.png');
@@ -896,7 +899,6 @@ const UPLOAD_PROFILE_IMAGE_API =
   'https://api.arinnovate.io/api/candidate/upload-profile-image';
 const EditProfileScreen = () => {
   const [firstName, setFirstName] = useState('');
-  const [fullName, setFullName] = useState('');
   const [lastName, setLastName] = useState('');
   const [jobTitle, setJobTitle] = useState('');
   const [email, setEmail] = useState('');
@@ -923,7 +925,8 @@ const EditProfileScreen = () => {
       if (json?.success && json?.User) {
         const user = json.User;
 
-        setFullName(user.fullName || user.firstName || '');
+        setFirstName(user.firstName || '');
+        setLastName(user.lastName || '');
         setEmail(user.email || '');
         setUserId(user._id || '');
 
@@ -980,71 +983,70 @@ const EditProfileScreen = () => {
     });
   };
 
-const uploadProfileImage = async () => {
-  if (!profileImage || !userId) return;
+  const uploadProfileImage = async () => {
+    if (!profileImage || !userId) return;
 
-  const formData = new FormData();
-  
-  // Create the file object
-  const fileToUpload = {
-    uri: Platform.OS === 'android' ? profileImage.uri : profileImage.uri.replace('file://', ''),
-    type: 'image/jpeg', // Try hardcoding this first to test
-    name: 'profile_picture.jpg',
+    const formData = new FormData();
+
+    // Create the file object
+    const fileToUpload = {
+      uri: Platform.OS === 'android' ? profileImage.uri : profileImage.uri.replace('file://', ''),
+      type: 'image/jpeg', // Try hardcoding this first to test
+      name: 'profile_picture.jpg',
+    };
+
+    // The key 'file' MUST match your backend upload.single("file")
+    formData.append("file", fileToUpload);
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/user/upload-profile-image/${userId}`,
+        {
+          method: "POST", // backend + frontend both POST
+          body: formData,
+          headers: {
+            Accept: 'application/json',
+          },
+        }
+      );
+
+
+      const result = await response.json();
+      console.log("📥 Result:", result);
+    } catch (error) {
+      console.log("❌ Frontend Error:", error);
+    }
   };
-
-  // The key 'file' MUST match your backend upload.single("file")
-  formData.append("file", fileToUpload);
-
-  try {
-    const response = await fetch(
-      `${API_BASE}/user/upload-profile-image/${userId}`,
-      {
-        method: "POST", // Make sure backend and frontend are both POST
-        body: formData,
-        headers: {
-          'Accept': 'application/json',
-          // IMPORTANT: DO NOT add 'Content-Type': 'multipart/form-data'
-          // React Native sets the boundary automatically if you leave this out
-        },
-      }
-    );
-
-    const result = await response.json();
-    console.log("📥 Result:", result);
-  } catch (error) {
-    console.log("❌ Frontend Error:", error);
-  }
-};
 
 
 
   // 🔹 UPDATE PROFILE FUNCTION
-const updateProfile = async () => {
-  try {
-    const payload = {
-      _id: userId,
-      firstName,
-      lastName,
-      email,
-      newExperience: [{ job_title: jobTitle }],
-    };
+  const updateProfile = async () => {
+    try {
+      const payload = {
+        _id: userId,
+        firstName,
+        lastName,
+        email,
+        newExperience: [{ job_title: jobTitle }],
+      };
 
-    await fetch(UPDATE_API, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+      await fetch(UPDATE_API, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    if (profileImage?.uri) {
-      await uploadProfileImage();
+      if (profileImage?.uri) {
+        await uploadProfileImage();
+      }
+
+      Alert.alert("Success", "Profile updated successfully");
+      fetchUser();
+    } catch (e) {
+      Alert.alert("Error", e.message);
     }
-
-    Alert.alert("Success", "Profile updated successfully");
-    fetchUser();
-  } catch (e) {
-    Alert.alert("Error", e.message);
-  }
-};
+  };
 
 
 
@@ -1134,20 +1136,20 @@ const updateProfile = async () => {
           <Text style={styles.label}>First name</Text>
           <TextInput
             style={styles.input}
-            value={fullName}
-            onChangeText={setFullName}
-            placeholder="Enter full name"
+            value={firstName}
+            onChangeText={setFirstName}
+            placeholder="Enter first name"
             placeholderTextColor="#999"
           />
 
-          {/* <Text style={styles.label}>Last name</Text>
+          <Text style={styles.label}>Last name</Text>
           <TextInput
             style={styles.input}
             value={lastName}
             onChangeText={setLastName}
             placeholder="Enter last name"
             placeholderTextColor="#999"
-          /> */}
+          />
 
           <Text style={styles.label}>Job Title</Text>
           <TextInput

@@ -10,7 +10,8 @@ import {
 import Header from '../components/Header';
 import { Fonts } from '../constants/fonts';
 import axios from 'axios';
-import { API_BASE } from '../config/api';
+// import { API_BASE } from '../config/api';
+import { API_BASE } from '@env';
 
 const { width } = Dimensions.get('window');
 const scale = width / 390;

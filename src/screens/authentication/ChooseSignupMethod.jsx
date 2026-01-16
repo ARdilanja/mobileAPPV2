@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, StatusBar, Alert, Dimensions, TouchableOpacity , Image} from 'react-native';
+import { View, Text, StyleSheet, StatusBar, Alert, Dimensions, TouchableOpacity, Image } from 'react-native';
 import AuthHeader from '../../components/auth/AuthHeader';
 // import SocialButton from '../../components/auth/SocialButton';
 import Gradient from '../../constants/Gradient';
@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import axios from 'axios';
-import { API_BASE } from '../../config/api';
+import { API_BASE } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getFcmToken} from '../../utils/getFcmToken';
 
@@ -46,7 +46,7 @@ const ChooseSignupMethod = () => {
 
   //     console.log("Logged in user:", User);
 
-     
+
 
   //     navigation.replace("BottomDash");
 
@@ -161,7 +161,7 @@ const ChooseSignupMethod = () => {
 //     }
 //   }
 
-  return (   
+  return (
     <Gradient>
       <StatusBar barStyle="dark-content" backgroundColor="transparent"
         translucent={true} />
@@ -177,13 +177,13 @@ const ChooseSignupMethod = () => {
 
         {/* Google sign-in option */}
         <SocialButton text="Sign up with Google" icon={require('../../assets/icons/google.png')}
-        //   onPress={() => navigation.navigate('BottomDash')}
-         onPress={handleGoogleSignup}
+          //   onPress={() => navigation.navigate('BottomDash')}
+          onPress={handleGoogleSignup}
           iconWidth={24}
 
         />
 
-        
+
         {/* apple sign-in option */}
         <SocialButton
           text="Sign up with apple"
@@ -210,7 +210,7 @@ const ChooseSignupMethod = () => {
           onPress={() => navigation.navigate('SignUp')}
         />
 
-        
+
         {/* Footer sign-up link */}
         <Text style={styles.footer}
         >
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     borderRadius: 48,
     paddingVertical: 14,
     alignItems: 'center',
-marginHorizontal: 'auto',
+    marginHorizontal: 'auto',
     width: screenWidth - 32,
     alignSelf: 'center',
     shadowColor: '#000',
