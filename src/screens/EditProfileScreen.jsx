@@ -878,7 +878,10 @@ import {
 import { Fonts } from '../constants/fonts';
 import RemovePhotoModal from '../components/RemovePhotoModal';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { API_BASE, IMAGE_UPLOAD_BASE } from '../config/api';
+// import { API_BASE, IMAGE_UPLOAD_BASE } from '../config/api';
+
+import { API_BASE } from '@env';
+
 
 const cameraIcon = require('../assets/images/camera.png');
 const galleryIcon = require('../assets/images/gallery.png');
@@ -980,16 +983,39 @@ const EditProfileScreen = () => {
     });
   };
 
-const uploadProfileImage = async () => {
-  if (!profileImage || !userId) return;
+  const uploadProfileImage = async () => {
+    if (!profileImage || !userId) return;
 
-  const formData = new FormData();
-  
-  // Create the file object
-  const fileToUpload = {
-    uri: Platform.OS === 'android' ? profileImage.uri : profileImage.uri.replace('file://', ''),
-    type: 'image/jpeg', // Try hardcoding this first to test
-    name: 'profile_picture.jpg',
+    const formData = new FormData();
+
+    // Create the file object
+    const fileToUpload = {
+      uri: Platform.OS === 'android' ? profileImage.uri : profileImage.uri.replace('file://', ''),
+      type: 'image/jpeg', // Try hardcoding this first to test
+      name: 'profile_picture.jpg',
+    };
+
+    // The key 'file' MUST match your backend upload.single("file")
+    formData.append("file", fileToUpload);
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/user/upload-profile-image/${userId}`,
+        {
+          method: "POST", // backend + frontend both POST
+          body: formData,
+          headers: {
+            Accept: 'application/json',
+          },
+        }
+      );
+
+
+      const result = await response.json();
+      console.log("📥 Result:", result);
+    } catch (error) {
+      console.log("❌ Frontend Error:", error);
+    }
   };
 
   // The key 'file' MUST match your backend upload.single("file")
@@ -1019,32 +1045,32 @@ const uploadProfileImage = async () => {
 
 
   // 🔹 UPDATE PROFILE FUNCTION
-const updateProfile = async () => {
-  try {
-    const payload = {
-      _id: userId,
-      firstName,
-      lastName,
-      email,
-      newExperience: [{ job_title: jobTitle }],
-    };
+  const updateProfile = async () => {
+    try {
+      const payload = {
+        _id: userId,
+        firstName,
+        lastName,
+        email,
+        newExperience: [{ job_title: jobTitle }],
+      };
 
-    await fetch(UPDATE_API, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+      await fetch(UPDATE_API, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    if (profileImage?.uri) {
-      await uploadProfileImage();
+      if (profileImage?.uri) {
+        await uploadProfileImage();
+      }
+
+      Alert.alert("Success", "Profile updated successfully");
+      fetchUser();
+    } catch (e) {
+      Alert.alert("Error", e.message);
     }
-
-    Alert.alert("Success", "Profile updated successfully");
-    fetchUser();
-  } catch (e) {
-    Alert.alert("Error", e.message);
-  }
-};
+  };
 
 
 

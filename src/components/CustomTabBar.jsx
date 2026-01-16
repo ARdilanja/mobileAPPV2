@@ -4,7 +4,8 @@ import { Fonts } from "../constants/fonts";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getUserProfile } from "../services/userService";
-import { API_BASE } from "../config/api";
+// import { API_BASE } from "../config/api";
+import { API_BASE } from '@env';
 
 // 1. IMPORT YOUR SVGs
 import HomeActive from '../assets/svg/Home_Active.svg';

@@ -15,6 +15,10 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Fonts } from '../constants/fonts';
+import { getUnreadCount } from "../services/notificationApi";
+import messaging from '@react-native-firebase/messaging';
+
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -55,7 +59,9 @@ export default function Home() {
   const navigation = useNavigation();
 
   // Notification state
-  const [notificationState, setNotificationState] = useState('active');
+  /* ✅ HOOKS MUST BE HERE */
+  const [notificationState, setNotificationState] = useState("default");
+  const [unreadCount, setUnreadCount] = useState(0);
   // 'default' | 'tooltip' | 'active'
 
   // AUTO SET NOTIFICATION (API / unread logic)
@@ -63,60 +69,106 @@ export default function Home() {
     const unreadCount = 1; // <-- replace with API value
 
     if (unreadCount > 0) {
-      setNotificationState('default');
+      setNotificationState('tooltip');
     } else {
-      setNotificationState('default');
+      setNotificationState('tooltip');
     }
   }, []);
 
   //  STATUS BAR RESET WHEN SCREEN IS FOCUSED
   useFocusEffect(
     useCallback(() => {
-      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBarStyle('light-content');
       StatusBar.setBackgroundColor('transparent');
       StatusBar.setTranslucent(true);
+
+      const loadUnread = async () => {
+        try {
+          const count = await getUnreadCount();
+          setUnreadCount(count);
+          setNotificationState(count > 0 ? "tooltip" : "default");
+        } catch (err) {
+          console.log("❌ Failed to load unread count", err.message);
+        }
+      };
+
+      loadUnread();
     }, []),
   );
 
-  const renderNotification = () => {
-    switch (notificationState) {
-      case 'default':
-        return (
-          <TouchableOpacity style={styles.notifyDefault} activeOpacity={0.8}>
-            <Image
-              source={require('../assets/images/notification.png')}
-              style={styles.notifyIcon}
-            />
-          </TouchableOpacity>
-        );
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('📩 Notification received in foreground:', remoteMessage);
 
-      case 'tooltip':
-        return (
-          <View style={styles.notifyTooltipContainer}>
-            <View style={styles.tooltipBox}>
-              <Text style={styles.tooltipText}>You have 1 notification</Text>
-              <Image
-                source={require('../assets/images/notification_active.png')}
-                style={styles.tooltipIcon}
-              />
-            </View>
+      // Increase unread count instantly
+      setUnreadCount(prev => {
+        const newCount = prev + 1;
+        setNotificationState("tooltip");
+        return newCount;
+      });
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const goToNotification = () => {
+  navigation.navigate('NotificationScreen');
+};
+
+const renderNotification = () => {
+  switch (notificationState) {
+    case 'default':
+      return (
+        <TouchableOpacity
+          style={styles.notifyDefault}
+          activeOpacity={0.8}
+          onPress={goToNotification}
+        >
+          <Image
+            source={require('../assets/images/notification.png')}
+            style={styles.notifyIcon}
+          />
+        </TouchableOpacity>
+      );
+
+    case 'tooltip':
+      return (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={goToNotification}
+          style={styles.notifyTooltipContainer}
+        >
+          <View style={styles.tooltipBox}>
+            <Text style={styles.tooltipText}>
+              You have {unreadCount} notification{unreadCount > 1 ? 's' : ''}
+            </Text>
+            <Image
+              source={require('../assets/images/notification_active.png')}
+              style={styles.tooltipIcon}
+            />
           </View>
-        );
+        </TouchableOpacity>
+      );
 
-      case 'active':
-        return (
-          <TouchableOpacity style={styles.notifyActive}>
-            <Image
-              source={require('../assets/images/notofication_after.png')}
-              style={styles.notifyIcon}
-            />
-          </TouchableOpacity>
-        );
+    case 'active':
+      return (
+        <TouchableOpacity
+          style={styles.notifyActive}
+          activeOpacity={0.8}
+          onPress={goToNotification}
+        >
+          <Image
+            source={require('../assets/images/notofication_after.png')}
+            style={styles.notifyIcon}
+          />
+        </TouchableOpacity>
+      );
 
-      default:
-        return null;
-    }
-  };
+    default:
+      return null;
+  }
+};
+
 
   return (
     <LinearGradient

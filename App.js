@@ -1,49 +1,62 @@
-// // App.js (or your main App file)
-// import React, { useState } from 'react';
-// import { SafeAreaView, StatusBar } from 'react-native';
-// import LoginLoaderPage from './src/screens/LoginLoaderPage';
-// import LoginScreen from './src/screens/auth/LoginScreen';
-// import VerificationScreen from './src/screens/auth/VerificationScreen';
-// import SignupFlowScreen from './src/screens/auth/SignupFlowScreen';
+
+// // App.js
+// import React, { useEffect } from 'react';
+// import { StatusBar } from 'react-native';
 // import AppNavigation from './src/navigations/AppNavigation';
+// import { store } from "./src/redux/store.jsx";
+// import { Provider } from 'react-redux';
+// import { StripeProvider } from '@stripe/stripe-react-native';
+// import messaging from '@react-native-firebase/messaging';
+// import {  listenToNotifications, requestNotificationPermission, setupNotificationChannel } from './src/services/notificationService';
+// import { GoogleSignin } from '@react-native-google-signin/google-signin';
+// import { STRIPE_PUBLISHABLE_KEY } from '@env';
+// import { API_BASE } from '@env';
 
+// console.log("GoogleSignin native module =>", GoogleSignin);
 // export default function App() {
-//   const [loaderFinished, setLoaderFinished] = useState(false);
-//   const [currentScreen, setCurrentScreen] = useState('login');
+//   useEffect(() => {
+//     GoogleSignin.configure({
+//       webClientId: "672175532425-d5af6nvj3u5uhuls8vptspth5pgf5mdn.apps.googleusercontent.com", // 🔴 VERY IMPORTANT
+//       offlineAccess: false,
+//     });
+//   }, []);
+//   useEffect(() => {
+//     requestNotificationPermission();
+//     // getFCMToken();
+//     setupNotificationChannel()
+//   }, []);
+//   useEffect(() => {
+//     const unsubscribe = listenToNotifications();
 
-//   if (!loaderFinished) {
-//     return (
-//       <SafeAreaView style={{ flex: 1 }}>
-//         <StatusBar barStyle="dark-content" backgroundColor="#EAF4FF" />
-//         <LoginLoaderPage onFinish={() => setLoaderFinished(true)} />
-//       </SafeAreaView>
-//     );
-//   }
+//     return () => unsubscribe();
+//   }, []);
 
+//   useEffect(() => {
+//       console.log("ENV CHECK =>",STRIPE_PUBLISHABLE_KEY);
+//     }, []);
+
+//     console.log(API_BASE)
 //   return (
-//     <SafeAreaView style={{ flex: 1 }}>
-//       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-
-//       {currentScreen === 'login' && (
-//         <LoginScreen
-//           onLoginSuccess={() => setCurrentScreen('main')}
-//           onSignupPress={() => setCurrentScreen('signup')} 
+//     <Provider store={store}>
+//       <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY}>
+//         <StatusBar
+//           translucent={false}
+//           backgroundColor="transparent"
+//           barStyle="dark-content"
 //         />
-//       )}
-
-//       {currentScreen === 'signup' && (
-//         <SignupFlowScreen
-//           onComplete={() => setCurrentScreen('main')}
-//           onBackToLogin={() => setCurrentScreen('login')} // Optional: add back button if needed
-//         />
-//       )}
-
-//       {currentScreen === 'main' && <AppNavigation />}
-//     </SafeAreaView>
+//         <AppNavigation />
+//       </StripeProvider>
+//     </Provider>
 //   );
 // }
 
-// App.js
+
+
+
+
+////////warning - free
+
+
 import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import AppNavigation from './src/navigations/AppNavigation';
@@ -64,14 +77,14 @@ export default function App() {
   }, []);
  useEffect(() => {
     requestNotificationPermission();
-    // getFCMToken();
-    setupNotificationChannel()
+    setupNotificationChannel();
   }, []);
+
   useEffect(() => {
     const unsubscribe = listenToNotifications();
-
-    return () => unsubscribe();
+    return unsubscribe;
   }, []);
+
   return (
     <Provider store={store}>
       <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY}>

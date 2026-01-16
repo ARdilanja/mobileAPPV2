@@ -248,7 +248,7 @@ import {
 import { Fonts } from '../../constants/fonts';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
-import { API_BASE } from '../../config/api';
+import { API_BASE } from '@env';
 import { saveFcmTokenToBackend } from '../../services/notificationService';
 import MessagePopup from '../../components/MessagePopup';
 
