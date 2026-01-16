@@ -17,6 +17,7 @@ import PlanCard from '../components/PlanCard';
 import { Fonts } from '../constants/fonts';
 import Header from '../components/Header';
 import { API_BASE } from '../config/api';
+import WelcomeBackModel from '../components/WelcomeBackModel';
 
 const { width } = Dimensions.get('window');
 
@@ -27,13 +28,23 @@ const GRAND_TOTAL = PLAN_AMOUNT + TAX_AMOUNT;
 const PAID_AMOUNT = GRAND_TOTAL;
 
 export default function PricingScreen() {
-  const [selectedPlan, setSelectedPlan] = useState('pro');
+  const modelContent =  {
+    title: "Heads up! ⚡",
+     icon: require('../assets/icons/upgrade-setting.png'),
+    content: "Switching plans will reset your current one. Ready to start fresh?",
+    button: "Yes, Start New",
+    secondary_button:"Cancel"
+  }
+  const [currentPlan, setCurrentPlan] = useState(null);
+  const [showResetModal, setShowResetModal] = useState(true);
+  const [selectedPlan, setSelectedPlan] = useState(null);
   const [ready, setReady] = useState(false);
   const [paymentInfo, setPaymentInfo] = useState(null);
 
   const [plans, setPlans] = useState([]);
   const [modules, setModules] = useState(null);
   const [loading, setLoading] = useState(true);
+const isCurrentPlan = selectedPlan === currentPlan;
 
 
   const navigation = useNavigation();
@@ -53,7 +64,12 @@ export default function PricingScreen() {
     }
   };
 
-
+const loadUser = async () => {
+  const user = await getStoredUser();
+   const plan = user?.subscription?.planKey;
+  setCurrentPlan(plan);
+  setSelectedPlan(plan);    // ← must exist in backend
+};
   useFocusEffect(
     useCallback(() => {
       StatusBar.setBarStyle('dark-content');
@@ -61,6 +77,7 @@ export default function PricingScreen() {
       StatusBar.setTranslucent(false);
 
       fetchPaymentPlans();
+      loadUser();
     }, []),
   );
 
@@ -163,7 +180,7 @@ export default function PricingScreen() {
           <PlanCard
             title={plan.name}
             price={`$${plan.price.usd}/yearly`}
-            current={plan.planKey === "pro"}
+            current={plan.planKey === currentPlan}
             active={selectedPlan === plan.planKey}
             features={plan.features}
           />
@@ -172,14 +189,48 @@ export default function PricingScreen() {
 
 
       {/* UPGRADE BUTTON */}
-      {selectedPlan === 'pro' && (
+      {/* {selectedPlan === 'pro' && (
         <TouchableOpacity
           style={styles.button}
           onPress={handleUpgrade}
         >
           <Text style={styles.buttonText}>Upgrade</Text>
         </TouchableOpacity>
-      )}
+      )} */}
+      {selectedPlan && (
+  <TouchableOpacity
+    style={[
+      styles.button,
+      isCurrentPlan && { backgroundColor: '#EF4444' } // red for unsubscribe
+    ]}
+    onPress={() => {
+      if (isCurrentPlan) {
+        setShowResetModal(true);   // show unsubscribe popup
+      } else {
+        handleUpgrade();          // switching plan → Stripe
+      }
+    }}
+  >
+    <Text style={styles.buttonText}>
+      {isCurrentPlan ? "Unsubscribe" : "Upgrade"}
+    </Text>
+  </TouchableOpacity>
+)}
+
+      <WelcomeBackModel
+  visible={showResetModal}
+  icon={require('../assets/icons/upgrade-setting.png')}
+  title="Pause renewal?"
+  content="Your access stays active until Jan 18, 2026. After that, sessions will be locked."
+  buttonText="Yes, pause it"
+  secondaryButtonText="Keep my access"
+  onPress={() => {
+    setShowResetModal(false);
+    // 🔥 Call API to cancel subscription here
+  }}
+  onSecondaryPress={() => setShowResetModal(false)}
+  onClose={() => setShowResetModal(false)}
+/>
 
     </ScrollView>
   );

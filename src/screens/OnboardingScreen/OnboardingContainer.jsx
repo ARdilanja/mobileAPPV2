@@ -274,7 +274,7 @@ import {
   allowSpeaking,
   blockSpeaking,
 } from '../../utils/aiVoice';
-
+import { getUserState, setUserState } from "../../utils/journey";
 const TOTAL_STEPS = 4;
 const { width } = Dimensions.get('window');
 const scale = width / 390;
@@ -368,12 +368,17 @@ export default function OnboardingContainer() {
     return false;
   };
 
-  const goNext = () => {
+  const goNext = async() => {
     stopSpeaking();
 
     if (step < TOTAL_STEPS) {
       setStep(step + 1);
     } else {
+       const state = await getUserState();
+
+  state.onboarding4Done = true;
+
+  await setUserState(state);
       navigation.navigate('CreateRoomScreen');
     }
   };
@@ -432,7 +437,7 @@ export default function OnboardingContainer() {
             {step === 4 && (
               <StepFourOnboard
                 value={stepFour}
-                onChange={v => dispatch(setStepFour(v))}
+                onChange={v => dispatch(setStepFour(v))} 
               />
             )}
           </View>

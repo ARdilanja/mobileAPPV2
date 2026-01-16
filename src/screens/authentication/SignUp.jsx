@@ -10,7 +10,7 @@ import { Fonts } from '../../constants/fonts';
 import { API_BASE } from '../../config/api';
 import MessagePopup from '../../components/MessagePopup';
 import { validatePassword, validateEmail } from '../../utils/ValidationHelper'
-import  {getDeviceCountry} from '../../utils/getDeviceCountry'
+import { getDeviceCountry } from '../../utils/getDeviceCountry'
 const screenWidth = Dimensions.get("window").width;
 const scale = screenWidth / 390;
 
@@ -130,10 +130,10 @@ const SignUp = () => {
             phone,
             password,
             recrootUserType: 'Candidate',
-             countryDetails: {
-    country: country.code,
-    dialCode: country.dialCode,
-  },
+            countryDetails: {
+                country: country.code,
+                dialCode: country.dialCode,
+            },
         };
         console.log('payload', payload)
         try {
@@ -143,7 +143,16 @@ const SignUp = () => {
             );
 
             console.log('res signup', res)
-
+            await AsyncStorage.setItem(
+                "userState",
+                JSON.stringify({
+                    onboarding4Done: false,
+                    trialSessionDone: false,
+                    planCreated: false,
+                    wantsPlan: true,
+                    planCompleted: false,
+                })
+            ); 
             // ✅ Success popup
             Alert.alert(
                 'Success',
@@ -245,35 +254,35 @@ const SignUp = () => {
                                             />
                                         </View> */}
                                         <View style={styles.content}>
-  <Text style={styles.flagEmoji}>{country.flag}</Text>
+                                            <Text style={styles.flagEmoji}>{country.flag}</Text>
 
-  <View style={styles.countryCodeBox}>
-    <Text style={styles.countryCodeText}>{country.dialCode}</Text>
-  </View>
+                                            <View style={styles.countryCodeBox}>
+                                                <Text style={styles.countryCodeText}>{country.dialCode}</Text>
+                                            </View>
 
-  <TextInput
-    style={styles.mob_input}
-    keyboardType="phone-pad"
-    maxLength={15}
-    value={phone}
-    // onChangeText={(text) => {
-    //   const clean = text.replace(/[^0-9]/g, "");
-    //   setPhone(clean);
-    //   setErrors(prev => ({ ...prev, phone: null }));
-    // }}
-    onChangeText={(text) => {
-  const clean = text.replace(/[^0-9]/g, "");
-  setPhone(clean);
+                                            <TextInput
+                                                style={styles.mob_input}
+                                                keyboardType="phone-pad"
+                                                maxLength={15}
+                                                value={phone}
+                                                // onChangeText={(text) => {
+                                                //   const clean = text.replace(/[^0-9]/g, "");
+                                                //   setPhone(clean);
+                                                //   setErrors(prev => ({ ...prev, phone: null }));
+                                                // }}
+                                                onChangeText={(text) => {
+                                                    const clean = text.replace(/[^0-9]/g, "");
+                                                    setPhone(clean);
 
-  console.log("📞 Phone typed:", clean);
-  console.log("📞 Country code:", country.dialCode);
+                                                    console.log("📞 Phone typed:", clean);
+                                                    console.log("📞 Country code:", country.dialCode);
 
-  setErrors(prev => ({ ...prev, phone: null }));
-}}
-    placeholder="Phone number"
-    placeholderTextColor="#9CA3AF"
-  />
-</View>
+                                                    setErrors(prev => ({ ...prev, phone: null }));
+                                                }}
+                                                placeholder="Phone number"
+                                                placeholderTextColor="#9CA3AF"
+                                            />
+                                        </View>
 
                                         {errors.phone && <Text style={styles.error}>{errors.phone}</Text>}
                                     </View>
@@ -399,9 +408,9 @@ const styles = StyleSheet.create({
         marginRight: 12,
     },
     flagEmoji: {
-  fontSize: 22,
-  marginRight: 8,
-},
+        fontSize: 22,
+        marginRight: 8,
+    },
     mob_input: {
         flex: 1,
         lineHeight: 28,

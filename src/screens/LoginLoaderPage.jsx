@@ -7,6 +7,7 @@ import { API_BASE } from "../config/api";
 import { isTokenExpired } from "../utils/authUtils";
 import { useNavigation } from "@react-navigation/native";
 import { Fonts } from "../constants/fonts";
+import {  getJourneyStep, getUserState } from "../utils/journey";
 
 export default function LoginLoaderPage() {
     const navigation = useNavigation()
@@ -26,9 +27,21 @@ export default function LoginLoaderPage() {
 
   const bootstrapAuth = async () => {
     try {
+await AsyncStorage.setItem(
+                "userState",
+                JSON.stringify({
+                    onboarding4Done: false,
+                    trialSessionDone: false,
+                    planCreated: false,
+                    wantsPlan: true,
+                    planCompleted: false,
+                    // 30dayplanCompleted: false,
+                })
+            ); 
       // optional splash delay
       await new Promise(res => setTimeout(res, 2000));
-
+const state = await getUserState();
+    const { screen, stage } = getJourneyStep(state);
       const token = await AsyncStorage.getItem("token");
       const refreshToken = await AsyncStorage.getItem("refreshToken");
       console.log('loadertoken', token)
@@ -36,37 +49,57 @@ export default function LoginLoaderPage() {
       // ❌ No tokens → Login
       if (!token || !refreshToken) {
         console.log('no toekns found')
-        return navigation.replace("SignIn");
+        // return navigation.replace("SignIn");
+         navigation.reset({
+      index: 0,
+      routes: [{ name: "GetStarted", params: { screen, stage }  }],
+    });
       }
 
       // ✅ Access token valid
       if (!isTokenExpired(token)) {
         console.log('token is valid')
-        return navigation.reset({
-          index: 0,
-          routes: [{ name: "BottomDash" }],
-        });
+         // ✅ USER IS LOGGED IN → now apply JOURNEY LOGIC
+    // const state = await getUserState();
+    // const route = getJourneyRoute(state);
+
+   navigation.reset({
+  index: 0,
+  routes: [{ name: "GetStarted", params: { screen, stage } }],
+});
       }
 
       // 🔄 Access expired → try refresh
       const refreshed = await refreshAccessToken(refreshToken);
       console.log('refreshed', refreshed)
       if (refreshed) {
-        return navigation.reset({
-          index: 0,
-          routes: [{ name: "BottomDash" }],
-        });
+         // ✅ USER IS LOGGED IN → now apply JOURNEY LOGIC
+    // const state = await getUserState();
+    // const route = getJourneyRoute(state);
+
+    navigation.reset({
+  index: 0,
+  routes: [{ name: "GetStarted", params: { screen, stage } }],
+});
       }
 
       // ❌ Both expired
       await clearAuth();
       console.log('both expired')
-      navigation.replace("SignIn");
+      // navigation.replace("SignIn");
+      navigation.reset({
+      index: 0,
+      routes: [{ name: "GetStarted", params: { screen, stage }  }],
+    });
 
     } catch (e) {
       await clearAuth();
       console.log('catch error')
-      navigation.replace("SignIn");
+      // navigation.replace("SignIn");
+      navigation.reset({
+      index: 0,
+      routes: [{ name: "GetStarted", params: { screen, stage }  }],
+    });
     }
   };
 

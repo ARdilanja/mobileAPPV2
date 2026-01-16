@@ -12,10 +12,12 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient'; 
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Fonts } from '../constants/fonts';
 import planData from '../content/plan30.json'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {  getJourneyStep, modalContent } from '../utils/journey';
 const { width, height } = Dimensions.get('window');
 
 const BASE_WIDTH = 390;
@@ -62,24 +64,37 @@ const JOURNEY_STATUS = {
 };
 
 
-const getDayIcon = day => {
-  switch (day) {
-    case 1:
-      return require('../assets/images/finish_task.png');   // Day 1
-    case 2:
-      return require('../assets/images/daytwo-circle.png');          // 🔥 Day 2 (NEW)
-    case 3:
-      return require('../assets/images/daytwo-circle.png');          // 🔥 Day 3 (NEW)
-    case 4:
-      return require('../assets/images/snooze.png');    // Active day
-    default:
-      return require('../assets/images/snooze.png');        // Future days
-  }
-};
-
 export default function Home() {
   const navigation = useNavigation();
+const [homeButtonText, setHomeButtonText] = useState("Start");
+const loadHomeButton = async () => {
+  const raw = await AsyncStorage.getItem("userState");
+  if (!raw) return;
 
+  const state = JSON.parse(raw);
+ const { screen, stage } = getJourneyStep(state);
+
+
+  const config = modalContent[stage];
+  console.log('config', config)
+  setHomeButtonText(modalContent[stage]?.home_button || modalContent[stage]?.button);
+
+  // if (next === "Onboarding4Questions") setHomeButtonText("Get Started");
+  // else if (next === "MicTest") setHomeButtonText("Test Mic");
+  // else if (next === "Last3Questions") setHomeButtonText("Continue");
+  // else if (next === "Dashboard") setHomeButtonText("Start Practice");
+};
+
+const startJourney = async () => {
+  const raw = await AsyncStorage.getItem("userState");
+  if (!raw) return;
+
+  const state = JSON.parse(raw);
+  const { screen, stage } = getJourneyStep(state);
+
+
+  navigation.navigate(screen);
+};
   // Notification state
   const [notificationState, setNotificationState] = useState('active');
   const [selectedDay, setSelectedDay] = useState(null);
@@ -110,6 +125,7 @@ export default function Home() {
       StatusBar.setBarStyle('dark-content');
       StatusBar.setBackgroundColor('transparent');
       StatusBar.setTranslucent(true);
+       loadHomeButton();
     }, []),
   );
 
@@ -339,13 +355,20 @@ export default function Home() {
             />
           </LinearGradient>
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           activeOpacity={0.8}
           style={styles.startPracticeButton}
           onPress={() => navigation.navigate('NinetyDayPlanScreen')}
         >
           <Text style={styles.startPracticeText}>Start Practice</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <TouchableOpacity
+  activeOpacity={0.8}
+  style={styles.startPracticeButton}
+  onPress={() => navigation.navigate(screen)}
+>
+  <Text style={styles.startPracticeText}>{homeButtonText}</Text>
+</TouchableOpacity>
       </View>
     </LinearGradient>
   );
