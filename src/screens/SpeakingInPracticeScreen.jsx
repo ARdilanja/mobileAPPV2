@@ -1,4 +1,4 @@
-import { useFocusEffect,useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useRef, useState } from 'react';
 import {
   View,
@@ -14,7 +14,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { Fonts } from '../constants/fonts';
 import DayCompleScrolComponent from '../components/invitedInterview/DayCompleScrolComponent';
-import planData from '../content/plan30.json'
+
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 const STATUS_BAR_HEIGHT =
@@ -40,7 +40,6 @@ export default function SpeakingInPracticeScreen() {
   const middleIndex = PRACTICE_OPTIONS.length;
   const [activePracticeIndex, setActivePracticeIndex] = useState(1);
 
-  const navigation = useNavigation();
   useFocusEffect(
     useCallback(() => {
       StatusBar.setBarStyle('dark-content');
