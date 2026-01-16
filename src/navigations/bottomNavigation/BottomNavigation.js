@@ -35,8 +35,12 @@ const BottomNavigation = () => {
           }
         }}
       />
-
       <Tab.Screen
+        name="Practice"
+        component={SpeakingInPracticeScreen}
+
+      />
+      {/* <Tab.Screen
         name="Practice"
         component={JDInputScreen}
         // options={{
@@ -48,7 +52,8 @@ const BottomNavigation = () => {
         //   },
         //   headerTintColor: '#F5F5F5'
         // }}
-      />
+      /> */}
+
       <Tab.Screen
         name="PracticeConversationScreen"
         component={PracticeConversationScreen}
@@ -103,13 +108,7 @@ const BottomNavigation = () => {
           headerShown: false
         }}
       />
-      <Tab.Screen
-        name="SpeakingInPracticeScreen"
-        component={SpeakingInPracticeScreen}
-        options={{
-          headerShown: false
-        }}
-      />
+
     </Tab.Navigator>
   );
 };
