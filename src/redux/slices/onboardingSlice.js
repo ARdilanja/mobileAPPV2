@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+    role: '',            // 🆕 Step 1
+  experience: '',
   stepOne: [],
   stepTwo: [],
   stepThree: '',
@@ -11,6 +13,12 @@ const onboardingSlice = createSlice({
   name: 'onboarding',
   initialState,
   reducers: {
+     setRole(state, action) {
+      state.role = action.payload;
+    },
+    setExperience(state, action) {
+      state.experience = action.payload;
+    },
     setStepOne(state, action) {
       state.stepOne = action.payload;
     },
@@ -28,6 +36,8 @@ const onboardingSlice = createSlice({
 });
 
 export const {
+  setRole,
+  setExperience,
   setStepOne,
   setStepTwo,
   setStepThree,

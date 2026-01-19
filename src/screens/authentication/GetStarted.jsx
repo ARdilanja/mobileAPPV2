@@ -1,127 +1,5 @@
-// import React from 'react';
-// import {
-//   View,
-//   Text,
-//   Image,
-//   StyleSheet,
-//   TouchableOpacity,
-// } from 'react-native';
-// import Gradient from '../../constants/Gradient';
-// import AuthButton from '../../components/auth/AuthButton';
-// import LinearGradient from 'react-native-linear-gradient';
 
-// const GetStartScreen = ({ navigation }) => {
-//   return (
-//     <Gradient>
-//       <View style={styles.container}>
-
-//         {/* Illustration */}
-//         <View style={styles.topSection}>
-//         <View style={styles.imageWrapper}>
-//           <Image
-//             source={require('../../assets/images/getstarted-illustrate.png')}
-//             style={styles.image}
-//             resizeMode="contain"
-//           />
-
-//           {/* Gradient Overlay */}
-//           <LinearGradient
-//             colors={[
-//               'rgba(255,255,255,0)',
-//               'rgba(255,255,255,0.5)',
-//               'rgba(255,255,255,0.85)',
-//               'rgba(255, 255, 255, 1)',
-//               '#FFFFFF',
-//             ]}
-//             locations={[0,0.25, 0.5, 0.76, 1]}
-//             style={styles.imageGradient}
-//           />
-//         </View>
-
-//         {/* Text Content */}
-//         <View style={styles.textContainer}>
-//           <Text style={styles.title}>
-//             Build <Text style={styles.highlight}>confidence</Text>.
-//           </Text>
-//           <Text style={styles.title}>
-//             Speak <Text style={styles.highlight}>up</Text>.
-//           </Text>
-//           <Text style={styles.title}>
-//             Grow <Text style={styles.highlight}>your career</Text>.
-//           </Text>
-//         </View>
-//         </View>
-
-//         <View style={styles.bottomSection}> {/* Button */}
-//         <AuthButton
-//           text="Get Started"
-//           onPress={() => navigation.navigate('SignIn')}
-//         />
-// </View>
-//       </View>
-
-//     </Gradient>
-//   );
-// };
-
-// export default GetStartScreen;
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1, justifyContent: 'space-between',
-//     alignItems: 'center',
-//   },
-//  topSection: {
-//     width: '100%',
-//   },
-//   bottomSection: {
-//     width: '100%',
-//     alignItems: 'center',
-//     paddingBottom: 20, // Final gap from the bottom of the phone
-//   },
-//   imageWrapper: {
-//     width: 420,
-//     height: '50%',
-//     marginTop: 0,
-//     position:'relative'
-//   },
-
-//   image: {
-//     width: '100%',
-//     height: '90%',
-//   },
-
-//   imageGradient: {
-//     position: 'absolute',
-//     bottom: 0,
-//     width: '100%',
-//     height: 200, // fade height
-//   },
-//   gradient: {
-//     height: 440,
-//     width: '100%',
-//   },
-
-//   textContainer: {
-//     width: '100%',
-//     paddingLeft:16,
-//     backgroundColor:'#fff'
-//   },
-
-//   title: {
-//     fontSize: 40,
-//     fontWeight: '700',
-//     color: '#000',
-//     lineHeight: 56,
-//   },
-
-//   highlight: {
-//     color: 'rgba(1, 120, 255, 1)',
-//   },
-// });
-
-
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -135,13 +13,62 @@ import AuthButton from '../../components/auth/AuthButton';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import {  getJourneyStep, modalContent } from '../../utils/journey'
+import WelcomeBackModel from '../../components/WelcomeBackModel'
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const scale = screenWidth / 390;
 
 const GetStartScreen = () => {
   const navigation = useNavigation()
+  const [showModal, setShowModal] = useState(false)
+  const [stage, setStage] = useState(null);
+  const [nextScreen, setNextScreen] = useState(null)
+
+const modal = modalContent[stage];
+
+
+  useEffect(() => {
+    checkJourney(); 
+  const timer = setTimeout(() => {
+    checkJourney();
+  }, 60000); // 1 minute
+
+  return () => clearTimeout(timer);
+}, []);
+
+  const checkJourney = async () => {
+  try {
+    const raw = await AsyncStorage.getItem("userState");
+    console.log("📦 Raw userState:", raw);
+
+    if (!raw) {
+      console.log("❌ No userState found");
+      return;
+    }
+
+    const state = JSON.parse(raw);
+    console.log("🧭 Parsed state:", state);
+
+    const { screen, stage } = getJourneyStep(state);
+const modal = modalContent[stage];
+
+setNextScreen(screen);
+setStage(stage);
+
+    if (screen  !== "Dashboard") {
+      console.log("🟢 Showing WelcomeBack modal");
+      setShowModal(true);
+
+    } else {
+      console.log("🔵 Going directly to Dashboard");
+    }
+
+  } catch (e) {
+    console.log("❌ UserState parse error", e);
+  }
+};
 
   return (
     <Gradient>
@@ -190,9 +117,22 @@ const GetStartScreen = () => {
         <View style={styles.bottomSection}>
           <AuthButton
             text="Get started"
-            onPress={() => navigation.navigate('SignIn')}
+            onPress={() => navigation.navigate('ChooseSignupMethod')}
           />
         </View>
+
+       <WelcomeBackModel
+  visible={showModal}
+  icon={modal?.icon}    
+  title={modal?.title}
+  content={modal?.content}
+  buttonText={modal?.button}
+  onPress={() => {
+    setShowModal(false);
+    navigation.replace('BottomDash');
+  }}
+  onClose={() => setShowModal(false)}
+/>
       </View>
     </Gradient>
   );

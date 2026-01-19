@@ -248,6 +248,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   AppState,
+  ImageBackground,
 } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -259,6 +260,8 @@ import StepFourOnboard from './StepFourOnboard';
 import ProgressBar from '../../components/OnboardingContainer/ProgressBar';
 import Header from '../../components/Header';
 import { Fonts } from '../../constants/fonts';
+import StepZeroOne from './StepZeroOneRole';
+import StepZeroTwo from './StepZeroTwoExp';
 
 import {
   setStepOne,
@@ -274,8 +277,8 @@ import {
   allowSpeaking,
   blockSpeaking,
 } from '../../utils/aiVoice';
-
-const TOTAL_STEPS = 4;
+import { getUserState, setUserState } from "../../utils/journey";
+const TOTAL_STEPS = 6;
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 
@@ -284,7 +287,7 @@ export default function OnboardingContainer() {
   const dispatch = useDispatch();
   const [step, setStep] = useState(1);
 
-  const { stepOne, stepTwo, stepThree, stepFour } = useSelector(
+  const {  role, experience, stepOne, stepTwo, stepThree, stepFour } = useSelector(
     state => state.onboarding,
   );
 
@@ -322,58 +325,68 @@ export default function OnboardingContainer() {
   /* ----------------------------------
      STEP BASED VOICE
   ---------------------------------- */
-  useEffect(() => {
-    console.log('🟡 [ONBOARDING] Step changed:', step);
+ useEffect(() => {
+  stopSpeaking();
 
-    stopSpeaking();
+  if (step === 1) {
+    speak("Welcome. Let’s start with a quick introduction.");
+  }
 
-    if (step === 1) {
-      speak(
-        "Before we start, we just want to understand what’s going on for you at work,so we can personalise this for you. What’s your biggest challenge at work right now?"
-      );
-    }
+  if (step === 2) {
+    speak("Before we begin, we’d like to know a bit more about you.");
+  }
 
-    if (step === 2) {
-      speak(
-        "When you think about these situations, what worries you the most?"
-      );
-    }
+  if (step === 3) {
+    speak("What’s your biggest challenge at work right now?");
+  }
 
-    if (step === 3) {
-      speak("How would you describe your current level at work?");
-    }
+  if (step === 4) {
+    speak("When you think about these situations, what worries you the most?");
+  }
 
-    if (step === 4) {
-      speak(
-        "One last thing. What’s your working situation like right now?"
-      );
-    }
-  }, [step]);
+  if (step === 5) {
+    speak("How would you describe your current level at work?");
+  }
+
+  if (step === 6) {
+    speak("One last thing. What’s your working situation like right now?");
+  }
+}, [step]);
+
 
   /* ---------------------------------- */
   const canGoNext = () => {
-    if (step === 1) return stepOne.length > 0;
+  if (step === 1) return role !== '';
+  if (step === 2) return experience !== '';
+  if (step === 3) return stepOne.length > 0;
 
-    if (step === 2) {
-      return stepTwo.some(
-        item =>
-          typeof item === 'string' ||
-          (typeof item === 'object' && item.selected),
-      );
-    }
+  if (step === 4) {22
+    return stepTwo.some(
+      item =>
+        typeof item === 'string' ||
+        (typeof item === 'object' && item.selected),
+    );
+  }
 
-    if (step === 3) return stepThree !== '';
-    if (step === 4) return stepFour !== '';
+  if (step === 5) return stepThree !== '';
+  if (step === 6) return stepFour !== '';
 
-    return false;
-  };
+  return false;
+};
 
-  const goNext = () => {
+
+
+  const goNext = async () => {
     stopSpeaking();
 
     if (step < TOTAL_STEPS) {
       setStep(step + 1);
     } else {
+      const state = await getUserState();
+
+      state.onboarding4Done = true;
+
+      await setUserState(state);
       navigation.navigate('CreateRoomScreen');
     }
   };
@@ -395,7 +408,11 @@ export default function OnboardingContainer() {
   );
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+  source={require('../../assets/images/Chat-bg.png')}
+  resizeMode="repeat"
+  style={styles.container}
+>
       <StatusBar translucent barStyle="dark-content" />
 
       {step > 1 && (
@@ -410,32 +427,45 @@ export default function OnboardingContainer() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <View style={styles.mainWrapper}>
-          <View style={[styles.content, step === 1 && styles.contentNoHeader]}>
+          <View style={[styles.content, step <= 2 && styles.contentNoHeader]}>
+
             {step === 1 && (
+              <StepZeroOne />
+            )}
+
+            {step === 2 && (
+              <StepZeroTwo />
+            )}
+
+            {step === 3 && (
               <StepOneOnboard
                 value={stepOne}
                 onChange={v => dispatch(setStepOne(v))}
               />
             )}
-            {step === 2 && (
+
+            {step === 4 && (
               <StepTwoOnboard
                 value={stepTwo}
                 onChange={v => dispatch(setStepTwo(v))}
               />
             )}
-            {step === 3 && (
+
+            {step === 5 && (
               <StepThreeOnboard
                 value={stepThree}
                 onChange={v => dispatch(setStepThree(v))}
               />
             )}
-            {step === 4 && (
+
+            {step === 6 && (
               <StepFourOnboard
                 value={stepFour}
                 onChange={v => dispatch(setStepFour(v))}
               />
             )}
           </View>
+
 
           <View style={styles.footer}>
             <Pressable
@@ -457,7 +487,7 @@ export default function OnboardingContainer() {
           </View>
         </View>
       </KeyboardAvoidingView>
-    </View>
+    </ImageBackground>
   );
 }
 
@@ -465,7 +495,7 @@ export default function OnboardingContainer() {
    STYLES
 ---------------------------------- */
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f5f5f5',marginTop:20  },
+  container: { flex: 1, backgroundColor: '#f5f5f5', marginTop: 20 },
   mainWrapper: { flex: 1 },
   headerWrapper: { marginTop: Platform.OS === 'ios' ? 40 : 1 },
   content: { flexGrow: 1, padding: 16, paddingTop: 0 },

@@ -28,6 +28,7 @@ const OnboardingProCards = ({
   selectionType = 'multi', // 'multi' | 'single'
   variant = 'small',
   rightElement,
+   iconSize = 20,
 }) => {
   const isSmall = variant === 'small';
 
@@ -42,7 +43,10 @@ const OnboardingProCards = ({
       >
         {icon && (
           <View style={[styles.iconBg, { backgroundColor: iconBgColor }]}>
-            <Image source={icon} style={styles.icon} />
+            <Image source={icon} style={[
+    styles.icon,
+    { width: scale * iconSize, height: scale * iconSize },
+  ]} />
           </View>
         )}
 
@@ -106,15 +110,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    // marginBottom: 8,
+    // marginBottom: 28,
     // marginLeft: 12 * scale,
     // marginTop: 12 * scale,
   },
 
-  icon: {
-    width: scale * 20,
-    height: scale * 20,
-  },
+ icon: {
+  resizeMode: 'contain',
+},
 
   titleWrapper: {
     // paddingLeft: 15 * scale,
