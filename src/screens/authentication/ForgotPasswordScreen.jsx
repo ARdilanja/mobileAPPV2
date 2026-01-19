@@ -19,7 +19,7 @@ import AuthHeader from "../../components/auth/AuthHeader";
 import AuthButton from "../../components/auth/AuthButton";
 import MessagePopup from "../../components/MessagePopup";
 import { Fonts } from "../../constants/fonts";
-import { API_BASE } from "../../config/api";
+import { API_BASE } from '@env';
 import axios from "axios";
 
 const { width } = Dimensions.get("window");

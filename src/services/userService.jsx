@@ -1,4 +1,5 @@
-import { API_BASE } from "../config/api";
+// import { API_BASE } from "../config/api";
+import { API_BASE } from '@env';
 
 /* ================= GET PROFILE ================= */
 export const getUserProfile = async (token) => {

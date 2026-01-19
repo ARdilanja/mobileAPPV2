@@ -15,7 +15,8 @@ import { Fonts } from '../constants/fonts';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CommonActions } from '@react-navigation/native';
-import { API_BASE } from '../config/api'; // Local: http://192.168.0.8:5000/api
+// import { API_BASE } from '../config/api'; 
+import { API_BASE } from '@env'; 
 
 // Your original assets
 import binIcon from '../assets/images/bin.png';

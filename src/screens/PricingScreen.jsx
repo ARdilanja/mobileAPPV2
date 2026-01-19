@@ -16,7 +16,8 @@ import { getStoredUser } from '../utils/getUserDetails'
 import PlanCard from '../components/PlanCard';
 import { Fonts } from '../constants/fonts';
 import Header from '../components/Header';
-import { API_BASE } from '../config/api';
+// import { API_BASE } from '../config/api';
+import { API_BASE } from '@env';
 import WelcomeBackModel from '../components/WelcomeBackModel';
 
 const { width } = Dimensions.get('window');

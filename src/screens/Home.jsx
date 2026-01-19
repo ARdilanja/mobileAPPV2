@@ -17,7 +17,11 @@ import MaskedView from '@react-native-masked-view/masked-view';
 import { Fonts } from '../constants/fonts';
 import planData from '../content/plan30.json'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {  getJourneyStep, modalContent } from '../utils/journey';
+import {  getJourneyStep, modalContent } from '../utils/journey';import { getUnreadCount } from "../services/notificationApi";
+import messaging from '@react-native-firebase/messaging';
+
+
+
 const { width, height } = Dimensions.get('window');
 
 const BASE_WIDTH = 390;
@@ -96,7 +100,9 @@ const startJourney = async () => {
   navigation.navigate(screen);
 };
   // Notification state
-  const [notificationState, setNotificationState] = useState('active');
+  /* ✅ HOOKS MUST BE HERE */
+  const [notificationState, setNotificationState] = useState("default");
+  const [unreadCount, setUnreadCount] = useState(0);
   const [selectedDay, setSelectedDay] = useState(null);
   const journeyDays = planData.days.slice(0, 10);
   // 'default' | 'tooltip' | 'active'
@@ -110,30 +116,60 @@ const startJourney = async () => {
   }, []);
   // AUTO SET NOTIFICATION (API / unread logic)
   useEffect(() => {
-    const unreadCount = 1; // <-- replace with API value
+    setNotificationState(unreadCount > 0 ? "tooltip" : "default");
+  }, [unreadCount]);
 
-    if (unreadCount > 0) {
-      setNotificationState('default');
-    } else {
-      setNotificationState('default');
-    }
-  }, []);
 
   //  STATUS BAR RESET WHEN SCREEN IS FOCUSED
   useFocusEffect(
     useCallback(() => {
-      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBarStyle('light-content');
       StatusBar.setBackgroundColor('transparent');
       StatusBar.setTranslucent(true);
+
+      const loadUnread = async () => {
+        try {
+          const count = await getUnreadCount();
+          setUnreadCount(count);
+          setNotificationState(count > 0 ? "tooltip" : "default");
+        } catch (err) {
+          console.log("❌ Failed to load unread count", err.message);
+        }
+      };
+
+      loadUnread();
        loadHomeButton();
     }, []),
   );
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('📩 Notification received in foreground:', remoteMessage);
+
+      // Increase unread count instantly
+      setUnreadCount(prev => {
+        const newCount = prev + 1;
+        setNotificationState("tooltip");
+        return newCount;
+      });
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const goToNotification = () => {
+    navigation.navigate('NotificationScreen');
+  };
 
   const renderNotification = () => {
     switch (notificationState) {
       case 'default':
         return (
-          <TouchableOpacity style={styles.notifyDefault} activeOpacity={0.8}>
+          <TouchableOpacity
+            style={styles.notifyDefault}
+            activeOpacity={0.8}
+            onPress={goToNotification}
+          >
             <Image
               source={require('../assets/images/notification.png')}
               style={styles.notifyIcon}
@@ -143,20 +179,30 @@ const startJourney = async () => {
 
       case 'tooltip':
         return (
-          <View style={styles.notifyTooltipContainer}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={goToNotification}
+            style={styles.notifyTooltipContainer}
+          >
             <View style={styles.tooltipBox}>
-              <Text style={styles.tooltipText}>You have 1 notification</Text>
+              <Text style={styles.tooltipText}>
+                You have {unreadCount} notification{unreadCount > 1 ? 's' : ''}
+              </Text>
               <Image
                 source={require('../assets/images/notification_active.png')}
                 style={styles.tooltipIcon}
               />
             </View>
-          </View>
+          </TouchableOpacity>
         );
 
       case 'active':
         return (
-          <TouchableOpacity style={styles.notifyActive}>
+          <TouchableOpacity
+            style={styles.notifyActive}
+            activeOpacity={0.8}
+            onPress={goToNotification}
+          >
             <Image
               source={require('../assets/images/notofication_after.png')}
               style={styles.notifyIcon}
@@ -168,6 +214,7 @@ const startJourney = async () => {
         return null;
     }
   };
+
 
   return (
     <LinearGradient

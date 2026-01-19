@@ -1,7 +1,8 @@
 
 // src/services/livekitToken.service.js
 
-import { API_BASE } from "../config/api";
+// import { API_BASE } from "../config/api";
+import { API_BASE } from '@env';
 
 export async function fetchLiveKitToken({ roomName, identity }) {
     try {

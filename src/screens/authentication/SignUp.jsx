@@ -7,7 +7,7 @@ import { KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } fr
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
-import { API_BASE } from '../../config/api';
+import { API_BASE } from '@env';
 import MessagePopup from '../../components/MessagePopup';
 import { validatePassword, validateEmail } from '../../utils/ValidationHelper'
 import { getDeviceCountry } from '../../utils/getDeviceCountry'
@@ -141,6 +141,7 @@ const SignUp = () => {
                 `${API_BASE}/auth/register`,
                 payload
             );
+
 
             console.log('res signup', res)
             await AsyncStorage.setItem(

@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../../constants/fonts';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { API_BASE } from '../../config/api';
+import { API_BASE } from '@env';
 
 
 const screenWidth = Dimensions.get('window').width;
