@@ -5,7 +5,7 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 6;
 
 const ProgressBar = ({ currentPage, isCurrentStepCompleted }) => {
   return (
