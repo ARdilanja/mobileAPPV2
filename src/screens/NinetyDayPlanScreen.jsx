@@ -16,6 +16,7 @@ import {
 import { Fonts } from '../constants/fonts';
 import ReminderModal from '../components/ReminderModal'
 import PhaseModal from '../components/PhaseModal'
+import planData from '../content/plan30.json'
 const { width } = Dimensions.get('window');
 const scale = width / 390;
 
@@ -29,85 +30,46 @@ const WEEK_TAB_MARGIN = 16 * scale;
 
 const TOTAL_TAB_WIDTH = WEEK_TAB_WIDTH + WEEK_TAB_MARGIN * 2;
 const ACTIVE_BAR_WIDTH = TOTAL_TAB_WIDTH;
+const STATUS_STYLES = {
+    completed: {
+        bg: '#E6F9EE',
+        text: '#1E9E62',
+        line: '#1E9E62',
+        strike: false,
+    },
+    active: {
+        bg: '#E9F0FF',
+        text: '#235DFF',
+        line: '#235DFF',
+        strike: false,
+    },
+    missed: {
+        bg: '#F0F0F0',
+        text: '#8B8B8B',
+        line: '#8B8B8B',
+        strike: true,
+    },
+};
+
+const UPCOMING_COLORS = [
+    { bg: '#FFF1E6', text: '#D2691E' },
+    { bg: '#E8F8F5', text: '#0E6251' },
+    { bg: '#FDEDEC', text: '#C0392B' },
+    { bg: '#F4ECF7', text: '#7D3C98' },
+    { bg: '#EBF5FB', text: '#2471A3' },
+];
+
+const getUpcomingColor = day => {
+    const index = day % UPCOMING_COLORS.length;
+    return UPCOMING_COLORS[index];
+};
+
 
 const PHASES = [
     { key: 'phase1', title: 'PHASE 1- Foundations (Days 1 - 30)' },
     { key: 'phase2', title: 'PHASE 2- Real-World Application (Days 31 - 60)' },
     { key: 'phase3', title: 'PHASE 3- High-Stakes Readiness (Days 61 - 90)' },
 ];
-
-const WEEK_DAYS = [
-    {
-        day: 1,
-        date: 'Dec 28, 2025',
-        label: 'Sunday',
-        title: 'Saying No: boundaries',
-        status: 'completed',
-        reminder: true,
-    },
-    {
-        day: 2,
-        date: 'Dec 29, 2025',
-        label: 'Monday',
-        title: 'Presenting Ideas: explaining decisions',
-        status: 'skipped',
-        reminder: false,
-    },
-    {
-        day: 3,
-        date: 'Dec 30, 2025',
-        label: 'Tuesday',
-        title: 'Presenting Ideas: explaining decisions',
-        status: 'active',
-        reminder: false,
-    },
-    {
-        day: 4,
-        date: 'Dec 31, 2025',
-        label: 'Wednesday',
-        title: 'Presenting Ideas: explaining decisions',
-        status: 'active',
-        reminder: false,
-    },
-    {
-        day: 5,
-        date: 'Jan 1, 2026',
-        label: 'Thursday',
-        title: 'Presenting Ideas: explaining decisions',
-        status: 'active',
-        reminder: false,
-    },
-    {
-        day: 6,
-        date: 'Jan 2, 2026',
-        label: 'Friday',
-        title: 'Presenting Ideas: explaining decisions',
-        status: 'active',
-        reminder: false,
-    },
-    {
-        day: 7,
-        date: 'Jan 3, 2026',
-        label: 'Saturday',
-        title: 'Presenting Ideas: explaining decisions',
-        status: 'active',
-        reminder: false,
-    },
-];
-const DAY_COLOR_MAP = {
-    1: { bg: 'rgba(255, 237, 207, 1)', text: 'rgba(204, 88, 3, 1)' },
-    2: { bg: 'rgba(202, 240, 248, 1)', text: 'rgba(0, 119, 182, 1)' },
-    3: { bg: 'rgba(255, 235, 227, 1)', text: 'rgba(190, 52, 0, 1)' },
-    4: { bg: 'rgba(219, 229, 255, 1)', text: 'rgba(35, 93, 255, 1)' },
-    5: { bg: 'rgba(235, 230, 255, 1)', text: 'rgba(74, 42, 201, 1)' },
-    6: { bg: 'rgba(216, 243, 220, 1)', text: 'rgba(0, 147, 67, 1)' },
-    7: { bg: 'rgba(255, 220, 226, 1)', text: 'rgba(128, 15, 47, 1)' },
-};
-
-const SKIPPED_STYLE = {
-    bg: 'rgba(232, 232, 232, 1)',
-    text: 'rgba(102, 102, 102, 1)',
-};
 
 export default function NinetyDayPlanScreen() {
     const scrollRef = useRef(null);
@@ -132,6 +94,29 @@ export default function NinetyDayPlanScreen() {
     const TOTAL_TAB_WIDTH = WEEK_TAB_WIDTH + WEEK_TAB_MARGIN * 2;
     const ACTIVE_BAR_WIDTH = 60;
 
+
+    const days = planData.days.map(d => {
+        const dateObj = new Date(d.date);
+        return {
+            id: d.dayNumber,
+            day: d.dayNumber,
+            title: d.title,
+            status: d.status,
+            date: dateObj.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+            }),
+            label: dateObj.toLocaleDateString('en-US', { weekday: 'long' }),
+        };
+    });
+    const getWeekDays = (allDays, week) => {
+        const start = (week - 1) * 7;
+        const end = start + 7;
+        return allDays.slice(start, end);
+    };
+
+    const visibleDays = getWeekDays(days, selectedWeek);
     return (
         <View style={styles.container}>
             <Text style={styles.headerTitle}>Your 90-day plan</Text>
@@ -209,7 +194,7 @@ export default function NinetyDayPlanScreen() {
 
             {/* ================= DAYS ================= */}
             <ScrollView contentContainerStyle={styles.dayList} scrollEnabled={false}>
-                {WEEK_DAYS.map(item => (
+                {visibleDays.map(item => (
                     <DayCard key={item.day} data={item} />
                 ))}
             </ScrollView>
@@ -245,13 +230,77 @@ export default function NinetyDayPlanScreen() {
     );
 }
 
-function DayCard({ data }) {
-    const isCompleted = data.status === 'completed';
-    const isSkipped = data.status === 'skipped';
+// function DayCard({ data }) {
+//     const isCompleted = data.status === 'completed';
+//     const isSkipped = data.status === 'skipped';
 
-    const dayColors = DAY_COLOR_MAP[data.day];
-    const bgColor = isSkipped ? SKIPPED_STYLE.bg : dayColors.bg;
-    const textColor = isSkipped ? SKIPPED_STYLE.text : dayColors.text;
+//     const dayColors = DAY_COLOR_MAP[data.day];
+//     const bgColor = isSkipped ? SKIPPED_STYLE.bg : dayColors.bg;
+//     const textColor = isSkipped ? SKIPPED_STYLE.text : dayColors.text;
+
+//     return (
+//         <View style={styles.dayRow}>
+//             {/* Date column */}
+//             <View style={styles.dateColumn}>
+//                 <Text style={styles.dateText}>{data.date}</Text>
+//                 <Text style={styles.dayLabel}>{data.label}</Text>
+//             </View>
+
+//             {/* Timeline + Card */}
+//             <View style={styles.timelineWrapper}>
+//                 <View style={[styles.card, { backgroundColor: bgColor }]}>
+//                     <View
+//                         style={[styles.verticalAccent, { backgroundColor: textColor }]}
+//                     />
+
+//                     <View style={styles.cardContent}>
+//                         <View style={styles.cardHeader}>
+//                             <Text
+//                                 style={[
+//                                     styles.dayTitle,
+//                                     { color: textColor },
+//                                     isSkipped && styles.strikeText,
+//                                 ]}
+//                             >
+//                                 Day {data.day}
+//                             </Text>
+
+//                             {isCompleted && (
+//                                 <Text style={[styles.completedText, { color: textColor }]}>
+//                                     Completed
+//                                 </Text>
+//                             )}
+//                         </View>
+
+//                         <Text
+//                             style={[
+//                                 styles.taskText,
+//                                 isSkipped && styles.strikeText,
+//                                 { color: isSkipped ? SKIPPED_STYLE.text : '#000' },
+//                             ]}
+//                         >
+//                             {data.title}
+//                         </Text>
+//                     </View>
+//                 </View>
+
+//                 {data.day !== 7 && <View style={styles.horizontalLine} />}
+//             </View>
+//         </View>
+//     );
+// }
+
+function DayCard({ data }) {
+    const isUpcoming = data.status === 'upcoming';
+
+    const statusStyle = isUpcoming
+        ? getUpcomingColor(data.day)
+        : STATUS_STYLES[data.status];
+
+    const bgColor = statusStyle.bg;
+    const textColor = statusStyle.text;
+    const lineColor = statusStyle.line || statusStyle.text;
+    const isStrike = statusStyle.strike;
 
     return (
         <View style={styles.dayRow}>
@@ -261,11 +310,10 @@ function DayCard({ data }) {
                 <Text style={styles.dayLabel}>{data.label}</Text>
             </View>
 
-            {/* Timeline + Card */}
             <View style={styles.timelineWrapper}>
                 <View style={[styles.card, { backgroundColor: bgColor }]}>
                     <View
-                        style={[styles.verticalAccent, { backgroundColor: textColor }]}
+                        style={[styles.verticalAccent, { backgroundColor: lineColor }]}
                     />
 
                     <View style={styles.cardContent}>
@@ -274,15 +322,25 @@ function DayCard({ data }) {
                                 style={[
                                     styles.dayTitle,
                                     { color: textColor },
-                                    isSkipped && styles.strikeText,
+                                    isStrike && styles.strikeText,
                                 ]}
                             >
                                 Day {data.day}
                             </Text>
 
-                            {isCompleted && (
+                            {data.status === 'completed' && (
                                 <Text style={[styles.completedText, { color: textColor }]}>
                                     Completed
+                                </Text>
+                            )}
+                            {data.status === 'missed' && (
+                                <Text style={[styles.completedText, { color: textColor }]}>
+                                    Missed
+                                </Text>
+                            )}
+                            {data.status === 'active' && (
+                                <Text style={[styles.completedText, { color: textColor }]}>
+                                    Active
                                 </Text>
                             )}
                         </View>
@@ -290,8 +348,8 @@ function DayCard({ data }) {
                         <Text
                             style={[
                                 styles.taskText,
-                                isSkipped && styles.strikeText,
-                                { color: isSkipped ? SKIPPED_STYLE.text : '#000' },
+                                { color: isStrike ? '#8B8B8B' : '#000' },
+                                isStrike && styles.strikeText,
                             ]}
                         >
                             {data.title}
@@ -299,7 +357,9 @@ function DayCard({ data }) {
                     </View>
                 </View>
 
-                {data.day !== 7 && <View style={styles.horizontalLine} />}
+                {data.day !== 30 && (
+                    <View style={[styles.horizontalLine, { backgroundColor: lineColor }]} />
+                )}
             </View>
         </View>
     );
@@ -401,8 +461,9 @@ const styles = StyleSheet.create({
     },
 
     phaseText: {
-        fontSize: 18,
-        fontWeight: '500',
+        fontSize: 18 * scale,
+        lineHeight: 24 * scale,
+        fontFamily: Fonts.Medium,
     },
 
     phaseArrowImage: {
@@ -439,24 +500,28 @@ const styles = StyleSheet.create({
 
     dayRow: {
         flexDirection: 'row',
-        gap: 12,
+        gap: 8,
     },
 
     dateColumn: {
-        width: 73 * scale,
+        width: 80 * scale,
         display: 'flex',
         justifyContent: 'center',
     },
 
-    dateText: { fontSize: 12, color: '#555' },
-    dayLabel: { fontSize: 12, color: '#888' },
+    dateText: {
+        fontSize: 12 * scale, fontFamily: Fonts.Regular,
+        lineHeight: 16 * scale, color: '#2A2A2A',
+    },
+    dayLabel: { fontSize: 12,fontFamily: Fonts.Regular,
+        lineHeight: 16 * scale, color: '#2A2A2A', marginTop: 8 },
 
     card: {
-        width: 270 * scale, // ✅ Figma width
-        height: 72 * scale, // ✅ Figma height
+        // width: 270 * scale, 
+        height: 72 * scale,
         flexDirection: 'row',
         paddingVertical: 12 * scale,
-        paddingLeft: 2 * scale,
+        // paddingLeft: 2 * scale,
         borderRadius: 12,
         backgroundColor: '#EEF3FF',
         gap: 12,
