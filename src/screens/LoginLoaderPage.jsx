@@ -87,10 +87,10 @@ const state = await getUserState();
       await clearAuth();
       console.log('both expired')
       // navigation.replace("SignIn");
-      navigation.reset({
-      index: 0,
-      routes: [{ name: "GetStarted", params: { screen, stage }  }],
-    });
+      // navigation.reset({
+      // index: 0,
+      // routes: [{ name: "GetStarted", params: { screen, stage }  }],
+    // });
 
     } catch (e) {
       await clearAuth();
