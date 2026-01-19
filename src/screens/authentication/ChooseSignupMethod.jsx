@@ -189,7 +189,7 @@ const ChooseSignupMethod = () => {
           text="Sign up with apple"
           iconWidth={24}
           icon={require('../../assets/icons/apple.png')}
-          onPress={() => navigation.navigate('NotificationScreen')}
+          onPress={() => navigation.navigate('OnboardingContainer')}
         />
 
         {/* faceboook sign-in option */}
@@ -198,7 +198,7 @@ const ChooseSignupMethod = () => {
           iconWidth={24}
 
           icon={require('../../assets/icons/facebook.png')}
-          onPress={() => navigation.navigate('EmailInput')}
+          onPress={() => navigation.navigate('BottomDash')}
         />
 
         {/* Email sign-in option */}
