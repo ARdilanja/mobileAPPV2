@@ -77,29 +77,37 @@
 
 
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   StyleSheet,
   FlatList,
   Dimensions,
   StatusBar,
-  Platform,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 import NotificationItem from '../components/NotificationItem';
 import Header from '../components/Header';
 import { Fonts } from '../constants/fonts';
 
-import { getNotifications, markAsRead } from '../services/notificationApi';
+import {
+  getNotifications,
+  getNotificationHistory,
+} from '../services/notificationApi';
+import { API_BASE } from '@env';
 
 const screenHeight = Dimensions.get('window').height;
 
 const NotificationsScreen = () => {
   const [notifications, setNotifications] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
-  /* ================= LOAD NOTIFICATIONS ================= */
+  /* ================= LOAD REDIS NOTIFICATIONS ================= */
   useFocusEffect(
     useCallback(() => {
       StatusBar.setBarStyle('dark-content');
@@ -108,9 +116,10 @@ const NotificationsScreen = () => {
 
       const loadNotifications = async () => {
         try {
-          const list = await getNotifications();
-          console.log('📥 Notifications loaded:', list.length);
+          const list = await getNotifications(); // Redis (latest 20)
           setNotifications(list);
+          setPage(1);
+          list.length === 5
         } catch (err) {
           console.log('❌ Failed to load notifications', err.message);
         }
@@ -120,21 +129,49 @@ const NotificationsScreen = () => {
     }, [])
   );
 
-  /* ================= MARK AS READ ================= */
-  useEffect(() => {
-    const markUnread = async () => {
-      for (const n of notifications) {
-        if (!n.isRead) {
-          await markAsRead(n._id);
-        }
+  /* ================= LOAD OLDER FROM DB ================= */
+  const loadMore = async () => {
+    if (loadingMore || !hasMore) return;
+
+    try {
+      setLoadingMore(true);
+
+      const older = await getNotificationHistory(page);
+
+      if (older.length > 0) {
+        setNotifications(prev => [...prev, ...older]);
+        setPage(prev => prev + 1);
+        setHasMore(older.length === 5);
+      } else {
+        setHasMore(false);
       }
-    };
-
-    if (notifications.length > 0) {
-      markUnread();
+    } catch (err) {
+      console.log('❌ Failed to load older notifications', err.message);
+    } finally {
+      setLoadingMore(false);
     }
-  }, [notifications]);
+  };
 
+  /* ================= MARK ALL AS READ (ONCE) ================= */
+  useFocusEffect(
+    useCallback(() => {
+      const markAllRead = async () => {
+        try {
+          const token = await AsyncStorage.getItem("token");
+
+          await axios.put(
+            `${API_BASE}/notifications/mark-all-read`,
+            {},
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+        } catch (err) {
+          console.log('❌ mark-all-read failed', err.message);
+        }
+      };
+
+      markAllRead();
+    }, [])
+  );
 
   /* ================= RENDER ITEM ================= */
   const renderItem = ({ item }) => (
@@ -155,6 +192,8 @@ const NotificationsScreen = () => {
         keyExtractor={(item) => item._id}
         renderItem={renderItem}
         contentContainerStyle={{ paddingBottom: 20 }}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.5}
       />
     </View>
   );

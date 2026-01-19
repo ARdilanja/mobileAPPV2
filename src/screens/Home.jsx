@@ -66,14 +66,9 @@ export default function Home() {
 
   // AUTO SET NOTIFICATION (API / unread logic)
   useEffect(() => {
-    const unreadCount = 1; // <-- replace with API value
+    setNotificationState(unreadCount > 0 ? "tooltip" : "default");
+  }, [unreadCount]);
 
-    if (unreadCount > 0) {
-      setNotificationState('tooltip');
-    } else {
-      setNotificationState('tooltip');
-    }
-  }, []);
 
   //  STATUS BAR RESET WHEN SCREEN IS FOCUSED
   useFocusEffect(
@@ -112,62 +107,62 @@ export default function Home() {
   }, []);
 
   const goToNotification = () => {
-  navigation.navigate('NotificationScreen');
-};
+    navigation.navigate('NotificationScreen');
+  };
 
-const renderNotification = () => {
-  switch (notificationState) {
-    case 'default':
-      return (
-        <TouchableOpacity
-          style={styles.notifyDefault}
-          activeOpacity={0.8}
-          onPress={goToNotification}
-        >
-          <Image
-            source={require('../assets/images/notification.png')}
-            style={styles.notifyIcon}
-          />
-        </TouchableOpacity>
-      );
-
-    case 'tooltip':
-      return (
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={goToNotification}
-          style={styles.notifyTooltipContainer}
-        >
-          <View style={styles.tooltipBox}>
-            <Text style={styles.tooltipText}>
-              You have {unreadCount} notification{unreadCount > 1 ? 's' : ''}
-            </Text>
+  const renderNotification = () => {
+    switch (notificationState) {
+      case 'default':
+        return (
+          <TouchableOpacity
+            style={styles.notifyDefault}
+            activeOpacity={0.8}
+            onPress={goToNotification}
+          >
             <Image
-              source={require('../assets/images/notification_active.png')}
-              style={styles.tooltipIcon}
+              source={require('../assets/images/notification.png')}
+              style={styles.notifyIcon}
             />
-          </View>
-        </TouchableOpacity>
-      );
+          </TouchableOpacity>
+        );
 
-    case 'active':
-      return (
-        <TouchableOpacity
-          style={styles.notifyActive}
-          activeOpacity={0.8}
-          onPress={goToNotification}
-        >
-          <Image
-            source={require('../assets/images/notofication_after.png')}
-            style={styles.notifyIcon}
-          />
-        </TouchableOpacity>
-      );
+      case 'tooltip':
+        return (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={goToNotification}
+            style={styles.notifyTooltipContainer}
+          >
+            <View style={styles.tooltipBox}>
+              <Text style={styles.tooltipText}>
+                You have {unreadCount} notification{unreadCount > 1 ? 's' : ''}
+              </Text>
+              <Image
+                source={require('../assets/images/notification_active.png')}
+                style={styles.tooltipIcon}
+              />
+            </View>
+          </TouchableOpacity>
+        );
 
-    default:
-      return null;
-  }
-};
+      case 'active':
+        return (
+          <TouchableOpacity
+            style={styles.notifyActive}
+            activeOpacity={0.8}
+            onPress={goToNotification}
+          >
+            <Image
+              source={require('../assets/images/notofication_after.png')}
+              style={styles.notifyIcon}
+            />
+          </TouchableOpacity>
+        );
+
+      default:
+        return null;
+    }
+  };
 
 
   return (

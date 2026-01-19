@@ -64,7 +64,8 @@ import { Provider } from 'react-redux';
 import { store } from './src/redux/store.jsx';
 import { StripeProvider } from '@stripe/stripe-react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { STRIPE_PUBLISHABLE_KEY } from './src/config/api.jsx';
+import { STRIPE_PUBLISHABLE_KEY } from '@env';
+import { API_BASE } from '@env';
 import {  listenToNotifications, requestNotificationPermission, setupNotificationChannel } from './src/services/notificationService';
 
 export default function App() {
@@ -84,6 +85,8 @@ export default function App() {
     const unsubscribe = listenToNotifications();
     return unsubscribe;
   }, []);
+
+  console.log(API_BASE)
 
   return (
     <Provider store={store}>

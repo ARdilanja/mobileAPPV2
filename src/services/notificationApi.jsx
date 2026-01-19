@@ -43,3 +43,17 @@ export const markAsRead = async (id) => {
         }
     );
 };
+
+
+export const getNotificationHistory = async (page = 2) => {
+    const token = await AsyncStorage.getItem("token");
+
+    const res = await axios.get(
+        `${API_BASE}/notifications/history?page=${page}`,
+        {
+            headers: { Authorization: `Bearer ${token}` }
+        }
+    );
+
+    return res.data;
+}
